@@ -7,15 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
+
 /**
  * Result set value componentGetter.
+ *
  * @author Leonid Bushuev from JetBrains
  */
-abstract class ValueGetter<V>
-{
+abstract class ValueGetter<V> {
 
-    @Nullable
-    abstract V getValue(@NotNull ResultSet rset, int index)
-        throws SQLException;
-
+  @Nullable
+  abstract V getValue(@NotNull ResultSet rset, int index)
+    throws SQLException;
 }

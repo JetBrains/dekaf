@@ -3,9 +3,7 @@ package org.jetbrains.dba.base;
 /**
  *
  **/
-public class RevEngOptions
-{
-
+public class RevEngOptions {
 
 
 }

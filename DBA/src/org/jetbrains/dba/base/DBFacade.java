@@ -3,60 +3,62 @@ package org.jetbrains.dba.base;
 import org.jetbrains.annotations.NotNull;
 
 
+
 /**
  * Primary class that provides with RDBMS-specific services.
+ *
  * @see DatabaseRegistry
- **/
-public interface DBFacade
-{
+ */
+public interface DBFacade {
 
-    /**
-     * The DBMS code that identifiers this kind of the database.
-     * A formal string in upper case.
-     * For example: ORA, MS, MY, PG.
-     * @return
-     */
-    @NotNull
-    public String getDbmsCode();
-
-
-    @NotNull
-    public DBErrorRecognizer getErrorRecognizer();
+  /**
+   * The DBMS code that identifiers this kind of the database.
+   * A formal string in upper case.
+   * For example: ORA, MS, MY, PG.
+   *
+   * @return
+   */
+  @NotNull
+  public String getDbmsCode();
 
 
-    public void connect(@NotNull final String jdbcURL);
+  @NotNull
+  public DBErrorRecognizer getErrorRecognizer();
 
 
-    public void reconnect();
+  public void connect(@NotNull final String jdbcURL);
 
 
-    public void disconnect();
+  public void reconnect();
 
 
-    public boolean isConnected();
+  public void disconnect();
 
 
-    /**
-     * Performs the given operation in transaction and returns the result.
-     * @param operation  operation to perform.
-     * @param <R>        type of result.
-     * @return           the result.
-     * @see DBFacade#inTransaction
-     */
-    public <R> R inTransaction(InTransaction<R> operation);
-
-    /**
-     * Performs the given operation in transaction and returns the result.
-     * @param operation  operation to perform.
-     * @see DBFacade#inTransaction
-     */
-    public void inTransaction(InTransactionNoResult operation);
+  public boolean isConnected();
 
 
-    public <R> R inSession(InSession<R> operation);
+  /**
+   * Performs the given operation in transaction and returns the result.
+   *
+   * @param operation operation to perform.
+   * @param <R>       type of result.
+   * @return the result.
+   * @see DBFacade#inTransaction
+   */
+  public <R> R inTransaction(InTransaction<R> operation);
+
+  /**
+   * Performs the given operation in transaction and returns the result.
+   *
+   * @param operation operation to perform.
+   * @see DBFacade#inTransaction
+   */
+  public void inTransaction(InTransactionNoResult operation);
 
 
-    public void inSession(InSessionNoResult operation);
+  public <R> R inSession(InSession<R> operation);
 
 
+  public void inSession(InSessionNoResult operation);
 }

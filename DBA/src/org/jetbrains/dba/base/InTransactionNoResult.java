@@ -3,12 +3,11 @@ package org.jetbrains.dba.base;
 import org.jetbrains.annotations.NotNull;
 
 
+
 /**
  * In-transaction closure.
- **/
-public interface InTransactionNoResult
-{
+ */
+public interface InTransactionNoResult {
 
-    abstract void run(@NotNull final DBTransaction tran);
-
+  abstract void run(@NotNull final DBTransaction tran);
 }
