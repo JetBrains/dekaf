@@ -1,6 +1,12 @@
 *.class
-
-# Package Files #
 *.jar
 *.war
 *.ear
+*.zip
+
+lib
+out
+.gradle
+
+.idea/workspace.xml
+.idea/uiDesigner.xml
