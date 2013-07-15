@@ -5,7 +5,7 @@
   <test name="Test" preserve-order="true">
     <classes>
 
-      <class name="org.jetbrains.dba.base.DBFacadeTest"/>
+      <class name="org.jetbrains.dba.DBFacadeTest"/>
 
     </classes>
   </test>

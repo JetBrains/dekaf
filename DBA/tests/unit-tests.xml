@@ -5,8 +5,8 @@
     <test name="Test" preserve-order="true">
       <classes>
 
-        <class name="org.jetbrains.dba.base.ValueGetterTest"/>
-        <class name="org.jetbrains.dba.base.StructRowFetcherTest"/>
+        <class name="org.jetbrains.dba.ValueGetterTest"/>
+        <class name="org.jetbrains.dba.StructRowFetcherTest"/>
 
       </classes>
     </test>
