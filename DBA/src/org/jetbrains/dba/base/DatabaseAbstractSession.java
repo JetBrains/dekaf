@@ -106,12 +106,14 @@ abstract class DatabaseAbstractSession implements DBSession {
   @Override
   public void inTransaction(final InTransactionNoResult operation) {
     beginTransaction();
+    boolean committed = false;
     try {
       operation.run(this);
       commit();
+      committed = true;
     }
     finally {
-      rollback();
+      if (!committed) rollback();
     }
   }
 

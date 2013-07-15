@@ -1,6 +1,6 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
-<suite name="DB_UnitTests" verbose="1">
+<suite name="DB" verbose="1">
 
   <test name="Test" preserve-order="true">
     <classes>

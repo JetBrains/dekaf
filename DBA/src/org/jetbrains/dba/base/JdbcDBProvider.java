@@ -49,6 +49,7 @@ public final class JdbcDBProvider implements DBProvider {
   private final ImmutableMap<Rdbms,DBErrorRecognizer> myErrorRecognizers =
     ImmutableMap.<Rdbms,DBErrorRecognizer>builder()
       .put(Rdbms.ORACLE, new OraErrorRecognizer())
+      .put(Rdbms.POSTGRE, new PostgreErrorRecognizer())
       .put(Rdbms.UNKNOWN, new UnknownErrorRecognizer())
       .build();
 
@@ -63,6 +64,7 @@ public final class JdbcDBProvider implements DBProvider {
     DBErrorRecognizer errorRecognizer = obtainErrorRecognizer(rdbms);
     switch (rdbms) {
       case ORACLE: return new OraFacade(connectionString, driver, errorRecognizer);
+      case POSTGRE: return new PostgreFacade(connectionString, driver, errorRecognizer);
       default: throw new DbmsUnsupportedFeatureError("This RDBMS is not supported yet.");
     }
   }

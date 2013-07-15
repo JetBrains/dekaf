@@ -12,7 +12,7 @@ import java.sql.SQLException;
 /**
  *
  **/
-public class OraErrorRecognizer extends DatabaseAbstractErrorRecognizer {
+public class PostgreErrorRecognizer extends DatabaseAbstractErrorRecognizer {
 
   @NotNull
   @Override
