@@ -1,14 +1,14 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
-<suite name="DB-Core" verbose="1">
+<suite name="DB_UnitTests" verbose="1">
 
-    <test name="UnitTest" preserve-order="true">
-        <classes>
+    <test name="Test" preserve-order="true">
+      <classes>
 
-            <class name="org.jetbrains.dba.base.ValueGetterTest"/>
-            <class name="org.jetbrains.dba.base.StructRowFetcherTest"/>
+        <class name="org.jetbrains.dba.base.ValueGetterTest"/>
+        <class name="org.jetbrains.dba.base.StructRowFetcherTest"/>
 
-        </classes>
+      </classes>
     </test>
 
 </suite>

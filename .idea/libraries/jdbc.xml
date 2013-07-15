@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="jdbc">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/jdbc/ojdbc6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jdbc/orai18n.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jdbc/postgresql-9.2-1002.jdbc4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jdbc/sqljdbc4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/jdbc/postgresql-jdbc-9.2-1002.src.zip!/postgresql-jdbc-9.2-1002.src" />
+    </SOURCES>
+  </library>
+</component>

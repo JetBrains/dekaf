@@ -11,21 +11,25 @@ import org.jetbrains.dba.errors.DBIsNotConnected;
  **/
 public abstract class DatabaseAbstractFacade implements DBFacade {
 
-  @Nullable
-  protected String jdbcURL;
+  @NotNull
+  protected final String myConnectionString;
 
   @Nullable
   protected DatabaseAbstractSession primarySession;
 
 
+  protected DatabaseAbstractFacade(@NotNull String connectionString) {
+    this.myConnectionString = connectionString;
+  }
+
+
   @Override
-  public void connect(@NotNull final String jdbcURL) {
+  public void connect() {
     if (primarySession == null) {
-      this.jdbcURL = jdbcURL;
-      primarySession = internalConnect(jdbcURL);
+      primarySession = internalConnect();
     }
     else {
-      if (this.jdbcURL.equals(jdbcURL)) {
+      if (this.myConnectionString.equals(myConnectionString)) {
         ; // already connected to the same URL
       }
       else {
@@ -35,7 +39,7 @@ public abstract class DatabaseAbstractFacade implements DBFacade {
   }
 
 
-  protected abstract DatabaseAbstractSession internalConnect(@NotNull final String jdbcURL);
+  protected abstract DatabaseAbstractSession internalConnect();
 
 
   @Override
@@ -43,7 +47,7 @@ public abstract class DatabaseAbstractFacade implements DBFacade {
     if (primarySession != null) {
       primarySession.close();
     }
-    primarySession = internalConnect(jdbcURL);
+    primarySession = internalConnect();
   }
 
 

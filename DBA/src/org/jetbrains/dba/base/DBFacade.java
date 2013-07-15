@@ -5,9 +5,11 @@ import org.jetbrains.annotations.NotNull;
 
 
 /**
- * Primary class that provides with RDBMS-specific services.
+ * Represents a database.
  *
- * @see DatabaseRegistry
+ * @see DBProvider
+ *
+ * @author Leonid Bushuev from JetBrains
  */
 public interface DBFacade {
 
@@ -19,14 +21,13 @@ public interface DBFacade {
    * @return
    */
   @NotNull
-  public String getDbmsCode();
-
+  public Rdbms getDbms();
 
   @NotNull
   public DBErrorRecognizer getErrorRecognizer();
 
 
-  public void connect(@NotNull final String jdbcURL);
+  public void connect();
 
 
   public void reconnect();

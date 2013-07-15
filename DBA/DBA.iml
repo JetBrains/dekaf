@@ -11,6 +11,7 @@
     <orderEntry type="library" exported="" name="annotations" level="project" />
     <orderEntry type="library" exported="" name="guava" level="project" />
     <orderEntry type="library" scope="TEST" name="testng" level="project" />
+    <orderEntry type="library" name="jdbc" level="project" />
   </component>
 </module>
 

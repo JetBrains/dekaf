@@ -1,6 +1,9 @@
 package org.jetbrains.dba.utils;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.regex.Pattern;
 
 
 
@@ -55,5 +58,11 @@ public final class Strings {
     else {
       return str.substring(0, k);
     }
+  }
+
+
+  public static boolean matches(@Nullable final CharSequence string, @NotNull final Pattern pattern) {
+    if (string == null) return false;
+    return pattern.matcher(string).matches();
   }
 }
