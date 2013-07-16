@@ -8,8 +8,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="annotations" level="project" />
-    <orderEntry type="library" exported="" name="guava" level="project" />
+    <orderEntry type="module" module-name="DBA" />
+    <orderEntry type="library" name="annotations" level="project" />
+    <orderEntry type="library" name="guava" level="project" />
+    <orderEntry type="library" scope="TEST" name="testng" level="project" />
+    <orderEntry type="library" name="jdbc" level="project" />
   </component>
 </module>
 
