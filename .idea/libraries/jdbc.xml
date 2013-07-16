@@ -7,13 +7,16 @@
       <root url="jar://$PROJECT_DIR$/jdbc/postgresql-9.2-1003-jdbc4.jar!/" />
       <root url="jar://$PROJECT_DIR$/jdbc/mysql-connector-java-5.1.25.jar!/" />
       <root url="jar://$PROJECT_DIR$/jdbc/hsqldb-2.2.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jdbc/jtds-1.2.8.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/jdbc/postgresql-9.2-1003-jdbc4-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jdbc/jtds-1.2.8-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/jdbc/postgresql-9.2-1003-jdbc4-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/jdbc/hsqldb-2.2.9-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jdbc/jtds-1.2.8-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

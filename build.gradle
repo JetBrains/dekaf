@@ -27,6 +27,9 @@ dependencies {
               "org.postgresql:postgresql:9.2-1003-jdbc4:sources",
               "org.postgresql:postgresql:9.2-1003-jdbc4:javadoc",
               "mysql:mysql-connector-java:5.1.25",
+              "net.sourceforge.jtds:jtds:1.2.8",
+              "net.sourceforge.jtds:jtds:1.2.8:sources",
+              "net.sourceforge.jtds:jtds:1.2.8:javadoc",
               "org.hsqldb:hsqldb:2.2.9",
               "org.hsqldb:hsqldb:2.2.9:sources",
               "org.hsqldb:hsqldb:2.2.9:javadoc"
