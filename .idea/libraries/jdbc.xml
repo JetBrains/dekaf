@@ -3,12 +3,17 @@
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/jdbc/ojdbc6.jar!/" />
       <root url="jar://$PROJECT_DIR$/jdbc/orai18n.jar!/" />
-      <root url="jar://$PROJECT_DIR$/jdbc/postgresql-9.2-1002.jdbc4.jar!/" />
       <root url="jar://$PROJECT_DIR$/jdbc/sqljdbc4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jdbc/postgresql-9.2-1003-jdbc4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jdbc/mysql-connector-java-5.1.25.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jdbc/hsqldb-2.2.9.jar!/" />
     </CLASSES>
-    <JAVADOC />
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/jdbc/postgresql-9.2-1003-jdbc4-javadoc.jar!/" />
+    </JAVADOC>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/jdbc/postgresql-jdbc-9.2-1002.src.zip!/postgresql-jdbc-9.2-1002.src" />
+      <root url="jar://$PROJECT_DIR$/jdbc/postgresql-9.2-1003-jdbc4-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jdbc/hsqldb-2.2.9-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
