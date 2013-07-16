@@ -5,6 +5,7 @@
     <test name="Test" preserve-order="true">
       <classes>
 
+        <class name="org.jetbrains.dba.access.DBProviderUnitTest"/>
         <class name="org.jetbrains.dba.access.ValueGetterTest"/>
         <class name="org.jetbrains.dba.access.StructRowFetcherTest"/>
 

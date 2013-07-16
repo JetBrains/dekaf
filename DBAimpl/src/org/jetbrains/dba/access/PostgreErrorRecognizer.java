@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 
 /**
- *
+ * PostgreSQL specific errors recognizer.
  **/
 public class PostgreErrorRecognizer extends BaseErrorRecognizer {
 

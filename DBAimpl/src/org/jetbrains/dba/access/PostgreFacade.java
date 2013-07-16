@@ -13,7 +13,7 @@ import static java.lang.String.format;
 
 
 /**
- * Oracle DBMS facade.
+ * PostgreSQL facade.
  */
 public final class PostgreFacade extends BaseFacade {
 
@@ -21,7 +21,7 @@ public final class PostgreFacade extends BaseFacade {
    * Oracle JDBC driver. It can be in a separate class loader.
    */
   @NotNull
-  private final Driver myDriver;
+  private final /*org.postgresql.*/Driver myDriver;
 
 
 
@@ -29,7 +29,6 @@ public final class PostgreFacade extends BaseFacade {
                        @NotNull final Driver driver,
                        @NotNull final BaseErrorRecognizer errorRecognizer) {
     super(connectionString, errorRecognizer);
-
     myDriver = driver;
   }
 

@@ -7,7 +7,7 @@ import java.sql.Connection;
 
 
 /**
- * Oracle session.
+ * PostgreSQL session.
  */
 final class PostgreSession extends BaseSession {
 

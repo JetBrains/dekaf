@@ -10,9 +10,9 @@ import java.sql.SQLException;
 
 
 /**
- * Oracle specific errors recognizer.
+ * MS SQL Server specific errors recognizer.
  **/
-public class OraErrorRecognizer extends BaseErrorRecognizer {
+public class MssqlErrorRecognizer extends BaseErrorRecognizer {
 
   @NotNull
   @Override
@@ -20,7 +20,7 @@ public class OraErrorRecognizer extends BaseErrorRecognizer {
     int code = sqlException.getErrorCode();
 
     switch (code) {
-      case 1:
+      case 2601:
         return new DuplicateKeyError(sqlException);
       default:
         return new UnknownDBError(sqlException);
