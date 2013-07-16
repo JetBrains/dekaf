@@ -34,5 +34,5 @@ dependencies {
 
 task getLibs(type:Copy) {
     from configurations.lib into "lib/"
-    from configurations.open_jdbc into "jdbc/"
+    from configurations.open_jdbc into "jdbc/" exclude { it.file in configurations.lib.files }
 }
