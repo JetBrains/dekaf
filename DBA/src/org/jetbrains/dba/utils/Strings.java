@@ -22,6 +22,19 @@ public final class Strings {
 
 
   @NotNull
+  public static String ensureStartsWith(@NotNull final String str, final char c) {
+    if (str.length() == 0) {
+      return Character.toString(c);
+    }
+    else {
+      char c1 = str.charAt(0);
+      if (c1 == c) return str;
+      else return c + str;
+    }
+  }
+
+
+  @NotNull
   public static String ensureEndsWith(@NotNull final String str, final char c) {
     final int n = str.length();
     if (n > 0 && str.charAt(n - 1) == c) {

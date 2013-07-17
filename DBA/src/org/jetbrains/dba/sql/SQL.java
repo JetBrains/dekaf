@@ -3,17 +3,19 @@ package org.jetbrains.dba.sql;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Files;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dba.access.DBRowsCollector;
 import org.jetbrains.dba.errors.DBPreparingError;
 import org.jetbrains.dba.utils.IntRef;
+import org.jetbrains.dba.utils.JavaResource;
+import org.jetbrains.dba.utils.Resource;
 import org.jetbrains.dba.utils.Strings;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,22 +26,63 @@ import java.util.regex.Pattern;
  *
  * @author Leonid Bushuev from JetBrains
  */
-public class SQL {
-
-  private Map<String, String> sources =
-    new ConcurrentHashMap<String, String>();
+public final class SQL {
 
 
-  public SQL() {
+  @NotNull
+  private final CopyOnWriteArrayList<Resource> myResources = new CopyOnWriteArrayList<Resource>();
+
+
+  public void assignResources(@NotNull final ClassLoader classLoader, @NotNull final String path) {
+    JavaResource jrc = new JavaResource(classLoader, path);
+    myResources.add(jrc);
+  }
+
+  private static final Pattern NAMED_TEXT_PATTERN =
+    Pattern.compile("(^|\\n)\\s*--=--\\s*(\\w+)\\s*\\n(.*?)(\\n\\s*--=--|$)", Pattern.DOTALL);
+
+  @NotNull
+  String getSourceText(@NotNull final String name) {
+    int colon = name.indexOf(':');
+    if (colon > 0) {
+      String primaryName = name.substring(0, colon).trim();
+      String innerName = name.substring(colon+1).trim();
+      String fullText = getSourceText(primaryName);
+      Matcher m = NAMED_TEXT_PATTERN.matcher(fullText);
+      while (m.find()) {
+        String sectionName = m.group(2);
+        if (sectionName.equalsIgnoreCase(innerName)) {
+          String sectionText = m.group(3).trim();
+          return sectionText;
+        }
+      }
+      throw new IllegalArgumentException("Resource '"+primaryName+"' doesn't contain section named '"+innerName+"'.");
+    }
+    else {
+      final String nameWithExtension = name.endsWith(".sql") ? name : name + ".sql";
+      final String textFromResources = getTextFromResources(nameWithExtension);
+      if (textFromResources == null) {
+        throw new IllegalArgumentException("Resource '"+nameWithExtension+"' not found.");
+      }
+      return textFromResources;
+    }
   }
 
 
-  public SQL(final String... resourcePath) {
-    if (resourcePath != null) {
-      for (String rp : resourcePath) {
-        loadSourcesFromResource(rp);
+  @Nullable
+  private String getTextFromResources(@NotNull final String name) {
+    for (Resource resource : myResources) {
+      // TODO make it more robust: continue to find the text in other resources
+      //      and throw of not found, with all problems in the message
+      try {
+        final String text = resource.loadText(name);
+        if (text != null) return text;
+      }
+      catch (IOException ioe) {
+        throw new RuntimeException("Could not access resource: " + resource);
       }
     }
+    return null;
   }
 
 
@@ -172,10 +215,7 @@ public class SQL {
   }
 
 
-  public void loadSourcesFromResource(@NotNull final String resourcePath) {
-    final Map<String, String> theSources = SQLUtil.loadResourceStatements(resourcePath);
-    sources.putAll(theSources);
-  }
+
 
 
   @NotNull
@@ -199,10 +239,7 @@ public class SQL {
     // check whether it is a source name
     if (text.startsWith("##")) {
       String sourceName = text.substring(2).trim();
-      text = sources.get(sourceName);
-      if (text == null) {
-        throw new DBPreparingError("The source text named \"" + sourceName + "\" not loaded.");
-      }
+      text = getSourceText(sourceName);
     }
 
     // ok
