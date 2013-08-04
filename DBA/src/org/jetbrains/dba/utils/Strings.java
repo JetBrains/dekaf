@@ -53,6 +53,15 @@ public final class Strings {
 
 
   @NotNull
+  public static String removeEnding(@NotNull final String str, @NotNull final String ending) {
+    int n = str.length(),
+        m = ending.length();
+    if (n > m && str.endsWith(ending)) return str.substring(0, n-m);
+    else return str;
+  }
+
+
+  @NotNull
   public static String rtrim(@NotNull final String str) {
     int n = str.length();
     int k = n;

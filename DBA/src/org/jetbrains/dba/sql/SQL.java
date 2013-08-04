@@ -39,7 +39,7 @@ public final class SQL {
   }
 
   private static final Pattern NAMED_TEXT_PATTERN =
-    Pattern.compile("(^|\\n)\\s*--=--\\s*(\\w+)\\s*\\n(.*?)(\\n\\s*--=--|$)", Pattern.DOTALL);
+    Pattern.compile("\\s*(--=--)\\s*(\\w+)\\s*\\n(.*?)(\\n\\s*(--=--)|$)", Pattern.DOTALL);
 
   @NotNull
   String getSourceText(@NotNull final String name) {
@@ -49,12 +49,16 @@ public final class SQL {
       String innerName = name.substring(colon+1).trim();
       String fullText = getSourceText(primaryName);
       Matcher m = NAMED_TEXT_PATTERN.matcher(fullText);
-      while (m.find()) {
+      boolean found = m.find();
+      while (found) {
         String sectionName = m.group(2);
         if (sectionName.equalsIgnoreCase(innerName)) {
           String sectionText = m.group(3).trim();
           return sectionText;
         }
+        int nextPosition = m.start(5);
+        if (nextPosition > 0) found = m.find(nextPosition);
+        else found = false;
       }
       throw new IllegalArgumentException("Resource '"+primaryName+"' doesn't contain section named '"+innerName+"'.");
     }
