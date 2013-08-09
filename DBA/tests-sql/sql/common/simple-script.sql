@@ -1,9 +1,9 @@
--- A simple script that can be executable on all supported RDBMS.
+-- A simple script that is executable on all supported RDBMS.
 
 create table Simple_Table
 (
     Prop_Code varchar(6) not null primary key,
-    Prop_Value nvarchar(80)
+    Prop_Value varchar(80)
 )
 ;
 

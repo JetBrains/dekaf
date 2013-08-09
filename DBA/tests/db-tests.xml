@@ -5,7 +5,8 @@
   <test name="Test" preserve-order="true">
     <classes>
 
-      <class name="org.jetbrains.dba.access.DBFacadeTest"/>
+      <class name="org.jetbrains.dba.access.BaseFacadeTest"/>
+      <class name="org.jetbrains.dba.access.BaseScriptRunnerTest"/>
 
     </classes>
   </test>

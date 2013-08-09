@@ -6,6 +6,7 @@ import org.jetbrains.dba.errors.DBError;
 import org.jetbrains.dba.errors.UnhandledTypeError;
 import org.jetbrains.dba.sql.SQLCommand;
 import org.jetbrains.dba.sql.SQLQuery;
+import org.jetbrains.dba.sql.SQLScript;
 
 import java.sql.*;
 
@@ -16,6 +17,7 @@ import java.sql.*;
  * Encapsulates connection and provides useful methods to work with database.
  */
 abstract class BaseSession implements DBSession {
+
   //// STATE \\\\
 
   @NotNull
@@ -167,7 +169,7 @@ abstract class BaseSession implements DBSession {
 
 
   @Override
-  public DBCommandRunner command(@NotNull final SQLCommand command) {
+  public BaseCommandRunner command(@NotNull final SQLCommand command) {
     return new BaseCommandRunner(this, command.getSourceText());
   }
 
@@ -227,6 +229,12 @@ abstract class BaseSession implements DBSession {
                                    index +
                                    "th parameter into a SQL statement.");
     }
+  }
+
+
+  @Override
+  public BaseScriptRunner script(@NotNull SQLScript script) {
+    return new BaseScriptRunner(this, script);
   }
 
 

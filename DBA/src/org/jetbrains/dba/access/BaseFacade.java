@@ -34,7 +34,7 @@ public abstract class BaseFacade implements DBFacade {
     }
     else {
       if (this.myConnectionString.equals(myConnectionString)) {
-        ; // already connected to the same URL
+        // already connected to the same URL
       }
       else {
         throw new IllegalStateException("Could not connect to another URL");

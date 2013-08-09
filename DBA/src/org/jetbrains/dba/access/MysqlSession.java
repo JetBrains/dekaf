@@ -14,4 +14,5 @@ final class MysqlSession extends BaseSession {
   public MysqlSession(@NotNull MysqlFacade facade, @NotNull final Connection connection, final boolean ownConnection) {
     super(facade, connection, ownConnection);
   }
+
 }

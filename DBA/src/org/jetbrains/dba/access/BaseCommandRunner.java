@@ -32,14 +32,14 @@ public class BaseCommandRunner implements DBCommandRunner {
 
 
   @Override
-  public DBCommandRunner withParams(final Object... params) {
+  public BaseCommandRunner withParams(final Object... params) {
     this.params = params;
     return this;
   }
 
 
   @Override
-  public DBCommandRunner run() {
+  public BaseCommandRunner run() {
     try {
       final CallableStatement statement = session.prepareCall(statementSourceText);
       try {

@@ -13,7 +13,7 @@ import static org.testng.Assert.assertTrue;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public class DBFacadeTest extends DBTestCase {
+public class BaseFacadeTest extends DBTestCase {
 
   @Test
   public void connect1() {
