@@ -89,8 +89,73 @@ public final class SQL {
   }
 
 
+
   @NotNull
-  public SQLScript loadScript(@NotNull final File scriptFile, Charset charset)
+  public SQLCommand command(@NotNull final String sourceText) {
+    String text = preprocessOneStatementText(sourceText);
+    return new SQLCommand(text);
+  }
+
+
+  @NotNull
+  public <S> SQLQuery<S> query(@NotNull final String sourceText,
+                               @NotNull final DBRowsCollector<S> collector) {
+    String text = preprocessOneStatementText(sourceText);
+    return new SQLQuery<S>(text, collector);
+  }
+
+
+  private String preprocessOneStatementText(@NotNull final String sourceText) {
+    String text = sourceText.trim();
+
+    // check whether it is a source name
+    text = substituteReferredText(text);
+
+    // drop the tailing semicolon
+    text = Strings.removeEnding(text, ";").trim();
+
+    // ok
+    return text;
+  }
+
+
+  private String substituteReferredText(@NotNull final String text) {
+    if (text.startsWith("##")) {
+      String sourceName = text.substring(2).trim();
+      final String newText = getSourceText(sourceName).trim();
+      return newText;
+      //return substituteReferredText(newText);
+    }
+    else {
+      return text;
+    }
+  }
+
+
+  @NotNull
+  public SQLScript script(@NotNull final String sourceText) {
+    String text = sourceText.trim();
+
+    // check whether it is a source name
+    text = substituteReferredText(text);
+
+    // for now, just a temporary solution
+    final String[] subTexts = text.split("(/|\\n\\s*;)\\s*?(\\n|$)");
+
+    ImmutableList.Builder<SQLCommand> commands = ImmutableList.builder();
+    for (String subText : subTexts) {
+      String st = subText.trim();
+      if (st.length() == 0)continue;
+      final SQLCommand command = command(st);
+      commands.add(command);
+    }
+
+    return new SQLScript(commands.build());
+  }
+
+
+  @NotNull
+  private SQLScript loadScript(@NotNull final File scriptFile, Charset charset)
     throws IOException {
     if (!scriptFile.isFile()) {
       throw new IllegalArgumentException("The path '" + scriptFile + "' is not a file.");
@@ -102,7 +167,7 @@ public final class SQL {
   }
 
 
-  public SQLScript loadScript(@NotNull final List<String> scriptLines) {
+  private SQLScript loadScript(@NotNull final List<String> scriptLines) {
     final ImmutableList.Builder<SQLCommand> b = ImmutableList.<SQLCommand>builder();
 
 
@@ -117,21 +182,8 @@ public final class SQL {
   }
 
 
-  protected int findCommandBegin(@NotNull final List<String> scriptLines, final int from) {
-    for (int k = from, n = scriptLines.size(); k < n; k++) {
-      String line = scriptLines.get(k).trim();
-      if (line.length() == 0) continue;
-      if (line.startsWith("--") && !line.startsWith("--+")) continue;
-      // TODO handle multiline comments
-      return k;
-    }
-
-    return -1;
-  }
-
-
   private static final Pattern ORA_SQLPLUS_NEST_FILE =
-    Pattern.compile("^\\s*@.*$");
+    Pattern.compile("^\\s*@@?.*$");
 
   private static final Pattern ORA_PLSQL_BEGIN_PATTERN =
     Pattern.compile("^\\s*(/\\*.*\\*/\\s*)*(declare|begin).*$",
@@ -211,44 +263,21 @@ public final class SQL {
   }
 
 
-  protected static void removeTailSemicolon(@NotNull final StringBuilder b) {
-    int n = b.length();
-    if (n == 0) return;
-    if (b.charAt(n - 1) == ';') b.delete(n - 1, n);
-  }
 
 
 
-
-
-  @NotNull
-  public SQLCommand command(@NotNull final String sourceText) {
-    String text = preprocessOneStatementText(sourceText);
-    return new SQLCommand(text);
-  }
-
-
-  @NotNull
-  public <S> SQLQuery<S> query(@NotNull final String sourceText,
-                               @NotNull final DBRowsCollector<S> collector) {
-    String text = preprocessOneStatementText(sourceText);
-    return new SQLQuery<S>(text, collector);
-  }
-
-
-  private String preprocessOneStatementText(@NotNull final String sourceText) {
-    String text = sourceText;
-
-    // check whether it is a source name
-    if (text.startsWith("##")) {
-      String sourceName = text.substring(2).trim();
-      text = getSourceText(sourceName);
+  protected int findCommandBegin(@NotNull final List<String> scriptLines, final int from) {
+    for (int k = from, n = scriptLines.size(); k < n; k++) {
+      String line = scriptLines.get(k).trim();
+      if (line.length() == 0) continue;
+      if (line.startsWith("--") && !line.startsWith("--+")) continue;
+      // TODO handle multiline comments
+      return k;
     }
 
-    // drop the tailing semicolon
-    text = Strings.removeEnding(text, ";");
-
-    // ok
-    return text;
+    return -1;
   }
+
+
+
 }
