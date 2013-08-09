@@ -29,12 +29,14 @@ public class BaseQueryRunner<S> implements DBQueryRunner {
   }
 
 
+  @Override
   public DBQueryRunner<S> withParams(final Object... params) {
     this.params = params;
     return this;
   }
 
 
+  @Override
   public S run() {
     return session.processQuery(query.getSourceText(), params, query.getCollector());
   }

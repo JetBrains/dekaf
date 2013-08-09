@@ -1,10 +1,12 @@
 package org.jetbrains.dba.access;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dba.Rdbms;
+import org.jetbrains.dba.sql.SQLQuery;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.*;
+import static org.jetbrains.dba.access.RowsCollectors.oneRow;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 
 
@@ -23,18 +25,36 @@ public class DBFacadeTest extends DBTestCase {
   public void runTrivialQuery() {
     final String simpleQuery;
     switch (TestDB.ourRdbms) {
-      case ORACLE: simpleQuery = "select 1 from dual"; break;
-      default: simpleQuery = "select 1";
+      case ORACLE: simpleQuery = "select 44 from dual"; break;
+      default: simpleQuery = "select 4";
     }
+
+    final SQLQuery<Integer> query = new SQLQuery<Integer>(simpleQuery, oneRow(Integer.class));
 
     TestDB.ourFacade.inTransaction(new InTransactionNoResult() {
       @Override
       public void run(@NotNull DBTransaction tran) {
 
-        tran.command(simpleQuery).run();
+        final Integer result = tran.query(query).run();
+
+        assertEquals(result.intValue(), 44);
 
       }
     });
   }
+
+  @Test(dependsOnMethods = "connect1")
+  public void createTable() {
+    TestDB.ourFacade.inSession(new InSessionNoResult() {
+      @Override
+      public void run(@NotNull DBSession session) {
+
+        session.command("create table T1 (F1 char(1))").run();
+        session.command("drop table T1").run();
+
+      }
+    });
+  }
+
 
 }
