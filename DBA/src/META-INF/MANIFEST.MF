@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Class-Path: annotations-12.0.jar guava-14.0.1.jar
+

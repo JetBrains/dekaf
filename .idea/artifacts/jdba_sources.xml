@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact name="jdba-sources">
+    <output-path>$PROJECT_DIR$/out/artifacts/jdba-sources</output-path>
+    <root id="root">
+      <element id="archive" name="jdba-sources.jar">
+        <element id="dir-copy" path="$PROJECT_DIR$/DBA/src/org" />
+      </element>
+    </root>
+  </artifact>
+</component>
