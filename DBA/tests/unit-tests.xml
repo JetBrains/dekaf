@@ -7,6 +7,10 @@
 
       <class name="org.jetbrains.dba.sql.SQLTest"/>
 
+      <class name="org.jetbrains.dba.access.DBProviderUnitTest"/>
+      <class name="org.jetbrains.dba.access.ValueGetterTest"/>
+      <class name="org.jetbrains.dba.access.StructRowFetcherTest"/>
+
     </classes>
   </test>
 
