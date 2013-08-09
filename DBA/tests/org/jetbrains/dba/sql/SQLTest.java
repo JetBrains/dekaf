@@ -3,14 +3,16 @@ package org.jetbrains.dba.sql;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static org.jetbrains.dba.utils.Strings.*;
-import static org.testng.Assert.*;
+import static org.jetbrains.dba.utils.Strings.removeEnding;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 
 
 
 /**
  * @author Leonid Bushuev from JetBrains
  */
+@Test(sequential = true)
 public class SQLTest {
 
 
@@ -42,5 +44,23 @@ public class SQLTest {
     query = removeEnding(query, ";");
     assertEquals(query, text);
   }
+
+
+  @Test
+  public void command_create() {
+    SQL sql = new SQL();
+    SQLCommand command = sql.command("select * from dual");
+    assertNotNull(command);
+    assertEquals(command.getSourceText(), "select * from dual");
+  }
+
+
+  @Test(dependsOnMethods = {"command_create", "loadSourcesFromResources_queries"})
+  public void command_load() {
+    final SQLCommand command = ourCommonSQL.command("##just-texts:TinySelect");
+    assertNotNull(command);
+    assertEquals(command.getSourceText(), "select *");
+  }
+
 
 }

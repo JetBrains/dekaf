@@ -5,7 +5,6 @@ import com.google.common.io.Files;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dba.access.DBRowsCollector;
-import org.jetbrains.dba.errors.DBPreparingError;
 import org.jetbrains.dba.utils.IntRef;
 import org.jetbrains.dba.utils.JavaResource;
 import org.jetbrains.dba.utils.Resource;
@@ -225,13 +224,14 @@ public final class SQL {
   @NotNull
   public SQLCommand command(@NotNull final String sourceText) {
     String text = preprocess(sourceText);
+    text = Strings.removeEnding(text, ";");
     return new SQLCommand(text);
   }
 
 
   @NotNull
   public <S> SQLQuery<S> query(@NotNull final String sourceText,
-                            @NotNull final DBRowsCollector<S> collector) {
+                               @NotNull final DBRowsCollector<S> collector) {
     String text = preprocess(sourceText);
     return new SQLQuery<S>(text, collector);
   }
