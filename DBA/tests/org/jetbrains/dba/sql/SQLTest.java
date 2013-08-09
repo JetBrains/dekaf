@@ -3,6 +3,7 @@ package org.jetbrains.dba.sql;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import static org.jetbrains.dba.access.RowsCollectors.oneRow;
 import static org.jetbrains.dba.utils.Strings.removeEnding;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
@@ -54,13 +55,29 @@ public class SQLTest {
     assertEquals(command.getSourceText(), "select * from dual");
   }
 
-
   @Test(dependsOnMethods = {"command_create", "loadSourcesFromResources_queries"})
   public void command_load() {
     final SQLCommand command = ourCommonSQL.command("##just-texts:TinySelect");
     assertNotNull(command);
     assertEquals(command.getSourceText(), "select *");
   }
+
+
+  @Test
+  public void query_create() {
+    SQL sql = new SQL();
+    SQLQuery<Byte> query = sql.query("select 44 from dual", oneRow(Byte.class));
+    assertNotNull(query);
+    assertEquals(query.getSourceText(), "select 44 from dual");
+  }
+
+  @Test
+  public void query_load() {
+    final SQLQuery<Byte> query = ourCommonSQL.query("##just-texts:TinySelect", oneRow(Byte.class));
+    assertNotNull(query);
+    assertEquals(query.getSourceText(), "select *");
+  }
+
 
 
 }

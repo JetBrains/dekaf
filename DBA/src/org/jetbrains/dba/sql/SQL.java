@@ -223,8 +223,7 @@ public final class SQL {
 
   @NotNull
   public SQLCommand command(@NotNull final String sourceText) {
-    String text = preprocess(sourceText);
-    text = Strings.removeEnding(text, ";");
+    String text = preprocessOneStatementText(sourceText);
     return new SQLCommand(text);
   }
 
@@ -232,12 +231,12 @@ public final class SQL {
   @NotNull
   public <S> SQLQuery<S> query(@NotNull final String sourceText,
                                @NotNull final DBRowsCollector<S> collector) {
-    String text = preprocess(sourceText);
+    String text = preprocessOneStatementText(sourceText);
     return new SQLQuery<S>(text, collector);
   }
 
 
-  private String preprocess(@NotNull final String sourceText) {
+  private String preprocessOneStatementText(@NotNull final String sourceText) {
     String text = sourceText;
 
     // check whether it is a source name
@@ -245,6 +244,9 @@ public final class SQL {
       String sourceName = text.substring(2).trim();
       text = getSourceText(sourceName);
     }
+
+    // drop the tailing semicolon
+    text = Strings.removeEnding(text, ";");
 
     // ok
     return text;
