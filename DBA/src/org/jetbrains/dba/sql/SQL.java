@@ -112,7 +112,7 @@ public final class SQL {
     text = substituteReferredText(text);
 
     // drop the tailing semicolon
-    text = Strings.removeEnding(text, ";").trim();
+    //text = Strings.removeEnding(text, ";").trim();
 
     // ok
     return text;
