@@ -37,6 +37,14 @@ public final class SQL {
     myResources.add(jrc);
   }
 
+
+  public void assignResources(@NotNull final Class clazz) {
+    ClassLoader classLoader = clazz.getClassLoader();
+    String path = clazz.getPackage().getName().replace('.', '/');
+    assignResources(classLoader, path);
+  }
+
+
   private static final Pattern NAMED_TEXT_PATTERN =
     Pattern.compile("\\s*(--=--)\\s*(\\w+)\\s*\\n(.*?)(\\n\\s*(--=--)|$)", Pattern.DOTALL);
 
