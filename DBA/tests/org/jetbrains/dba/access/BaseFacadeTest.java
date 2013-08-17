@@ -26,7 +26,7 @@ public class BaseFacadeTest extends DBTestCase {
     final String simpleQuery;
     switch (TestDB.ourRdbms) {
       case ORACLE: simpleQuery = "select 44 from dual"; break;
-      default: simpleQuery = "select 4";
+      default: simpleQuery = "select 44";
     }
 
     final SQLQuery<Integer> query = new SQLQuery<Integer>(simpleQuery, oneRow(Integer.class));

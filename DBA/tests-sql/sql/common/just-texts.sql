@@ -1,9 +1,11 @@
 --=-- TinySelect
-select *;
+select *
+
 
 --=-- Select2
 select *
-from My_Table;
+from My_Table
+
 
 --=-- SelectEnd
 select *

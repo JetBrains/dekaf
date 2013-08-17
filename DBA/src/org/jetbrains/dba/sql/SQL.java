@@ -46,7 +46,7 @@ public final class SQL {
 
 
   private static final Pattern NAMED_TEXT_PATTERN =
-    Pattern.compile("\\s*(--=--)\\s*(\\w+)\\s*\\n(.*?)(\\n\\s*(--=--)|$)", Pattern.DOTALL);
+    Pattern.compile("\\s*(--=--)\\s*(\\w+)\\s*\\n+(.*?)(\\n+\\s*(--=--)|$)", Pattern.DOTALL);
 
   @NotNull
   String getSourceText(@NotNull final String name) {
