@@ -7,8 +7,7 @@ import java.util.List;
 
 import static org.jetbrains.dba.access.RowsCollectors.oneRow;
 import static org.jetbrains.dba.utils.Strings.removeEnding;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.*;
 
 
 
@@ -116,6 +115,17 @@ public class SQLTest {
     assertEquals(commands.get(3).getSourceText(), "commit");
   }
 
+
+  @Test
+  public void script_null() {
+    final SQLScript script1 = sql.script((String[])null);
+    assertEquals(script1.getCommands().size(), 0);
+
+    final SQLScript script2 = sql.script((String)null);
+    assertEquals(script2.getCommands().size(), 0);
+
+    assertSame(script1, script2);
+  }
 
 
 

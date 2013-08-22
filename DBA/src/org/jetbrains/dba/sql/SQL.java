@@ -147,7 +147,11 @@ public final class SQL {
    * @return SQL script.
    */
   @NotNull
-  public SQLScript script(@NotNull final String... sourceText) {
+  public SQLScript script(final String... sourceText) {
+    if (sourceText == null || sourceText.length == 0 || sourceText.length == 1 && sourceText[0] == null) {
+      return getEmptyScript();
+    }
+
     ImmutableList.Builder<SQLCommand> commands = ImmutableList.builder();
 
     for (String sourcePart : sourceText) {
@@ -298,5 +302,10 @@ public final class SQL {
   }
 
 
+  @NotNull
+  protected SQLScript getEmptyScript() {
+    return EMPTY_SCRIPT;
+  }
 
+  private static final SQLScript EMPTY_SCRIPT = new SQLScript(ImmutableList.<SQLCommand>of());
 }
