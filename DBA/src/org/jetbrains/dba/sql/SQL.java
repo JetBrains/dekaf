@@ -152,7 +152,7 @@ public final class SQL {
       return getEmptyScript();
     }
 
-    ImmutableList.Builder<SQLCommand> commands = ImmutableList.builder();
+    final SQLScriptBuilder scriptBuilder = scriptBuilder();
 
     for (String sourcePart : sourceText) {
       if (sourcePart == null) continue;
@@ -169,11 +169,22 @@ public final class SQL {
         String st = subText.trim();
         if (st.length() == 0) continue;
         final SQLCommand command = command(st);
-        commands.add(command);
+        scriptBuilder.add(command);
       }
     }
 
-    return new SQLScript(commands.build());
+    return scriptBuilder.build();
+  }
+
+
+  @NotNull
+  public SQLScriptBuilder scriptBuilder() {
+    return new SQLScriptBuilder(this);
+  }
+
+  @NotNull
+  protected SQLScript instantiateSQLScript(@NotNull final ImmutableList<SQLCommand> commands) {
+    return new SQLScript(commands);
   }
 
 
@@ -191,17 +202,16 @@ public final class SQL {
 
 
   private SQLScript loadScript(@NotNull final List<String> scriptLines) {
-    final ImmutableList.Builder<SQLCommand> b = ImmutableList.<SQLCommand>builder();
-
+    final SQLScriptBuilder scriptBuilder = scriptBuilder();
 
     IntRef curr = new IntRef(findCommandBegin(scriptLines, 0));
     while (curr.value >= 0) {
       SQLCommand cmd = loadCommand(scriptLines, curr);
-      b.add(cmd);
+      scriptBuilder.add(cmd);
       curr.value = findCommandBegin(scriptLines, curr.value);
     }
 
-    return new SQLScript(b.build());
+    return scriptBuilder.build();
   }
 
 

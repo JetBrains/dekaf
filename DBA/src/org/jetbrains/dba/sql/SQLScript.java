@@ -15,13 +15,17 @@ import java.util.List;
 public class SQLScript {
 
   @NotNull
-  final ImmutableList<SQLCommand> commands;
+  final ImmutableList<SQLCommand> myCommands;
+
+  final int myCount;
 
 
+  @Deprecated
   public SQLScript(@NotNull final SQLCommand... commands) {
     this(ImmutableList.copyOf(commands));
   }
 
+  @Deprecated
   public SQLScript(@NotNull final List<SQLCommand> commands) {
     this(ImmutableList.copyOf(commands));
   }
@@ -39,32 +43,37 @@ public class SQLScript {
   }
 
 
-  SQLScript(@NotNull final ImmutableList<SQLCommand> commands) {
-    this.commands = commands;
+  protected SQLScript(@NotNull final ImmutableList<SQLCommand> commands) {
+    this.myCommands = commands;
+    this.myCount = commands.size();
   }
 
 
   @NotNull
   public List<SQLCommand> getCommands() {
-    return commands;
+    return myCommands;
+  }
+
+
+  public boolean hasCommands() {
+    return myCount > 0;
   }
 
 
   @Override
   @NotNull
   public String toString() {
-    int n = commands.size();
-    switch (n) {
+    switch (myCount) {
       case 0: return "";
-      case 1: return commands.get(0).getSourceText();
+      case 1: return myCommands.get(0).getSourceText();
       default:
         final StringBuilder b = new StringBuilder();
         final String delimiterString = getScriptDelimiterString();
-        b.append(commands.get(0).getSourceText());
-        for (int i = 1; i < n; i++) {
+        b.append(myCommands.get(0).getSourceText());
+        for (int i = 1; i < myCount; i++) {
           if (b.charAt(b.length()-1) != '\n')  b.append('\n');
           b.append(delimiterString).append('\n');
-          b.append(commands.get(i).getSourceText());
+          b.append(myCommands.get(i).getSourceText());
         }
         return b.toString();
     }
