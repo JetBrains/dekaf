@@ -19,21 +19,39 @@ public interface DBFacade {
    * A formal string in upper case.
    * For example: ORA, MS, MY, PG.
    *
-   * @return
+   * @return DBMS code.
    */
   @NotNull
   public Rdbms getDbms();
 
-
+  /**
+   * Connects to the database server.
+   */
   public void connect();
 
-
+  /**
+   * Reconnects from the database server.
+   */
   public void reconnect();
 
-
+  /**
+   * Disconnects from the database server.
+   *
+   * <p>
+   *   If not connected - does nothing.
+   * </p>
+   */
   public void disconnect();
 
-
+  /**
+   * Checks whether it is connected to the server.
+   *
+   * <p>
+   *   TBD does it really performs a "ping" interaction or just returning a kind of internal status?
+   * </p>
+   *
+   * @return whether is connected.
+   */
   public boolean isConnected();
 
 
