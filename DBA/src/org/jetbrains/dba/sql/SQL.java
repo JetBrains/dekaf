@@ -140,22 +140,33 @@ public final class SQL {
   }
 
 
+  /**
+   * Creates a SQL script class from the given text(s) with scripts.
+   * @param sourceText  one or several texts,
+   *                    every text may contain one or more SQL statements.
+   * @return SQL script.
+   */
   @NotNull
-  public SQLScript script(@NotNull final String sourceText) {
-    String text = sourceText.trim();
-
-    // check whether it is a source name
-    text = substituteReferredText(text);
-
-    // for now, just a temporary solution
-    final String[] subTexts = text.split("(/|\\n\\s*;)\\s*?(\\n|$)");
-
+  public SQLScript script(@NotNull final String... sourceText) {
     ImmutableList.Builder<SQLCommand> commands = ImmutableList.builder();
-    for (String subText : subTexts) {
-      String st = subText.trim();
-      if (st.length() == 0)continue;
-      final SQLCommand command = command(st);
-      commands.add(command);
+
+    for (String sourcePart : sourceText) {
+      if (sourcePart == null) continue;
+      String text = sourcePart.trim();
+      if (text.length() == 0) continue;
+
+      // check whether it is a source name
+      text = substituteReferredText(text);
+
+      // for now, just a temporary solution
+      final String[] subTexts = text.split("(/|\\n\\s*;)\\s*?(\\n|$)");
+
+      for (String subText : subTexts) {
+        String st = subText.trim();
+        if (st.length() == 0) continue;
+        final SQLCommand command = command(st);
+        commands.add(command);
+      }
     }
 
     return new SQLScript(commands.build());

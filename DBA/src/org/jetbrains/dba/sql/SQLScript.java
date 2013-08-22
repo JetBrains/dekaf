@@ -18,6 +18,10 @@ public class SQLScript {
   final ImmutableList<SQLCommand> commands;
 
 
+  public SQLScript(@NotNull final SQLCommand... commands) {
+    this(ImmutableList.copyOf(commands));
+  }
+
   public SQLScript(@NotNull final List<SQLCommand> commands) {
     this(ImmutableList.copyOf(commands));
   }

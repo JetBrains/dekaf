@@ -5,6 +5,7 @@
   <test name="Test" preserve-order="true">
     <classes>
 
+      <class name="org.jetbrains.dba.sql.SQLScriptTest"/>
       <class name="org.jetbrains.dba.sql.SQLTest"/>
 
       <class name="org.jetbrains.dba.access.DBProviderUnitTest"/>

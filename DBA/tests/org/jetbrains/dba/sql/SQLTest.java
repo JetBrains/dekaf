@@ -19,15 +19,14 @@ import static org.testng.Assert.assertNotNull;
 public class SQLTest {
 
 
-  private static SQL ourCommonSQL;
+  private static final SQL sql = new SQL();
 
 
   @Test
   public void loadSourcesFromResources_ourTestSQLs() {
-    ourCommonSQL = new SQL();
-    ourCommonSQL.assignResources(SQLTest.class.getClassLoader(), "sql/common");
+    sql.assignResources(SQLTest.class.getClassLoader(), "sql/common");
 
-    final String text = ourCommonSQL.getSourceText("just-texts:Select2");
+    final String text = sql.getSourceText("just-texts:Select2");
     assertNotNull(text);
   }
 
@@ -43,7 +42,7 @@ public class SQLTest {
   @Test(dataProvider = "justTexts", dependsOnMethods = "loadSourcesFromResources_ourTestSQLs")
   public void loadSourcesFromResources_queries(String name, String text) {
     String textName = "just-texts:" + name;
-    String query = ourCommonSQL.getSourceText(textName);
+    String query = sql.getSourceText(textName);
     query = removeEnding(query, ";");
     assertEquals(query, text);
   }
@@ -51,7 +50,6 @@ public class SQLTest {
 
   @Test
   public void command_create() {
-    SQL sql = new SQL();
     SQLCommand command = sql.command("select * from dual");
     assertNotNull(command);
     assertEquals(command.getSourceText(), "select * from dual");
@@ -59,7 +57,7 @@ public class SQLTest {
 
   @Test(dependsOnMethods = {"command_create", "loadSourcesFromResources_queries"})
   public void command_load() {
-    final SQLCommand command = ourCommonSQL.command("##just-texts:TinySelect");
+    final SQLCommand command = sql.command("##just-texts:TinySelect");
     assertNotNull(command);
     assertEquals(command.getSourceText(), "select *");
   }
@@ -67,7 +65,6 @@ public class SQLTest {
 
   @Test
   public void query_create() {
-    SQL sql = new SQL();
     SQLQuery<Byte> query = sql.query("select 44 from dual", oneRow(Byte.class));
     assertNotNull(query);
     assertEquals(query.getSourceText(), "select 44 from dual");
@@ -75,15 +72,43 @@ public class SQLTest {
 
   @Test(dependsOnMethods = {"query_create", "loadSourcesFromResources_queries"})
   public void query_load() {
-    final SQLQuery<Byte> query = ourCommonSQL.query("##just-texts:TinySelect", oneRow(Byte.class));
+    final SQLQuery<Byte> query = sql.query("##just-texts:TinySelect", oneRow(Byte.class));
     assertNotNull(query);
     assertEquals(query.getSourceText(), "select *");
   }
 
 
+  @Test(dependsOnMethods = "command_create")
+  public void script_1() {
+    final SQLScript script = sql.script("simple command");
+    assertEquals(script.getCommands().size(), 1);
+    assertEquals(script.getCommands().get(0).getSourceText(), "simple command");
+  }
+
+  @Test(dependsOnMethods = "script_1")
+  public void script_2_separate() {
+    final SQLScript script = sql.script("command1", "command2");
+    assertEquals(script.getCommands().size(), 2);
+    assertEquals(script.getCommands().get(0).getSourceText(), "command1");
+    assertEquals(script.getCommands().get(1).getSourceText(), "command2");
+  }
+
+  @Test(dependsOnMethods = "script_1")
+  public void script_2_in_one_text() {
+    String text =
+      "command1  \n" +
+      ";         \n" +
+      "command2  \n";
+    final SQLScript script = sql.script(text);
+    assertEquals(script.getCommands().size(), 2);
+    assertEquals(script.getCommands().get(0).getSourceText(), "command1");
+    assertEquals(script.getCommands().get(1).getSourceText(), "command2");
+  }
+
+
   @Test(dependsOnMethods = "command_load")
   public void script_load() {
-    final SQLScript script = ourCommonSQL.script("##simple-script");
+    final SQLScript script = sql.script("##simple-script");
     assertNotNull(script);
     final List<SQLCommand> commands = script.getCommands();
     assertEquals(commands.size(), 5);
