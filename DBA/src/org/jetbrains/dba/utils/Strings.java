@@ -12,8 +12,9 @@ import java.util.regex.Pattern;
  *
  * @author Leonid Bushuev from JetBrains
  */
-public final class Strings {
+public abstract class Strings {
 
+  @SuppressWarnings("StringEquality")
   public static boolean eq(final String str1, final String str2) {
     if (str1 == str2) return true;
     if (str1 == null || str2 == null) return false;
