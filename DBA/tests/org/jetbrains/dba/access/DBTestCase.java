@@ -14,5 +14,6 @@ public abstract class DBTestCase {
   @BeforeClass
   public void setUpClass() throws Exception {
     Rdbms rdbms = TestDB.ourRdbms; // just to init the class
+    TestDB.ourFacade.connect();
   }
 }

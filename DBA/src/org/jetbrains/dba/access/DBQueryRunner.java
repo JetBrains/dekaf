@@ -11,7 +11,7 @@ public interface DBQueryRunner<S> {
    * @param params parameters, one for each '?' sign in the query.
    * @return the query.
    */
-  DBQueryRunner<Object> withParams(Object... params);
+  DBQueryRunner<S> withParams(Object... params);
 
   /**
    * Performs the query and fetches the resulting cursor.

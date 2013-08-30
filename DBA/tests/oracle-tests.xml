@@ -6,4 +6,10 @@
     <suite-file path="db-tests.xml"/>
   </suite-files>
 
+  <test name="OracleTest">
+    <classes>
+      <class name="org.jetbrains.dba.access.OraSessionTest"/>
+    </classes>
+  </test>
+  
 </suite>

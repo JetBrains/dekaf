@@ -182,13 +182,15 @@ abstract class BaseSession implements DBSession {
 
   @NotNull
   CallableStatement prepareCall(@NotNull final String statementText)
-    throws SQLException {
+    throws SQLException
+  {
     return connection.prepareCall(statementText);
   }
 
 
   protected void assignParameters(@NotNull final PreparedStatement stmt, final Object[] params)
-    throws SQLException {
+    throws SQLException
+  {
     if (params == null) {
       return;
     }
@@ -199,8 +201,11 @@ abstract class BaseSession implements DBSession {
   }
 
 
-  protected void assignParameter(@NotNull final PreparedStatement stmt, final int index, @Nullable final Object object)
-    throws SQLException {
+  protected void assignParameter(@NotNull final PreparedStatement stmt,
+                                 final int index,
+                                 @Nullable final Object object)
+    throws SQLException
+  {
     if (object == null) {
       stmt.setNull(index, Types.BIT);
     }
@@ -223,12 +228,21 @@ abstract class BaseSession implements DBSession {
       stmt.setString(index, (String)object);
     }
     else {
-      throw new UnhandledTypeError("I don't know how to pass an instance of class " +
-                                   object.getClass().getSimpleName() +
-                                   " as the " +
-                                   index +
-                                   "th parameter into a SQL statement.");
+      boolean assigned = assignSpecificParameter(stmt, index, object);
+      if (!assigned) {
+        throw new UnhandledTypeError("I don't know how to pass an instance of class " +
+                                     object.getClass().getSimpleName() +
+                                     " as the " +
+                                     index +
+                                     "th parameter into a SQL statement.");
+      }
     }
+  }
+
+  protected boolean assignSpecificParameter(@NotNull final PreparedStatement stmt,
+                                            final int index,
+                                            @NotNull final Object object) {
+    return false;
   }
 
 
