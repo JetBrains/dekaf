@@ -2,14 +2,18 @@ package org.jetbrains.dba.utils;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
+
 
 
 /**
  * A couple of non-null objects of the same type.
  *
  * @author Leonid Bushuev from JetBrains
+ * @see OptCouple
  */
-public final class Couple<T> {
+public final class Couple<T> implements Serializable {
+
   @NotNull
   public final T a;
 
@@ -39,9 +43,7 @@ public final class Couple<T> {
 
   @Override
   public int hashCode() {
-    int result = a.hashCode();
-    result = 31 * result + b.hashCode();
-    return result;
+    return a.hashCode() * 17 ^ a.hashCode() * 13;
   }
 
 
