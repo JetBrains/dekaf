@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
  *
  * @author Leonid Bushuev from JetBrains
  */
-public final class SQL {
+public class SQL {
 
 
   @NotNull

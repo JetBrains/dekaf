@@ -12,6 +12,8 @@
       <class name="org.jetbrains.dba.access.ValueGetterTest"/>
       <class name="org.jetbrains.dba.access.StructRowFetcherTest"/>
 
+      <class name="org.jetbrains.dba.sql.OraSQLTest"/>
+
     </classes>
   </test>
 
