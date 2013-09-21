@@ -18,8 +18,8 @@ public class BaseScriptRunnerTest extends DBTestCase {
 
 
   @BeforeClass
-  public static void setUp2() throws Exception {
-    TestDB.ourFacade.connect();
+  public void setUp2() throws Exception {
+    myFacade.connect();
     ourCommonSQL = new SQL();
     ourCommonSQL.assignResources(SQLTest.class.getClassLoader(), "sql/common");
   }
@@ -29,7 +29,7 @@ public class BaseScriptRunnerTest extends DBTestCase {
   public void simple_script() {
     final SQLScript script = ourCommonSQL.script("##simple-script");
 
-    TestDB.ourFacade.inSession(new InSessionNoResult() {
+    myFacade.inSession(new InSessionNoResult() {
       @Override
       public void run(@NotNull DBSession session) {
 

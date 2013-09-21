@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="TestDB_UnitTests" verbose="1">
+
+  <test name="UnitTest" preserve-order="true">
+    <classes>
+
+      <class name="org.jetbrains.dba.TestDBTest"/>
+
+    </classes>
+  </test>
+
+</suite>

@@ -1,5 +1,9 @@
 package org.jetbrains.dba;
 
+import org.jetbrains.annotations.NotNull;
+
+
+
 /**
  * Type of RDBMS.
  *
@@ -10,31 +14,40 @@ public enum Rdbms {
   /**
    * PostgreSQL.
    */
-  POSTGRE,
+  POSTGRE ("PG"),
 
   /**
    * Oracle Database.
    */
-  ORACLE,
+  ORACLE ("ORA"),
 
   /**
    * Microsoft SQL Server.
    */
-  MSSQL,
+  MSSQL ("MSSQL"),
 
   /**
    * MySQL.
    */
-  MYSQL,
+  MYSQL ("MYSQL"),
 
   /**
    * HyperSonic SQL v.2.
    */
-  HSQL2,
+  HSQL2 ("HSQL"),
 
   /**
    * The RDBMS is unknown or has not been determined.
    */
-  UNKNOWN
+  UNKNOWN ("???");
 
+
+  @NotNull
+  public final String shortName;
+
+
+
+  Rdbms(@NotNull String shortName) {
+    this.shortName = shortName;
+  }
 }

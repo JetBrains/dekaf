@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Unit Tests 1" type="TestNG" factoryName="TestNG">
+  <configuration default="false" name="TestDB UnitTest" type="TestNG" factoryName="TestNG" singleton="true">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-    <module name="DBA" />
+    <module name="TestDB" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" value="" />
-    <option name="SUITE_NAME" value="$PROJECT_DIR$/DBA/tests/unit-tests.xml" />
+    <option name="SUITE_NAME" value="$PROJECT_DIR$/TestDB/tests/unit-tests.xml" />
     <option name="PACKAGE_NAME" value="" />
     <option name="MAIN_CLASS_NAME" value="" />
     <option name="METHOD_NAME" value="" />
@@ -25,13 +25,8 @@
     <envs />
     <properties />
     <listeners />
-    <RunnerSettings RunnerId="Debug">
-      <option name="DEBUG_PORT" value="49385" />
-      <option name="TRANSPORT" value="0" />
-      <option name="LOCAL" value="true" />
-    </RunnerSettings>
+    <RunnerSettings RunnerId="Profile " />
     <RunnerSettings RunnerId="Run" />
-    <ConfigurationWrapper RunnerId="Debug" />
     <ConfigurationWrapper RunnerId="Run" />
     <method />
   </configuration>

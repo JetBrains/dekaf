@@ -2,17 +2,15 @@ package org.jetbrains.dba.access;
 
 import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.NotNull;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 import org.jetbrains.dba.sql.SQL;
 import org.jetbrains.dba.sql.SQLQuery;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
-
-import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.List;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
 
 
 
@@ -37,7 +35,7 @@ public class OraSessionTest extends DBTestCase {
     final SQLQuery<List<String>> query = sql.query(queryText, RowsCollectors.list(String.class));
     final Collection<String> stringArray = ImmutableList.of("A", "B", "C", "D");
 
-    TestDB.ourFacade.inTransaction(new InTransactionNoResult() {
+    myFacade.inTransaction(new InTransactionNoResult() {
       @Override
       public void run(@NotNull DBTransaction tran) {
 

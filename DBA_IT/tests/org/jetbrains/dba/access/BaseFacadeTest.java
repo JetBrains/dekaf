@@ -17,21 +17,21 @@ public class BaseFacadeTest extends DBTestCase {
 
   @Test
   public void connect1() {
-    TestDB.ourFacade.connect();
-    assertTrue(TestDB.ourFacade.isConnected());
+    myFacade.connect();
+    assertTrue(myFacade.isConnected());
   }
 
   @Test(dependsOnMethods = "connect1")
   public void runTrivialQuery() {
     final String simpleQuery;
-    switch (TestDB.ourRdbms) {
+    switch (myRdbms) {
       case ORACLE: simpleQuery = "select 44 from dual"; break;
       default: simpleQuery = "select 44";
     }
 
     final SQLQuery<Integer> query = new SQLQuery<Integer>(simpleQuery, oneRow(Integer.class));
 
-    TestDB.ourFacade.inTransaction(new InTransactionNoResult() {
+    myFacade.inTransaction(new InTransactionNoResult() {
       @Override
       public void run(@NotNull DBTransaction tran) {
 
@@ -45,7 +45,7 @@ public class BaseFacadeTest extends DBTestCase {
 
   @Test(dependsOnMethods = "connect1")
   public void createTable() {
-    TestDB.ourFacade.inSession(new InSessionNoResult() {
+    myFacade.inSession(new InSessionNoResult() {
       @Override
       public void run(@NotNull DBSession session) {
 

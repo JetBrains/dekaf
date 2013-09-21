@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DBA/DBA.iml" filepath="$PROJECT_DIR$/DBA/DBA.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DBA_IT/DBA_IT.iml" filepath="$PROJECT_DIR$/DBA_IT/DBA_IT.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TestDB/TestDB.iml" filepath="$PROJECT_DIR$/TestDB/TestDB.iml" />
     </modules>
   </component>
 </project>
