@@ -25,8 +25,14 @@
     <envs />
     <properties />
     <listeners />
+    <RunnerSettings RunnerId="Debug">
+      <option name="DEBUG_PORT" value="51067" />
+      <option name="TRANSPORT" value="0" />
+      <option name="LOCAL" value="true" />
+    </RunnerSettings>
     <RunnerSettings RunnerId="Profile " />
     <RunnerSettings RunnerId="Run" />
+    <ConfigurationWrapper RunnerId="Debug" />
     <ConfigurationWrapper RunnerId="Run" />
     <method />
   </configuration>

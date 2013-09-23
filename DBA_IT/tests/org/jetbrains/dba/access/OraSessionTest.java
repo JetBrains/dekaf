@@ -2,6 +2,7 @@ package org.jetbrains.dba.access;
 
 import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.dba.DBTestCase;
 import org.jetbrains.dba.sql.SQL;
 import org.jetbrains.dba.sql.SQLQuery;
 import org.testng.annotations.BeforeMethod;

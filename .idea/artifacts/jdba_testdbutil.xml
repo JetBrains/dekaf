@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="jdba-testdbutil">
+    <output-path>$PROJECT_DIR$/out/artifacts/jdba-testdbutil</output-path>
+    <root id="archive" name="jdba-testdbutil.jar">
+      <element id="module-output" name="TestDB" />
+    </root>
+  </artifact>
+</component>

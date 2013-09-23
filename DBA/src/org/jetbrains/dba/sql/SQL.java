@@ -39,8 +39,15 @@ public class SQL {
 
 
   public void assignResources(@NotNull final Class clazz) {
+    assignResources(clazz, null);
+  }
+
+  public void assignResources(@NotNull final Class clazz, @Nullable final String relativePath) {
     ClassLoader classLoader = clazz.getClassLoader();
     String path = clazz.getPackage().getName().replace('.', '/');
+    if (relativePath != null) {
+      path += '/' + relativePath;
+    }
     assignResources(classLoader, path);
   }
 

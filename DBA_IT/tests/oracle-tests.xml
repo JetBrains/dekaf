@@ -8,7 +8,11 @@
 
   <test name="OracleTest">
     <classes>
+
       <class name="org.jetbrains.dba.access.OraSessionTest"/>
+
+      <class name="org.jetbrains.dba.TestDBTest2"/>
+
     </classes>
   </test>
   

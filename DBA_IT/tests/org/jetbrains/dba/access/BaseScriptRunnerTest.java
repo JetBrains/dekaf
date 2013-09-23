@@ -1,6 +1,7 @@
 package org.jetbrains.dba.access;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.dba.DBTestCase;
 import org.jetbrains.dba.sql.SQL;
 import org.jetbrains.dba.sql.SQLScript;
 import org.jetbrains.dba.sql.SQLTest;

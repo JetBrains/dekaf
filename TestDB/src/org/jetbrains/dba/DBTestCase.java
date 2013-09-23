@@ -1,9 +1,12 @@
-package org.jetbrains.dba.access;
+package org.jetbrains.dba;
 
-import org.jetbrains.dba.Rdbms;
-import org.jetbrains.dba.TestDB;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.dba.access.DBFacade;
+import org.jetbrains.dba.access.DBSession;
+import org.jetbrains.dba.access.InSessionNoResult;
 import org.jetbrains.dba.sql.OraSQL;
 import org.jetbrains.dba.sql.SQL;
+import org.jetbrains.dba.sql.SQLCommand;
 
 
 
@@ -18,12 +21,15 @@ public abstract class DBTestCase {
   protected final SQL sql;
 
 
+
+
   protected DBTestCase() {
     myRdbms = TestDB.PRIMARY_RDBMS;
     myFacade = TestDB.provide();
     myFacade.connect();
     sql = new OraSQL(); // TODO use an appropriate factory
   }
+
 
 
 }
