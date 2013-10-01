@@ -8,18 +8,22 @@ begin
   bulk collect into commands
   from
     (
-    select 'drop type "'||type_name||'" force' as cmd,
+    select 'drop sequence "'||sequence_name||'"' as cmd,
            1 as ord, 0 as rnum
+    from user_sequences
+    union all
+    select 'drop type "'||type_name||'" force' as cmd,
+           2 as ord, 0 as rnum
       from user_types
     union all
     select 'drop table "'||table_name||'" cascade constraints' as cmd,
-           2 as ord, rnum
+           3 as ord, rnum
       from user_tables
            natural join
            (select object_name as table_name, object_id as rnum from user_objects where object_type = 'TABLE')
     union all
     select 'drop view "'||view_name||'"' as cmd,
-           3 as ord, rnum
+           4 as ord, rnum
       from user_views
         natural join
         (select object_name as view_name, object_id as rnum from user_objects where object_type = 'VIEW')
