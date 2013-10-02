@@ -27,6 +27,11 @@ begin
       from user_views
         natural join
         (select object_name as view_name, object_id as rnum from user_objects where object_type = 'VIEW')
+    union all
+    select 'drop '||object_type||' '||object_name as cmd,
+           5 as ord, object_id as rnum 
+       from user_objects 
+       where object_type in ('FUNCTION','PROCEDURE','PACKAGE')
     )
   order by ord desc, rnum desc;
   --
