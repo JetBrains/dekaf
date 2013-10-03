@@ -88,4 +88,19 @@ public abstract class Strings {
     if (string == null) return false;
     return pattern.matcher(string).matches();
   }
+
+
+  @Nullable
+  public static String nUpper(@Nullable final String str) {
+    return str == null ? null : str.toUpperCase();
+  }
+
+
+  @Nullable
+  public static String nLower(@Nullable final String str) {
+    return str == null ? null : str.toLowerCase();
+  }
+
+
+
 }
