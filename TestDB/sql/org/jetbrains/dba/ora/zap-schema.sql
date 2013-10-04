@@ -16,11 +16,10 @@ begin
            2 as ord, 0 as rnum
       from user_types
     union all
-    select 'drop table "'||table_name||'" cascade constraints' as cmd,
-           3 as ord, rnum
-      from user_tables
-           natural join
-           (select object_name as table_name, object_id as rnum from user_objects where object_type = 'TABLE')
+    select 'drop table "'||object_name||'" cascade constraints' as cmd,
+           3 as ord, object_id as rnum
+      from user_objects
+      where object_type = 'TABLE'
     union all
     select 'drop view "'||view_name||'"' as cmd,
            4 as ord, rnum
