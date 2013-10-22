@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jdba-it">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/jars/jdba-it.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

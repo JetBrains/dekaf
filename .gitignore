@@ -1,6 +1,9 @@
-*.class
+.gradle
+out
+IntTest/testng.xml
+workspace.xml
 
-# Package Files #
+*.class
 *.jar
 *.war
 *.ear

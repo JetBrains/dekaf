@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="jdba">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/jars/jdba-testdbutil.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jars/jdba.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

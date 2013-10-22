@@ -1,1 +1,1 @@
-The directory for both type libraries: we've built and 3rd party.
+The directory is for 3rd party jars (that will be downloaded).
