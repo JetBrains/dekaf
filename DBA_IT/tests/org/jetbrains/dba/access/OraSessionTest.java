@@ -18,6 +18,7 @@ import static org.testng.Assert.assertEquals;
 /**
  * @author Leonid Bushuev from JetBrains
  */
+@Test(groups = "oracle")
 public class OraSessionTest extends DBTestCase {
 
   @BeforeMethod

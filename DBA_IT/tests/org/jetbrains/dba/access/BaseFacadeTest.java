@@ -14,6 +14,7 @@ import static org.testng.Assert.assertTrue;
 /**
  * @author Leonid Bushuev from JetBrains
  */
+@Test(groups = "all-db")
 public class BaseFacadeTest extends DBTestCase {
 
   @Test

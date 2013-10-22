@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 /**
  * @author Leonid Bushuev from JetBrains
  */
+@Test(groups = "all-db")
 public class BaseScriptRunnerTest extends DBTestCase {
 
   private static SQL ourCommonSQL;
