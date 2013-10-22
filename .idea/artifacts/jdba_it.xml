@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="jdba-it">
+    <output-path>$PROJECT_DIR$/out/artifacts/jdba-it</output-path>
+    <root id="archive" name="jdba-it.jar">
+      <element id="module-test-output" name="DBA_IT" />
+      <element id="module-test-output" name="DBA" />
+    </root>
+  </artifact>
+</component>
