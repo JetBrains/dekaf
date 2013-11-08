@@ -2,7 +2,7 @@
   <artifact type="jar" name="jdba-ut">
     <output-path>$PROJECT_DIR$/out/artifacts/jdba-ut</output-path>
     <root id="archive" name="jdba-ut.jar">
-      <element id="module-test-output" name="DBA" />
+      <element id="module-test-output" name="DBA_UT" />
     </root>
   </artifact>
 </component>
