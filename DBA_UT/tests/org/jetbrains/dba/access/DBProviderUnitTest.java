@@ -1,9 +1,11 @@
 package org.jetbrains.dba.access;
 
 import org.jetbrains.dba.Rdbms;
-import org.testng.annotations.*;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 
 
 /**

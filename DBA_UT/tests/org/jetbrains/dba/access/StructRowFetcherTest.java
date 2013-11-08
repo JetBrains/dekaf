@@ -1,6 +1,5 @@
 package org.jetbrains.dba.access;
 
-import org.jetbrains.dba.access.StructRowFetcher;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;

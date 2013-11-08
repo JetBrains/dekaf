@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dba.DBTestCase;
 import org.jetbrains.dba.sql.SQL;
 import org.jetbrains.dba.sql.SQLScript;
-import org.jetbrains.dba.sql.SQLTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -23,7 +22,7 @@ public class BaseScriptRunnerTest extends DBTestCase {
   public void setUp2() throws Exception {
     myFacade.connect();
     ourCommonSQL = new SQL();
-    ourCommonSQL.assignResources(SQLTest.class.getClassLoader(), "sql/common");
+    ourCommonSQL.assignResources(BaseScriptRunnerTest.class.getClassLoader(), "sql/common");
   }
 
 
