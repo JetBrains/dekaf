@@ -1,17 +1,17 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="TestDB UnitTest" type="TestNG" factoryName="TestNG">
+  <configuration default="false" name="Test Oracle" type="TestNG" factoryName="TestNG" singleton="true">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-    <module name="TestDB" />
+    <module name="DBA_IT" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" value="" />
-    <option name="SUITE_NAME" value="$PROJECT_DIR$/TestDB/tests/unit-tests.xml" />
+    <option name="SUITE_NAME" value="$PROJECT_DIR$/DBA_IT/tests/testng.xml" />
     <option name="PACKAGE_NAME" value="" />
     <option name="MAIN_CLASS_NAME" value="" />
     <option name="METHOD_NAME" value="" />
     <option name="GROUP_NAME" value="" />
     <option name="TEST_OBJECT" value="SUITE" />
-    <option name="VM_PARAMETERS" value="-ea -Djava.awt.headless=true -Djdbc.dir=jdbc" />
-    <option name="PARAMETERS" value="" />
+    <option name="VM_PARAMETERS" value="-ea -Djava.awt.headless=true -Djdbc.dir=jdbc -Ddb_test_with=oracle" />
+    <option name="PARAMETERS" value="-groups oracle,all-db" />
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
     <option name="OUTPUT_DIRECTORY" value="" />
     <option name="ANNOTATION_TYPE" />
@@ -26,7 +26,7 @@
     <properties />
     <listeners />
     <RunnerSettings RunnerId="Debug">
-      <option name="DEBUG_PORT" value="51067" />
+      <option name="DEBUG_PORT" value="55270" />
       <option name="TRANSPORT" value="0" />
       <option name="LOCAL" value="true" />
     </RunnerSettings>
