@@ -10,6 +10,8 @@ import org.jetbrains.dba.sql.OraSQL;
 import org.jetbrains.dba.sql.SQL;
 import org.jetbrains.dba.sql.SQLCommand;
 
+import java.io.File;
+
 
 
 /**
@@ -49,6 +51,17 @@ public class TestDB {
         }
       }
       PRIMARY_RDBMS = theRdbms;
+    }
+
+    final String theJdbcDriversDir = System.getProperty("jdbc.dir");
+    if (theJdbcDriversDir != null) {
+      File dir = new File(theJdbcDriversDir);
+      if (dir.exists() && dir.isDirectory()) {
+        PROVIDER.addJdbcDriversDir(dir);
+      }
+      else {
+        // TODO log it as a warning
+      }
     }
   }
 

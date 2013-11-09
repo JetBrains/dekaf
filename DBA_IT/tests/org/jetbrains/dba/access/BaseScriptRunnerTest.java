@@ -22,7 +22,7 @@ public class BaseScriptRunnerTest extends DBTestCase {
   public void setUp2() throws Exception {
     myFacade.connect();
     ourCommonSQL = new SQL();
-    ourCommonSQL.assignResources(BaseScriptRunnerTest.class.getClassLoader(), "sql/common");
+    ourCommonSQL.assignResources(BaseScriptRunnerTest.class.getClassLoader(), "common");
   }
 
 

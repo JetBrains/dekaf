@@ -1,12 +1,7 @@
 package org.jetbrains.dba.access;
 
-import oracle.jdbc.OracleConnection;
-import oracle.jdbc.OraclePreparedStatement;
-import oracle.sql.ARRAY;
-import oracle.sql.ArrayDescriptor;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -18,9 +13,6 @@ import java.util.Collection;
  * Oracle session.
  */
 final class OraSession extends BaseSession {
-
-
-  private static final String STRING_ARRAY_SQL_TYPE = "SYS.TXNAME_ARRAY";
 
 
   public OraSession(@NotNull OraFacade facade, @NotNull final Connection connection, final boolean ownConnection) {
@@ -36,12 +28,7 @@ final class OraSession extends BaseSession {
       Collection<?> collection = (Collection<?>) object;
       String[] javaArray = convertCollectionToStringArray(collection);
       try {
-        final OracleConnection oracleConnection = (OracleConnection)stmt.getConnection();
-        final OraclePreparedStatement oraclePreparedStatement = (OraclePreparedStatement) stmt;
-        ArrayDescriptor arrayDescriptor =
-          ArrayDescriptor.createDescriptor(STRING_ARRAY_SQL_TYPE, oracleConnection);
-        ARRAY oracleArray = new ARRAY(arrayDescriptor, oracleConnection, javaArray);
-        oraclePreparedStatement.setARRAY(index, oracleArray);
+        OracleSpecificStuff.assignOracleArray(stmt, index, javaArray);
         return true;
       }
       catch (SQLException sqle) {

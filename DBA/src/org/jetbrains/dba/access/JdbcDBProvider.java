@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dba.Rdbms;
 import org.jetbrains.dba.errors.DbmsUnsupportedFeatureError;
 
+import java.io.File;
 import java.sql.Driver;
 
 
@@ -46,7 +47,7 @@ public final class JdbcDBProvider implements DBProvider {
   public DBFacade provide(@NotNull final String connectionString) {
     JdbcDriverDef driverDef = JdbcDriverSupport.determineDriverDef(connectionString);
     Rdbms rdbms = driverDef != null ? driverDef.rdbms : Rdbms.UNKNOWN;
-    Driver driver = myDriverSupport.obtainDriver(driverDef, connectionString);
+    Driver driver = myDriverSupport.obtainDriver(connectionString);
     BaseErrorRecognizer errorRecognizer = obtainErrorRecognizer(rdbms);
     switch (rdbms) {
       case POSTGRE: return new PostgreFacade(connectionString, driver, errorRecognizer);
@@ -69,5 +70,9 @@ public final class JdbcDBProvider implements DBProvider {
   }
 
 
+
+  public void addJdbcDriversDir(@NotNull File dir) {
+    myDriverSupport.addJdbcDir(dir);
+  }
 
 }

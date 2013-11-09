@@ -13,7 +13,7 @@ import static org.testng.Assert.assertNotNull;
  */
 public class DBProviderUnitTest {
 
-  DBProvider myDBProvider = new JdbcDBProvider();
+  final DBProvider myDBProvider = new JdbcDBProvider();
 
 
   @DataProvider

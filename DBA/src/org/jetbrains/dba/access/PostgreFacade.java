@@ -8,7 +8,6 @@ import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import static java.lang.String.format;
 
 
 
@@ -46,8 +45,11 @@ public final class PostgreFacade extends BaseFacade {
     Properties properties = new Properties();
 
     try {
+      Connection connection = myDriver.connect(myConnectionString, properties);
+      /*
       final org.postgresql.Driver driver = (org.postgresql.Driver)myDriver;
       Connection connection = driver.connect(myConnectionString, properties);
+      */
       return new PostgreSession(this, connection, true);
     }
     catch (SQLException e) {
