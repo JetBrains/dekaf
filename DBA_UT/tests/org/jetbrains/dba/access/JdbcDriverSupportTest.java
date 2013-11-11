@@ -1,12 +1,14 @@
 package org.jetbrains.dba.access;
 
 
-import org.testng.Assert;
+import org.jetbrains.dba.Rdbms;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.sql.Driver;
 import java.sql.SQLException;
+
+import static org.testng.Assert.*;
 
 
 
@@ -32,14 +34,20 @@ public class JdbcDriverSupportTest {
     };
   }
 
-
   @Test(dataProvider = "connectionStrings")
+  public void determineRdbmsByConnectionString(String connectionString) {
+    final JdbcDriverDef dd = JdbcDriverSupport.determineDriverDef(connectionString);
+    assertNotNull(dd);
+    assertNotNull(dd.rdbms);
+    assertNotEquals(dd.rdbms, Rdbms.UNKNOWN);
+  }
+
+  @Test(groups = "jdbc", dataProvider = "connectionStrings")
   public void obtainDriver_main(String connectionString) throws SQLException {
 
     final Driver driver = myDriverSupport.obtainDriver(connectionString);
 
-    Assert.assertTrue(driver.acceptsURL(connectionString));
-
+    assertTrue(driver.acceptsURL(connectionString));
   }
 
 

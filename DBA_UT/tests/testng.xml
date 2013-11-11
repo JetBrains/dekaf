@@ -3,6 +3,11 @@
 <suite name="DBAUnitTests" verbose="1">
 
   <test name="Test" preserve-order="true">
+
+    <groups>
+      <define name="jdbc"/>
+    </groups>
+
     <classes>
 
       <class name="org.jetbrains.dba.sql.SQLScriptTest"/>
