@@ -42,7 +42,7 @@ public class JdbcDriverSupportTest {
     assertNotEquals(dd.rdbms, Rdbms.UNKNOWN);
   }
 
-  @Test(groups = "jdbc", dataProvider = "connectionStrings")
+  @Test(groups = "jdbc", dataProvider = "connectionStrings", enabled = false)
   public void obtainDriver_main(String connectionString) throws SQLException {
 
     final Driver driver = myDriverSupport.obtainDriver(connectionString);

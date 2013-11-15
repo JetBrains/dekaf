@@ -30,7 +30,7 @@ public class DBProviderUnitTest {
     };
   }
 
-  @Test(groups = "jdbc", dataProvider = "simpleConnectionStrings")
+  @Test(groups = "jdbc", dataProvider = "simpleConnectionStrings", enabled = false)
   public void get_right_DBFacade(String connectionString, Rdbms rdbms) {
     final DBFacade dbFacade = myDBProvider.provide(connectionString);
     assertNotNull(dbFacade);
