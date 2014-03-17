@@ -29,6 +29,58 @@ public class SQLTest {
     assertNotNull(text);
   }
 
+  @Test
+  public void extractNamedSubtext_noEndMarker1() {
+    String text = "--=-- C1\n" +
+                  "Create Table A\n" +
+                  "--=-- C2\n" +
+                  "Drop Table B";
+    extractNamedSubtext_test(text);
+  }
+
+  @Test
+  public void extractNamedSubtext_noEndMarker2() {
+    String text = "--=-- C1\n" +
+                  "Create Table A\n" +
+                  "\n" +
+                  "--=-- C2\n" +
+                  "Drop Table B\n" +
+                  "\n";
+    extractNamedSubtext_test(text);
+  }
+
+  @Test
+  public void extractNamedSubtext_OracleEndMarker1() {
+    String text = "--=-- C1\n" +
+                  "Create Table A\n" +
+                  "/\n" +
+                  "--=-- C2\n" +
+                  "Drop Table B\n" +
+                  "/";
+    extractNamedSubtext_test(text);
+  }
+
+  @Test
+  public void extractNamedSubtext_OracleEndMarker2() {
+    String text = "--=-- C1\n" +
+                  "Create Table A\n" +
+                  "/\n" +
+                  "\n" +
+                  "--=-- C2\n" +
+                  "Drop Table B\n" +
+                  "/\n";
+    extractNamedSubtext_test(text);
+  }
+
+
+  private static void extractNamedSubtext_test(String text) {
+    String subText1 = SQL.extractNamedSubtext(text, "X", "C1");
+    String subText2 = SQL.extractNamedSubtext(text, "X", "C2");
+    assertEquals(subText1, "Create Table A");
+    assertEquals(subText2, "Drop Table B");
+  }
+
+
   @DataProvider
   String[][] justTexts() {
     return new String[][] {

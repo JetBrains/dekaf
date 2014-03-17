@@ -52,9 +52,6 @@ public class SQL {
   }
 
 
-  private static final Pattern NAMED_TEXT_PATTERN =
-    Pattern.compile("\\s*(--=--)\\s*(\\w+)\\s*\\n+(.*?)(\\n+\\s*(--=--)|$)", Pattern.DOTALL);
-
   @NotNull
   String getSourceText(@NotNull final String name) {
     int colon = name.indexOf(':');
@@ -62,19 +59,7 @@ public class SQL {
       String primaryName = name.substring(0, colon).trim();
       String innerName = name.substring(colon+1).trim();
       String fullText = getSourceText(primaryName);
-      Matcher m = NAMED_TEXT_PATTERN.matcher(fullText);
-      boolean found = m.find();
-      while (found) {
-        String sectionName = m.group(2);
-        if (sectionName.equalsIgnoreCase(innerName)) {
-          String sectionText = m.group(3).trim();
-          return sectionText;
-        }
-        int nextPosition = m.start(5);
-        if (nextPosition > 0) found = m.find(nextPosition);
-        else found = false;
-      }
-      throw new IllegalArgumentException("Resource '"+primaryName+"' doesn't contain section named '"+innerName+"'.");
+      return extractNamedSubtext(fullText, primaryName, innerName);
     }
     else {
       final String nameWithExtension = name.endsWith(".sql") ? name : name + ".sql";
@@ -84,6 +69,29 @@ public class SQL {
       }
       return textFromResources;
     }
+  }
+
+  private static final Pattern NAMED_TEXT_PATTERN =
+    Pattern.compile("\\s*(--=--)\\s*(\\w+)\\s*\\n+(.*?)(\\n\\s*/\\s*)?(\\n+\\s*(--=--)|$)",
+                    Pattern.DOTALL);
+
+
+  static String extractNamedSubtext(@NotNull final String fullText,
+                                    @NotNull final String primaryName,
+                                    @NotNull final String innerName) {
+    Matcher m = NAMED_TEXT_PATTERN.matcher(fullText);
+    boolean found = m.find();
+    while (found) {
+      String sectionName = m.group(2);
+      if (sectionName.equalsIgnoreCase(innerName)) {
+        String sectionText = m.group(3).trim();
+        return sectionText;
+      }
+      int nextPosition = m.start(5);
+      if (nextPosition > 0) found = m.find(nextPosition);
+      else found = false;
+    }
+    throw new IllegalArgumentException("Resource '"+primaryName+"' doesn't contain section named '"+innerName+"'.");
   }
 
 
