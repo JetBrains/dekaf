@@ -22,10 +22,10 @@ declare
     --
 begin
     --
-    for (tr in select * from My_Tabs)
+    for tr in (select * from My_Tabs)
         loop
             dbms_Output.put_line(tr.Table_Name);
-        endloop;
+        end loop;
     --
 end;
 /
