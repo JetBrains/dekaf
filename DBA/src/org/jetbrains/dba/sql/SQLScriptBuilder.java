@@ -3,6 +3,11 @@ package org.jetbrains.dba.sql;
 import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.jetbrains.dba.utils.Strings.rtrim;
+
 
 
 /**
@@ -23,12 +28,6 @@ public class SQLScriptBuilder {
   }
 
 
-  public void add(@NotNull String... commands) {
-    for (String command : commands) {
-      SQLCommand sqlCommand = sql.command(command);
-      myCommands.add(sqlCommand);
-    }
-  }
 
   public void add(@NotNull SQLCommand... commands) {
     for (SQLCommand command : commands) {
@@ -41,6 +40,150 @@ public class SQLScriptBuilder {
       for (SQLCommand command : script.myCommands) {
         myCommands.add(command);
       }
+    }
+  }
+
+
+
+  public void parse(@NotNull final String text) {
+    TextWalker walker = new TextWalker(text);
+    while (!walker.isEOT()) {
+      skipEmptySpace(walker);
+      if (walker.isEOT()) break;
+
+      String essentialWords = extractEssentialWords(walker, 6);
+      boolean pl = determinePL(essentialWords);
+      if (pl) {
+        extractPLBlock(walker);
+      }
+      else {
+        extractSQLCommand(walker);
+      }
+    }
+  }
+
+
+  @SuppressWarnings("ConstantConditions")
+  static String extractEssentialWords(@NotNull final TextWalker walker, int limitWords) {
+    TextWalker w = walker.clone();
+    StringBuilder b = new StringBuilder(40);
+    int wordsCnt = 0;
+    boolean inWord = false;
+    boolean inSingleLineComment = false;
+    boolean inMultiLineComment = false;
+    while (!w.isEOT()) {
+      char c = w.getChar();
+      char c2 = w.getNextChar();
+      final boolean isWordChar = Character.isJavaIdentifierPart(c);
+      if (inSingleLineComment) {
+        if (c == '\n') inSingleLineComment = false;
+        continue;
+      }
+      if (inMultiLineComment) {
+        if (c == '*' && c2 == '/') {
+          w.next();
+          inMultiLineComment = false;
+        }
+        continue;
+      }
+      if (inWord && !isWordChar) {
+        wordsCnt++;
+        if (wordsCnt >= limitWords) break;
+        b.append(' ');
+        inWord = false;
+      }
+      if (isWordChar) {
+        b.append(Character.toLowerCase(c));
+        inWord = true;
+      }
+      if (!isWordChar) {
+        if (c == '-' && c2 == '-') {
+          inSingleLineComment = true;
+          w.next();
+        }
+        if (c == '/' && c2 == '*') {
+          inMultiLineComment = true;
+          w.next();
+        }
+      }
+      w.next();
+    }
+    return b.toString().trim();
+  }
+
+
+  private void extractPLBlock(@NotNull TextWalker walker) {
+    final TextPointer begin = walker.getPointer();
+    int rowOffset = begin.offset;
+    while (!walker.isEOT()) {
+      rowOffset = walker.getOffset();
+      String row = walker.popRow().trim();
+      if (row.equals("/")) break;
+    }
+
+    String plText = rtrim(walker.getText().substring(begin.offset, rowOffset));
+    SQLCommand command = sql.instantiateCommand(begin.row - 1, plText);
+    myCommands.add(command);
+  }
+
+
+  private static final Pattern SQL_END_MARKER =
+    Pattern.compile("(;|\\n\\s*/)(\\s|\\n|--[^\\n]*?\\n|/\\*.*?\\*/)*?(\\n|$)|$",
+                    Pattern.DOTALL);
+
+  private void extractSQLCommand(@NotNull TextWalker walker) {
+    final TextPointer begin = walker.getPointer();
+    final Matcher matcher = walker.skipToPattern(SQL_END_MARKER);
+
+    final String sqlText = rtrim(walker.getText().substring(begin.offset, walker.getOffset()));
+    SQLCommand command = sql.instantiateCommand(begin.row - 1, sqlText);
+    myCommands.add(command);
+
+    if (matcher != null) {
+      walker.skipToOffset(matcher.end());
+    }
+  }
+
+
+  private static final Pattern PL_ESSENTIAL_WORDS_PATTERN =
+    Pattern.compile("^(declare|begin|(create (or replace )?(type|package|procedure|function|trigger))).*");
+
+
+  boolean determinePL(@NotNull final String essentialWords) {
+    return PL_ESSENTIAL_WORDS_PATTERN.matcher(essentialWords).matches();
+  }
+
+
+  protected void skipEmptySpace(@NotNull TextWalker walker) {
+    while (!walker.isEOT()) {
+      char c1 = walker.getChar();
+      if (Character.isWhitespace(c1)) {
+        walker.next();
+        continue;
+      }
+      char c2 = walker.getNextChar();
+      if (c1 == '-' && c2 == '-') {
+        while (!walker.isEOT()) {
+          walker.next();
+          if (walker.getChar() == '\n') {
+            walker.next();
+            break;
+          }
+        }
+      }
+      if (c1 == '/' && c2 == '*') {
+        walker.next();
+        walker.next();
+        while (!walker.isEOT()) {
+          if (walker.getChar() == '*' && walker.getNextChar() == '/') {
+            walker.next();
+            walker.next();
+            break;
+          }
+          walker.next();
+        }
+      }
+      break;
     }
   }
 

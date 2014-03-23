@@ -7,7 +7,8 @@ import java.util.List;
 
 import static org.jetbrains.dba.access.RowsCollectors.oneRow;
 import static org.jetbrains.dba.utils.Strings.removeEnding;
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 
 
 
@@ -137,15 +138,34 @@ public class SQLTest {
   }
 
   @Test(dependsOnMethods = "script_1")
-  public void script_2_separate() {
-    final SQLScript script = sql.script("command1", "command2");
+  public void script_2_semicolon() {
+    final SQLScript script = sql.script("command1;\n" +
+                                        "command2");
     assertEquals(script.getCommands().size(), 2);
     assertEquals(script.getCommands().get(0).getSourceText(), "command1");
     assertEquals(script.getCommands().get(1).getSourceText(), "command2");
   }
 
   @Test(dependsOnMethods = "script_1")
-  public void script_2_in_one_text() {
+  public void script_2_semicolon_2() {
+    final SQLScript script = sql.script("command1;\n" +
+                                        "command2;");
+    assertEquals(script.getCommands().size(), 2);
+    assertEquals(script.getCommands().get(0).getSourceText(), "command1");
+    assertEquals(script.getCommands().get(1).getSourceText(), "command2");
+  }
+
+  @Test(dependsOnMethods = "script_1")
+  public void script_2_semicolon_2n() {
+    final SQLScript script = sql.script("command1;\n" +
+                                        "command2;\n");
+    assertEquals(script.getCommands().size(), 2);
+    assertEquals(script.getCommands().get(0).getSourceText(), "command1");
+    assertEquals(script.getCommands().get(1).getSourceText(), "command2");
+  }
+
+  @Test(dependsOnMethods = "script_1")
+  public void script_2_semicolon_onOwnLine() {
     String text =
       "command1  \n" +
       ";         \n" +
@@ -169,14 +189,12 @@ public class SQLTest {
 
 
   @Test
-  public void script_null() {
-    final SQLScript script1 = sql.script((String[])null);
+  public void script_empty() {
+    final SQLScript script1 = sql.script("");
     assertEquals(script1.getCommands().size(), 0);
 
-    final SQLScript script2 = sql.script((String)null);
+    final SQLScript script2 = sql.script("   \n    \n  ");
     assertEquals(script2.getCommands().size(), 0);
-
-    assertSame(script1, script2);
   }
 
 

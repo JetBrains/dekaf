@@ -18,6 +18,7 @@ public class OraSQLTest {
     return new String[][] {
       { "ora-pl-scenario-begin" },
       { "ora-pl-scenario-declare" },
+      { "ora-pl-scenario-create-procedure" },
     };
   }
 
@@ -75,9 +76,9 @@ public class OraSQLTest {
     SQL sql = new OraSQL();
     sql.assignResources(SQLTest.class.getClassLoader(), "sql/oracle");
 
-    SQLScript script = sql.script("##ora-pl-script");
+    SQLScript script = sql.script("##ora-mixed-script");
 
-    assertEquals(script.getCommands().size(), 1);
+    assertEquals(script.getCommands().size(), 7);
   }
 
 }

@@ -6,7 +6,7 @@ create table T1
 /
 
 insert into T1 (F1,F2)
-       values (44, 'A string with slash / and colon semicolon;')
+       values (44, 'A string with slash / and colon : and semicolon;')
 /
 
 commit

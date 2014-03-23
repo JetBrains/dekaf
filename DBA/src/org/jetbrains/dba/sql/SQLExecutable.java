@@ -9,8 +9,15 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class SQLExecutable {
 
+  /**
+   * Number of lines skipped from source text.
+   * Zero if nothing skipped.
+   */
   final int myLineOffset;
 
+  /**
+   * Query source text.
+   */
   @NotNull
   final String mySourceText;
 
