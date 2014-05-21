@@ -25,7 +25,9 @@
     <envs />
     <properties />
     <listeners />
-    <RunnerSettings RunnerId="Profile " />
+    <RunnerSettings RunnerId="Profile ">
+      <option name="myExternalizedOptions" />
+    </RunnerSettings>
     <RunnerSettings RunnerId="Run" />
     <ConfigurationWrapper RunnerId="Run" />
     <method />

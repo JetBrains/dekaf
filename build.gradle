@@ -19,6 +19,12 @@ dependencies {
         "com.intellij:annotations:12.0",
         "com.intellij:annotations:12.0:sources",
         "com.intellij:annotations:12.0:javadoc",
+        "junit:junit:4.11",
+        "junit:junit:4.11:sources",
+        "junit:junit:4.11:javadoc",
+        "org.assertj:assertj-core:1.6.0",
+        "org.assertj:assertj-core:1.6.0:sources",
+        "org.assertj:assertj-core:1.6.0:javadoc",
         "org.testng:testng:6.8.5",
         "org.testng:testng:6.8.5:sources",
         "org.testng:testng:6.8.5:javadoc"
