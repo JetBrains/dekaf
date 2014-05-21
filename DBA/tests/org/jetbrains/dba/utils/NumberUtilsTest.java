@@ -1,6 +1,7 @@
 package org.jetbrains.dba.utils;
 
 import org.jetbrains.dba.junit.FineRunner;
+import org.jetbrains.dba.junit.TestWithParams;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -16,80 +17,38 @@ import static org.jetbrains.dba.utils.NumberUtils.*;
 @RunWith(FineRunner.class)
 public class NumberUtilsTest {
 
-  //// parseIntSafe \\\\
 
-  @Test
-  public void parseIntSafe_basic() {
-    final int value = parseIntSafe("123456");
-    assertThat(value).isEqualTo(123456);
+  static Object[][] INT_CASES = new Object[][] {
+    { "123456", 123456 },
+    { "+2147483647", Integer.MAX_VALUE },
+    { "-2147483648", Integer.MIN_VALUE },
+    { "impossible", 0 },
+    { "", 0 },
+    { null, 0 },
+  };
+
+
+  @TestWithParams(params = "INT_CASES")
+  public void parseIntSafe_with(String str, int result) {
+    final int value = parseIntSafe(str);
+    assertThat(value).isEqualTo(result);
   }
 
-  @Test
-  public void parseIntSafe_positive() {
-    final int value = parseIntSafe("+2147483647");
-    assertThat(value).isEqualTo(Integer.MAX_VALUE);
+
+  static Object[][] LONG_CASES = new Object[][] {
+    { "123456", 123456 },
+    { "+9223372036854775807", Long.MAX_VALUE },
+    { "-9223372036854775808", Long.MIN_VALUE },
+    { "impossible", 0 },
+    { "", 0 },
+    { null, 0 },
+  };
+
+
+  @TestWithParams(params = "LONG_CASES")
+  public void parseLongSafe_with(String str, long result) {
+    final long value = parseLongSafe(str);
+    assertThat(value).isEqualTo(result);
   }
 
-  @Test
-  public void parseIntSafe_negative() {
-    final int value = parseIntSafe("-2147483648");
-    assertThat(value).isEqualTo(Integer.MIN_VALUE);
-  }
-
-  @Test
-  public void parseIntSafe_exception() {
-    final int value = parseIntSafe("impossible");
-    assertThat(value).isZero();
-  }
-
-  @Test
-  public void parseIntSafe_null() {
-    final int value = parseIntSafe(null);
-    assertThat(value).isZero();
-  }
-
-  @Test
-  public void parseIntSafe_emptyString() {
-    final int value = parseIntSafe(null);
-    assertThat(value).isZero();
-  }
-
-  
-  //// parseLongSafe \\\\
-
-  @Test
-  public void parseLongSafe_basic() {
-    final Long value = parseLongSafe("123456");
-    assertThat(value).isEqualTo(123456);
-  }
-
-  @Test
-  public void parseLongSafe_positive() {
-    final Long value = parseLongSafe("+9223372036854775807");
-    assertThat(value).isEqualTo(Long.MAX_VALUE);
-  }
-
-  @Test
-  public void parseLongSafe_negative() {
-    final Long value = parseLongSafe("-9223372036854775808");
-    assertThat(value).isEqualTo(Long.MIN_VALUE);
-  }
-
-  @Test
-  public void parseLongSafe_exception() {
-    final Long value = parseLongSafe("impossible");
-    assertThat(value).isZero();
-  }
-
-  @Test
-  public void parseLongSafe_null() {
-    final Long value = parseLongSafe(null);
-    assertThat(value).isZero();
-  }
-
-  @Test
-  public void parseLongSafe_emptyString() {
-    final Long value = parseLongSafe(null);
-    assertThat(value).isZero();
-  }
 }
