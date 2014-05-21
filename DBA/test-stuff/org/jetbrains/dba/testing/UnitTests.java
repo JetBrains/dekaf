@@ -1,8 +1,7 @@
-package org.jetbrains.dba;
+package org.jetbrains.dba.testing;
 
 import org.junit.experimental.categories.Categories;
 import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
 
 
 

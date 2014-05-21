@@ -1,4 +1,4 @@
-package org.jetbrains.dba;
+package org.jetbrains.dba.testing;
 
 import org.jetbrains.dba.access.JdbcDriverSupportTest;
 import org.jetbrains.dba.utils.NumberUtilsTest;

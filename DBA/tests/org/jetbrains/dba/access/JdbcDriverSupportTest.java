@@ -1,6 +1,6 @@
 package org.jetbrains.dba.access;
 
-import org.jetbrains.dba.*;
+import org.jetbrains.dba.testing.JDBC;
 import org.junit.*;
 import org.junit.experimental.categories.Category;
 

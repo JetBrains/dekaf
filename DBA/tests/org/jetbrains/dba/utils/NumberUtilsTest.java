@@ -1,6 +1,8 @@
 package org.jetbrains.dba.utils;
 
+import org.jetbrains.dba.junit.FineRunner;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -11,6 +13,7 @@ import static org.jetbrains.dba.utils.NumberUtils.*;
 /**
  * @author Leonid Bushuev from JetBrains
  */
+@RunWith(FineRunner.class)
 public class NumberUtilsTest {
 
   //// parseIntSafe \\\\
