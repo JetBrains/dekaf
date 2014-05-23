@@ -12,6 +12,7 @@
 
       <class name="org.jetbrains.dba.sql.SQLScriptTest"/>
       <class name="org.jetbrains.dba.sql.SQLTest"/>
+      <class name="org.jetbrains.dba.sql.SQLScriptBuilderTest"/>
 
       <class name="org.jetbrains.dba.access.DBProviderUnitTest"/>
       <class name="org.jetbrains.dba.access.ValueGetterTest"/>

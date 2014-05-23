@@ -77,26 +77,24 @@ public class SQLScriptBuilder {
       final boolean isWordChar = Character.isJavaIdentifierPart(c);
       if (inSingleLineComment) {
         if (c == '\n') inSingleLineComment = false;
-        continue;
       }
-      if (inMultiLineComment) {
+      else if (inMultiLineComment) {
         if (c == '*' && c2 == '/') {
-          w.next();
+          w.next(); // additional w.next() - because 2 chars
           inMultiLineComment = false;
         }
-        continue;
       }
-      if (inWord && !isWordChar) {
+      else if (inWord && !isWordChar) {
         wordsCnt++;
         if (wordsCnt >= limitWords) break;
         b.append(' ');
         inWord = false;
       }
-      if (isWordChar) {
+      else if (isWordChar) {
         b.append(Character.toLowerCase(c));
         inWord = true;
       }
-      if (!isWordChar) {
+      else if (!isWordChar) {
         if (c == '-' && c2 == '-') {
           inSingleLineComment = true;
           w.next();
@@ -132,6 +130,7 @@ public class SQLScriptBuilder {
                     Pattern.DOTALL);
 
   private void extractSQLCommand(@NotNull TextWalker walker) {
+    skipEmptySpace(walker);
     final TextPointer begin = walker.getPointer();
     final Matcher matcher = walker.skipToPattern(SQL_END_MARKER);
 
