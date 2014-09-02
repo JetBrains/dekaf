@@ -2,7 +2,9 @@
   <artifact type="jar" build-on-make="true" name="jdba-testdbutil">
     <output-path>$PROJECT_DIR$/out/artifacts/jdba-testdbutil</output-path>
     <root id="archive" name="jdba-testdbutil.jar">
-      <element id="module-output" name="TestDB" />
+      <element id="module-output" name="DBA-01-test-stuff" />
+      <element id="module-output" name="DBA-04-test-db" />
+      <element id="dir-copy" path="$PROJECT_DIR$/DBA-04-test-db/sql" />
     </root>
   </artifact>
 </component>
