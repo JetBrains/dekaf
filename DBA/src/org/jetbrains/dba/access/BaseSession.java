@@ -170,13 +170,13 @@ abstract class BaseSession implements DBSession {
 
   @Override
   public BaseCommandRunner command(@NotNull final SQLCommand command) {
-    return new BaseCommandRunner(this, command.getSourceText());
+    return new BaseCommandRunner(this, command.getSourceText(), command.getLineOffset());
   }
 
 
   @Override
   public BaseCommandRunner command(@NotNull final String commandText) {
-    return new BaseCommandRunner(this, commandText);
+    return new BaseCommandRunner(this, commandText, 0);
   }
 
 

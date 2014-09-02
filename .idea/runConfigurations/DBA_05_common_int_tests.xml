@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="DBA-05-int-tests" type="JUnit" factoryName="JUnit" singleton="true">
+  <configuration default="false" name="DBA-05-common-int-tests" type="JUnit" factoryName="JUnit" singleton="true">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <module name="DBA-05-int-tests" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -17,7 +17,7 @@
       <value defaultName="moduleWithDependencies" />
     </option>
     <envs />
-    <dir value="$PROJECT_DIR$/DBA-05-int-tests/tests" />
+    <dir value="$PROJECT_DIR$/DBA-05-int-tests/common-tests" />
     <patterns />
     <RunnerSettings RunnerId="Run" />
     <ConfigurationWrapper RunnerId="Run" />

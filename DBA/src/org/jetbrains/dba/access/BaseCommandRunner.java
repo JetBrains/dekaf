@@ -19,15 +19,18 @@ public class BaseCommandRunner implements DBCommandRunner {
   @NotNull
   protected final String statementSourceText;
 
+  protected final int lineOffset;
 
   @Nullable
   protected Object[] params;
 
 
   public BaseCommandRunner(@NotNull final BaseSession session,
-                           @NotNull final String statementSourceText) {
+                           @NotNull final String statementSourceText,
+                           final int offset) {
     this.session = session;
     this.statementSourceText = statementSourceText;
+    lineOffset = offset;
   }
 
 

@@ -1,12 +1,10 @@
 package org.jetbrains.dba;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dba.access.DBFacade;
 import org.jetbrains.dba.access.DBSession;
 import org.jetbrains.dba.access.InSessionNoResult;
 import org.jetbrains.dba.access.JdbcDBProvider;
-import org.jetbrains.dba.sql.OraSQL;
 import org.jetbrains.dba.sql.SQL;
 import org.jetbrains.dba.sql.SQLCommand;
 
@@ -52,35 +50,26 @@ public class TestDB {
 
     // TODO create the instance depends on the current RDBMS
     ourSQL = new SQL();
+    ourSQL.assignResources(TestDB.class);
   }
 
-
-  //// TEST SQL \\\\
-
-  static final SQL ourOracleSQL;
-
-  static {
-    ourOracleSQL = new OraSQL();
-    ourOracleSQL.assignResources(TestDB.class, "ora");
-  }
 
   //// TEST UTILITIES \\\\
 
-  public static void zapSchema(@NotNull final DBFacade facade) {
-    final Rdbms rdbms = facade.getDbms();
-    switch (rdbms) {
+  public static void zapSchema() {
+    switch (ourRdbms) {
       case ORACLE:
-        zapOracleSchema(facade);
+        zapOracleSchema();
         break;
       default:
-        throw new IllegalStateException("I don't know how to cleanup a "+rdbms+" schema.");
+        throw new IllegalStateException("I don't know how to cleanup a "+ourRdbms+" schema.");
     }
   }
 
 
-  private static void zapOracleSchema(@NotNull final DBFacade facade) {
-    final SQLCommand zapCommand = ourOracleSQL.command("##zap-schema");
-    facade.inSession(new InSessionNoResult() {
+  private static void zapOracleSchema() {
+    final SQLCommand zapCommand = ourSQL.command("##ora/zap-schema");
+    ourDB.inSession(new InSessionNoResult() {
       @Override
       public void run(@NotNull DBSession session) {
 
@@ -90,18 +79,6 @@ public class TestDB {
     });
   }
 
-
-
-
-  //// UTILITY FUNCTIONS \\\\
-
-  @Nullable
-  static String getStartParameter(@NotNull final String name) {
-    String value = System.getProperty(name);
-    if (value == null) value = System.getenv(name);
-    if (value == null) value = System.getenv(name.toUpperCase());
-    return value;
-  }
 
 
 }
