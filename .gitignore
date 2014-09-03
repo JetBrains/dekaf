@@ -10,3 +10,5 @@ out
 
 .idea/workspace.xml
 .idea/uiDesigner.xml
+
+test-db.config
