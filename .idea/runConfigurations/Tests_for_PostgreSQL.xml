@@ -1,5 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Tests for PostgreSQL" type="TestNG" factoryName="TestNG" singleton="true">
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <module name="IntTest" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" value="" />
@@ -9,7 +10,7 @@
     <option name="METHOD_NAME" value="" />
     <option name="GROUP_NAME" value="" />
     <option name="TEST_OBJECT" value="SUITE" />
-    <option name="VM_PARAMETERS" value="-ea -Djava.awt.headless=true -Ddb_test_with=postgre" />
+    <option name="VM_PARAMETERS" value="-ea -Djava.awt.headless=true -Djdbc.drivers.path=jdbc -Dtest-db=postgre" />
     <option name="PARAMETERS" value="-groups all-db,postgre" />
     <option name="WORKING_DIRECTORY" value="" />
     <option name="OUTPUT_DIRECTORY" value="" />
