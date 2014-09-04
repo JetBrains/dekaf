@@ -12,7 +12,7 @@ public class TestDBTest2 extends DBTestCase {
 
   @Test
   public void zap_schema() {
-    TestDB.zapSchema(myFacade);
+    TestDB.zapSchema();
   }
 
 }

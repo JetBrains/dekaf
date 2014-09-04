@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Map;
 
 
@@ -41,6 +42,10 @@ public final class ValueGetters {
     .put(String.class, StringGetter.INSTANCE)
     .put(char.class, CharGetter.INSTANCE)
     .put(Character.class, CharGetter.INSTANCE)
+    .put(java.util.Date.class, JavaDateGetter.INSTANCE)
+    .put(java.sql.Date.class, DateGetter.INSTANCE)
+    .put(java.sql.Timestamp.class, TimestampGetter.INSTANCE)
+    .put(java.sql.Time.class, TimeGetter.INSTANCE)
     .put(Object.class, ObjectGetter.INSTANCE)
     .build();
 
@@ -216,6 +221,68 @@ public final class ValueGetters {
 
 
     final static CharGetter INSTANCE = new CharGetter();
+  }
+
+
+
+  /**
+   * @author Leonid Bushuev from JetBrains
+   */
+  static final class JavaDateGetter extends ValueGetter<java.util.Date> {
+    @Override
+    @Nullable
+    java.util.Date getValue(@NotNull final ResultSet rset, final int index)  throws SQLException {
+      final Timestamp timestamp = rset.getTimestamp(index);
+      return rset.wasNull() ? null : new java.util.Date(timestamp.getTime());
+    }
+
+
+    final static JavaDateGetter INSTANCE = new JavaDateGetter();
+  }
+
+
+  /**
+   * @author Leonid Bushuev from JetBrains
+   */
+  static final class DateGetter extends ValueGetter<java.sql.Date> {
+    @Override
+    @Nullable
+    java.sql.Date getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
+      return rset.getDate(index);
+    }
+
+
+    final static DateGetter INSTANCE = new DateGetter();
+  }
+
+
+  /**
+   * @author Leonid Bushuev from JetBrains
+   */
+  static final class TimestampGetter extends ValueGetter<java.sql.Timestamp> {
+    @Override
+    @Nullable
+    java.sql.Timestamp getValue(@NotNull final ResultSet rset, final int index)  throws SQLException {
+      return rset.getTimestamp(index);
+    }
+
+
+    final static TimestampGetter INSTANCE = new TimestampGetter();
+  }
+
+
+  /**
+   * @author Leonid Bushuev from JetBrains
+   */
+  static final class TimeGetter extends ValueGetter<java.sql.Time> {
+    @Override
+    @Nullable
+    java.sql.Time getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
+      return rset.getTime(index);
+    }
+
+
+    final static TimeGetter INSTANCE = new TimeGetter();
   }
 
 
