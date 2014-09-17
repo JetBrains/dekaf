@@ -90,6 +90,11 @@ abstract class BaseSession implements DBSession {
   }
 
 
+  Connection getConnection() {
+    return connection; // TODO wrap it somehow?
+  }
+
+
   //// CLOSURES \\\\
 
 
@@ -169,14 +174,19 @@ abstract class BaseSession implements DBSession {
 
 
   @Override
-  public BaseCommandRunner command(@NotNull final SQLCommand command) {
-    return new BaseCommandRunner(this, command.getSourceText(), command.getLineOffset());
+  public final BaseCommandRunner command(@NotNull final SQLCommand command) {
+    return command(command.getSourceText(), command.getLineOffset());
   }
 
 
   @Override
-  public BaseCommandRunner command(@NotNull final String commandText) {
-    return new BaseCommandRunner(this, commandText, 0);
+  public final BaseCommandRunner command(@NotNull final String commandText) {
+    return command(commandText, 0);
+  }
+
+
+  protected BaseCommandRunner command(@NotNull final String commandText, int offset) {
+    return new BaseCommandRunner(this, commandText, offset);
   }
 
 

@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.sql.CallableStatement;
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 
 
 
@@ -39,6 +40,10 @@ public class BaseCommandRunner implements DBCommandRunner {
     this.params = params;
     return this;
   }
+
+
+  private static final Pattern CALLABLE_STATEMENT_PATTERN =
+    Pattern.compile("^(CALL|EXEC|DECLARE|BEGIN|DO).*$", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
 
 
   @Override

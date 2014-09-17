@@ -21,6 +21,12 @@ final class OraSession extends BaseSession {
 
 
   @Override
+  protected BaseCommandRunner command(@NotNull String commandText, int offset) {
+    return new OraCommandRunner(this, commandText, offset);
+  }
+
+
+  @Override
   protected boolean assignSpecificParameter(@NotNull PreparedStatement stmt,
                                             int index,
                                             @NotNull Object object) throws SQLException {

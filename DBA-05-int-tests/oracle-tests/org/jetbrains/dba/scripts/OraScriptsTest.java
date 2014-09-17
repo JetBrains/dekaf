@@ -1,12 +1,14 @@
 package org.jetbrains.dba.scripts;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.dba.TestDB;
 import org.jetbrains.dba.access.DBSession;
 import org.jetbrains.dba.access.InSessionNoResult;
 import org.jetbrains.dba.access.RowsCollectors;
 import org.jetbrains.dba.sql.OraSQL;
 import org.jetbrains.dba.sql.SQLQuery;
 import org.jetbrains.dba.sql.SQLScript;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
@@ -23,6 +25,12 @@ import static org.jetbrains.dba.TestDB.zapSchema;
 public class OraScriptsTest {
 
   final OraSQL mySQL = prepareSQL();
+
+
+  @BeforeClass
+  public static void setUpClass() throws Exception {
+    TestDB.ourDB.connect();
+  }
 
 
   private static OraSQL prepareSQL() {
