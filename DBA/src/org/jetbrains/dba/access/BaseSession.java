@@ -227,6 +227,18 @@ abstract class BaseSession implements DBSession {
     else if (object instanceof String) {
       stmt.setString(index, (String)object);
     }
+    else if (object instanceof java.sql.Date) {
+      stmt.setDate(index, (java.sql.Date)object);
+    }
+    else if (object instanceof java.sql.Timestamp) {
+      stmt.setTimestamp(index, (java.sql.Timestamp)object);
+    }
+    else if (object instanceof java.sql.Time) {
+      stmt.setTime(index, (java.sql.Time)object);
+    }
+    else if (object instanceof java.util.Date) {
+      stmt.setTimestamp(index, new Timestamp(((java.util.Date)object).getTime()));
+    }
     else {
       boolean assigned = assignSpecificParameter(stmt, index, object);
       if (!assigned) {
