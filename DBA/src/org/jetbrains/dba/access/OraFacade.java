@@ -54,7 +54,7 @@ public final class OraFacade extends BaseFacade {
       return new OraSession(this, connection, true);
     }
     catch (SQLException e) {
-      throw myErrorRecognizer.recognizeError(e);
+      throw myErrorRecognizer.recognizeError(e, "<connect>");
     }
   }
 

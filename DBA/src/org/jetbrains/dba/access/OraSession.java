@@ -23,20 +23,17 @@ final class OraSession extends BaseSession {
   @Override
   protected boolean assignSpecificParameter(@NotNull PreparedStatement stmt,
                                             int index,
-                                            @NotNull Object object) {
+                                            @NotNull Object object) throws SQLException {
     if (object instanceof Collection) {
       Collection<?> collection = (Collection<?>) object;
       String[] javaArray = convertCollectionToStringArray(collection);
-      try {
-        OracleSpecificStuff.assignOracleArray(stmt, index, javaArray);
-        return true;
-      }
-      catch (SQLException sqle) {
-        throw recognizeError(sqle);
-      }
-    }
 
-    return false;
+      OracleSpecificStuff.assignOracleArray(stmt, index, javaArray);
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
 

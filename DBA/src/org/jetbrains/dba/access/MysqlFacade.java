@@ -48,7 +48,7 @@ public final class MysqlFacade extends BaseFacade {
       return new MysqlSession(this, connection, true);
     }
     catch (SQLException e) {
-      throw myErrorRecognizer.recognizeError(e);
+      throw myErrorRecognizer.recognizeError(e, "<connect>");
     }
   }
 

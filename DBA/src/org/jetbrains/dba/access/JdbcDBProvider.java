@@ -54,7 +54,7 @@ public final class JdbcDBProvider implements DBProvider {
       case ORACLE: return new OraFacade(connectionString, driver, errorRecognizer);
       case MSSQL: return new MssqlFacade(connectionString, driver, errorRecognizer);
       case MYSQL: return new MysqlFacade(connectionString, driver, errorRecognizer);
-      default: throw new DbmsUnsupportedFeatureError("This RDBMS is not supported yet.");
+      default: throw new DbmsUnsupportedFeatureError("This RDBMS is not supported yet.", null);
     }
   }
 

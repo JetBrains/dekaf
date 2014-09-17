@@ -33,6 +33,7 @@ public abstract class BaseFacade implements DBFacade {
       primarySession = internalConnect();
     }
     else {
+      //noinspection StatementWithEmptyBody
       if (this.myConnectionString.equals(myConnectionString)) {
         // already connected to the same URL
       }

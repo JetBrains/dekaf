@@ -53,7 +53,7 @@ public final class PostgreFacade extends BaseFacade {
       return new PostgreSession(this, connection, true);
     }
     catch (SQLException e) {
-      throw myErrorRecognizer.recognizeError(e);
+      throw myErrorRecognizer.recognizeError(e, "<connect>");
     }
   }
 

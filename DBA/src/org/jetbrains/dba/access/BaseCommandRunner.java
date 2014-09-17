@@ -56,7 +56,7 @@ public class BaseCommandRunner implements DBCommandRunner {
       }
     }
     catch (SQLException e) {
-      throw session.recognizeError(e);
+      throw session.recognizeError(e, statementSourceText);
     }
 
     return this;

@@ -8,8 +8,6 @@ import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import static java.lang.String.format;
-
 
 
 /**
@@ -50,7 +48,7 @@ public final class MssqlFacade extends BaseFacade {
       return new MssqlSession(this, connection, true);
     }
     catch (SQLException e) {
-      throw myErrorRecognizer.recognizeError(e);
+      throw myErrorRecognizer.recognizeError(e, "<connect>");
     }
   }
 

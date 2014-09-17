@@ -1,6 +1,7 @@
 package org.jetbrains.dba.access;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dba.errors.DBError;
 import org.jetbrains.dba.errors.DuplicateKeyError;
 import org.jetbrains.dba.errors.UnknownDBError;
@@ -17,17 +18,17 @@ public class OraErrorRecognizer extends BaseErrorRecognizer {
 
   @NotNull
   @Override
-  protected DBError recognizeSpecificError(@NotNull final SQLException sqlException) {
+  protected DBError recognizeSpecificError(@NotNull final SQLException sqlException, @Nullable final String statementText) {
     int code = sqlException.getErrorCode();
 
     switch (code) {
       case 1:
-        return new DuplicateKeyError(sqlException);
+        return new DuplicateKeyError(sqlException, statementText);
       default:
         String msg = sqlException.getMessage().trim();
         boolean hasNumber = NUMBERED_ERROR_PATTERN.matcher(msg).matches();
         if (!hasNumber) msg = "Oracle SQL error " + code + ": " + msg;
-        return new UnknownDBError(msg, sqlException);
+        return new UnknownDBError(msg, sqlException, statementText);
     }
   }
 

@@ -47,7 +47,7 @@ abstract class BaseSession implements DBSession {
       connection.setAutoCommit(false);
     }
     catch (SQLException e) {
-      throw recognizeError(e);
+      throw recognizeError(e, "<turn auto-commit OFF>");
     }
   }
 
@@ -58,7 +58,7 @@ abstract class BaseSession implements DBSession {
     }
     catch (SQLException e) {
       rollback();
-      throw recognizeError(e);
+      throw recognizeError(e, "<commit>");
     }
 
     try {
@@ -154,7 +154,7 @@ abstract class BaseSession implements DBSession {
       }
     }
     catch (SQLException e) {
-      throw recognizeError(e);
+      throw recognizeError(e, queryText);
     }
   }
 
@@ -243,17 +243,15 @@ abstract class BaseSession implements DBSession {
       boolean assigned = assignSpecificParameter(stmt, index, object);
       if (!assigned) {
         throw new UnhandledTypeError("I don't know how to pass an instance of class " +
-                                     object.getClass().getSimpleName() +
-                                     " as the " +
-                                     index +
-                                     "th parameter into a SQL statement.");
+                                     object.getClass().getSimpleName() + " as the " +
+                                     index + "th parameter into a SQL statement.", null);
       }
     }
   }
 
   protected boolean assignSpecificParameter(@NotNull final PreparedStatement stmt,
                                             final int index,
-                                            @NotNull final Object object) {
+                                            @NotNull final Object object) throws SQLException {
     return false;
   }
 
@@ -268,8 +266,8 @@ abstract class BaseSession implements DBSession {
 
 
   @NotNull
-  public DBError recognizeError(@NotNull final SQLException sqlException) {
-    return facade.getErrorRecognizer().recognizeError(sqlException);
+  public DBError recognizeError(@NotNull final SQLException sqlException, @Nullable final String statementText) {
+    return facade.getErrorRecognizer().recognizeError(sqlException, statementText);
   }
 
 
