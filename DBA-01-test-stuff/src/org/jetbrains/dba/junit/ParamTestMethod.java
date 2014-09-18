@@ -30,7 +30,10 @@ public class ParamTestMethod extends TestMethod {
       Object[] realParams = (Object[]) paramData;
       for (int i = 0, n = realParams.length; i < n; i++) {
         if (i > 0) b.append(", ");
-        b.append(realParams[i]);
+        Object v = realParams[i];
+        String s = v == null ? "null" : v.toString();
+        s = s.replace('\r', ' ').replace('\n', ' ');
+        b.append(s);
       }
     }
     else {
