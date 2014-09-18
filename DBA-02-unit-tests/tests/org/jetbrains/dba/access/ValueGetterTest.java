@@ -7,8 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
-import static org.jetbrains.dba.junit.Assertions.assertNotNull;
-import static org.jetbrains.dba.junit.Assertions.assertSame;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Leonid Bushuev from JetBrains
@@ -20,16 +19,16 @@ public class ValueGetterTest {
   @Test
   public void test_forPrimitive_primitive() {
     final ValueGetter<Byte> getter = ValueGetters.of(byte.class);
-    assertNotNull(getter);
-    assertSame(getter, ValueGetters.ByteGetter.INSTANCE);
+    assertThat(getter).isNotNull();
+    assertThat(getter).isSameAs(ValueGetters.ByteGetter.INSTANCE);
   }
 
 
   @Test
   public void test_forPrimitive_wrapper() {
     final ValueGetter<Byte> getter = ValueGetters.of(Byte.class);
-    assertNotNull(getter);
-    assertSame(getter, ValueGetters.ByteGetter.INSTANCE);
+    assertThat(getter).isNotNull();
+    assertThat(getter).isSameAs(ValueGetters.ByteGetter.INSTANCE);
   }
 
 }

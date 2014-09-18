@@ -7,7 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
-import static org.jetbrains.dba.junit.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 
 /**
@@ -32,7 +33,7 @@ public class OraSQLTest {
 
     SQLScript script = sql.script("##"+name);
 
-    assertEquals(script.getCommands().size(), 1);
+    assertThat((Integer)script.getCommands().size()).isEqualTo((Integer)1);
   }
 
 
@@ -49,11 +50,11 @@ public class OraSQLTest {
 
     SQLScript script = sql.script("##"+name);
 
-    assertEquals(script.getCommands().size(), 4);
+    assertThat((Integer)script.getCommands().size()).isEqualTo((Integer)4);
 
     for (SQLCommand command : script.getCommands()) {
-      assertNotNull(command);
-      assertTrue(command.getSourceText().length() > 0);
+      assertThat(command).isNotNull();
+      assertThat(command.getSourceText()).isNotEmpty();
     }
   }
 
@@ -66,8 +67,8 @@ public class OraSQLTest {
 
     for (SQLCommand command : script.getCommands()) {
       final String text = command.getSourceText();
-      assertFalse(Character.isSpaceChar(text.charAt(0)));
-      assertFalse(Character.isSpaceChar(text.charAt(text.length()-1)));
+      assertThat(text).doesNotMatch("^\\s.*$")
+                      .doesNotMatch("^.*\\s$");
     }
   }
 
@@ -78,7 +79,7 @@ public class OraSQLTest {
 
     SQLScript script = sql.script("##ora-mixed-script");
 
-    assertEquals(script.getCommands().size(), 7);
+    assertThat((Integer)script.getCommands().size()).isEqualTo((Integer)7);
   }
 
 }

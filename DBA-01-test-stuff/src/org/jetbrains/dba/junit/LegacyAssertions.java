@@ -1,10 +1,10 @@
 package org.jetbrains.dba.junit;
 
 /**
- * Useful assertion methods.
- * @author Leonid Bushuev from JetBrains
+ * Assertions just for migration from TestNG.
  */
-public class Assertions extends org.assertj.core.api.Assertions {
+@Deprecated
+public class LegacyAssertions extends org.assertj.core.api.Assertions {
 
 
   public static <T> void assertNotNull(T actual) {
@@ -15,10 +15,6 @@ public class Assertions extends org.assertj.core.api.Assertions {
     assertThat(actual).isNull();
   }
 
-
-  public static <T> void assertEquals(T actual, T expected) {
-    assertThat(actual).isEqualTo(expected);
-  }
 
   public static <T> void assertSame(T actual, T expected) {
     assertThat(actual).isSameAs(expected);

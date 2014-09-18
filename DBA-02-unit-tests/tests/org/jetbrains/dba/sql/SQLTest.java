@@ -1,6 +1,7 @@
 package org.jetbrains.dba.sql;
 
 
+import org.assertj.core.api.Assertions;
 import org.jetbrains.dba.junit.FineRunner;
 import org.jetbrains.dba.junit.TestWithParams;
 import org.junit.FixMethodOrder;
@@ -11,8 +12,6 @@ import org.junit.runners.MethodSorters;
 import java.util.List;
 
 import static org.jetbrains.dba.access.RowsCollectors.oneRow;
-import static org.jetbrains.dba.junit.Assertions.assertEquals;
-import static org.jetbrains.dba.junit.Assertions.assertNotNull;
 import static org.jetbrains.dba.utils.Strings.removeEnding;
 
 
@@ -33,7 +32,7 @@ public class SQLTest {
     sql.assignResources(SQLTest.class.getClassLoader(), "common");
 
     String text = sql.getSourceText("just-texts:Select2");
-    assertNotNull(text);
+    Assertions.assertThat(text).isNotNull();
   }
 
 
@@ -84,8 +83,8 @@ public class SQLTest {
   private static void extractNamedSubtext_test(String text) {
     String subText1 = SQL.extractNamedSubtext(text, "X", "C1");
     String subText2 = SQL.extractNamedSubtext(text, "X", "C2");
-    assertEquals(subText1, "Create Table A");
-    assertEquals(subText2, "Drop Table B");
+    Assertions.assertThat(subText1).isEqualTo("Create Table A");
+    Assertions.assertThat(subText2).isEqualTo("Drop Table B");
   }
 
 
@@ -100,72 +99,72 @@ public class SQLTest {
     String textName = "just-texts:" + name;
     String query = sql.getSourceText(textName);
     query = removeEnding(query, ";");
-    assertEquals(query, text);
+    Assertions.assertThat(query).isEqualTo(text);
   }
 
 
   @Test
   public void command_create() {
     SQLCommand command = sql.command("select * from dual");
-    assertNotNull(command);
-    assertEquals(command.getSourceText(), "select * from dual");
+    Assertions.assertThat(command).isNotNull();
+    Assertions.assertThat(command.getSourceText()).isEqualTo("select * from dual");
   }
 
   @Test
   public void command_load() {
     final SQLCommand command = sql.command("##just-texts:TinySelect");
-    assertNotNull(command);
-    assertEquals(command.getSourceText(), "select *");
+    Assertions.assertThat(command).isNotNull();
+    Assertions.assertThat(command.getSourceText()).isEqualTo("select *");
   }
 
 
   @Test
   public void query_create() {
     SQLQuery<Byte> query = sql.query("select 44 from dual", oneRow(Byte.class));
-    assertNotNull(query);
-    assertEquals(query.getSourceText(), "select 44 from dual");
+    Assertions.assertThat(query).isNotNull();
+    Assertions.assertThat(query.getSourceText()).isEqualTo("select 44 from dual");
   }
 
   @Test
   public void query_load() {
     final SQLQuery<Byte> query = sql.query("##just-texts:TinySelect", oneRow(Byte.class));
-    assertNotNull(query);
-    assertEquals(query.getSourceText(), "select *");
+    Assertions.assertThat(query).isNotNull();
+    Assertions.assertThat(query.getSourceText()).isEqualTo("select *");
   }
 
 
   @Test
   public void script_1() {
     final SQLScript script = sql.script("simple command");
-    assertEquals(script.getCommands().size(), 1);
-    assertEquals(script.getCommands().get(0).getSourceText(), "simple command");
+    Assertions.assertThat((Integer)script.getCommands().size()).isEqualTo((Integer)1);
+    Assertions.assertThat(script.getCommands().get(0).getSourceText()).isEqualTo("simple command");
   }
 
   @Test
   public void script_2_semicolon() {
     final SQLScript script = sql.script("command1;\n" +
                                         "command2");
-    assertEquals(script.getCommands().size(), 2);
-    assertEquals(script.getCommands().get(0).getSourceText(), "command1");
-    assertEquals(script.getCommands().get(1).getSourceText(), "command2");
+    Assertions.assertThat((Integer)script.getCommands().size()).isEqualTo((Integer)2);
+    Assertions.assertThat(script.getCommands().get(0).getSourceText()).isEqualTo("command1");
+    Assertions.assertThat(script.getCommands().get(1).getSourceText()).isEqualTo("command2");
   }
 
   @Test
   public void script_2_semicolon_2() {
     final SQLScript script = sql.script("command1;\n" +
                                         "command2;");
-    assertEquals(script.getCommands().size(), 2);
-    assertEquals(script.getCommands().get(0).getSourceText(), "command1");
-    assertEquals(script.getCommands().get(1).getSourceText(), "command2");
+    Assertions.assertThat((Integer)script.getCommands().size()).isEqualTo((Integer)2);
+    Assertions.assertThat(script.getCommands().get(0).getSourceText()).isEqualTo("command1");
+    Assertions.assertThat(script.getCommands().get(1).getSourceText()).isEqualTo("command2");
   }
 
   @Test
   public void script_2_semicolon_2n() {
     final SQLScript script = sql.script("command1;\n" +
                                         "command2;\n");
-    assertEquals(script.getCommands().size(), 2);
-    assertEquals(script.getCommands().get(0).getSourceText(), "command1");
-    assertEquals(script.getCommands().get(1).getSourceText(), "command2");
+    Assertions.assertThat((Integer)script.getCommands().size()).isEqualTo((Integer)2);
+    Assertions.assertThat(script.getCommands().get(0).getSourceText()).isEqualTo("command1");
+    Assertions.assertThat(script.getCommands().get(1).getSourceText()).isEqualTo("command2");
   }
 
   @Test
@@ -175,30 +174,30 @@ public class SQLTest {
       ";         \n" +
       "command2  \n";
     final SQLScript script = sql.script(text);
-    assertEquals(script.getCommands().size(), 2);
-    assertEquals(script.getCommands().get(0).getSourceText(), "command1");
-    assertEquals(script.getCommands().get(1).getSourceText(), "command2");
+    Assertions.assertThat((Integer)script.getCommands().size()).isEqualTo((Integer)2);
+    Assertions.assertThat(script.getCommands().get(0).getSourceText()).isEqualTo("command1");
+    Assertions.assertThat(script.getCommands().get(1).getSourceText()).isEqualTo("command2");
   }
 
 
   @Test
   public void script_load() {
     final SQLScript script = sql.script("##simple-script");
-    assertNotNull(script);
+    Assertions.assertThat(script).isNotNull();
     final List<SQLCommand> commands = script.getCommands();
-    assertEquals(commands.size(), 5);
-    assertEquals(commands.get(1).getSourceText(), "insert into Simple_Table values ('P1', 'Aaa')");
-    assertEquals(commands.get(3).getSourceText(), "commit");
+    Assertions.assertThat((Integer)commands.size()).isEqualTo((Integer)5);
+    Assertions.assertThat(commands.get(1).getSourceText()).isEqualTo("insert into Simple_Table values ('P1', 'Aaa')");
+    Assertions.assertThat(commands.get(3).getSourceText()).isEqualTo("commit");
   }
 
 
   @Test
   public void script_empty() {
     final SQLScript script1 = sql.script("");
-    assertEquals(script1.getCommands().size(), 0);
+    Assertions.assertThat((Integer)script1.getCommands().size()).isEqualTo((Integer)0);
 
     final SQLScript script2 = sql.script("   \n    \n  ");
-    assertEquals(script2.getCommands().size(), 0);
+    Assertions.assertThat((Integer)script2.getCommands().size()).isEqualTo((Integer)0);
   }
 
 

@@ -1,13 +1,13 @@
 package org.jetbrains.dba.sql;
 
+import org.assertj.core.api.Assertions;
 import org.jetbrains.dba.junit.FineRunner;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
-import static org.jetbrains.dba.junit.Assertions.assertEquals;
-import static org.jetbrains.dba.junit.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 
@@ -24,8 +24,8 @@ public class SQLScriptBuilderTest {
     String commandText = "select * from dual";
     final SQLScript script = build(commandText);
 
-    assertEquals(script.myCount, 1);
-    assertEquals(script.getCommands().get(0).getSourceText(), commandText);
+    Assertions.assertThat((Integer)script.myCount).isEqualTo((Integer)1);
+    Assertions.assertThat(script.getCommands().get(0).getSourceText()).isEqualTo(commandText);
   }
 
 
@@ -47,9 +47,9 @@ public class SQLScriptBuilderTest {
     String text = "create table X;\n drop table X";
     final SQLScript script = build(text);
 
-    assertEquals(script.myCount, 2);
-    assertEquals(script.getCommands().get(0).getSourceText(), "create table X");
-    assertEquals(script.getCommands().get(1).getSourceText(), "drop table X");
+    Assertions.assertThat((Integer)script.myCount).isEqualTo((Integer)2);
+    Assertions.assertThat(script.getCommands().get(0).getSourceText()).isEqualTo("create table X");
+    Assertions.assertThat(script.getCommands().get(1).getSourceText()).isEqualTo("drop table X");
   }
 
 
@@ -59,8 +59,8 @@ public class SQLScriptBuilderTest {
                   "do something";
     final SQLScript script = build(text);
 
-    assertEquals(script.myCount, 1);
-    assertEquals(script.getCommands().get(0).getSourceText(), "do something");
+    Assertions.assertThat((Integer)script.myCount).isEqualTo((Integer)1);
+    Assertions.assertThat(script.getCommands().get(0).getSourceText()).isEqualTo("do something");
   }
 
 
@@ -71,9 +71,9 @@ public class SQLScriptBuilderTest {
                   "from my_table      \n";
     final SQLScript script = build(text);
 
-    assertEquals(script.myCount, 1);
+    Assertions.assertThat((Integer)script.myCount).isEqualTo((Integer)1);
     final String queryText = script.getCommands().get(0).getSourceText();
-    assertTrue(queryText.contains("--+index(i)"));
+    assertThat(queryText).contains("--+index(i)");
   }
 
 
@@ -83,8 +83,8 @@ public class SQLScriptBuilderTest {
                   "do something";
     final SQLScript script = build(text);
 
-    assertEquals(script.myCount, 1);
-    assertEquals(script.getCommands().get(0).getSourceText(), "do something");
+    Assertions.assertThat((Integer)script.myCount).isEqualTo((Integer)1);
+    Assertions.assertThat(script.getCommands().get(0).getSourceText()).isEqualTo("do something");
   }
 
 
@@ -96,8 +96,8 @@ public class SQLScriptBuilderTest {
                   "do something            \n";
     final SQLScript script = build(text);
 
-    assertEquals(script.myCount, 1);
-    assertEquals(script.getCommands().get(0).getSourceText(), "do something");
+    Assertions.assertThat((Integer)script.myCount).isEqualTo((Integer)1);
+    Assertions.assertThat(script.getCommands().get(0).getSourceText()).isEqualTo("do something");
   }
 
 
@@ -107,9 +107,9 @@ public class SQLScriptBuilderTest {
                   "from table             \n";
     final SQLScript script = build(text);
 
-    assertEquals(script.myCount, 1);
+    Assertions.assertThat((Integer)script.myCount).isEqualTo((Integer)1);
     final String queryText = script.getCommands().get(0).getSourceText();
-    assertTrue(queryText.contains("/*+index(i)*/"));
+    assertThat(queryText).contains("/*+index(i)*/");
   }
 
 

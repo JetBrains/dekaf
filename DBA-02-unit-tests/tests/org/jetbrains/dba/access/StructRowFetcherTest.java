@@ -1,12 +1,13 @@
 package org.jetbrains.dba.access;
 
+import org.assertj.core.api.Assertions;
 import org.jetbrains.dba.junit.FineRunner;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
-import static org.jetbrains.dba.junit.Assertions.assertEquals;
+
 
 /**
  * @author Leonid Bushuev from JetBrains
@@ -30,7 +31,7 @@ public class StructRowFetcherTest {
   public void test_for_StructRowFetcherTest() {
     StructRowFetcher<StructWithPrimitives> f =
       new StructRowFetcher<StructWithPrimitives>(StructWithPrimitives.class);
-    assertEquals(f.fields[0].getName(), "myBoolean");
-    assertEquals(f.fields[0].getType(), (Class)boolean.class);
+    Assertions.assertThat(f.fields[0].getName()).isEqualTo("myBoolean");
+    Assertions.assertThat(f.fields[0].getType()).isEqualTo((Class)boolean.class);
   }
 }

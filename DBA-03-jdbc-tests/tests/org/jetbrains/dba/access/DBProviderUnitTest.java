@@ -1,5 +1,6 @@
 package org.jetbrains.dba.access;
 
+import org.assertj.core.api.Assertions;
 import org.jetbrains.dba.Rdbms;
 import org.jetbrains.dba.junit.FineRunner;
 import org.jetbrains.dba.junit.TestWithParams;
@@ -7,8 +8,6 @@ import org.junit.FixMethodOrder;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
-import static org.jetbrains.dba.junit.Assertions.assertEquals;
-import static org.jetbrains.dba.junit.Assertions.assertNotNull;
 
 
 /**
@@ -35,8 +34,8 @@ public class DBProviderUnitTest {
   @TestWithParams(params = "SIMPLE_CONNECTION_STRINGS")
   public void get_right_DBFacade(String connectionString, Rdbms rdbms) {
     final DBFacade dbFacade = myDBProvider.provide(connectionString);
-    assertNotNull(dbFacade);
-    assertEquals(dbFacade.getDbms(), rdbms);
+    Assertions.assertThat(dbFacade).isNotNull();
+    Assertions.assertThat(dbFacade.getDbms()).isEqualTo(rdbms);
   }
 
 }
