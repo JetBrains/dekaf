@@ -13,7 +13,7 @@ import static org.jetbrains.dba.junit.Assertions.*;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@FixMethodOrder(MethodSorters.JVM)
 @RunWith(FineRunner.class)
 public class OraSQLTest {
 
