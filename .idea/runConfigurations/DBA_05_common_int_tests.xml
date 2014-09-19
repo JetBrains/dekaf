@@ -19,6 +19,9 @@
     <envs />
     <dir value="$PROJECT_DIR$/DBA-05-int-tests/common-tests" />
     <patterns />
+    <RunnerSettings RunnerId="Profile ">
+      <option name="myExternalizedOptions" value="&#13;&#10;additional-options2=onexit\=snapshot&#13;&#10;" />
+    </RunnerSettings>
     <RunnerSettings RunnerId="Run" />
     <ConfigurationWrapper RunnerId="Run" />
     <method />

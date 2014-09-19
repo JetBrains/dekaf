@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/DBA/DBA.iml" filepath="$PROJECT_DIR$/DBA/DBA.iml" />
       <module fileurl="file://$PROJECT_DIR$/DBA-01-test-stuff/DBA-01-test-stuff.iml" filepath="$PROJECT_DIR$/DBA-01-test-stuff/DBA-01-test-stuff.iml" />
       <module fileurl="file://$PROJECT_DIR$/DBA-02-unit-tests/DBA-02-unit-tests.iml" filepath="$PROJECT_DIR$/DBA-02-unit-tests/DBA-02-unit-tests.iml" />
-      <module fileurl="file://$PROJECT_DIR$/DBA-03-jdbc-tests/DBA-03-jdbc-tests.iml" filepath="$PROJECT_DIR$/DBA-03-jdbc-tests/DBA-03-jdbc-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/DBA-04-test-db/DBA-04-test-db.iml" filepath="$PROJECT_DIR$/DBA-04-test-db/DBA-04-test-db.iml" />
       <module fileurl="file://$PROJECT_DIR$/DBA-05-int-tests/DBA-05-int-tests.iml" filepath="$PROJECT_DIR$/DBA-05-int-tests/DBA-05-int-tests.iml" />
     </modules>
