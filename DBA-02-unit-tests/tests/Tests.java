@@ -1,3 +1,4 @@
+import junit.runner.Version;
 import org.jetbrains.dba.access.DBProviderUnitTest;
 import org.jetbrains.dba.access.JdbcDriverSupportTest;
 import org.jetbrains.dba.access.StructRowFetcherTest;
@@ -9,9 +10,19 @@ import org.jetbrains.dba.sql.SQLTest;
 import org.jetbrains.dba.utils.NumberUtilsTest;
 import org.jetbrains.dba.utils.StringsTest;
 import org.jetbrains.dba.utils.VersionTest;
+import org.junit.internal.JUnitSystem;
+import org.junit.internal.RealSystem;
+import org.junit.internal.TextListener;
+import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
 import org.junit.runner.RunWith;
+import org.junit.runner.notification.Failure;
+import org.junit.runner.notification.RunListener;
 import org.junit.runners.Suite;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -20,6 +31,10 @@ import org.junit.runners.Suite;
  * @author Leonid Bushuev from JetBrains
  */
 public class Tests {
+
+
+  private static final String TC_DETECT_VAR_NAME = "TEAMCITY_PROJECT_NAME";
+
 
   /**
    * Pure unit tests - tests that don't require DB connections and even JDBC drivers.
@@ -58,23 +73,116 @@ public class Tests {
 
 
   /**
-   * Runs unit tests from command line.
+   * Reports test runs to TeamCity using TC service messages.
+   * See <a href="http://confluence.jetbrains.com/display/TCD8/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-ServiceMessages">Interaction with TeamCity</a> for details.
    */
-  public static void main(String[] args) {
-    if (args.length == 0) {
-      JUnitCore.main(UnitTestsSuite.class.getName());
+  private static class MyListener extends RunListener {
+
+    @Override
+    public void testStarted(Description d) throws Exception {
+      say("##teamcity[testStarted name='%s' captureStandardOutput='true']", getTestName(d));
     }
-    else {
-      String[] args2 = new String[args.length];
-      for (int i = 0; i < args.length; i++) {
-        String arg = args[i];
-        if (arg.equalsIgnoreCase(UnitTestsSuite.class.getSimpleName())) arg = UnitTestsSuite.class.getName();
-        if (arg.equalsIgnoreCase(JdbcTestsSuite.class.getSimpleName())) arg = JdbcTestsSuite.class.getName();
-        args2[i] = arg;
-      }
-      JUnitCore.main(args2);
+
+    @Override
+    public void testFailure(Failure f) throws Exception {
+      Description d = f.getDescription();
+      say("##teamcity[testFailed name='%s' message='%s' details='%s']", getTestName(d), f.getMessage(), f.getTrace());
+    }
+
+    @Override
+    public void testIgnored(Description d) throws Exception {
+      say("##teamcity[testIgnored name='%s'", getTestName(d));
+    }
+
+    @Override
+    public void testFinished(Description d) throws Exception {
+      say("##teamcity[testFinished name='%s']", getTestName(d));
+    }
+
+    private String getTestName(Description d) {
+      return d.getClassName() + "." + d.getMethodName();
     }
   }
 
 
+
+  /**
+   * Runs unit tests from command line.
+   */
+  public static void main(String[] args) {
+
+    // header
+    System.out.println("JUnit version " + Version.id());
+    boolean underTC = System.getenv(TC_DETECT_VAR_NAME) != null;
+    if (underTC) System.out.println("TeamCity detected :)");
+
+    underTC = true; // TODO remove!!!
+
+    // gather suites
+    List<Class> suites = new ArrayList<Class>();
+    for (String arg : args) {
+      if (arg.equalsIgnoreCase(UnitTestsSuite.class.getSimpleName())) suites.add(UnitTestsSuite.class);
+      else if (arg.equalsIgnoreCase(JdbcTestsSuite.class.getSimpleName())) suites.add(JdbcTestsSuite.class);
+      else System.err.println("Suite "+arg+" not found");
+    }
+    if (args.length == 0) {
+      suites.add(UnitTestsSuite.class);
+    }
+
+    // prepare junit
+    JUnitSystem system = new RealSystem();
+    JUnitCore core = new JUnitCore();
+    RunListener listener = underTC ? new MyListener() : new TextListener(system);
+    core.addListener(listener);
+
+    // run suites
+    int success = 0,
+        failures = 0,
+        ignores = 0;
+    for (Class suite : suites) {
+      sayNothing();
+      if (underTC) say("##teamcity[testSuiteStarted name='%s']", suite.getSimpleName());
+
+      Result result = core.run(suite);
+
+      success += result.getRunCount() - (result.getFailureCount() + result.getIgnoreCount());
+      failures += result.getFailureCount();
+      ignores += result.getIgnoreCount();
+
+      if (underTC) say("##teamcity[testSuiteFinished name='%s']", suite.getSimpleName());
+      sayNothing();
+    }
+
+    // the end
+    System.exit(failures > 0 ? 1 : 0);
+  }
+
+
+  private static void say(String template, Object... params) {
+    Object[] values = new Object[params.length];
+    for (int i = 0; i < params.length; i++) {
+      Object p = params[i];
+      if (p instanceof String) {
+        String s = (String) p;
+        s = s.replace("|", "||")
+             .replace("'", "|'")
+             .replace("\n", "|n")
+             .replace("\r", "|r")
+             .replace("[", "|[")
+             .replace("]", "|]");
+        values[i] = s;
+      }
+      else {
+        values[i] = p;
+      }
+    }
+    String message = String.format(template, values);
+    System.out.println(message);
+    System.out.flush();
+  }
+
+  private static void sayNothing() {
+    System.out.println();
+    System.out.flush();
+  }
 }
