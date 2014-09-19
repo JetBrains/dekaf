@@ -4,6 +4,7 @@ package org.jetbrains.dba.sql;
 import org.assertj.core.api.Assertions;
 import org.jetbrains.dba.junit.FineRunner;
 import org.jetbrains.dba.junit.TestWithParams;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,10 +28,14 @@ public class SQLTest {
   private static final SQL sql = new SQL();
 
 
+  @Before
+  public void setUp() throws Exception {
+    sql.assignResources(SQLTest.class.getClassLoader(), "common");
+  }
+
+
   @Test
   public void loadSourcesFromResources_ourTestSQLs() {
-    sql.assignResources(SQLTest.class.getClassLoader(), "common");
-
     String text = sql.getSourceText("just-texts:Select2");
     Assertions.assertThat(text).isNotNull();
   }

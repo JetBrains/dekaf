@@ -61,7 +61,19 @@ public class Tests {
    * Runs unit tests from command line.
    */
   public static void main(String[] args) {
-    JUnitCore.main(UnitTestsSuite.class.getName());
+    if (args.length == 0) {
+      JUnitCore.main(UnitTestsSuite.class.getName());
+    }
+    else {
+      String[] args2 = new String[args.length];
+      for (int i = 0; i < args.length; i++) {
+        String arg = args[i];
+        if (arg.equalsIgnoreCase(UnitTestsSuite.class.getSimpleName())) arg = UnitTestsSuite.class.getName();
+        if (arg.equalsIgnoreCase(JdbcTestsSuite.class.getSimpleName())) arg = JdbcTestsSuite.class.getName();
+        args2[i] = arg;
+      }
+      JUnitCore.main(args2);
+    }
   }
 
 

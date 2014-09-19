@@ -48,7 +48,8 @@ public class JdbcDriverSupportTest {
 
   private void obtainDriver(String connectionString) throws SQLException {
     final JdbcDriverSupport myDriverSupport = new JdbcDriverSupport();
-    myDriverSupport.addJdbcDir(new File("jdbc"));
+    String jdbcDriversPath = System.getProperty("jdbc.drivers.path", "jdbc");
+    myDriverSupport.addJdbcDir(new File(jdbcDriversPath));
     final Driver driver = myDriverSupport.obtainDriver(connectionString);
     assertThat(driver).isNotNull();
     assertThat(driver.acceptsURL(connectionString)).isTrue();
