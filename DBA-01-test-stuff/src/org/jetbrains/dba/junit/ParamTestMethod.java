@@ -25,7 +25,7 @@ public class ParamTestMethod extends TestMethod {
   Description getDescription() {
     StringBuilder b = new StringBuilder();
     b.append(javaMethod.getName());
-    b.append('(');
+    b.append('[');
     if (isArray) {
       Object[] realParams = (Object[]) paramData;
       for (int i = 0, n = realParams.length; i < n; i++) {
@@ -39,7 +39,7 @@ public class ParamTestMethod extends TestMethod {
     else {
       b.append(paramData);
     }
-    b.append(')');
+    b.append(']');
     return Description.createTestDescription(javaClass, b.toString());
   }
 
