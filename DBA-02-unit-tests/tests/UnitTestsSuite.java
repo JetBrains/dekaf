@@ -6,6 +6,7 @@ import org.jetbrains.dba.sql.SQLScriptTest;
 import org.jetbrains.dba.sql.SQLTest;
 import org.jetbrains.dba.utils.NumberUtilsTest;
 import org.jetbrains.dba.utils.StringsTest;
+import org.jetbrains.dba.utils.VersionTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -19,6 +20,7 @@ import org.junit.runners.Suite;
 // ------------------------------------------ \\
                       NumberUtilsTest.class,
                       StringsTest.class,
+                      VersionTest.class,
                       SQLTest.class,
                       SQLScriptBuilderTest.class,
                       SQLScriptTest.class,
