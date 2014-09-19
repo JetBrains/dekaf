@@ -116,8 +116,6 @@ public class Tests {
     boolean underTC = System.getenv(TC_DETECT_VAR_NAME) != null;
     if (underTC) System.out.println("TeamCity detected :)");
 
-    underTC = true; // TODO remove!!!
-
     // gather suites
     List<Class> suites = new ArrayList<Class>();
     for (String arg : args) {
