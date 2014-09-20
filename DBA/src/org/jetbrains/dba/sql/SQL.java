@@ -104,7 +104,7 @@ public class SQL {
         if (text != null) return text;
       }
       catch (IOException ioe) {
-        throw new RuntimeException("Could not access resource: " + resource);
+        throw new IllegalArgumentException("Could not access resource: " + resource);
       }
     }
     return null;
