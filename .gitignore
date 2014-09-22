@@ -13,4 +13,5 @@ out
 .idea/deployment.xml
 
 test-db.config
+test-db.properties
 

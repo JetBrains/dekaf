@@ -20,7 +20,7 @@ final class TestConnectionStringProvider {
 
   private static final String CONNECTION_STRING_VAR = "test-db";
   private static final String CONNECTION_STRINGS_VAR_PREFIX = "test-db-";
-  private static final String CONNECTION_STRINGS_FILE = "test-db.config";
+  private static final String CONNECTION_STRINGS_FILE = "test-db.properties";
 
 
   @NotNull
