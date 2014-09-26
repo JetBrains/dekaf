@@ -1,5 +1,6 @@
 package org.jetbrains.dba.utils;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,6 +13,7 @@ import java.util.regex.Pattern;
  *
  * @author Leonid Bushuev from JetBrains
  */
+@SuppressWarnings("SpellCheckingInspection")
 public abstract class Strings {
 
   @SuppressWarnings("StringEquality")
@@ -47,12 +49,6 @@ public abstract class Strings {
   }
 
 
-  public static void ensureEndsWith(@NotNull final StringBuilder stringBuilder, final char c) {
-    final int n = stringBuilder.length();
-    if (n == 0 || stringBuilder.charAt(n - 1) != c) stringBuilder.append(c);
-  }
-
-
   @NotNull
   public static String removeEnding(@NotNull final String str, @NotNull final String ending) {
     int n = str.length(),
@@ -84,21 +80,66 @@ public abstract class Strings {
   }
 
 
+  /**
+   * Checks that the given string matches the specified pattern.
+   *
+   * <p>
+   *   Nulls are acceptable, but for nulls it alwais returns false.
+   * </p>
+   *
+   * @param string   the string to check (nulls are acceptable).
+   * @param pattern  the pattern.
+   * @return         whether matches.
+   */
+  @Contract("null,_->false")
   public static boolean matches(@Nullable final CharSequence string, @NotNull final Pattern pattern) {
     if (string == null) return false;
     return pattern.matcher(string).matches();
   }
 
-
-  @Nullable
-  public static String nUpper(@Nullable final String str) {
-    return str == null ? null : str.toUpperCase();
+  /**
+   * Checks that the given string matches the specified pattern.
+   *
+   * <p>
+   *   Nulls are acceptable, but for nulls it alwais returns false.
+   * </p>
+   *
+   * @param string   the string to check (nulls are acceptable).
+   * @param pattern  the pattern.
+   * @param caseSensitive  check case sensitively.
+   * @return         whether matches.
+   */
+  @Contract("null,_,_->false")
+  public static boolean matches(@Nullable final CharSequence string, @NotNull final String pattern, boolean caseSensitive) {
+    if (string == null) return false;
+    Pattern p = Pattern.compile(pattern, caseSensitive ? 0 : Pattern.CASE_INSENSITIVE);
+    return matches(string, p);
   }
 
 
-  @Nullable
-  public static String nLower(@Nullable final String str) {
-    return str == null ? null : str.toLowerCase();
+  /**
+   * Converts the given string to the upper case.
+   * Supports nulls.
+   * @param string a string to convert, nulls are allowed.
+   * @return  the given string in upper case, or null.
+   * @see #lower
+   */
+  @Contract("!null->!null; null->null")
+  public static String upper(@Nullable final String string) {
+    return string == null ? null : string.toUpperCase();
+  }
+
+
+  /**
+   * Converts the given string to the lower case.
+   * Supports nulls.
+   * @param string a string to convert, nulls are allowed.
+   * @return  the given string in lower case, or null.
+   * @see #upper
+   */
+  @Contract("!null->!null; null->null")
+  public static String lower(@Nullable final String string) {
+    return string == null ? null : string.toLowerCase();
   }
 
 
