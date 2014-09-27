@@ -33,6 +33,13 @@ public final class MysqlFacade extends BaseFacade {
 
   @NotNull
   @Override
+  protected Driver getDriver() {
+    return myDriver;
+  }
+
+
+  @NotNull
+  @Override
   public final Rdbms getDbms() {
     return Rdbms.MYSQL;
   }

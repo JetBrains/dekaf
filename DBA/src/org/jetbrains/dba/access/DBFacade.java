@@ -2,6 +2,7 @@ package org.jetbrains.dba.access;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dba.Rdbms;
+import org.jetbrains.dba.utils.Version;
 
 
 
@@ -23,6 +24,13 @@ public interface DBFacade {
    */
   @NotNull
   public Rdbms getDbms();
+
+  /**
+   * Returns version of the JDBC driver (just two elements only - major and minor).
+   * @return driver version.
+   */
+  @NotNull
+  public Version getDriverVersion();
 
   /**
    * Connects to the database server.

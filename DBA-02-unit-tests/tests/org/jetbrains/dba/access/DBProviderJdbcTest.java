@@ -1,12 +1,14 @@
 package org.jetbrains.dba.access;
 
-import org.assertj.core.api.Assertions;
 import org.jetbrains.dba.Rdbms;
 import org.jetbrains.dba.junit.FineRunner;
 import org.jetbrains.dba.junit.TestWithParams;
+import org.jetbrains.dba.utils.Version;
 import org.junit.FixMethodOrder;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 
@@ -15,7 +17,7 @@ import org.junit.runners.MethodSorters;
  */
 @FixMethodOrder(MethodSorters.JVM)
 @RunWith(FineRunner.class)
-public class DBProviderUnitTest {
+public class DBProviderJdbcTest extends JdbcTestCase {
 
   final DBProvider myDBProvider = new JdbcDBProvider();
 
@@ -32,10 +34,17 @@ public class DBProviderUnitTest {
   };
 
   @TestWithParams(params = "SIMPLE_CONNECTION_STRINGS")
-  public void get_right_DBFacade(String connectionString, Rdbms rdbms) {
+  public void provide(String connectionString, Rdbms rdbms) {
     final DBFacade dbFacade = myDBProvider.provide(connectionString);
-    Assertions.assertThat(dbFacade).isNotNull();
-    Assertions.assertThat(dbFacade.getDbms()).isEqualTo(rdbms);
+    assertThat(dbFacade).isNotNull();
+    assertThat(dbFacade.getDbms()).isEqualTo(rdbms);
+  }
+
+  @TestWithParams(params = "DRIVER_EXAMPLES")
+  public void getDriverVersion(DriverExample driverExample) {
+    final DBFacade dbFacade = myDBProvider.provide(driverExample.sampleConnectionString);
+    Version driverVersion = dbFacade.getDriverVersion();
+    assertThat(driverVersion.compareTo(driverExample.minVersion)).isPositive();
   }
 
 }

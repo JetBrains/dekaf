@@ -3,6 +3,9 @@ package org.jetbrains.dba.access;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dba.errors.DBIsNotConnected;
+import org.jetbrains.dba.utils.Version;
+
+import java.sql.Driver;
 
 
 
@@ -24,6 +27,18 @@ public abstract class BaseFacade implements DBFacade {
   protected BaseFacade(@NotNull String connectionString, @NotNull BaseErrorRecognizer recognizer) {
     this.myConnectionString = connectionString;
     myErrorRecognizer = recognizer;
+  }
+
+
+  @NotNull
+  protected abstract Driver getDriver();
+
+
+  @NotNull
+  @Override
+  public Version getDriverVersion() {
+    Driver driver = getDriver();
+    return Version.of(driver.getMajorVersion(), driver.getMinorVersion());
   }
 
 

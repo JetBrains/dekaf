@@ -1,5 +1,5 @@
 import junit.runner.Version;
-import org.jetbrains.dba.access.DBProviderUnitTest;
+import org.jetbrains.dba.access.DBProviderJdbcTest;
 import org.jetbrains.dba.access.JdbcDriverSupportTest;
 import org.jetbrains.dba.access.StructRowFetcherTest;
 import org.jetbrains.dba.access.ValueGetterTest;
@@ -65,7 +65,7 @@ public class Tests {
   @Suite.SuiteClasses({
   // ------------------------------------------ \\
                         JdbcDriverSupportTest.class,
-                        DBProviderUnitTest.class
+                        DBProviderJdbcTest.class
   // ------------------------------------------ \\
                       })
   public static class JdbcTestsSuite {}

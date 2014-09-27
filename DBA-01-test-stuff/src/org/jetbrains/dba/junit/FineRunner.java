@@ -64,11 +64,20 @@ public class FineRunner extends BlockJUnit4ClassRunner {
     String paramsMemberName = annotation.params();
 
     try {
-      Field paramsField = klass.getDeclaredField(paramsMemberName);
-      if (paramsField == null) {
-        // TODO
-        return;
+      Field paramsField = null;
+      for (Class<?> klazz = klass; paramsField == null && klazz != null; klazz = klazz.getSuperclass()) {
+        try {
+          paramsField = klazz.getDeclaredField(paramsMemberName);
+        }
+        catch (Exception e) {
+          paramsField = null;
+        }
       }
+
+      if (paramsField == null) {
+        throw new IllegalStateException("Class " + klass.getSimpleName() + " has no field " + paramsMemberName);
+      }
+
       paramsField.setAccessible(true);
       Class<?> paramsFieldType = paramsField.getType();
       if (paramsFieldType.isArray()) {
@@ -82,9 +91,6 @@ public class FineRunner extends BlockJUnit4ClassRunner {
       else {
         // TODO
       }
-    }
-    catch (NoSuchFieldException e) {
-      // TODO
     }
     catch (IllegalAccessException e) {
       // TODO

@@ -34,6 +34,13 @@ public final class PostgreFacade extends BaseFacade {
 
   @NotNull
   @Override
+  protected Driver getDriver() {
+    return myDriver;
+  }
+
+
+  @NotNull
+  @Override
   public final Rdbms getDbms() {
     return Rdbms.POSTGRE;
   }
