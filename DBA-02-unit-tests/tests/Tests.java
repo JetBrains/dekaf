@@ -112,7 +112,8 @@ public class Tests {
   public static void main(String[] args) {
 
     // header
-    System.out.println("JUnit version " + Version.id());
+    System.out.println("Java version: " + System.getProperty("java.version"));
+    System.out.println("JUnit version: " + Version.id());
     boolean underTC = System.getenv(TC_DETECT_VAR_NAME) != null;
     if (underTC) System.out.println("TeamCity detected :)");
 
