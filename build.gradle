@@ -25,8 +25,8 @@ dependencies {
         "org.assertj:assertj-core:1.6.0:sources",
         "org.assertj:assertj-core:1.6.0:javadoc"
         
-    lib("com.google.guava:guava:17.0") {
-        forced = true
+    lib ("com.google.guava:guava:17.0") {
+        force = true
     }
 
 
