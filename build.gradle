@@ -16,7 +16,6 @@ dependencies {
     lib "org.jetbrains:annotations:13.0",
         "org.jetbrains:annotations:13.0:sources",
         "org.jetbrains:annotations:13.0:javadoc",
-        "com.google.guava:guava:17.0",
         "com.google.guava:guava:17.0:sources",
         "com.google.guava:guava:17.0:javadoc",
         "junit:junit:4.11",
@@ -25,6 +24,10 @@ dependencies {
         "org.assertj:assertj-core:1.6.0",
         "org.assertj:assertj-core:1.6.0:sources",
         "org.assertj:assertj-core:1.6.0:javadoc"
+        
+    lib("com.google.guava:guava:17.0") {
+        forced = true
+    }
 
 
     open_jdbc "org.postgresql:postgresql:9.2-1003-jdbc4",
