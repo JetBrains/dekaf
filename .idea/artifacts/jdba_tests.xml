@@ -7,6 +7,7 @@
           <element id="file-copy" path="$PROJECT_DIR$/Whole-Test-Package/META-INF/MANIFEST.MF" />
         </element>
         <element id="module-test-output" name="DBA" />
+        <element id="module-test-output" name="Whole-Test-Package" />
       </element>
       <element id="library" level="project" name="guava" />
       <element id="library" level="project" name="annotations" />
