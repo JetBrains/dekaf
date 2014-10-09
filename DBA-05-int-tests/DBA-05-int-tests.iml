@@ -8,9 +8,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="DBA" />
-    <orderEntry type="module" module-name="DBA-01-test-stuff" scope="TEST" />
+    <orderEntry type="module" module-name="DBA" scope="TEST" />
     <orderEntry type="module" module-name="DBA-04-test-db" scope="TEST" />
+    <orderEntry type="library" scope="TEST" name="junit" level="project" />
   </component>
 </module>
-

@@ -13,6 +13,7 @@
             <option name="LABEL_INDENT_SIZE" value="0" />
             <option name="LABEL_INDENT_ABSOLUTE" value="false" />
             <option name="USE_RELATIVE_INDENTS" value="false" />
+            <option name="KEEP_INDENTS_ON_EMPTY_LINES" value="false" />
           </value>
         </option>
         <option name="LINE_SEPARATOR" value="&#10;" />
@@ -224,4 +225,3 @@
     <option name="USE_PER_PROJECT_SETTINGS" value="true" />
   </component>
 </project>
-

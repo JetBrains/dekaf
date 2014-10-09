@@ -4,10 +4,9 @@
     <root id="root">
       <element id="archive" name="jdba-tests.jar">
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/DBA-02-unit-tests/META-INF/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/Whole-Test-Package/META-INF/MANIFEST.MF" />
         </element>
-        <element id="module-output" name="DBA-02-unit-tests" />
-        <element id="module-test-output" name="DBA-02-unit-tests" />
+        <element id="module-test-output" name="DBA" />
       </element>
       <element id="library" level="project" name="guava" />
       <element id="library" level="project" name="annotations" />
