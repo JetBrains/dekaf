@@ -1,7 +1,6 @@
 package org.jetbrains.dba.scripts;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dba.TestDB;
 import org.jetbrains.dba.access.DBSession;
 import org.jetbrains.dba.access.InSessionNoResult;
 import org.jetbrains.dba.access.RowsCollectors;
@@ -14,7 +13,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jetbrains.dba.TestDB.ourDB;
+import static org.jetbrains.dba.TestDB.FACADE;
 import static org.jetbrains.dba.TestDB.zapSchema;
 
 
@@ -29,7 +28,7 @@ public class OraScriptsTest {
 
   @BeforeClass
   public static void setUpClass() throws Exception {
-    TestDB.ourDB.connect();
+    FACADE.connect();
   }
 
 
@@ -46,7 +45,7 @@ public class OraScriptsTest {
 
     final SQLScript script = mySQL.script("##simple-ddl-script");
     final SQLQuery<List<String>> query = mySQL.query("select Note from Topic order by Id", RowsCollectors.list(String.class));
-    ourDB.inSession(new InSessionNoResult() {
+    FACADE.inSession(new InSessionNoResult() {
       @Override
       public void run(@NotNull DBSession session) {
         session.script(script).run();

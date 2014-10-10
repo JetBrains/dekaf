@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/DBA-04-test-db/sql/org/jetbrains/dba/ora" dialect="OracleSqlPlus" />
-    <file url="file://$PROJECT_DIR$/DBA-05-int-tests/oracle-tests" dialect="OracleSqlPlus" />
+    <file url="file://$PROJECT_DIR$/DBA-T/sql/org/jetbrains/dba/ora" dialect="OracleSqlPlus" />
+    <file url="file://$PROJECT_DIR$/Int-Tests/oracle-tests" dialect="OracleSqlPlus" />
   </component>
 </project>

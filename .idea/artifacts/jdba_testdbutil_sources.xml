@@ -2,7 +2,8 @@
   <artifact type="jar" name="jdba-testdbutil-sources">
     <output-path>$PROJECT_DIR$/out/artifacts/jdba-testdbutil-sources</output-path>
     <root id="archive" name="jdba-testdbutil-sources.jar">
-      <element id="dir-copy" path="$PROJECT_DIR$/DBA-04-test-db/sql" />
+      <element id="dir-copy" path="$PROJECT_DIR$/DBA-T/sql" />
+      <element id="dir-copy" path="$PROJECT_DIR$/DBA-T/src" />
     </root>
   </artifact>
 </component>

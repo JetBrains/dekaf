@@ -26,7 +26,7 @@ public interface DBProvider {
    *
    * <p>
    *   The provided DB facade is not connected to a database server yet,
-   *   you have to call the {@link DBFacade#connect(String)} to connect.
+   *   you have to call the {@link DBFacade#connect} to connect.
    * </p>
    *
    * @param connectionString  the connection string (JDBC URL) to the desired database.

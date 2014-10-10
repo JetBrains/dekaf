@@ -3,6 +3,7 @@ package org.jetbrains.dba.access;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dba.errors.DBIsNotConnected;
+import org.jetbrains.dba.sql.SQL;
 import org.jetbrains.dba.utils.Version;
 
 import java.sql.Driver;
@@ -18,20 +19,30 @@ public abstract class BaseFacade implements DBFacade {
   protected final String myConnectionString;
 
   @NotNull
+  protected final SQL mySQL;
+
+  @NotNull
   protected final BaseErrorRecognizer myErrorRecognizer;
 
   @Nullable
   protected BaseSession primarySession;
 
 
-  protected BaseFacade(@NotNull String connectionString, @NotNull BaseErrorRecognizer recognizer) {
+  protected BaseFacade(@NotNull String connectionString, @NotNull SQL sql, @NotNull BaseErrorRecognizer recognizer) {
     this.myConnectionString = connectionString;
+    mySQL = sql;
     myErrorRecognizer = recognizer;
   }
 
 
   @NotNull
   protected abstract Driver getDriver();
+
+
+  @NotNull
+  public SQL sql() {
+    return mySQL;
+  }
 
 
   @NotNull

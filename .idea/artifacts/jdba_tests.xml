@@ -8,6 +8,8 @@
         </element>
         <element id="module-test-output" name="DBA" />
         <element id="module-test-output" name="Whole-Test-Package" />
+        <element id="module-test-output" name="DBA-T" />
+        <element id="module-test-output" name="Int-Tests" />
       </element>
       <element id="library" level="project" name="guava" />
       <element id="library" level="project" name="annotations" />

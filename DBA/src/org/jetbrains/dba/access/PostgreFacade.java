@@ -2,6 +2,7 @@ package org.jetbrains.dba.access;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dba.Rdbms;
+import org.jetbrains.dba.sql.SQL;
 
 import java.sql.Connection;
 import java.sql.Driver;
@@ -27,7 +28,7 @@ public final class PostgreFacade extends BaseFacade {
   public PostgreFacade(@NotNull final String connectionString,
                        @NotNull final Driver driver,
                        @NotNull final BaseErrorRecognizer errorRecognizer) {
-    super(connectionString, errorRecognizer);
+    super(connectionString, new SQL(), errorRecognizer);
     myDriver = driver;
   }
 
@@ -41,7 +42,7 @@ public final class PostgreFacade extends BaseFacade {
 
   @NotNull
   @Override
-  public final Rdbms getDbms() {
+  public final Rdbms rdbms() {
     return Rdbms.POSTGRE;
   }
 

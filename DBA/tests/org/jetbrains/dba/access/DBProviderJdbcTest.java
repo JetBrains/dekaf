@@ -1,12 +1,12 @@
 package org.jetbrains.dba.access;
 
 import org.jetbrains.dba.Rdbms;
-import testing.junit.FineRunner;
-import testing.junit.TestWithParams;
 import org.jetbrains.dba.utils.Version;
 import org.junit.FixMethodOrder;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import testing.junit.FineRunner;
+import testing.junit.TestWithParams;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(FineRunner.class)
 public class DBProviderJdbcTest extends JdbcTestCase {
 
-  final DBProvider myDBProvider = new JdbcDBProvider();
+  final DBProvider myDBProvider = new JdbcDBProvider(getJdbcDriversDir());
 
 
   private static final Object[][] SIMPLE_CONNECTION_STRINGS = {
@@ -37,7 +37,7 @@ public class DBProviderJdbcTest extends JdbcTestCase {
   public void provide(String connectionString, Rdbms rdbms) {
     final DBFacade dbFacade = myDBProvider.provide(connectionString);
     assertThat(dbFacade).isNotNull();
-    assertThat(dbFacade.getDbms()).isEqualTo(rdbms);
+    assertThat(dbFacade.rdbms()).isEqualTo(rdbms);
   }
 
   @TestWithParams(params = "DRIVER_EXAMPLES")

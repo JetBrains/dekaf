@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dba.Rdbms;
 import org.jetbrains.dba.utils.Version;
 
+import java.io.File;
+
 
 
 /**
@@ -14,6 +16,16 @@ public abstract class JdbcTestCase {
   static {
     System.setProperty("java.awt.headless", "true");
   }
+
+  static final String JDBC_DRIVERS_PATH_VAR = "jdbc.drivers.path";
+  static final String JDBC_DRIVERS_DEFAULT_PATH = "jdbc";
+
+
+  protected static File getJdbcDriversDir() {
+    String jdbcDriversPath = System.getProperty(JDBC_DRIVERS_PATH_VAR, JDBC_DRIVERS_DEFAULT_PATH);
+    return new File(jdbcDriversPath);
+  }
+
 
 
   public static final class DriverExample {

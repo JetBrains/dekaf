@@ -1,5 +1,6 @@
 package org.jetbrains.dba;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,7 +17,10 @@ import java.util.Properties;
  * Finds a possible connection string for tests.
  * @author Leonid Bushuev from JetBrains
  */
-final class TestConnectionStringProvider {
+final class TestEnvironmentProvider {
+
+  private static final String JDBC_DRIVERS_PATH_VAR = "jdbc.drivers.path";
+  private static final String JDBC_DRIVERS_DEFAULT_PATH = "jdbc";
 
   private static final String CONNECTION_STRING_VAR = "test-db";
   private static final String CONNECTION_STRINGS_VAR_PREFIX = "test-db-";
@@ -33,8 +37,22 @@ final class TestConnectionStringProvider {
   private final Map<String,String> myEnv;
 
 
-  TestConnectionStringProvider() {
+  static {
+    System.setProperty("java.awt.headless", "true");
+  }
+
+
+  TestEnvironmentProvider() {
     this(System.getProperties(), readLocalProperties(), System.getenv());
+  }
+
+
+  TestEnvironmentProvider(@NotNull final Properties systemProperties,
+                          @NotNull Properties localProperties,
+                          @NotNull final Map<String, String> env) {
+    mySystemProperties = systemProperties;
+    myLocalProperties = localProperties;
+    myEnv = env;
   }
 
 
@@ -58,19 +76,23 @@ final class TestConnectionStringProvider {
     return p;
   }
 
-
-  TestConnectionStringProvider(@NotNull final Properties systemProperties,
-                               @NotNull Properties localProperties,
-                               @NotNull final Map<String, String> env) {
-    mySystemProperties = systemProperties;
-    myLocalProperties = localProperties;
-    myEnv = env;
+  @NotNull
+  File obtainJdbcDriversDir() {
+    String path = getVar(JDBC_DRIVERS_PATH_VAR, JDBC_DRIVERS_DEFAULT_PATH);
+    File dir = new File(path);
+    if (!dir.exists()) System.err.printf("JDBC driver path '%s' doesn't exist.\n", dir.getPath());
+    else if (!dir.isDirectory()) System.err.printf("JDBC driver path '%s' is not a directory.\n", dir.getPath());
+    return dir;
   }
 
-
-  @Nullable
-  String findConnectionString() {
-    return getConnectionString(getVar(CONNECTION_STRING_VAR));
+  @NotNull
+  String obtainConnectionString() {
+    String connectionString = getConnectionString(getVar(CONNECTION_STRING_VAR, null));
+    if (connectionString == null) {
+      System.err.print("Failed to obtain Test DB connection string\n");
+      System.exit(-128);
+    }
+    return connectionString;
   }
 
   @Nullable
@@ -78,7 +100,7 @@ final class TestConnectionStringProvider {
     if (cs != null) {
       String[] f = cs.split(":", 2);
       if (f.length == 1) {
-        String anotherChance = getVar(CONNECTION_STRINGS_VAR_PREFIX + f[0]);
+        String anotherChance = getVar(CONNECTION_STRINGS_VAR_PREFIX + f[0], null);
         return getConnectionString(anotherChance);
       }
       else {
@@ -92,11 +114,12 @@ final class TestConnectionStringProvider {
   }
 
 
-  @Nullable
-  String getVar(@NotNull final String name) {
+  @Contract("_,null->_; _,!null->!null")
+  String getVar(@NotNull final String name, @Nullable final String defaultValue) {
     String value = mySystemProperties.getProperty(name);
     if (value == null) value = myLocalProperties.getProperty(name);
     if (value == null) value = myEnv.get(name);
+    if (value == null) value = defaultValue;
     return value;
   }
 

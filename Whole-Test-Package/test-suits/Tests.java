@@ -1,8 +1,6 @@
 import junit.runner.Version;
-import org.jetbrains.dba.access.DBProviderJdbcTest;
-import org.jetbrains.dba.access.JdbcDriverSupportTest;
-import org.jetbrains.dba.access.StructRowFetcherTest;
-import org.jetbrains.dba.access.ValueGetterTest;
+import org.jetbrains.dba.TestDBTest;
+import org.jetbrains.dba.access.*;
 import org.jetbrains.dba.sql.OraSQLTest;
 import org.jetbrains.dba.sql.SQLScriptBuilderTest;
 import org.jetbrains.dba.sql.SQLScriptTest;
@@ -75,6 +73,22 @@ public class Tests {
 
 
   /**
+   * Integration tests - the main test suit.
+   * Required connection to a test database.
+   */
+  @RunWith(Suite.class)
+  @Suite.SuiteClasses({
+  // ------------------------------------------ \\
+                        TestDBTest.class,
+                        DBQueryRunnerTest.class
+  // ------------------------------------------ \\
+                      })
+  public static class IntTestsSuite {}
+
+
+
+
+  /**
    * Reports test runs to TeamCity using TC service messages.
    * See <a href="http://confluence.jetbrains.com/display/TCD8/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-ServiceMessages">Interaction with TeamCity</a> for details.
    */
@@ -124,6 +138,7 @@ public class Tests {
     for (String arg : args) {
       if (arg.equalsIgnoreCase(UnitTestsSuite.class.getSimpleName())) suites.add(UnitTestsSuite.class);
       else if (arg.equalsIgnoreCase(JdbcTestsSuite.class.getSimpleName())) suites.add(JdbcTestsSuite.class);
+      else if (arg.equalsIgnoreCase(IntTestsSuite.class.getSimpleName())) suites.add(IntTestsSuite.class);
       else System.err.println("Suite "+arg+" not found");
     }
     if (args.length == 0) {

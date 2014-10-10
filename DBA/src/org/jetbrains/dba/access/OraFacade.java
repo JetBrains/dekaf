@@ -2,6 +2,7 @@ package org.jetbrains.dba.access;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dba.Rdbms;
+import org.jetbrains.dba.sql.OraSQL;
 
 import java.sql.Connection;
 import java.sql.Driver;
@@ -22,11 +23,10 @@ public final class OraFacade extends BaseFacade {
   private final Driver myDriver;
 
 
-
   public OraFacade(@NotNull final String connectionString,
                    @NotNull final Driver driver,
                    @NotNull final BaseErrorRecognizer errorRecognizer) {
-    super(connectionString, errorRecognizer);
+    super(connectionString, new OraSQL(), errorRecognizer);
     /*
     if (!(driver instanceof OracleDriver)) {
       throw new DBDriverError(format("Got class %s when expected OracleDriver", driver.getClass().getName()));
@@ -46,7 +46,7 @@ public final class OraFacade extends BaseFacade {
 
   @NotNull
   @Override
-  public final Rdbms getDbms() {
+  public final Rdbms rdbms() {
     return Rdbms.ORACLE;
   }
 
