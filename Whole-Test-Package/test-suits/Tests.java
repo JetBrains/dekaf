@@ -170,7 +170,7 @@ public class Tests {
     }
 
     // the end
-    System.exit(failures > 0 ? 1 : 0);
+    System.exit((failures > 0 && !underTC) ? 1 : 0);
   }
 
 
