@@ -73,17 +73,34 @@ public class Tests {
 
 
   /**
+   * Connection tests - to ensure logic of connect/disconnect,
+   * credentials and other properties.
+   * Required connection to a test database.
+   */
+  @RunWith(Suite.class)
+  @Suite.SuiteClasses({
+  // ------------------------------------------ \\
+                        TestDBTest.class
+  // ------------------------------------------ \\
+                      })
+  public static class ConnectionTestsSuite {}
+
+
+
+  /**
    * Integration tests - the main test suit.
    * Required connection to a test database.
    */
   @RunWith(Suite.class)
   @Suite.SuiteClasses({
   // ------------------------------------------ \\
-                        TestDBTest.class,
                         DBQueryRunnerTest.class
   // ------------------------------------------ \\
                       })
   public static class IntTestsSuite {}
+
+
+
 
 
 
@@ -138,6 +155,7 @@ public class Tests {
     for (String arg : args) {
       if (arg.equalsIgnoreCase(UnitTestsSuite.class.getSimpleName())) suites.add(UnitTestsSuite.class);
       else if (arg.equalsIgnoreCase(JdbcTestsSuite.class.getSimpleName())) suites.add(JdbcTestsSuite.class);
+      else if (arg.equalsIgnoreCase(ConnectionTestsSuite.class.getSimpleName())) suites.add(ConnectionTestsSuite.class);
       else if (arg.equalsIgnoreCase(IntTestsSuite.class.getSimpleName())) suites.add(IntTestsSuite.class);
       else System.err.println("Suite "+arg+" not found");
     }
