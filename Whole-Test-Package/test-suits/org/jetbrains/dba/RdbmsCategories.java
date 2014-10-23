@@ -23,8 +23,8 @@ public class RdbmsCategories extends Suite {
       ImmutableMap.of(
         Rdbms.POSTGRE, Couple.of(ForPostgre.class, NotForPostgre.class),
         Rdbms.ORACLE, Couple.of(ForOracle.class, NotForOracle.class),
-        Rdbms.MSSQL, Couple.of(ForMSSql.class, NotForMSSql.class),
-        Rdbms.MYSQL, Couple.of(ForMySql.class, NotForMySql.class)
+        Rdbms.MSSQL, Couple.of(ForMSSQL1.class, NotForMSSQL1.class),
+        Rdbms.MYSQL, Couple.of(ForMySQL1.class, NotForMySQL1.class)
       );
 
 

@@ -3,4 +3,4 @@ package testing.categories;
 /**
  * Microsoft SQL related tests.
  */
-public interface ForMSSql {}
+public interface ForMSSQL1 {}
