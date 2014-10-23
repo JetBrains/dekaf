@@ -3,4 +3,4 @@ package testing.categories;
 /**
  * MySQL related tests.
  */
-public interface ForMySQL1 {}
+public interface ForMySQL {}

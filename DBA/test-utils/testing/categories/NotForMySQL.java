@@ -3,4 +3,4 @@ package testing.categories;
 /**
  * MySQL related tests.
  */
-public interface NotForMySQL1 {}
+public interface NotForMySQL {}
