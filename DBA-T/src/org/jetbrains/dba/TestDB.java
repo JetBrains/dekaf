@@ -15,19 +15,14 @@ import org.jetbrains.dba.sql.SQLCommand;
 public class TestDB {
 
   /**
-   * Provides with some options how to connect to a test database.
-   */
-  private static final TestEnvironmentProvider TEP = new TestEnvironmentProvider();
-
-  /**
    * Test database provider.
    */
-  public static final JdbcDBProvider PROVIDER = new JdbcDBProvider(TEP.obtainJdbcDriversDir());
+  public static final JdbcDBProvider PROVIDER = new JdbcDBProvider(TestEnvironment.TEP.obtainJdbcDriversDir());
 
   /**
    * Test database facade.
    */
-  public static final DBFacade FACADE = PROVIDER.provide(TEP.obtainConnectionString());
+  public static final DBFacade FACADE = PROVIDER.provide(TestEnvironment.TEP.obtainConnectionString());
 
 
   static {
@@ -38,7 +33,7 @@ public class TestDB {
                         "\tCurrent directory: %s\n";
     System.out.printf(infoString,
                       FACADE.rdbms().toString(),
-                      TEP.obtainConnectionString(),
+                      TestEnvironment.TEP.obtainConnectionString(),
                       System.getProperty("user.dir"));
   }
 

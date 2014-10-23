@@ -9,6 +9,8 @@ import org.jetbrains.dba.sql.SQLQuery;
 import org.jetbrains.dba.sql.SQLScript;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import testing.categories.ForOracle;
 
 import java.util.List;
 
@@ -21,6 +23,7 @@ import static org.jetbrains.dba.TestDB.zapSchema;
 /**
  * @author Leonid Bushuev from JetBrains
  */
+@Category(ForOracle.class)
 public class OraScriptsTest {
 
   final OraSQL mySQL = prepareSQL();

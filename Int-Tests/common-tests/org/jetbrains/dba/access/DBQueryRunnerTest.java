@@ -4,12 +4,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dba.Rdbms;
 import org.jetbrains.dba.sql.SQLQuery;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import testing.categories.ForEveryRdbms;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jetbrains.dba.TestDB.FACADE;
 
 
-
+@Category(ForEveryRdbms.class)
 public class DBQueryRunnerTest {
 
 
