@@ -85,7 +85,8 @@ public class Tests {
                         DBFacadeTest.class,
                         OraFacadeTest.class,
   // --------------------------------------------------------------- \\
-                        DBQueryRunnerTest.class
+                        BaseCommandRunnerTest.class,
+                        BaseQueryRunnerTest.class
   // --------------------------------------------------------------- \\
                       })
   public static class IntTestsSuite {}

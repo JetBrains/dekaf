@@ -12,7 +12,7 @@ import static org.jetbrains.dba.TestDB.FACADE;
 
 
 @Category(ForEveryRdbms.class)
-public class DBQueryRunnerTest {
+public class BaseQueryRunnerTest {
 
 
   @Test
