@@ -90,6 +90,7 @@ abstract class BaseSession implements DBSession {
   }
 
 
+  @NotNull
   Connection getConnection() {
     return connection; // TODO wrap it somehow?
   }
@@ -165,9 +166,9 @@ abstract class BaseSession implements DBSession {
 
 
   @NotNull
-  PreparedStatement prepareStatementForQuery(@NotNull final String queryText, boolean expectManyRows)
-    throws SQLException {
-    return connection.prepareStatement(queryText, ResultSet.TYPE_FORWARD_ONLY,
+  PreparedStatement prepareStatementForQuery(@NotNull final String queryText, boolean expectManyRows) throws SQLException {
+    return connection.prepareStatement(queryText,
+                                       ResultSet.TYPE_FORWARD_ONLY,
                                        ResultSet.CONCUR_READ_ONLY,
                                        ResultSet.CLOSE_CURSORS_AT_COMMIT);
   }
