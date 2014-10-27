@@ -1,5 +1,6 @@
 import junit.runner.Version;
 import org.jetbrains.dba.RdbmsCategories;
+import org.jetbrains.dba.TestDBSpecificTest;
 import org.jetbrains.dba.TestDBTest;
 import org.jetbrains.dba.access.*;
 import org.jetbrains.dba.sql.OraSQLTest;
@@ -82,7 +83,9 @@ public class Tests {
   @Suite.SuiteClasses({
   // --------------------------------------------------------------- \\
                         TestDBTest.class,
+                        TestDBSpecificTest.class,
                         DBFacadeTest.class,
+                        DBFacadeSpecificTest.class,
                         OraFacadeTest.class,
   // --------------------------------------------------------------- \\
                         BaseCommandRunnerTest.class,
