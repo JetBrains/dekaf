@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/DBA_UT/tests-sql/sql/common" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/DBA_UT/tests-sql/sql/mssql" dialect="TSQL" />
-    <file url="file://$PROJECT_DIR$/DBA_UT/tests-sql/sql/mysql" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/DBA_UT/tests-sql/sql/oracle" dialect="OracleSqlPlus" />
-    <file url="file://$PROJECT_DIR$/DBA_UT/tests-sql/sql/postgre" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/TestDB/sql/org/jetbrains/dba/ora" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/DBA-T/sql/org/jetbrains/dba/ora" dialect="OracleSqlPlus" />
+    <file url="file://$PROJECT_DIR$/Int-Tests/oracle-tests" dialect="OracleSqlPlus" />
   </component>
 </project>
-

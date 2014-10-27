@@ -21,6 +21,11 @@ public final class Couple<T> implements Serializable {
   public final T b;
 
 
+  public static <TT> Couple<TT> of(@NotNull final TT a, @NotNull final TT b) {
+    return new Couple<TT>(a, b);
+  }
+
+
   public Couple(@NotNull final T a, @NotNull final T b) {
     this.a = a;
     this.b = b;

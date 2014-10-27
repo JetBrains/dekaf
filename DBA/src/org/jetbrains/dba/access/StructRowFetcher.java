@@ -142,7 +142,7 @@ final class StructRowFetcher<R> extends RowFetcher<R> {
       throw sqle;
     }
     catch (Exception e) {
-      throw new DBFetchingError("Failed to instantiate and/or populate class " + rowClass.getSimpleName());
+      throw new DBFetchingError("Failed to instantiate and/or populate class " + rowClass.getSimpleName(), null);
     }
   }
 }

@@ -26,8 +26,10 @@ public class SQL {
   private final CopyOnWriteArrayList<Resource> myResources = new CopyOnWriteArrayList<Resource>();
 
 
-  public void assignResources(@NotNull final ClassLoader classLoader, @NotNull final String path) {
-    JavaResource jrc = new JavaResource(classLoader, path);
+  public void assignResources(@Nullable final ClassLoader classLoader, @NotNull final String path) {
+    ClassLoader cl = classLoader == null ? this.getClass().getClassLoader() : classLoader;
+    assert cl != null : "Failed to obtain an instance of ClassLoader";
+    JavaResource jrc = new JavaResource(cl, path);
     myResources.add(jrc);
   }
 
@@ -38,7 +40,10 @@ public class SQL {
 
   public void assignResources(@NotNull final Class clazz, @Nullable final String relativePath) {
     ClassLoader classLoader = clazz.getClassLoader();
-    String path = clazz.getPackage().getName().replace('.', '/');
+    assert classLoader != null;
+    Package pakkage = clazz.getPackage();
+    assert pakkage != null;
+    String path = pakkage.getName().replace('.', '/');
     if (relativePath != null) {
       path += '/' + relativePath;
     }
@@ -99,7 +104,7 @@ public class SQL {
         if (text != null) return text;
       }
       catch (IOException ioe) {
-        throw new RuntimeException("Could not access resource: " + resource);
+        throw new IllegalArgumentException("Could not access resource: " + resource);
       }
     }
     return null;

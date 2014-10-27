@@ -3,10 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DBA/DBA.iml" filepath="$PROJECT_DIR$/DBA/DBA.iml" />
-      <module fileurl="file://$PROJECT_DIR$/DBA_IT/DBA_IT.iml" filepath="$PROJECT_DIR$/DBA_IT/DBA_IT.iml" />
-      <module fileurl="file://$PROJECT_DIR$/DBA_UT/DBA_UT.iml" filepath="$PROJECT_DIR$/DBA_UT/DBA_UT.iml" />
-      <module fileurl="file://$PROJECT_DIR$/TestDB/TestDB.iml" filepath="$PROJECT_DIR$/TestDB/TestDB.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DBA-T/DBA-T.iml" filepath="$PROJECT_DIR$/DBA-T/DBA-T.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Int-Tests/Int-Tests.iml" filepath="$PROJECT_DIR$/Int-Tests/Int-Tests.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Whole-Test-Package/Whole-Test-Package.iml" filepath="$PROJECT_DIR$/Whole-Test-Package/Whole-Test-Package.iml" />
     </modules>
   </component>
 </project>
-

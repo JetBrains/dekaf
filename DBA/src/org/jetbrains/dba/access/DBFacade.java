@@ -2,6 +2,8 @@ package org.jetbrains.dba.access;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dba.Rdbms;
+import org.jetbrains.dba.sql.SQL;
+import org.jetbrains.dba.utils.Version;
 
 
 
@@ -22,7 +24,29 @@ public interface DBFacade {
    * @return DBMS code.
    */
   @NotNull
-  public Rdbms getDbms();
+  public Rdbms rdbms();
+
+  /**
+   * The SQL dialect that is set up according to the current database.
+   *
+   * <p>
+   *   If the facade was not connected yet,
+   *   this dialect is just a default dialect of the current RDBMS and used JDBC drivers.
+   *   On the first connect, this dialect can be tuned up to the version or feature set
+   *   of the connected database.
+   * </p>
+   *
+   * @return the SQL dialect.
+   */
+  @NotNull
+  public SQL sql();
+
+  /**
+   * Returns version of the JDBC driver (just two elements only - major and minor).
+   * @return driver version.
+   */
+  @NotNull
+  public Version getDriverVersion();
 
   /**
    * Connects to the database server.

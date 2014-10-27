@@ -14,7 +14,10 @@ public final class NumberUtils {
       return 0;
     }
     try {
-      return Integer.parseInt(str.trim());
+      final String s = str.trim();
+      if (s.isEmpty()) return 0;
+      if (s.charAt(0) == '+') return Integer.parseInt(s.substring(1));
+      return Integer.parseInt(s);
     }
     catch (NumberFormatException e) {
       return 0;
@@ -27,7 +30,10 @@ public final class NumberUtils {
       return 0;
     }
     try {
-      return Long.parseLong(str.trim());
+      final String s = str.trim();
+      if (s.isEmpty()) return 0L;
+      if (s.charAt(0) == '+') return Long.parseLong(s.substring(1));
+      return Long.parseLong(s);
     }
     catch (NumberFormatException e) {
       return 0;

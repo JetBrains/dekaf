@@ -47,7 +47,7 @@ abstract class BaseSession implements DBSession {
       connection.setAutoCommit(false);
     }
     catch (SQLException e) {
-      throw recognizeError(e);
+      throw recognizeError(e, "<turn auto-commit OFF>");
     }
   }
 
@@ -58,7 +58,7 @@ abstract class BaseSession implements DBSession {
     }
     catch (SQLException e) {
       rollback();
-      throw recognizeError(e);
+      throw recognizeError(e, "<commit>");
     }
 
     try {
@@ -87,6 +87,12 @@ abstract class BaseSession implements DBSession {
       // TODO
       e.printStackTrace();
     }
+  }
+
+
+  @NotNull
+  Connection getConnection() {
+    return connection; // TODO wrap it somehow?
   }
 
 
@@ -154,29 +160,34 @@ abstract class BaseSession implements DBSession {
       }
     }
     catch (SQLException e) {
-      throw recognizeError(e);
+      throw recognizeError(e, queryText);
     }
   }
 
 
   @NotNull
-  PreparedStatement prepareStatementForQuery(@NotNull final String queryText, boolean expectManyRows)
-    throws SQLException {
-    return connection.prepareStatement(queryText, ResultSet.TYPE_FORWARD_ONLY,
+  PreparedStatement prepareStatementForQuery(@NotNull final String queryText, boolean expectManyRows) throws SQLException {
+    return connection.prepareStatement(queryText,
+                                       ResultSet.TYPE_FORWARD_ONLY,
                                        ResultSet.CONCUR_READ_ONLY,
                                        ResultSet.CLOSE_CURSORS_AT_COMMIT);
   }
 
 
   @Override
-  public BaseCommandRunner command(@NotNull final SQLCommand command) {
-    return new BaseCommandRunner(this, command.getSourceText());
+  public final BaseCommandRunner command(@NotNull final SQLCommand command) {
+    return command(command.getSourceText(), command.getLineOffset());
   }
 
 
   @Override
-  public BaseCommandRunner command(@NotNull final String commandText) {
-    return new BaseCommandRunner(this, commandText);
+  public final BaseCommandRunner command(@NotNull final String commandText) {
+    return command(commandText, 0);
+  }
+
+
+  protected BaseCommandRunner command(@NotNull final String commandText, int offset) {
+    return new BaseCommandRunner(this, commandText, offset);
   }
 
 
@@ -243,17 +254,15 @@ abstract class BaseSession implements DBSession {
       boolean assigned = assignSpecificParameter(stmt, index, object);
       if (!assigned) {
         throw new UnhandledTypeError("I don't know how to pass an instance of class " +
-                                     object.getClass().getSimpleName() +
-                                     " as the " +
-                                     index +
-                                     "th parameter into a SQL statement.");
+                                     object.getClass().getSimpleName() + " as the " +
+                                     index + "th parameter into a SQL statement.", null);
       }
     }
   }
 
   protected boolean assignSpecificParameter(@NotNull final PreparedStatement stmt,
                                             final int index,
-                                            @NotNull final Object object) {
+                                            @NotNull final Object object) throws SQLException {
     return false;
   }
 
@@ -268,8 +277,8 @@ abstract class BaseSession implements DBSession {
 
 
   @NotNull
-  public DBError recognizeError(@NotNull final SQLException sqlException) {
-    return facade.getErrorRecognizer().recognizeError(sqlException);
+  public DBError recognizeError(@NotNull final SQLException sqlException, @Nullable final String statementText) {
+    return facade.getErrorRecognizer().recognizeError(sqlException, statementText);
   }
 
 

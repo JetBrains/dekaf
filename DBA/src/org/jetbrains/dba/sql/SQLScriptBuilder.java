@@ -189,7 +189,8 @@ public class SQLScriptBuilder {
 
   @NotNull
   public SQLScript build() {
-    return sql.instantiateSQLScript(myCommands.build());
+    ImmutableList<SQLCommand> commands = myCommands.build();
+    return commands.size() > 0 ? sql.instantiateSQLScript(commands) : sql.getEmptyScript();
   }
 
 

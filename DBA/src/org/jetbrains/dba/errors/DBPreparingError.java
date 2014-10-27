@@ -1,6 +1,7 @@
 package org.jetbrains.dba.errors;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.SQLException;
 
@@ -12,22 +13,22 @@ import java.sql.SQLException;
  * @author Leonid Bushuev from JetBrains
  */
 public class DBPreparingError extends DBError {
-  public DBPreparingError(@NotNull final SQLException sqlException) {
-    super(sqlException);
+  public DBPreparingError(@NotNull final SQLException sqlException, @Nullable String statementText) {
+    super(sqlException, statementText);
   }
 
 
-  public DBPreparingError(@NotNull final String message, @NotNull final SQLException sqlException) {
-    super(message, sqlException);
+  public DBPreparingError(@NotNull final String message, @NotNull final SQLException sqlException, @Nullable String statementText) {
+    super(message, sqlException, statementText);
   }
 
 
   public DBPreparingError(@NotNull final String message, @NotNull final Exception exception) {
-    super(message, exception);
+    super(message, exception, null);
   }
 
 
   public DBPreparingError(@NotNull final String message) {
-    super(message);
+    super(message, null);
   }
 }

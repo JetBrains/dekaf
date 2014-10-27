@@ -1,6 +1,7 @@
 package org.jetbrains.dba.errors;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.SQLException;
 
@@ -12,22 +13,22 @@ import java.sql.SQLException;
  * @author Leonid Bushuev from JetBrains
  */
 public class DBFetchingError extends DBError {
-  public DBFetchingError(@NotNull final SQLException sqlException) {
-    super(sqlException);
+  public DBFetchingError(@NotNull final SQLException sqlException, @Nullable String statementText) {
+    super(sqlException, statementText);
   }
 
 
-  public DBFetchingError(@NotNull final String message, @NotNull final SQLException sqlException) {
-    super(message, sqlException);
+  public DBFetchingError(@NotNull final String message, @NotNull final SQLException sqlException, @Nullable String statementText) {
+    super(message, sqlException, statementText);
   }
 
 
-  public DBFetchingError(@NotNull final String message, @NotNull final Exception exception) {
-    super(message, exception);
+  public DBFetchingError(@NotNull final String message, @NotNull final Exception exception, @Nullable String statementText) {
+    super(message, exception, statementText);
   }
 
 
-  public DBFetchingError(@NotNull final String message) {
-    super(message);
+  public DBFetchingError(@NotNull final String message, @Nullable String statementText) {
+    super(message, statementText);
   }
 }

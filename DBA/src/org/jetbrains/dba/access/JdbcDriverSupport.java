@@ -167,6 +167,13 @@ public class JdbcDriverSupport {
 
 
   @Nullable
+  public static Rdbms determineRdbms(@NotNull final String connectionString) {
+    JdbcDriverDef dd = determineDriverDef(connectionString);
+    return dd != null ? dd.rdbms : null;
+  }
+
+
+  @Nullable
   static JdbcDriverDef determineDriverDef(@NotNull final String connectionString) {
     for (JdbcDriverDef def : myDriverDefs) {
       if (matches(connectionString, def.connectionStringPattern)) return def;

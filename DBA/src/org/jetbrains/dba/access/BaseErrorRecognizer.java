@@ -1,6 +1,7 @@
 package org.jetbrains.dba.access;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dba.errors.DBError;
 
 import java.sql.SQLException;
@@ -13,7 +14,7 @@ import java.sql.SQLException;
 public abstract class BaseErrorRecognizer {
 
   @NotNull
-  public DBError recognizeError(@NotNull final SQLException sqlException) {
+  public DBError recognizeError(@NotNull final SQLException sqlException, @Nullable final String statementText) {
     // unroll the exception - it's needed when the given exception is wrapped
     //                        by some external framework wrappers, connection pools, etc.
     SQLException e = sqlException;
@@ -22,10 +23,10 @@ public abstract class BaseErrorRecognizer {
     }
 
     // recognize DBMS-specific error
-    return recognizeSpecificError(e);
+    return recognizeSpecificError(e, statementText);
   }
 
 
   @NotNull
-  protected abstract DBError recognizeSpecificError(@NotNull final SQLException sqlException);
+  protected abstract DBError recognizeSpecificError(@NotNull final SQLException sqlException, @Nullable final String statementText);
 }

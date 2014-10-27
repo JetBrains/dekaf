@@ -10,12 +10,12 @@ import org.jetbrains.annotations.NotNull;
 public class DBDriverError extends DBError {
 
   public DBDriverError(@NotNull String message, @NotNull Exception exception) {
-    super(message, exception);
+    super(message, exception, null);
   }
 
 
   public DBDriverError(@NotNull String message) {
-    super(message);
+    super(message, null);
   }
 
 }

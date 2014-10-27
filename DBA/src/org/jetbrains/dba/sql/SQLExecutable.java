@@ -34,6 +34,11 @@ public abstract class SQLExecutable {
   }
 
 
+  public int getLineOffset() {
+    return myLineOffset;
+  }
+
+
   @NotNull
   public String getSourceText() {
     return mySourceText;

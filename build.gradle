@@ -13,15 +13,30 @@ configurations {
 
 dependencies {
 
-    lib "com.google.guava:guava:14.0.1",
-        "com.google.guava:guava:14.0.1:sources",
-        "com.google.guava:guava:14.0.1:javadoc",
-        "com.intellij:annotations:12.0",
-        "com.intellij:annotations:12.0:sources",
-        "com.intellij:annotations:12.0:javadoc",
-        "org.testng:testng:6.8.5",
-        "org.testng:testng:6.8.5:sources",
-        "org.testng:testng:6.8.5:javadoc"
+    lib "org.jetbrains:annotations:13.0",
+        "junit:junit:4.11",
+        "org.assertj:assertj-core:1.7.0",
+
+    lib ("com.google.guava:guava:17.0") {
+        force = true
+    }
+
+    lib ("org.assertj:assertj-guava:1.2.0") {
+        transitive = false
+    }
+
+
+    lib "org.jetbrains:annotations:13.0:sources",
+        "org.jetbrains:annotations:13.0:javadoc",
+        "com.google.guava:guava:17.0:sources",
+        "com.google.guava:guava:17.0:javadoc",
+        "junit:junit:4.11:sources",
+        "junit:junit:4.11:javadoc",
+        "org.assertj:assertj-core:1.6.0:sources",
+        "org.assertj:assertj-core:1.6.0:javadoc",
+        "org.assertj:assertj-guava:1.2.0:sources",
+        "org.assertj:assertj-guava:1.2.0:javadoc"
+
 
 
     open_jdbc "org.postgresql:postgresql:9.2-1003-jdbc4",

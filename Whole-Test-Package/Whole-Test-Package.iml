@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/test-suits" isTestSource="true" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="DBA" scope="TEST" />
+    <orderEntry type="module" module-name="DBA-T" scope="TEST" />
+    <orderEntry type="module" module-name="Int-Tests" scope="TEST" />
+    <orderEntry type="library" scope="TEST" name="junit" level="project" />
+  </component>
+</module>
