@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Pattern;
 
+import static org.jetbrains.dba.KnownRdbms.*;
 import static org.jetbrains.dba.utils.Strings.matches;
 
 
@@ -26,12 +27,12 @@ public class JdbcDriverSupport {
 
   private final static List<JdbcDriverDef> myDriverDefs = new CopyOnWriteArrayList<JdbcDriverDef>(
     Arrays.asList(
-      new JdbcDriverDef(Rdbms.POSTGRE, "^jdbc:postgresql:.*$", "^postgresql-.*[\\-\\.]jdbc\\d?\\.jar$", "org.postgresql.Driver"),
-      new JdbcDriverDef(Rdbms.ORACLE, "^jdbc:oracle:.*$", "^(ojdbc.*|orai18n)\\.jar$", "oracle.jdbc.driver.OracleDriver"),
-      new JdbcDriverDef(Rdbms.MSSQL, "^jdbc:sqlserver:.*$", "^sqljdbc4\\.jar$", "com.microsoft.sqlserver.jdbc.SQLServerDriver"),
-      new JdbcDriverDef(Rdbms.MSSQL, "^jdbc:jtds:sqlserver:.*$", "^jtds-.*\\.jar$", "net.sourceforge.jtds.jdbc.Driver"),
-      new JdbcDriverDef(Rdbms.MYSQL, "^jdbc:mysql:.*$", "^mysql-connector-.*\\.jar$", "com.mysql.jdbc.Driver"),
-      new JdbcDriverDef(Rdbms.HSQL2, "^jdbc:hsqldb:.*$", "^hsqldb\\.jar$", "org.hsqldb.jdbc.JDBCDriver")
+      new JdbcDriverDef(POSTGRE, "^jdbc:postgresql:.*$", "^postgresql-.*[\\-\\.]jdbc\\d?\\.jar$", "org.postgresql.Driver"),
+      new JdbcDriverDef(ORACLE, "^jdbc:oracle:.*$", "^(ojdbc.*|orai18n)\\.jar$", "oracle.jdbc.driver.OracleDriver"),
+      new JdbcDriverDef(MSSQL, "^jdbc:sqlserver:.*$", "^sqljdbc4\\.jar$", "com.microsoft.sqlserver.jdbc.SQLServerDriver"),
+      new JdbcDriverDef(MSSQL, "^jdbc:jtds:sqlserver:.*$", "^jtds-.*\\.jar$", "net.sourceforge.jtds.jdbc.Driver"),
+      new JdbcDriverDef(MYSQL, "^jdbc:mysql:.*$", "^mysql-connector-.*\\.jar$", "com.mysql.jdbc.Driver"),
+      new JdbcDriverDef(HSQL, "^jdbc:hsqldb:.*$", "^hsqldb\\.jar$", "org.hsqldb.jdbc.JDBCDriver")
     )
   );
 

@@ -1,6 +1,7 @@
 package org.jetbrains.dba.access;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.dba.KnownRdbms;
 import org.jetbrains.dba.Rdbms;
 import org.jetbrains.dba.sql.SQL;
 
@@ -43,7 +44,7 @@ public final class PostgreFacade extends BaseFacade {
   @NotNull
   @Override
   public final Rdbms rdbms() {
-    return Rdbms.POSTGRE;
+    return KnownRdbms.POSTGRE;
   }
 
 

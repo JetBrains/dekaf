@@ -2,52 +2,63 @@ package org.jetbrains.dba;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
+
 
 
 /**
  * Type of RDBMS.
  *
+ * <p>
+ *   Assumed that there is only one instance of Rdbms class for each RDBMS type.
+ *   So, it's OK to use <b>==</b> for comparing instances.
+ * </p>
+ *
  * @author Leonid Bushuev from JetBrains
  */
-public enum Rdbms {
+public final class Rdbms implements Serializable {
+
+  //// STATE \\\\
+
 
   /**
-   * PostgreSQL.
+   * A unique short code that is used when
+   * the RDBMS type is serialized/deserialized.
    */
-  POSTGRE ("PG"),
-
-  /**
-   * Oracle Database.
-   */
-  ORACLE ("ORA"),
-
-  /**
-   * Microsoft SQL Server.
-   */
-  MSSQL ("MSSQL"),
-
-  /**
-   * MySQL.
-   */
-  MYSQL ("MYSQL"),
-
-  /**
-   * HyperSonic SQL v.2.
-   */
-  HSQL2 ("HSQL"),
-
-  /**
-   * The RDBMS is unknown or has not been determined.
-   */
-  UNKNOWN ("???");
-
-
   @NotNull
-  public final String shortName;
+  public final String code;
 
 
 
-  Rdbms(@NotNull String shortName) {
-    this.shortName = shortName;
+  //// METHODS \\\\
+
+
+  public Rdbms(@NotNull final String code) {
+    this.code = code.intern();
   }
+
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Rdbms that = (Rdbms)o;
+
+    //noinspection StringEquality
+    return this.code == that.code;
+  }
+
+
+  @Override
+  public int hashCode() {
+    return code.hashCode();
+  }
+
+
+  @Override
+  public String toString() {
+    return code;
+  }
+
 }

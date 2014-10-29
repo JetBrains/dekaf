@@ -7,6 +7,9 @@ import org.jetbrains.dba.access.InSessionNoResult;
 import org.jetbrains.dba.access.JdbcDBProvider;
 import org.jetbrains.dba.sql.SQLCommand;
 
+import static org.jetbrains.dba.KnownRdbms.MSSQL;
+import static org.jetbrains.dba.KnownRdbms.ORACLE;
+
 
 
 /**
@@ -43,16 +46,10 @@ public class TestDB {
   //// TEST UTILITIES \\\\
 
   public static void zapSchema() {
-    switch (FACADE.rdbms()) {
-      case ORACLE:
-        zapOracleSchema();
-        break;
-      case MSSQL:
-        zapMicrosoftSchema();
-        break;
-      default:
-        throw new IllegalStateException("I don't know how to cleanup a schema in "+FACADE.rdbms()+".");
-    }
+    Rdbms rdbms = FACADE.rdbms();
+    if (rdbms == ORACLE) zapOracleSchema();
+    else if (rdbms == MSSQL) zapMicrosoftSchema();
+    else throw new IllegalStateException("I don't know how to cleanup a schema in " + FACADE.rdbms() + ".");
   }
 
 

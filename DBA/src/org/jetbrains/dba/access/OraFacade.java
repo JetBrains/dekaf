@@ -9,6 +9,8 @@ import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import static org.jetbrains.dba.KnownRdbms.ORACLE;
+
 
 
 /**
@@ -47,7 +49,7 @@ public final class OraFacade extends BaseFacade {
   @NotNull
   @Override
   public final Rdbms rdbms() {
-    return Rdbms.ORACLE;
+    return ORACLE;
   }
 
 

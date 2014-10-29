@@ -9,6 +9,8 @@ import org.jetbrains.dba.errors.DbmsUnsupportedFeatureError;
 import java.io.File;
 import java.sql.Driver;
 
+import static org.jetbrains.dba.KnownRdbms.*;
+
 
 
 /**
@@ -30,11 +32,11 @@ public final class JdbcDBProvider implements DBProvider {
 
   private final ImmutableMap<Rdbms, BaseErrorRecognizer> myErrorRecognizers =
     ImmutableMap.<Rdbms, BaseErrorRecognizer>builder()
-      .put(Rdbms.POSTGRE, new PostgreErrorRecognizer())
-      .put(Rdbms.ORACLE, new OraErrorRecognizer())
-      .put(Rdbms.MSSQL, new MssqlErrorRecognizer())
-      .put(Rdbms.MYSQL, new MysqlErrorRecognizer())
-      .put(Rdbms.UNKNOWN, new UnknownErrorRecognizer())
+      .put(POSTGRE, new PostgreErrorRecognizer())
+      .put(ORACLE, new OraErrorRecognizer())
+      .put(MSSQL, new MssqlErrorRecognizer())
+      .put(MYSQL, new MysqlErrorRecognizer())
+      .put(UNKNOWN, new UnknownErrorRecognizer())
       .build();
 
 
@@ -67,16 +69,14 @@ public final class JdbcDBProvider implements DBProvider {
   @Override
   public DBFacade provide(@NotNull final String connectionString) {
     JdbcDriverDef driverDef = JdbcDriverSupport.determineDriverDef(connectionString);
-    Rdbms rdbms = driverDef != null ? driverDef.rdbms : Rdbms.UNKNOWN;
+    Rdbms rdbms = driverDef != null ? driverDef.rdbms : UNKNOWN;
     Driver driver = myDriverSupport.obtainDriver(connectionString);
     BaseErrorRecognizer errorRecognizer = obtainErrorRecognizer(rdbms);
-    switch (rdbms) {
-      case POSTGRE: return new PostgreFacade(connectionString, driver, errorRecognizer);
-      case ORACLE: return new OraFacade(connectionString, driver, errorRecognizer);
-      case MSSQL: return new MssqlFacade(connectionString, driver, errorRecognizer);
-      case MYSQL: return new MysqlFacade(connectionString, driver, errorRecognizer);
-      default: throw new DbmsUnsupportedFeatureError("This RDBMS is not supported yet.", null);
-    }
+    if (rdbms == POSTGRE) return new PostgreFacade(connectionString, driver, errorRecognizer);
+    else if (rdbms == ORACLE) return new OraFacade(connectionString, driver, errorRecognizer);
+    else if (rdbms == MSSQL) return new MssqlFacade(connectionString, driver, errorRecognizer);
+    else if (rdbms == MYSQL) return new MysqlFacade(connectionString, driver, errorRecognizer);
+    else throw new DbmsUnsupportedFeatureError("This RDBMS is not supported yet.", null);
   }
 
 
@@ -85,7 +85,7 @@ public final class JdbcDBProvider implements DBProvider {
   private BaseErrorRecognizer obtainErrorRecognizer(@Nullable final Rdbms rdbms) {
     BaseErrorRecognizer r = null;
     if (rdbms != null) r = myErrorRecognizers.get(rdbms);
-    if (r == null) r = myErrorRecognizers.get(Rdbms.UNKNOWN);
+    if (r == null) r = myErrorRecognizers.get(UNKNOWN);
     assert r != null : "The error recognizer for unknown RDBMS must be registered.";
     return r;
   }

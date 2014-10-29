@@ -50,6 +50,6 @@ final class JdbcDriverDef {
 
   @Override
   public int hashCode() {
-    return rdbms.ordinal() * 7774777 + connectionStringPattern.hashCode();
+    return rdbms.hashCode() * 7774777 + connectionStringPattern.hashCode();
   }
 }
