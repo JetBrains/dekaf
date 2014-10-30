@@ -3,10 +3,7 @@ import org.jetbrains.dba.RdbmsCategories;
 import org.jetbrains.dba.TestDBSpecificTest;
 import org.jetbrains.dba.TestDBTest;
 import org.jetbrains.dba.access.*;
-import org.jetbrains.dba.sql.OraSQLTest;
-import org.jetbrains.dba.sql.SQLScriptBuilderTest;
-import org.jetbrains.dba.sql.SQLScriptTest;
-import org.jetbrains.dba.sql.SQLTest;
+import org.jetbrains.dba.sql.*;
 import org.jetbrains.dba.utils.NumberUtilsTest;
 import org.jetbrains.dba.utils.StringsTest;
 import org.jetbrains.dba.utils.VersionTest;
@@ -51,6 +48,7 @@ public class Tests {
                         SQLScriptBuilderTest.class,
                         SQLScriptTest.class,
                         OraSQLTest.class,
+                        MicrosoftSQLTest.class,
                         ValueGetterTest.class,
                         StructRowFetcherTest.class
   // ------------------------------------------ \\

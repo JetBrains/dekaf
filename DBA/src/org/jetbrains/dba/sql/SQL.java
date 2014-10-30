@@ -8,6 +8,7 @@ import org.jetbrains.dba.utils.JavaResource;
 import org.jetbrains.dba.utils.Resource;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,7 +20,7 @@ import java.util.regex.Pattern;
  *
  * @author Leonid Bushuev from JetBrains
  */
-public class SQL {
+public class SQL implements Serializable, Cloneable {
 
 
   @NotNull
@@ -192,4 +193,20 @@ public class SQL {
   }
 
   private static final SQLScript EMPTY_SCRIPT = new SQLScript(ImmutableList.<SQLCommand>of());
+
+
+
+  @SuppressWarnings("CloneDoesntDeclareCloneNotSupportedException")
+  @Override
+  protected SQL clone() {
+    try {
+      SQL clone = (SQL) super.clone();
+      clone.myResources.addAll(this.myResources);
+      return clone;
+    }
+    catch (CloneNotSupportedException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
 }
