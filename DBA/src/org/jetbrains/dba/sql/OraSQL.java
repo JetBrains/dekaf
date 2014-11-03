@@ -7,5 +7,8 @@ package org.jetbrains.dba.sql;
 public class OraSQL extends SQL {
 
 
-
+  @Override
+  public OraSQL clone() {
+    return (OraSQL) super.clone();
+  }
 }

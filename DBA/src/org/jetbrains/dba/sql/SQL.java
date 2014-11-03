@@ -198,7 +198,7 @@ public class SQL implements Serializable, Cloneable {
 
   @SuppressWarnings("CloneDoesntDeclareCloneNotSupportedException")
   @Override
-  protected SQL clone() {
+  public SQL clone() {
     try {
       SQL clone = (SQL) super.clone();
       clone.myResources.addAll(this.myResources);

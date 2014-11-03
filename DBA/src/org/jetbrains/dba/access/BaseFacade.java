@@ -2,41 +2,60 @@ package org.jetbrains.dba.access;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.dba.Rdbms;
 import org.jetbrains.dba.errors.DBIsNotConnected;
 import org.jetbrains.dba.sql.SQL;
-import org.jetbrains.dba.utils.Version;
 
-import java.sql.Driver;
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 
 
 /**
- *
- **/
-public abstract class BaseFacade implements DBFacade {
+ * @author Leonid Bushuev from JetBrains
+ */
+public class BaseFacade implements DBFacade {
 
   @NotNull
-  protected final String myConnectionString;
+  private final Rdbms myRdbms;
+
+  @NotNull
+  private final DataSource myDataSource;
 
   @NotNull
   protected final SQL mySQL;
 
   @NotNull
-  protected final BaseErrorRecognizer myErrorRecognizer;
+  protected final DBErrorRecognizer myErrorRecognizer;
+
+  private int myConnectionsLimit = 1;
 
   @Nullable
   protected BaseSession primarySession;
 
 
-  protected BaseFacade(@NotNull String connectionString, @NotNull SQL sql, @NotNull BaseErrorRecognizer recognizer) {
-    this.myConnectionString = connectionString;
-    mySQL = sql;
+  public BaseFacade(@NotNull final Rdbms rdbms,
+                    @NotNull final DataSource source,
+                    @NotNull final DBErrorRecognizer recognizer,
+                    @NotNull final SQL sql) {
+    myRdbms = rdbms;
+    myDataSource = source;
     myErrorRecognizer = recognizer;
+    mySQL = sql;
+  }
+
+
+  public void setConnectionsLimit(int connectionsLimit) {
+    myConnectionsLimit = connectionsLimit;
   }
 
 
   @NotNull
-  protected abstract Driver getDriver();
+  @Override
+  public Rdbms rdbms() {
+    return myRdbms;
+  }
 
 
   @NotNull
@@ -45,59 +64,54 @@ public abstract class BaseFacade implements DBFacade {
   }
 
 
-  @NotNull
-  @Override
-  public Version getDriverVersion() {
-    Driver driver = getDriver();
-    return Version.of(driver.getMajorVersion(), driver.getMinorVersion());
-  }
-
-
-  @Override
   public void connect() {
     if (primarySession == null) {
-      primarySession = internalConnect();
-    }
-    else {
-      //noinspection StatementWithEmptyBody
-      if (this.myConnectionString.equals(myConnectionString)) {
-        // already connected to the same URL
-      }
-      else {
-        throw new IllegalStateException("Could not connect to another URL");
-      }
+      primarySession = connectAndCreateFacade();
     }
   }
 
+  @NotNull
+  protected BaseSession connectAndCreateFacade() {
+    Connection connection;
+    try {
+      connection = myDataSource.getConnection();
+    }
+    catch (SQLException sqle) {
+      throw myErrorRecognizer.recognizeError(sqle, myDataSource.getClass().getSimpleName()+".getConnection()");
+    }
 
-  protected abstract BaseSession internalConnect();
+    BaseSession session = createFacadeForConnection(connection);
+    return session;
+  }
+
+  @NotNull
+  protected BaseSession createFacadeForConnection(@NotNull final Connection connection) {
+    return new BaseSession(this, connection, true);
+  }
 
 
-  @Override
+
   public void reconnect() {
     if (primarySession != null) {
       primarySession.close();
     }
-    primarySession = internalConnect();
+    primarySession = connectAndCreateFacade();
   }
 
 
-  @Override
   public void disconnect() {
     if (primarySession != null) {
       primarySession.close();
+      primarySession = null;
     }
-    primarySession = null;
   }
 
 
-  @Override
   public boolean isConnected() {
     return primarySession != null;
   }
 
 
-  @Override
   public <R> R inTransaction(final InTransaction<R> operation) {
     if (primarySession == null) {
       throw new DBIsNotConnected("Facade is not connected.");
@@ -107,7 +121,6 @@ public abstract class BaseFacade implements DBFacade {
   }
 
 
-  @Override
   public void inTransaction(final InTransactionNoResult operation) {
     if (primarySession == null) {
       throw new DBIsNotConnected("Facade is not connected.");
@@ -117,7 +130,6 @@ public abstract class BaseFacade implements DBFacade {
   }
 
 
-  @Override
   public <R> R inSession(final InSession<R> operation) {
     if (primarySession == null) {
       throw new DBIsNotConnected("Facade is not connected.");
@@ -127,7 +139,6 @@ public abstract class BaseFacade implements DBFacade {
   }
 
 
-  @Override
   public void inSession(final InSessionNoResult operation) {
     if (primarySession == null) {
       throw new DBIsNotConnected("Facade is not connected.");
@@ -138,7 +149,7 @@ public abstract class BaseFacade implements DBFacade {
 
 
   @NotNull
-  public BaseErrorRecognizer getErrorRecognizer() {
+  public DBErrorRecognizer getErrorRecognizer() {
     return myErrorRecognizer;
   }
 }

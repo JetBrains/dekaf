@@ -71,6 +71,15 @@ public class JdbcDriverSupport {
 
 
   @NotNull
+  public JdbcDataSource createDataSource(@NotNull final String connectionString, @Nullable final Properties connectionProperties)
+      throws DBDriverError
+  {
+    Driver driver = obtainDriver(connectionString);
+    return new JdbcDataSource(connectionString, connectionProperties, driver);
+  }
+
+
+  @NotNull
   public Driver obtainDriver(@NotNull final String connectionString)
       throws DBDriverError
   {

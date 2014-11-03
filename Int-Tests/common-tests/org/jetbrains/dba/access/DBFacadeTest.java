@@ -1,6 +1,5 @@
 package org.jetbrains.dba.access;
 
-import org.jetbrains.dba.utils.Version;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -24,11 +23,13 @@ public class DBFacadeTest {
   }
 
 
+  /*
   @Test
   public void getDriverVersion_isNotZero() {
     Version version = FACADE.getDriverVersion();
     assertThat(version).isGreaterThanOrEqualTo(Version.of(1,0));
   }
+  */
 
 
 }

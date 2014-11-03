@@ -21,7 +21,7 @@ public class MicrosoftSQL extends SQL {
 
 
   @Override
-  protected MicrosoftSQL clone() {
+  public MicrosoftSQL clone() {
     MicrosoftSQL clone = (MicrosoftSQL) super.clone();
     clone.myCaseInsensitive = this.myCaseInsensitive;
     return clone;

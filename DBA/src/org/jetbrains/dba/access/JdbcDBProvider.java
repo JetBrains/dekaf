@@ -1,15 +1,16 @@
 package org.jetbrains.dba.access;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dba.Rdbms;
-import org.jetbrains.dba.errors.DbmsUnsupportedFeatureError;
+import org.jetbrains.dba.errors.DBFactoryError;
 
+import javax.sql.DataSource;
 import java.io.File;
-import java.sql.Driver;
-
-import static org.jetbrains.dba.KnownRdbms.*;
+import java.util.Properties;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.regex.Matcher;
 
 
 
@@ -30,15 +31,17 @@ import static org.jetbrains.dba.KnownRdbms.*;
 public final class JdbcDBProvider implements DBProvider {
 
 
-  private final ImmutableMap<Rdbms, BaseErrorRecognizer> myErrorRecognizers =
-    ImmutableMap.<Rdbms, BaseErrorRecognizer>builder()
-      .put(POSTGRE, new PostgreErrorRecognizer())
-      .put(ORACLE, new OraErrorRecognizer())
-      .put(MSSQL, new MssqlErrorRecognizer())
-      .put(MYSQL, new MysqlErrorRecognizer())
-      .put(UNKNOWN, new UnknownErrorRecognizer())
-      .build();
+  private static final ImmutableList<Class<? extends DBServiceFactory>> KNOWN_SERVICE_FACTORIES =
+    ImmutableList.of(
+      PostgreServiceFactory.class,
+      OracleServiceFactory.class,
+      MicrosoftServiceFactory.class,
+      MysqlServiceFactory.class
+    );
 
+
+  @NotNull
+  private CopyOnWriteArrayList<DBServiceFactory> myServiceFactories;
 
   @NotNull
   private JdbcDriverSupport myDriverSupport;
@@ -46,54 +49,103 @@ public final class JdbcDBProvider implements DBProvider {
 
   /**
    * Instantiates a new provider.
-   * @see #JdbcDBProvider(java.io.File)
+   * @see #JdbcDBProvider(boolean, java.io.File)
    */
-  public JdbcDBProvider() {
+  public JdbcDBProvider(boolean registerKnownRDBMS) {
+    myServiceFactories = new CopyOnWriteArrayList<DBServiceFactory>();
     myDriverSupport = new JdbcDriverSupport();
+
+    if (registerKnownRDBMS) {
+      for (Class<? extends DBServiceFactory> factoryClass : KNOWN_SERVICE_FACTORIES) {
+        registerServiceFactory(factoryClass);
+      }
+    }
   }
 
 
   /**
    * Instantiates a new provider and specify the directory where JDBC drivers are placed.
    * @param jdbcDir   directory with JDBC drivers.
-   * @see #JdbcDBProvider()
+   * @see #JdbcDBProvider(boolean)
    */
-  public JdbcDBProvider(@NotNull File jdbcDir) {
-    this();
+  public JdbcDBProvider(boolean registerKnownRDBMS, @NotNull File jdbcDir) {
+    this(registerKnownRDBMS);
     addJdbcDriversDir(jdbcDir);
   }
 
 
+  public void registerServiceFactory(@NotNull final Class<? extends DBServiceFactory> factoryClass) {
+    final DBServiceFactory factory;
+    try {
+      factory = factoryClass.newInstance();
+    }
+    catch (Exception e) {
+      String msg = String.format("Failed to instantiate DB service factory class %s: %s: %s",
+                                 factoryClass.getSimpleName(), e.getClass().getSimpleName(), e.getMessage());
+      throw new DBFactoryError(msg, e);
+    }
 
-  @NotNull
-  @Override
-  public DBFacade provide(@NotNull final String connectionString) {
-    JdbcDriverDef driverDef = JdbcDriverSupport.determineDriverDef(connectionString);
-    Rdbms rdbms = driverDef != null ? driverDef.rdbms : UNKNOWN;
-    Driver driver = myDriverSupport.obtainDriver(connectionString);
-    BaseErrorRecognizer errorRecognizer = obtainErrorRecognizer(rdbms);
-    if (rdbms == POSTGRE) return new PostgreFacade(connectionString, driver, errorRecognizer);
-    else if (rdbms == ORACLE) return new OraFacade(connectionString, driver, errorRecognizer);
-    else if (rdbms == MSSQL) return new MssqlFacade(connectionString, driver, errorRecognizer);
-    else if (rdbms == MYSQL) return new MysqlFacade(connectionString, driver, errorRecognizer);
-    else throw new DbmsUnsupportedFeatureError("This RDBMS is not supported yet.", null);
+    Rdbms rdbms = factory.rdbms();
+    DBServiceFactory alreadyRegistered = findServiceFactory(rdbms);
+    if (alreadyRegistered != null) throw new IllegalStateException("The service factory for "+rdbms+" already registered.");
+    myServiceFactories.add(factory);
   }
 
 
+  @Nullable
+  public DBServiceFactory findServiceFactory(@NotNull final Rdbms rdbms) {
+    for (DBServiceFactory factory : myServiceFactories) {
+      if (factory.rdbms().equals(rdbms)) return factory;
+    }
 
-  @NotNull
-  private BaseErrorRecognizer obtainErrorRecognizer(@Nullable final Rdbms rdbms) {
-    BaseErrorRecognizer r = null;
-    if (rdbms != null) r = myErrorRecognizers.get(rdbms);
-    if (r == null) r = myErrorRecognizers.get(UNKNOWN);
-    assert r != null : "The error recognizer for unknown RDBMS must be registered.";
-    return r;
+    return null;
   }
 
+  @NotNull
+  public DBServiceFactory determineServiceFactory(@NotNull final String connectionString) {
+    for (DBServiceFactory factory : myServiceFactories) {
+      Matcher m = factory.connectionStringPattern().matcher(connectionString);
+      if (m.matches()) return factory;
+    }
+
+    throw new IllegalArgumentException("Unrecognizable connection string");
+  }
 
 
   public void addJdbcDriversDir(@NotNull File dir) {
     myDriverSupport.addJdbcDir(dir);
   }
 
+
+
+  @NotNull
+  @Override
+  public DBFacade provide(@NotNull final String connectionString,
+                          @Nullable final Properties connectionProperties,
+                          int connectionsLimit) {
+    DBServiceFactory factory = determineServiceFactory(connectionString);
+    JdbcDataSource dataSource = myDriverSupport.createDataSource(connectionString, connectionProperties);
+    return provide(factory, dataSource, connectionsLimit);
+  }
+
+
+  @NotNull
+  @Override
+  public DBFacade provide(@NotNull final Rdbms rdbms,
+                          @NotNull final DataSource dataSource,
+                          int connectionsLimit) {
+    DBServiceFactory factory = findServiceFactory(rdbms);
+    if (factory == null) throw new IllegalStateException("The service factory for "+rdbms+" is not registered");
+    return provide(factory, dataSource, connectionsLimit);
+  }
+
+
+  private DBFacade provide(@NotNull final DBServiceFactory factory,
+                           @NotNull final DataSource dataSource,
+                           int connectionsLimit) {
+    DBFacade facade = factory.createFacade(dataSource);
+    facade.setConnectionsLimit(connectionsLimit);
+    if (connectionsLimit >= 1) facade.connect();
+    return facade;
+  }
 }

@@ -11,8 +11,9 @@ import java.sql.SQLException;
 /**
  *
  **/
-public abstract class BaseErrorRecognizer {
+public abstract class BaseErrorRecognizer implements DBErrorRecognizer {
 
+  @Override
   @NotNull
   public DBError recognizeError(@NotNull final SQLException sqlException, @Nullable final String statementText) {
     // unroll the exception - it's needed when the given exception is wrapped

@@ -1,6 +1,11 @@
 package org.jetbrains.dba.access;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.dba.Rdbms;
+
+import javax.sql.DataSource;
+import java.util.Properties;
 
 
 
@@ -31,9 +36,14 @@ public interface DBProvider {
    *
    * @param connectionString  the connection string (JDBC URL) to the desired database.
    *                          The format of the string varies depends on RDBMS.
+   * @param connectionProperties
+   * @param connectionsLimit
    * @return  the new non-connected DB facade.
    */
   @NotNull
-  DBFacade provide(@NotNull final String connectionString);
+  DBFacade provide(@NotNull final String connectionString, @Nullable final Properties connectionProperties, int connectionsLimit);
+
+  @NotNull
+  DBFacade provide(@NotNull final Rdbms rdbms, @NotNull final DataSource dataSource, int connectionsLimit);
 
 }

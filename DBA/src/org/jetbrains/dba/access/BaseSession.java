@@ -16,7 +16,7 @@ import java.sql.*;
  * Database session.
  * Encapsulates connection and provides useful methods to work with database.
  */
-abstract class BaseSession implements DBSession {
+class BaseSession implements DBSession {
 
   //// STATE \\\\
 

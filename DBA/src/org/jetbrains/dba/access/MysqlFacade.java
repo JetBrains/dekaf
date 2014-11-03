@@ -1,14 +1,11 @@
 package org.jetbrains.dba.access;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dba.KnownRdbms;
 import org.jetbrains.dba.Rdbms;
 import org.jetbrains.dba.sql.SQL;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.SQLException;
-import java.util.Properties;
 
 
 
@@ -17,49 +14,17 @@ import java.util.Properties;
  */
 public final class MysqlFacade extends BaseFacade {
 
-  /**
-   * MySQL JDBC driver (aka connector). It can be in a separate class loader.
-   */
-  @NotNull
-  private final Driver myDriver;
-
-
-
-  public MysqlFacade(@NotNull final String connectionString,
-                     @NotNull final Driver driver,
-                     @NotNull final BaseErrorRecognizer errorRecognizer) {
-    super(connectionString, new SQL(), errorRecognizer);
-    myDriver = driver;
+  public MysqlFacade(@NotNull Rdbms rdbms,
+                     @NotNull DataSource source,
+                     @NotNull DBErrorRecognizer recognizer, @NotNull SQL sql) {
+    super(rdbms, source, recognizer, sql);
   }
 
 
   @NotNull
   @Override
-  protected Driver getDriver() {
-    return myDriver;
+  protected MysqlSession createFacadeForConnection(@NotNull Connection connection) {
+    return new MysqlSession(this, connection, true);
   }
-
-
-  @NotNull
-  @Override
-  public final Rdbms rdbms() {
-    return KnownRdbms.MYSQL;
-  }
-
-
-
-  @Override
-  protected MysqlSession internalConnect() {
-    Properties properties = new Properties();
-
-    try {
-      Connection connection = myDriver.connect(myConnectionString, properties);
-      return new MysqlSession(this, connection, true);
-    }
-    catch (SQLException e) {
-      throw myErrorRecognizer.recognizeError(e, "<connect>");
-    }
-  }
-
 
 }

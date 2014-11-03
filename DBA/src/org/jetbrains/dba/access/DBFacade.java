@@ -3,7 +3,6 @@ package org.jetbrains.dba.access;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dba.Rdbms;
 import org.jetbrains.dba.sql.SQL;
-import org.jetbrains.dba.utils.Version;
 
 
 
@@ -42,11 +41,10 @@ public interface DBFacade {
   public SQL sql();
 
   /**
-   * Returns version of the JDBC driver (just two elements only - major and minor).
-   * @return driver version.
+   * Specify how many connection to hold at most.
+   * @param connectionsLimit the maximum number of connections.
    */
-  @NotNull
-  public Version getDriverVersion();
+  void setConnectionsLimit(int connectionsLimit);
 
   /**
    * Connects to the database server.

@@ -23,4 +23,5 @@ final class MssqlSession extends BaseSession {
       throw recognizeError(sqle, "connection.setHoldability(ResultSet.CLOSE_CURSORS_AT_COMMIT)");
     }
   }
+
 }

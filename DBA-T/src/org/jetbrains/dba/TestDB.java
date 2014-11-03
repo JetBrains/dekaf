@@ -20,12 +20,12 @@ public class TestDB {
   /**
    * Test database provider.
    */
-  public static final JdbcDBProvider PROVIDER = new JdbcDBProvider(TestEnvironment.TEP.obtainJdbcDriversDir());
+  public static final JdbcDBProvider PROVIDER = new JdbcDBProvider(true, TestEnvironment.TEP.obtainJdbcDriversDir());
 
   /**
    * Test database facade.
    */
-  public static final DBFacade FACADE = PROVIDER.provide(TestEnvironment.TEP.obtainConnectionString());
+  public static final DBFacade FACADE = PROVIDER.provide(TestEnvironment.TEP.obtainConnectionString(), null, 1);
 
 
   static {
