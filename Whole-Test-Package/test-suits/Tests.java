@@ -85,6 +85,7 @@ public class Tests {
                         DBFacadeTest.class,
                         DBFacadeSpecificTest.class,
                         OraFacadeTest.class,
+                        OraSessionTest.class,
   // --------------------------------------------------------------- \\
                         BaseCommandRunnerTest.class,
                         BaseQueryRunnerTest.class

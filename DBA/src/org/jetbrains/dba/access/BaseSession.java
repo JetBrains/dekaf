@@ -232,8 +232,17 @@ class BaseSession implements DBSession {
     else if (object instanceof Integer) {
       stmt.setInt(index, (Integer)object);
     }
+    else if (object instanceof Float) {
+      stmt.setFloat(index, (Float)object);
+    }
+    else if (object instanceof Double) {
+      stmt.setDouble(index, (Double)object);
+    }
     else if (object instanceof Long) {
       stmt.setLong(index, (Long)object);
+    }
+    else if (object instanceof Character) {
+      stmt.setString(index, object.toString());
     }
     else if (object instanceof String) {
       stmt.setString(index, (String)object);
@@ -249,6 +258,9 @@ class BaseSession implements DBSession {
     }
     else if (object instanceof java.util.Date) {
       stmt.setTimestamp(index, new Timestamp(((java.util.Date)object).getTime()));
+    }
+    else if (object instanceof byte[]) {
+      stmt.setBytes(index, (byte[])object);
     }
     else {
       boolean assigned = assignSpecificParameter(stmt, index, object);
