@@ -88,7 +88,8 @@ public class Tests {
                         OraSessionTest.class,
   // --------------------------------------------------------------- \\
                         BaseCommandRunnerTest.class,
-                        BaseQueryRunnerTest.class
+                        BaseQueryRunnerTest.class,
+                        RowsCollectorsTest.class
   // --------------------------------------------------------------- \\
                       })
   public static class IntTestsSuite {}

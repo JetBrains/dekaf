@@ -50,8 +50,8 @@ public class MysqlServiceFactory implements DBServiceFactory {
 
   @NotNull
   @Override
-  public OraFacade createFacade(@NotNull DataSource source) {
-    return new OraFacade(KnownRdbms.MYSQL, source, myErrorRecognizer, cloneSQL());
+  public MysqlFacade createFacade(@NotNull DataSource source) {
+    return new MysqlFacade(KnownRdbms.MYSQL, source, myErrorRecognizer, cloneSQL());
   }
 
 }

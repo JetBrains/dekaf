@@ -14,4 +14,5 @@ final class PostgreSession extends BaseSession {
   public PostgreSession(@NotNull PostgreFacade facade, @NotNull final Connection connection, final boolean ownConnection) {
     super(facade, connection, ownConnection);
   }
+
 }

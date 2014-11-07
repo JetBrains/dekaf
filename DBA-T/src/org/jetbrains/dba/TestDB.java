@@ -6,9 +6,9 @@ import org.jetbrains.dba.access.DBSession;
 import org.jetbrains.dba.access.InSessionNoResult;
 import org.jetbrains.dba.access.JdbcDBProvider;
 import org.jetbrains.dba.sql.SQLCommand;
+import org.jetbrains.dba.utils.*;
 
-import static org.jetbrains.dba.KnownRdbms.MSSQL;
-import static org.jetbrains.dba.KnownRdbms.ORACLE;
+import static org.jetbrains.dba.KnownRdbms.*;
 
 
 
@@ -27,6 +27,11 @@ public class TestDB {
    */
   public static final DBFacade FACADE = PROVIDER.provide(TestEnvironment.TEP.obtainConnectionString(), null, 1);
 
+  /**
+   * Test utils.
+   */
+  public static final BaseTestUtils UTILS = getUtils(FACADE);
+
 
   static {
     String infoString = "\n"+
@@ -34,11 +39,21 @@ public class TestDB {
                         "\tRdbms: %s\n" +
                         "\tConnection: %s\n" +
                         "\tCurrent directory: %s\n";
+    Rdbms rdbms = FACADE.rdbms();
     System.out.printf(infoString,
-                      FACADE.rdbms().toString(),
+                      rdbms.toString(),
                       TestEnvironment.TEP.obtainConnectionString(),
                       System.getProperty("user.dir"));
     FACADE.sql().assignResources(TestDB.class);
+  }
+
+  private static BaseTestUtils getUtils(@NotNull final DBFacade facade) {
+    Rdbms rdbms = facade.rdbms();
+    if (rdbms == POSTGRE) return new PostgreTestUtils(facade);
+    if (rdbms == ORACLE) return new OracleTestUtils(facade);
+    if (rdbms == MSSQL) return new MicrosoftTestUtils(facade);
+    if (rdbms == MYSQL) return new MysqlTestUtils(facade);
+    throw new IllegalStateException("Test utils for "+rdbms+" don't exist.");
   }
 
 

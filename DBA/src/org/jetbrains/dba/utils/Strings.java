@@ -80,6 +80,29 @@ public abstract class Strings {
   }
 
 
+  @NotNull
+  public static String replace(@NotNull final String where, @NotNull final String what, @NotNull final String with) {
+    // TODO make my own implementation, because Java's one is so slow
+    return where.replace(what, with);
+  }
+
+
+  @NotNull
+  public static String repeat(@NotNull final String what, @Nullable final String delimiter, int count) {
+    if (count == 0) return "";
+    if (count == 1) return what;
+
+    StringBuilder b = new StringBuilder((what.length()) + (delimiter == null ? 0 : delimiter.length()) * count);
+    b.append(what);
+    for (int i = 1; i < count; i++) {
+      if (delimiter != null) b.append(delimiter);
+      b.append(what);
+    }
+
+    return b.toString();
+  }
+
+
   /**
    * Checks that the given string matches the specified pattern.
    *
@@ -141,7 +164,6 @@ public abstract class Strings {
   public static String lower(@Nullable final String string) {
     return string == null ? null : string.toLowerCase();
   }
-
 
 
 }

@@ -1,7 +1,6 @@
 package org.jetbrains.dba.access;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dba.sql.SQLQuery;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import testing.categories.ForOracle;
@@ -9,6 +8,7 @@ import testing.categories.ForOracle;
 import java.util.Date;
 
 import static org.jetbrains.dba.TestDB.FACADE;
+import static org.jetbrains.dba.TestDB.UTILS;
 
 
 
@@ -61,8 +61,8 @@ public class OraSessionTest {
       new byte[] {1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,11,22,33,44,55,66,77,88,99,100}
     };
 
-    ensureNoTable("VARIETY_COLUMNS");
-    runCmd(createCmd);
+    UTILS.ensureNoTablesLike("VARIETY_COLUMNS");
+    UTILS.run(createCmd);
 
     FACADE.inTransaction(new InTransactionNoResult() {
       @Override
@@ -73,38 +73,4 @@ public class OraSessionTest {
       }
     });
   }
-
-
-  private void ensureNoTable(@NotNull final String tableName) {
-    boolean tableExists = tableExists(tableName);
-    if (tableExists) {
-      runCmd("drop table " + tableName + " cascade constraints");
-    }
-  }
-
-  private boolean tableExists(@NotNull final String tableName) {
-    return queryReturnsRows("select 1 from tabs where table_name = ?", tableName);
-  }
-
-  private boolean queryReturnsRows(@NotNull final String query, final Object... params) {
-    final SQLQuery<String> q = FACADE.sql().query(query, RowsCollectors.oneRow(String.class));
-
-    return FACADE.inTransaction(new InTransaction<Boolean>() {
-      @Override
-      public Boolean run(@NotNull DBTransaction tran) {
-        final String s = tran.query(q).withParams(params).run();
-        return s != null && !s.isEmpty();
-      }
-    });
-  }
-
-  private void runCmd(@NotNull final String cmd) {
-    FACADE.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull DBSession session) {
-        session.command(cmd).run();
-      }
-    });
-  }
-
 }

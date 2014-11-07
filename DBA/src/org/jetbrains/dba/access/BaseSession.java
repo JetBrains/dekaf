@@ -21,10 +21,10 @@ class BaseSession implements DBSession {
   //// STATE \\\\
 
   @NotNull
-  private final BaseFacade facade;
+  protected final BaseFacade facade;
 
   @NotNull
-  private final Connection connection;
+  protected final Connection connection;
 
   private final boolean connectionOwner;
 
@@ -40,6 +40,16 @@ class BaseSession implements DBSession {
 
 
   //// TRANSACTIONS \\\\
+
+
+  protected boolean isAutoCommit() {
+    try {
+      return connection.getAutoCommit();
+    }
+    catch (SQLException e) {
+      throw recognizeError(e, "connection.getAutoCommit()");
+    }
+  }
 
 
   protected void beginTransaction() {
@@ -72,6 +82,8 @@ class BaseSession implements DBSession {
 
 
   protected void rollback() {
+    if (isAutoCommit()) return;
+
     try {
       connection.rollback();
     }

@@ -17,7 +17,7 @@ final class SingleValueRowFetcher<V> extends RowFetcher<V> {
 
 
   SingleValueRowFetcher(@NotNull final Class<V> valueClass) {
-    final ValueGetter<V> theGetter = ValueGetters.of(valueClass);
+    final ValueGetter<V> theGetter = ValueGetters.find(valueClass);
     if (theGetter == null) {
       throw new DBPreparingError("Unknown how to get value of class " + valueClass.getSimpleName());
     }

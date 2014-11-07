@@ -3,6 +3,7 @@ package org.jetbrains.dba.access;
 import com.google.common.collect.ImmutableMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.dba.errors.DBPreparingError;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -50,9 +51,18 @@ public final class ValueGetters {
     .build();
 
 
-  @Nullable
+  @NotNull
   @SuppressWarnings("unchecked")
   static <W> ValueGetter<W> of(@NotNull final Class<W> clazz) {
+    ValueGetter<W> getter = find(clazz);
+    if (getter == null) throw new DBPreparingError("Unknown how to get a value of class "+clazz.getSimpleName());
+    return getter;
+  }
+
+
+  @Nullable
+  @SuppressWarnings("unchecked")
+  static <W> ValueGetter<W> find(@NotNull final Class<W> clazz) {
     return (ValueGetter<W>)getters.get(clazz);
   }
 

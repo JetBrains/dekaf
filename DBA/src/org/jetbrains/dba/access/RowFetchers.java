@@ -15,7 +15,7 @@ public final class RowFetchers {
   @SuppressWarnings("unchecked")
   static <R> RowFetcher<R> createFor(Class<R> rowClass) {
     // check whether it is a known primitive
-    final ValueGetter<?> singleGetter = ValueGetters.of(rowClass);
+    final ValueGetter<?> singleGetter = ValueGetters.find(rowClass);
     if (singleGetter != null) {
       return new SingleValueRowFetcher<R>((ValueGetter<R>)singleGetter);
     }

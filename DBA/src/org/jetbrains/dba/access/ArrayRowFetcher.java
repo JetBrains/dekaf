@@ -29,7 +29,7 @@ final class ArrayRowFetcher<C> extends RowFetcher<C[]> {
   ArrayRowFetcher(@NotNull final Class<C> componentClass) {
     this.componentClass = componentClass;
 
-    final ValueGetter<C> theComponentGetter = ValueGetters.of(componentClass);
+    final ValueGetter<C> theComponentGetter = ValueGetters.find(componentClass);
     if (theComponentGetter == null) {
       throw new DBPreparingError("The component of an array should be of a primitive type but given " + componentClass.getSimpleName());
     }

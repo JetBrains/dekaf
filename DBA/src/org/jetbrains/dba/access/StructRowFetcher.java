@@ -67,7 +67,7 @@ final class StructRowFetcher<R> extends RowFetcher<R> {
       for (int i = 0; i < n; i++) {
         Field f = this.fields[i];
         Class<?> type = f.getType();
-        ValueGetter<?> getter = ValueGetters.of(type);
+        ValueGetter<?> getter = ValueGetters.find(type);
         if (getter == null) {
           throw new DBPreparingError(
             "Unknown how to getting value for " + rowClass.getSimpleName() + "." + f.getName() + " fo type " + type.getSimpleName());
