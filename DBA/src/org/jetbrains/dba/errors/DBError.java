@@ -36,6 +36,11 @@ public abstract class DBError extends RuntimeException {
   }
 
 
+  public DBError(String message, Throwable cause, @Nullable String statementText) {
+    this(message, cause, 0, statementText);
+  }
+
+
   private DBError(@NotNull String message, @Nullable Throwable cause, int vendorErrorCode, @Nullable String statementText) {
     super(makeErrorText(message, cause), cause);
     this.vendorErrorCode = vendorErrorCode;
@@ -43,9 +48,12 @@ public abstract class DBError extends RuntimeException {
   }
 
 
-  private static String makeErrorText(String message, Throwable cause) {
-    return cause != null && !message.endsWith(".") && !message.contains(cause.getMessage())
-        ? message + " (" + cause.getMessage() + ")"
+  private static String makeErrorText(@NotNull String message, @Nullable Throwable cause) {
+    String causeMessage = cause != null
+        ? cause.getMessage()
+        : null;
+    return causeMessage != null && !message.endsWith(".") && !message.contains(causeMessage)
+        ? message + " (" + causeMessage + ")"
         : message;
   }
 
@@ -54,11 +62,6 @@ public abstract class DBError extends RuntimeException {
   public String toString() {
     String message = getMessage();
     StringBuilder b = new StringBuilder(message);
-    Throwable cause = getCause();
-    if (cause != null && !(message.endsWith("."))) {
-      String causeMessage = cause.getMessage();
-      if (!message.contains(causeMessage)) b.append(' ').append('(').append(causeMessage).append(')');
-    }
     if (statementText != null) {
       b.append("\nThe SQL statement:\n").append(statementText).append('\n');
     }

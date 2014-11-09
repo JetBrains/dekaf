@@ -3,6 +3,7 @@ import org.jetbrains.dba.RdbmsCategories;
 import org.jetbrains.dba.TestDBSpecificTest;
 import org.jetbrains.dba.TestDBTest;
 import org.jetbrains.dba.access.*;
+import org.jetbrains.dba.pooling.ConnectionPoolTest;
 import org.jetbrains.dba.sql.*;
 import org.jetbrains.dba.utils.NumberUtilsTest;
 import org.jetbrains.dba.utils.StringsTest;
@@ -50,7 +51,8 @@ public class Tests {
                         OraSQLTest.class,
                         MicrosoftSQLTest.class,
                         ValueGetterTest.class,
-                        StructRowFetcherTest.class
+                        StructRowFetcherTest.class,
+                        ConnectionPoolTest.class
   // ------------------------------------------ \\
                       })
   public static class UnitTestsSuite {}
