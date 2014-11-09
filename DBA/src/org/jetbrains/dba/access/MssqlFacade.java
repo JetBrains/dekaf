@@ -23,7 +23,7 @@ public final class MssqlFacade extends BaseFacade {
 
   @NotNull
   @Override
-  protected MssqlSession createFacadeForConnection(@NotNull Connection connection) {
+  protected MssqlSession createSessionForConnection(@NotNull Connection connection) {
     return new MssqlSession(this, connection, true);
   }
 

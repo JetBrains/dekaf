@@ -23,7 +23,7 @@ public final class OraFacade extends BaseFacade {
 
   @NotNull
   @Override
-  protected OraSession createFacadeForConnection(@NotNull Connection connection) {
+  protected OraSession createSessionForConnection(@NotNull Connection connection) {
     return new OraSession(this, connection, true);
   }
 

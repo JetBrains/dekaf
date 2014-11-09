@@ -23,7 +23,7 @@ public final class MysqlFacade extends BaseFacade {
 
   @NotNull
   @Override
-  protected MysqlSession createFacadeForConnection(@NotNull Connection connection) {
+  protected MysqlSession createSessionForConnection(@NotNull Connection connection) {
     return new MysqlSession(this, connection, true);
   }
 

@@ -23,7 +23,7 @@ public final class PostgreFacade extends BaseFacade {
 
   @NotNull
   @Override
-  protected PostgreSession createFacadeForConnection(@NotNull Connection connection) {
+  protected PostgreSession createSessionForConnection(@NotNull Connection connection) {
     return new PostgreSession(this, connection, true);
   }
 

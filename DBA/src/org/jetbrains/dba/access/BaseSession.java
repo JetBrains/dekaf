@@ -21,22 +21,35 @@ class BaseSession implements DBSession {
   //// STATE \\\\
 
   @NotNull
-  protected final BaseFacade facade;
+  protected final BaseFacade myFacade;
 
   @NotNull
-  protected final Connection connection;
+  protected final Connection myConnection;
 
-  private final boolean connectionOwner;
+  private final boolean myConnectionOwner;
+
+  private final int mySessionNumber;
+
+  private final long mySessionOpenTime;
+
 
 
   //// INITIALIZATION \\\\
 
 
   public BaseSession(@NotNull BaseFacade facade, @NotNull final Connection connection, boolean ownConnection) {
-    this.facade = facade;
-    this.connection = connection;
-    this.connectionOwner = ownConnection;
+    this.myFacade = facade;
+    this.myConnection = connection;
+    this.myConnectionOwner = ownConnection;
+    this.mySessionNumber = facade.takeNextSessionNumber();
+    this.mySessionOpenTime = System.currentTimeMillis();
   }
+
+
+  public int getSessionNumber() {
+    return mySessionNumber;
+  }
+
 
 
   //// TRANSACTIONS \\\\
@@ -44,7 +57,7 @@ class BaseSession implements DBSession {
 
   protected boolean isAutoCommit() {
     try {
-      return connection.getAutoCommit();
+      return myConnection.getAutoCommit();
     }
     catch (SQLException e) {
       throw recognizeError(e, "connection.getAutoCommit()");
@@ -54,7 +67,7 @@ class BaseSession implements DBSession {
 
   protected void beginTransaction() {
     try {
-      connection.setAutoCommit(false);
+      myConnection.setAutoCommit(false);
     }
     catch (SQLException e) {
       throw recognizeError(e, "<turn auto-commit OFF>");
@@ -64,7 +77,7 @@ class BaseSession implements DBSession {
 
   protected void commit() {
     try {
-      connection.commit();
+      myConnection.commit();
     }
     catch (SQLException e) {
       rollback();
@@ -72,7 +85,7 @@ class BaseSession implements DBSession {
     }
 
     try {
-      connection.setAutoCommit(true);
+      myConnection.setAutoCommit(true);
     }
     catch (SQLException e) {
       // TODO
@@ -84,16 +97,23 @@ class BaseSession implements DBSession {
   protected void rollback() {
     if (isAutoCommit()) return;
 
+    // TODO fail inside rollback makes connection unusable.
+    // So here, if rollback failed,
+    // we should somehow invalidate the connection and
+    // tell pool to drop it.
+
     try {
-      connection.rollback();
+      myConnection.rollback();
     }
     catch (SQLException rollbackException) {
       // TODO kernel panic!
+      // we should use pool's panic method
+      // in order ti log this panic into the special PrintWriter
       rollbackException.printStackTrace();
     }
 
     try {
-      connection.setAutoCommit(true);
+      myConnection.setAutoCommit(true);
     }
     catch (SQLException e) {
       // TODO
@@ -104,7 +124,7 @@ class BaseSession implements DBSession {
 
   @NotNull
   Connection getConnection() {
-    return connection; // TODO wrap it somehow?
+    return myConnection; // TODO wrap it somehow?
   }
 
 
@@ -179,7 +199,7 @@ class BaseSession implements DBSession {
 
   @NotNull
   PreparedStatement prepareStatementForQuery(@NotNull final String queryText, boolean expectManyRows) throws SQLException {
-    return connection.prepareStatement(queryText,
+    return myConnection.prepareStatement(queryText,
                                        ResultSet.TYPE_FORWARD_ONLY,
                                        ResultSet.CONCUR_READ_ONLY,
                                        ResultSet.CLOSE_CURSORS_AT_COMMIT);
@@ -207,7 +227,7 @@ class BaseSession implements DBSession {
   CallableStatement prepareCall(@NotNull final String statementText)
     throws SQLException
   {
-    return connection.prepareCall(statementText);
+    return myConnection.prepareCall(statementText);
   }
 
 
@@ -302,18 +322,24 @@ class BaseSession implements DBSession {
 
   @NotNull
   public DBError recognizeError(@NotNull final SQLException sqlException, @Nullable final String statementText) {
-    return facade.getErrorRecognizer().recognizeError(sqlException, statementText);
+    return myFacade.getErrorRecognizer().recognizeError(sqlException, statementText);
   }
 
 
   public void close() {
-    if (connectionOwner) {
+    if (myConnectionOwner) {
       try {
-        connection.close();
+        myConnection.close();
       }
       catch (SQLException e) {
         e.printStackTrace();
       }
     }
+  }
+
+
+  @Override
+  public int hashCode() {
+    return mySessionNumber;
   }
 }

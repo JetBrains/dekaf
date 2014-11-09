@@ -1,14 +1,16 @@
 package org.jetbrains.dba.access;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dba.Rdbms;
 import org.jetbrains.dba.errors.DBIsNotConnected;
+import org.jetbrains.dba.pooling.ConnectionPool;
 import org.jetbrains.dba.sql.SQL;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 
@@ -21,7 +23,14 @@ public class BaseFacade implements DBFacade {
   private final Rdbms myRdbms;
 
   @NotNull
-  private final DataSource myDataSource;
+  private final ConnectionPool myPool;
+
+  @NotNull
+  private final AtomicInteger mySessionCounter = new AtomicInteger();
+
+  @NotNull
+  private final ConcurrentLinkedQueue<BaseSession> mySessions =
+      new ConcurrentLinkedQueue<BaseSession>();
 
   @NotNull
   protected final SQL mySQL;
@@ -29,10 +38,6 @@ public class BaseFacade implements DBFacade {
   @NotNull
   protected final DBErrorRecognizer myErrorRecognizer;
 
-  private int myConnectionsLimit = 1;
-
-  @Nullable
-  protected BaseSession primarySession;
 
 
   public BaseFacade(@NotNull final Rdbms rdbms,
@@ -40,14 +45,14 @@ public class BaseFacade implements DBFacade {
                     @NotNull final DBErrorRecognizer recognizer,
                     @NotNull final SQL sql) {
     myRdbms = rdbms;
-    myDataSource = source;
+    myPool = new ConnectionPool(source);
     myErrorRecognizer = recognizer;
     mySQL = sql;
   }
 
 
   public void setConnectionsLimit(int connectionsLimit) {
-    myConnectionsLimit = connectionsLimit;
+    myPool.setConnectionsLimit(connectionsLimit);
   }
 
 
@@ -65,86 +70,110 @@ public class BaseFacade implements DBFacade {
 
 
   public void connect() {
-    if (primarySession == null) {
-      primarySession = connectAndCreateFacade();
-    }
-  }
-
-  @NotNull
-  protected BaseSession connectAndCreateFacade() {
-    Connection connection;
     try {
-      connection = myDataSource.getConnection();
+      myPool.connect();
     }
-    catch (SQLException sqle) {
-      throw myErrorRecognizer.recognizeError(sqle, myDataSource.getClass().getSimpleName()+".getConnection()");
+    catch (SQLException e) {
+      throw myErrorRecognizer.recognizeError(e, "<connect>");
     }
-
-    BaseSession session = createFacadeForConnection(connection);
-    return session;
   }
 
+
   @NotNull
-  protected BaseSession createFacadeForConnection(@NotNull final Connection connection) {
+  protected BaseSession createSessionForConnection(@NotNull final Connection connection) {
     return new BaseSession(this, connection, true);
   }
 
 
 
   public void reconnect() {
-    if (primarySession != null) {
-      primarySession.close();
-    }
-    primarySession = connectAndCreateFacade();
+    myPool.disconnect();
+    connect();
   }
 
 
   public void disconnect() {
-    if (primarySession != null) {
-      primarySession.close();
-      primarySession = null;
-    }
+    myPool.disconnect();
   }
 
 
   public boolean isConnected() {
-    return primarySession != null;
+    return myPool.isReady();
   }
 
 
-  public <R> R inTransaction(final InTransaction<R> operation) {
-    if (primarySession == null) {
-      throw new DBIsNotConnected("Facade is not connected.");
-    }
-
-    return primarySession.inTransaction(operation);
-  }
-
-
-  public void inTransaction(final InTransactionNoResult operation) {
-    if (primarySession == null) {
-      throw new DBIsNotConnected("Facade is not connected.");
-    }
-
-    primarySession.inTransaction(operation);
+  int takeNextSessionNumber() {
+    return mySessionCounter.incrementAndGet();
   }
 
 
   public <R> R inSession(final InSession<R> operation) {
-    if (primarySession == null) {
+    if (!myPool.isReady())
       throw new DBIsNotConnected("Facade is not connected.");
-    }
 
-    return operation.run(primarySession);
+    try {
+      Connection connection = myPool.borrow();
+      try {
+        BaseSession session =
+          createSessionForConnection(connection);
+        mySessions.add(session);
+        try {
+          return operation.run(session);
+        }
+        finally {
+          mySessions.remove(session);
+        }
+      }
+      finally {
+        myPool.release(connection);
+      }
+    }
+    catch (SQLException e) {
+      throw myErrorRecognizer.recognizeError(e, "<prepare session>");
+    }
   }
 
 
   public void inSession(final InSessionNoResult operation) {
-    if (primarySession == null) {
-      throw new DBIsNotConnected("Facade is not connected.");
-    }
+    inSession(new InSession<Void>() {
+      @Override
+      public Void run(@NotNull DBSession session) {
+        operation.run(session);
+        return null;
+      }
+    });
+  }
 
-    operation.run(primarySession);
+
+  public <R> R inTransaction(final InTransaction<R> operation) {
+    return inSession(new InSession<R>() {
+      @Override
+      public R run(@NotNull DBSession session) {
+        return session.inTransaction(new InTransaction<R>() {
+          @Override
+          public R run(@NotNull DBTransaction tran) {
+            return operation.run(tran);
+          }
+        });
+      }
+    });
+  }
+
+
+  public void inTransaction(final InTransactionNoResult operation) {
+    inSession(new InSession<Void>() {
+      @Override
+      public Void run(@NotNull DBSession session) {
+        session.inTransaction(new InTransaction<Void>() {
+          @Override
+          public Void run(@NotNull DBTransaction tran) {
+            operation.run(tran);
+            return null;
+          }
+        });
+        return null;
+      }
+    });
   }
 
 
