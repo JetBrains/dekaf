@@ -9,7 +9,9 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 
@@ -142,5 +144,11 @@ public class JdbcDataSource implements DataSource {
   public boolean isWrapperFor(Class<?> iface) {
     // TODO implement JdbcDataSource.isWrapperFor()
     throw new RuntimeException("Method JdbcDataSource.isWrapperFor() is not implemented yet.");
+  }
+
+
+  //@Override java8
+  public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+    throw new SQLFeatureNotSupportedException("Method JdbcDataSource.getParentLogger() is not implemented.");
   }
 }

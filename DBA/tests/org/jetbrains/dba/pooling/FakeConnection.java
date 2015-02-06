@@ -3,6 +3,7 @@ package org.jetbrains.dba.pooling;
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -405,5 +406,40 @@ public class FakeConnection implements Connection {
   public Struct createStruct(String typeName, Object[] attributes) throws SQLException {
     checkNotClosed();
     throw new RuntimeException("Method FakeConnection.createStruct() is not implemented yet.");
+  }
+
+
+  //@Override java8
+  public void setSchema(String schema) throws SQLException {
+    checkNotClosed();
+    throw new RuntimeException("Method FakeConnection.setSchema() is not implemented yet.");
+  }
+
+
+  //@Override java8
+  public String getSchema() throws SQLException {
+    checkNotClosed();
+    throw new RuntimeException("Method FakeConnection.getSchema() is not implemented yet.");
+  }
+
+
+  //@Override java8
+  public void abort(Executor executor) throws SQLException {
+    checkNotClosed();
+    throw new RuntimeException("Method FakeConnection.abort() is not implemented yet.");
+  }
+
+
+  //@Override java8
+  public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
+    checkNotClosed();
+    throw new RuntimeException("Method FakeConnection.setNetworkTimeout() is not implemented yet.");
+  }
+
+
+  //@Override java8
+  public int getNetworkTimeout() throws SQLException {
+    checkNotClosed();
+    throw new RuntimeException("Method FakeConnection.getNetworkTimeout() is not implemented yet.");
   }
 }
