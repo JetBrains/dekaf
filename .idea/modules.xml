@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DBA/DBA.iml" filepath="$PROJECT_DIR$/DBA/DBA.iml" />
       <module fileurl="file://$PROJECT_DIR$/DBA-T/DBA-T.iml" filepath="$PROJECT_DIR$/DBA-T/DBA-T.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FakeDB/FakeDB.iml" filepath="$PROJECT_DIR$/FakeDB/FakeDB.iml" />
       <module fileurl="file://$PROJECT_DIR$/Int-Tests/Int-Tests.iml" filepath="$PROJECT_DIR$/Int-Tests/Int-Tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/Whole-Test-Package/Whole-Test-Package.iml" filepath="$PROJECT_DIR$/Whole-Test-Package/Whole-Test-Package.iml" />
     </modules>
