@@ -6,7 +6,9 @@ import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 
 
 
@@ -80,4 +82,8 @@ public class FakeDataSource implements DataSource {
   }
 
 
+  //@Override java.8
+  public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+    throw new SQLFeatureNotSupportedException("Method FakeDataSource.getParentLogger() is not implemented.");
+  }
 }

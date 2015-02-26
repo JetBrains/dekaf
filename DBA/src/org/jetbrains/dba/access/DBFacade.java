@@ -16,11 +16,7 @@ import org.jetbrains.dba.sql.SQL;
 public interface DBFacade {
 
   /**
-   * The DBMS code that identifiers this kind of the database.
-   * A formal string in upper case.
-   * For example: ORA, MS, MY, PG.
-   *
-   * @return DBMS code.
+   * The DBMS this facade is applicable/connected to.
    */
   @NotNull
   public Rdbms rdbms();
@@ -42,9 +38,9 @@ public interface DBFacade {
 
   /**
    * Specify how many connection to hold at most.
-   * @param connectionsLimit the maximum number of connections.
+   * @param sessionsLimit the maximum number of connections.
    */
-  void setConnectionsLimit(int connectionsLimit);
+  void setSessionsLimit(int sessionsLimit);
 
   /**
    * Connects to the database server.

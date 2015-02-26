@@ -51,8 +51,8 @@ public class BaseFacade implements DBFacade {
   }
 
 
-  public void setConnectionsLimit(int connectionsLimit) {
-    myPool.setConnectionsLimit(connectionsLimit);
+  public void setSessionsLimit(int sessionsLimit) {
+    myPool.setConnectionsLimit(sessionsLimit);
   }
 
 

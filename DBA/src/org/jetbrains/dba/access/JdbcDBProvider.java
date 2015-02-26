@@ -144,7 +144,7 @@ public final class JdbcDBProvider implements DBProvider {
                            @NotNull final DataSource dataSource,
                            int connectionsLimit) {
     DBFacade facade = factory.createFacade(dataSource);
-    facade.setConnectionsLimit(connectionsLimit);
+    facade.setSessionsLimit(connectionsLimit);
     if (connectionsLimit >= 1) facade.connect();
     return facade;
   }

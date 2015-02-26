@@ -15,7 +15,7 @@ dependencies {
 
     lib "org.jetbrains:annotations:13.0",
         "junit:junit:4.11",
-        "org.assertj:assertj-core:1.7.0",
+        "org.assertj:assertj-core:1.7.1",
 
     lib ("com.google.guava:guava:17.0") {
         force = true
