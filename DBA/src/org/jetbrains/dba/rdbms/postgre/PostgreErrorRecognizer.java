@@ -1,7 +1,8 @@
-package org.jetbrains.dba.access;
+package org.jetbrains.dba.rdbms.postgre;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.dba.access.BaseErrorRecognizer;
 import org.jetbrains.dba.errors.DBError;
 import org.jetbrains.dba.errors.DuplicateKeyError;
 import org.jetbrains.dba.errors.UnknownDBError;
@@ -11,9 +12,9 @@ import java.sql.SQLException;
 
 
 /**
- * MS SQL Server specific errors recognizer.
+ * PostgreSQL specific errors recognizer.
  **/
-public class MssqlErrorRecognizer extends BaseErrorRecognizer {
+public class PostgreErrorRecognizer extends BaseErrorRecognizer {
 
   @NotNull
   @Override
@@ -21,7 +22,7 @@ public class MssqlErrorRecognizer extends BaseErrorRecognizer {
     int code = sqlException.getErrorCode();
 
     switch (code) {
-      case 2601:
+      case 1:
         return new DuplicateKeyError(sqlException, statementText);
       default:
         return new UnknownDBError(sqlException, statementText);

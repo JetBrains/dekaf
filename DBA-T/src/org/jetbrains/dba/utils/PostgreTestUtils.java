@@ -2,7 +2,7 @@ package org.jetbrains.dba.utils;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dba.access.DBFacade;
-import org.jetbrains.dba.access.PostgreFacade;
+import org.jetbrains.dba.rdbms.postgre.PostgreFacade;
 
 
 

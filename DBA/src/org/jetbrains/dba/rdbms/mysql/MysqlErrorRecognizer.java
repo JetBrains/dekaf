@@ -1,20 +1,20 @@
-package org.jetbrains.dba.access;
+package org.jetbrains.dba.rdbms.mysql;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.dba.access.BaseErrorRecognizer;
 import org.jetbrains.dba.errors.DBError;
 import org.jetbrains.dba.errors.DuplicateKeyError;
 import org.jetbrains.dba.errors.UnknownDBError;
 
 import java.sql.SQLException;
-import java.util.regex.Pattern;
 
 
 
 /**
- * Oracle specific errors recognizer.
+ * MySQL specific errors recognizer.
  **/
-public class OraErrorRecognizer extends BaseErrorRecognizer {
+public class MysqlErrorRecognizer extends BaseErrorRecognizer {
 
   @NotNull
   @Override
@@ -22,17 +22,10 @@ public class OraErrorRecognizer extends BaseErrorRecognizer {
     int code = sqlException.getErrorCode();
 
     switch (code) {
-      case 1:
+      case 1062:
         return new DuplicateKeyError(sqlException, statementText);
       default:
-        String msg = sqlException.getMessage().trim();
-        boolean hasNumber = NUMBERED_ERROR_PATTERN.matcher(msg).matches();
-        if (!hasNumber) msg = "Oracle SQL error " + code + ": " + msg;
-        return new UnknownDBError(msg, sqlException, statementText);
+        return new UnknownDBError(sqlException, statementText);
     }
   }
-
-  private static final Pattern NUMBERED_ERROR_PATTERN =
-    Pattern.compile("^\\w{3}-\\d+:.*$");
-
 }

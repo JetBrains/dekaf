@@ -1,8 +1,9 @@
-package org.jetbrains.dba.access;
+package org.jetbrains.dba.rdbms.oracle;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dba.KnownRdbms;
 import org.jetbrains.dba.Rdbms;
+import org.jetbrains.dba.access.DBServiceFactory;
 import org.jetbrains.dba.sql.OraSQL;
 
 import javax.sql.DataSource;

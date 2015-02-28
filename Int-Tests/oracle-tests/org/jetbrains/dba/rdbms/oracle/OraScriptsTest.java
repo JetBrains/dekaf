@@ -1,4 +1,4 @@
-package org.jetbrains.dba.scripts;
+package org.jetbrains.dba.rdbms.oracle;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dba.access.DBSession;

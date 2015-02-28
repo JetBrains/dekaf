@@ -16,7 +16,7 @@ import java.sql.*;
  * Database session.
  * Encapsulates connection and provides useful methods to work with database.
  */
-class BaseSession implements DBSession {
+public class BaseSession implements DBSession {
 
   //// STATE \\\\
 
@@ -123,7 +123,8 @@ class BaseSession implements DBSession {
 
 
   @NotNull
-  Connection getConnection() {
+  @Deprecated
+  public Connection getConnection() {
     return myConnection; // TODO wrap it somehow?
   }
 

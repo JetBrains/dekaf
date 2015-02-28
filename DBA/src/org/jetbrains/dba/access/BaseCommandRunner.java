@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
@@ -66,4 +67,10 @@ public class BaseCommandRunner implements DBCommandRunner {
 
     return this;
   }
+
+
+  protected void assignParameters(PreparedStatement statement) throws SQLException {
+    session.assignParameters(statement, params);
+  }
+
 }

@@ -1,8 +1,9 @@
-package org.jetbrains.dba.access;
+package org.jetbrains.dba.rdbms.postgre;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dba.KnownRdbms;
 import org.jetbrains.dba.Rdbms;
+import org.jetbrains.dba.access.DBServiceFactory;
 import org.jetbrains.dba.sql.SQL;
 
 import javax.sql.DataSource;
@@ -13,17 +14,17 @@ import java.util.regex.Pattern;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public class MysqlServiceFactory implements DBServiceFactory {
+public class PostgreServiceFactory implements DBServiceFactory {
 
   private final SQL mySQL = new SQL();
-  private final MysqlErrorRecognizer myErrorRecognizer = new MysqlErrorRecognizer();
-  private final Pattern myConnectionStringPattern = Pattern.compile("^jdbc:mysql:.*$");
+  private final PostgreErrorRecognizer myErrorRecognizer = new PostgreErrorRecognizer();
+  private final Pattern myConnectionStringPattern = Pattern.compile("^jdbc:postgresql:.*$");
 
 
   @NotNull
   @Override
   public Rdbms rdbms() {
-    return KnownRdbms.MYSQL;
+    return KnownRdbms.POSTGRE;
   }
 
 
@@ -36,7 +37,7 @@ public class MysqlServiceFactory implements DBServiceFactory {
 
   @NotNull
   @Override
-  public MysqlErrorRecognizer errorRecognizer() {
+  public PostgreErrorRecognizer errorRecognizer() {
     return myErrorRecognizer;
   }
 
@@ -50,8 +51,8 @@ public class MysqlServiceFactory implements DBServiceFactory {
 
   @NotNull
   @Override
-  public MysqlFacade createFacade(@NotNull DataSource source) {
-    return new MysqlFacade(KnownRdbms.MYSQL, source, myErrorRecognizer, cloneSQL());
+  public PostgreFacade createFacade(@NotNull DataSource source) {
+    return new PostgreFacade(KnownRdbms.POSTGRE, source, myErrorRecognizer, cloneSQL());
   }
 
 }

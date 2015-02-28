@@ -1,7 +1,8 @@
-package org.jetbrains.dba.access;
+package org.jetbrains.dba.rdbms.microsoft;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.dba.access.BaseErrorRecognizer;
 import org.jetbrains.dba.errors.DBError;
 import org.jetbrains.dba.errors.DuplicateKeyError;
 import org.jetbrains.dba.errors.UnknownDBError;
@@ -11,9 +12,9 @@ import java.sql.SQLException;
 
 
 /**
- * MySQL specific errors recognizer.
+ * MS SQL Server specific errors recognizer.
  **/
-public class MysqlErrorRecognizer extends BaseErrorRecognizer {
+public class MssqlErrorRecognizer extends BaseErrorRecognizer {
 
   @NotNull
   @Override
@@ -21,7 +22,7 @@ public class MysqlErrorRecognizer extends BaseErrorRecognizer {
     int code = sqlException.getErrorCode();
 
     switch (code) {
-      case 1062:
+      case 2601:
         return new DuplicateKeyError(sqlException, statementText);
       default:
         return new UnknownDBError(sqlException, statementText);

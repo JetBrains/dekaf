@@ -5,6 +5,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dba.Rdbms;
 import org.jetbrains.dba.errors.DBFactoryError;
+import org.jetbrains.dba.rdbms.microsoft.MicrosoftServiceFactory;
+import org.jetbrains.dba.rdbms.mysql.MysqlServiceFactory;
+import org.jetbrains.dba.rdbms.oracle.OracleServiceFactory;
+import org.jetbrains.dba.rdbms.postgre.PostgreServiceFactory;
 
 import javax.sql.DataSource;
 import java.io.File;

@@ -1,6 +1,7 @@
-package org.jetbrains.dba.access;
+package org.jetbrains.dba.rdbms.microsoft;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.dba.access.BaseSession;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

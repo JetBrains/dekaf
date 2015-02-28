@@ -1,4 +1,4 @@
-package org.jetbrains.dba.access;
+package org.jetbrains.dba.rdbms.oracle;
 
 import org.junit.Test;
 import org.junit.experimental.categories.Category;

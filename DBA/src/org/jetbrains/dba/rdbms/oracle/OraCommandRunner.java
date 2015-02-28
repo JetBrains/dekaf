@@ -1,6 +1,8 @@
-package org.jetbrains.dba.access;
+package org.jetbrains.dba.rdbms.oracle;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.dba.access.BaseCommandRunner;
+import org.jetbrains.dba.access.BaseSession;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -24,7 +26,7 @@ public class OraCommandRunner extends BaseCommandRunner {
       if (params != null) {
         PreparedStatement statement = session.getConnection().prepareStatement(statementSourceText);
         try {
-          session.assignParameters(statement, params);
+          assignParameters(statement);
           statement.execute();
         }
         finally {
@@ -48,5 +50,4 @@ public class OraCommandRunner extends BaseCommandRunner {
 
     return this;
   }
-
 }
