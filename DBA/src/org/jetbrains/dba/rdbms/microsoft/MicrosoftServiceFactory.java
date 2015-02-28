@@ -1,7 +1,6 @@
 package org.jetbrains.dba.rdbms.microsoft;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dba.KnownRdbms;
 import org.jetbrains.dba.Rdbms;
 import org.jetbrains.dba.access.DBServiceFactory;
 import org.jetbrains.dba.sql.MicrosoftSQL;
@@ -24,7 +23,7 @@ public class MicrosoftServiceFactory implements DBServiceFactory {
   @NotNull
   @Override
   public Rdbms rdbms() {
-    return KnownRdbms.MSSQL;
+    return org.jetbrains.dba.rdbms.microsoft.MicrosoftSQL.RDBMS;
   }
 
 
@@ -52,7 +51,7 @@ public class MicrosoftServiceFactory implements DBServiceFactory {
   @NotNull
   @Override
   public MssqlFacade createFacade(@NotNull DataSource source) {
-    return new MssqlFacade(KnownRdbms.MSSQL, source, myErrorRecognizer, cloneSQL());
+    return new MssqlFacade(org.jetbrains.dba.rdbms.microsoft.MicrosoftSQL.RDBMS, source, myErrorRecognizer, cloneSQL());
   }
 
 }

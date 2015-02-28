@@ -6,8 +6,6 @@ import org.jetbrains.dba.utils.Version;
 
 import java.io.File;
 
-import static org.jetbrains.dba.KnownRdbms.*;
-
 
 
 /**
@@ -52,12 +50,12 @@ public abstract class JdbcTestCase {
 
 
   public static final DriverExample[] DRIVER_EXAMPLES = {
-    new DriverExample(POSTGRE, "Postgre",      "jdbc:postgresql://localhost/database?user=masha&password=secret",    Version.of(8,2)),
-    new DriverExample(ORACLE,  "Oracle-OCI",   "jdbc:oracle:thin:username/password@host:1521:ServiceName",           Version.of(10)),
-    new DriverExample(ORACLE,  "Oracle-thin",  "jdbc:oracle:thin:username/password@host:1521:ServiceName",           Version.of(10)),
-    new DriverExample(MSSQL,   "MSSQL-native", "jdbc:sqlserver://host\\instanceName:1433;databaseName=MyDB",         Version.of(3)),
-    new DriverExample(MSSQL,   "MSSQL-jtds",   "jdbc:jtds:sqlserver://host:1433/MyDatabase;instanceName=MyInstance", Version.of(1)),
-    new DriverExample(MYSQL,   "MySQL",        "jdbc:mysql://localhost:3306/Rabbit?user=masha&password=secret",      Version.of(2)),
+    new DriverExample(org.jetbrains.dba.rdbms.postgre.Postgre.RDBMS, "Postgre",      "jdbc:postgresql://localhost/database?user=masha&password=secret",    Version.of(8,2)),
+    new DriverExample(org.jetbrains.dba.rdbms.oracle.Oracle.RDBMS,  "Oracle-OCI",   "jdbc:oracle:thin:username/password@host:1521:ServiceName",           Version.of(10)),
+    new DriverExample(org.jetbrains.dba.rdbms.oracle.Oracle.RDBMS,  "Oracle-thin",  "jdbc:oracle:thin:username/password@host:1521:ServiceName",           Version.of(10)),
+    new DriverExample(org.jetbrains.dba.rdbms.microsoft.MicrosoftSQL.RDBMS,   "MSSQL-native", "jdbc:sqlserver://host\\instanceName:1433;databaseName=MyDB",         Version.of(3)),
+    new DriverExample(org.jetbrains.dba.rdbms.microsoft.MicrosoftSQL.RDBMS,   "MSSQL-jtds",   "jdbc:jtds:sqlserver://host:1433/MyDatabase;instanceName=MyInstance", Version.of(1)),
+    new DriverExample(org.jetbrains.dba.rdbms.mysql.MySQL.RDBMS,   "MySQL",        "jdbc:mysql://localhost:3306/Rabbit?user=masha&password=secret",      Version.of(2)),
   };
 
 }

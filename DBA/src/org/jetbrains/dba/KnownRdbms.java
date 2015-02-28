@@ -4,29 +4,33 @@ package org.jetbrains.dba;
  * Well known RDBMS.
  *
  * @author Leonid Bushuev from JetBrains
+ *
+ * @deprecated use RDBMS declarations classes instead.
+ * @see org.jetbrains.dba.rdbms.oracle.Oracle
  */
+@Deprecated
 public interface KnownRdbms {
 
 
   /**
    * PostgreSQL.
    */
-  Rdbms POSTGRE = new Rdbms("POSTGRE");
+  Rdbms POSTGRE = org.jetbrains.dba.rdbms.postgre.Postgre.RDBMS;
 
   /**
    * Oracle Database.
    */
-  Rdbms ORACLE = new Rdbms("ORACLE");
+  Rdbms ORACLE = org.jetbrains.dba.rdbms.oracle.Oracle.RDBMS;
 
   /**
    * Microsoft SQL Server.
    */
-  Rdbms MSSQL = new Rdbms("MSSQL");
+  Rdbms MSSQL = org.jetbrains.dba.rdbms.microsoft.MicrosoftSQL.RDBMS;
 
   /**
    * MySQL.
    */
-  Rdbms MYSQL = new Rdbms("MYSQL");
+  Rdbms MYSQL = org.jetbrains.dba.rdbms.mysql.MySQL.RDBMS;
 
   /**
    * HyperSonic SQL v.2.

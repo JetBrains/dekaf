@@ -8,8 +8,6 @@ import org.jetbrains.dba.access.JdbcDBProvider;
 import org.jetbrains.dba.sql.SQLCommand;
 import org.jetbrains.dba.utils.*;
 
-import static org.jetbrains.dba.KnownRdbms.*;
-
 
 
 /**
@@ -49,10 +47,10 @@ public class TestDB {
 
   private static BaseTestUtils getUtils(@NotNull final DBFacade facade) {
     Rdbms rdbms = facade.rdbms();
-    if (rdbms == POSTGRE) return new PostgreTestUtils(facade);
-    if (rdbms == ORACLE) return new OracleTestUtils(facade);
-    if (rdbms == MSSQL) return new MicrosoftTestUtils(facade);
-    if (rdbms == MYSQL) return new MysqlTestUtils(facade);
+    if (rdbms == org.jetbrains.dba.rdbms.postgre.Postgre.RDBMS) return new PostgreTestUtils(facade);
+    if (rdbms == org.jetbrains.dba.rdbms.oracle.Oracle.RDBMS) return new OracleTestUtils(facade);
+    if (rdbms == org.jetbrains.dba.rdbms.microsoft.MicrosoftSQL.RDBMS) return new MicrosoftTestUtils(facade);
+    if (rdbms == org.jetbrains.dba.rdbms.mysql.MySQL.RDBMS) return new MysqlTestUtils(facade);
     throw new IllegalStateException("Test utils for "+rdbms+" don't exist.");
   }
 
@@ -62,8 +60,8 @@ public class TestDB {
 
   public static void zapSchema() {
     Rdbms rdbms = FACADE.rdbms();
-    if (rdbms == ORACLE) zapOracleSchema();
-    else if (rdbms == MSSQL) zapMicrosoftSchema();
+    if (rdbms == org.jetbrains.dba.rdbms.oracle.Oracle.RDBMS) zapOracleSchema();
+    else if (rdbms == org.jetbrains.dba.rdbms.microsoft.MicrosoftSQL.RDBMS) zapMicrosoftSchema();
     else throw new IllegalStateException("I don't know how to cleanup a schema in " + FACADE.rdbms() + ".");
   }
 

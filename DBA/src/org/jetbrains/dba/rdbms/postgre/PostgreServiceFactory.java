@@ -1,7 +1,6 @@
 package org.jetbrains.dba.rdbms.postgre;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dba.KnownRdbms;
 import org.jetbrains.dba.Rdbms;
 import org.jetbrains.dba.access.DBServiceFactory;
 import org.jetbrains.dba.sql.SQL;
@@ -24,7 +23,7 @@ public class PostgreServiceFactory implements DBServiceFactory {
   @NotNull
   @Override
   public Rdbms rdbms() {
-    return KnownRdbms.POSTGRE;
+    return Postgre.RDBMS;
   }
 
 
@@ -52,7 +51,7 @@ public class PostgreServiceFactory implements DBServiceFactory {
   @NotNull
   @Override
   public PostgreFacade createFacade(@NotNull DataSource source) {
-    return new PostgreFacade(KnownRdbms.POSTGRE, source, myErrorRecognizer, cloneSQL());
+    return new PostgreFacade(Postgre.RDBMS, source, myErrorRecognizer, cloneSQL());
   }
 
 }

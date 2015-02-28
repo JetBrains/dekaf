@@ -1,7 +1,6 @@
 package org.jetbrains.dba.rdbms.mysql;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dba.KnownRdbms;
 import org.jetbrains.dba.Rdbms;
 import org.jetbrains.dba.access.DBServiceFactory;
 import org.jetbrains.dba.sql.SQL;
@@ -24,7 +23,7 @@ public class MysqlServiceFactory implements DBServiceFactory {
   @NotNull
   @Override
   public Rdbms rdbms() {
-    return KnownRdbms.MYSQL;
+    return MySQL.RDBMS;
   }
 
 
@@ -52,7 +51,7 @@ public class MysqlServiceFactory implements DBServiceFactory {
   @NotNull
   @Override
   public MysqlFacade createFacade(@NotNull DataSource source) {
-    return new MysqlFacade(KnownRdbms.MYSQL, source, myErrorRecognizer, cloneSQL());
+    return new MysqlFacade(MySQL.RDBMS, source, myErrorRecognizer, cloneSQL());
   }
 
 }

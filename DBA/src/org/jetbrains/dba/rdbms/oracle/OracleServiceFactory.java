@@ -1,7 +1,6 @@
 package org.jetbrains.dba.rdbms.oracle;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dba.KnownRdbms;
 import org.jetbrains.dba.Rdbms;
 import org.jetbrains.dba.access.DBServiceFactory;
 import org.jetbrains.dba.sql.OraSQL;
@@ -24,7 +23,7 @@ public class OracleServiceFactory implements DBServiceFactory {
   @NotNull
   @Override
   public Rdbms rdbms() {
-    return KnownRdbms.ORACLE;
+    return Oracle.RDBMS;
   }
 
 
@@ -52,7 +51,7 @@ public class OracleServiceFactory implements DBServiceFactory {
   @NotNull
   @Override
   public OraFacade createFacade(@NotNull DataSource source) {
-    return new OraFacade(KnownRdbms.ORACLE, source, myErrorRecognizer, cloneSQL());
+    return new OraFacade(Oracle.RDBMS, source, myErrorRecognizer, cloneSQL());
   }
 
 }

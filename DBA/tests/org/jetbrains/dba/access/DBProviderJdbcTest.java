@@ -8,7 +8,6 @@ import testing.junit.FineRunner;
 import testing.junit.TestWithParams;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jetbrains.dba.KnownRdbms.*;
 
 
 
@@ -23,14 +22,15 @@ public class DBProviderJdbcTest extends JdbcTestCase {
 
 
   private static final Object[][] SIMPLE_CONNECTION_STRINGS = {
-      { "jdbc:postgresql://localhost:5432/first_database?user=masha&password=secret", POSTGRE },
-      { "jdbc:postgresql://localhost/default_database", POSTGRE },
-      { "jdbc:oracle:thin:username/password@//localhost:1521:ServiceName", ORACLE },
-      { "jdbc:oracle:oci:@//BüroOraServer", ORACLE },
-      { "jdbc:sqlserver://msserver:1433", MSSQL },
-      { "jdbc:sqlserver://msserver\\BigInstance:1433;DatabaseName=CoolDB;IntegratedSecurity=true", MSSQL },
-      { "jdbc:jtds:sqlserver://msserver:1433/BigDatabase", MSSQL },
-      { "jdbc:mysql://localhost/lamp", MYSQL },
+      { "jdbc:postgresql://localhost:5432/first_database?user=masha&password=secret", org.jetbrains.dba.rdbms.postgre.Postgre.RDBMS},
+      { "jdbc:postgresql://localhost/default_database", org.jetbrains.dba.rdbms.postgre.Postgre.RDBMS},
+      { "jdbc:oracle:thin:username/password@//localhost:1521:ServiceName", org.jetbrains.dba.rdbms.oracle.Oracle.RDBMS},
+      { "jdbc:oracle:oci:@//BüroOraServer", org.jetbrains.dba.rdbms.oracle.Oracle.RDBMS},
+      { "jdbc:sqlserver://msserver:1433", org.jetbrains.dba.rdbms.microsoft.MicrosoftSQL.RDBMS},
+      { "jdbc:sqlserver://msserver\\BigInstance:1433;DatabaseName=CoolDB;IntegratedSecurity=true",
+        org.jetbrains.dba.rdbms.microsoft.MicrosoftSQL.RDBMS},
+      { "jdbc:jtds:sqlserver://msserver:1433/BigDatabase", org.jetbrains.dba.rdbms.microsoft.MicrosoftSQL.RDBMS},
+      { "jdbc:mysql://localhost/lamp", org.jetbrains.dba.rdbms.mysql.MySQL.RDBMS},
   };
 
   @TestWithParams(params = "SIMPLE_CONNECTION_STRINGS")
