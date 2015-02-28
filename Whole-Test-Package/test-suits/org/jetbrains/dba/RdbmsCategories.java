@@ -11,8 +11,6 @@ import testing.categories.*;
 
 import java.util.Map;
 
-import static org.jetbrains.dba.KnownRdbms.*;
-
 
 
 /**
@@ -23,10 +21,10 @@ public class RdbmsCategories extends Suite {
 
     static final Map<Rdbms, Couple<Class<?>>> RDBMS_CATEGORIES =
       ImmutableMap.of(
-        POSTGRE, Couple.of(ForPostgre.class, NotForPostgre.class),
-        ORACLE, Couple.of(ForOracle.class, NotForOracle.class),
-        MSSQL, Couple.of(ForMSSQL.class, NotForMSSQL.class),
-        MYSQL, Couple.of(ForMySQL.class, NotForMySQL.class)
+        org.jetbrains.dba.rdbms.postgre.Postgre.RDBMS, Couple.of(ForPostgre.class, NotForPostgre.class),
+        org.jetbrains.dba.rdbms.oracle.Oracle.RDBMS, Couple.of(ForOracle.class, NotForOracle.class),
+        org.jetbrains.dba.rdbms.microsoft.MicrosoftSQL.RDBMS, Couple.of(ForMSSQL.class, NotForMSSQL.class),
+        org.jetbrains.dba.rdbms.mysql.MySQL.RDBMS, Couple.of(ForMySQL.class, NotForMySQL.class)
       );
 
 
