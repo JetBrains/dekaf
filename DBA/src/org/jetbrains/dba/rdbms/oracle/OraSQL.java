@@ -1,4 +1,8 @@
-package org.jetbrains.dba.sql;
+package org.jetbrains.dba.rdbms.oracle;
+
+import org.jetbrains.dba.sql.SQL;
+
+
 
 /**
  * Oracle SQL.

@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dba.core.DBSession;
 import org.jetbrains.dba.core.InSessionNoResult;
 import org.jetbrains.dba.core.RowsCollectors;
-import org.jetbrains.dba.sql.OraSQL;
 import org.jetbrains.dba.sql.SQLQuery;
 import org.jetbrains.dba.sql.SQLScript;
 import org.junit.BeforeClass;

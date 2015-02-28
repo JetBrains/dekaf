@@ -51,7 +51,7 @@ public class Tests {
                         SQLScriptBuilderTest.class,
                         SQLScriptTest.class,
                         OraSQLTest.class,
-                        MicrosoftSQLTest.class,
+                        MicrosoftTSQLTest.class,
                         ValueGetterTest.class,
                         StructRowFetcherTest.class,
                         ConnectionPoolTest.class

@@ -1,10 +1,14 @@
-package org.jetbrains.dba.sql;
+package org.jetbrains.dba.rdbms.microsoft;
+
+import org.jetbrains.dba.sql.SQL;
+
+
 
 /**
  * MSSQL' SQL.
  * @author Leonid Bushuev from JetBrains
  */
-public class MicrosoftSQL extends SQL {
+public class MicrosoftTSQL extends SQL {
 
 
   private boolean myCaseInsensitive;
@@ -21,8 +25,8 @@ public class MicrosoftSQL extends SQL {
 
 
   @Override
-  public MicrosoftSQL clone() {
-    MicrosoftSQL clone = (MicrosoftSQL) super.clone();
+  public MicrosoftTSQL clone() {
+    MicrosoftTSQL clone = (MicrosoftTSQL) super.clone();
     clone.myCaseInsensitive = this.myCaseInsensitive;
     return clone;
   }
