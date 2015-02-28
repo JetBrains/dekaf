@@ -1,7 +1,7 @@
 package org.jetbrains.dba.fakedb.errors;
 
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.dba.errors.DBError;
+import org.jetbrains.dba.core.errors.DBError;
 
 
 

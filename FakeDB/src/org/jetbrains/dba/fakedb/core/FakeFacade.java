@@ -2,7 +2,7 @@ package org.jetbrains.dba.fakedb.core;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dba.Rdbms;
-import org.jetbrains.dba.access.*;
+import org.jetbrains.dba.core.*;
 import org.jetbrains.dba.fakedb.FakeDB;
 import org.jetbrains.dba.sql.SQL;
 

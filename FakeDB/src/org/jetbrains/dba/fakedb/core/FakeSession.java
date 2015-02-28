@@ -2,7 +2,7 @@ package org.jetbrains.dba.fakedb.core;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.dba.access.*;
+import org.jetbrains.dba.core.*;
 import org.jetbrains.dba.fakedb.errors.FakeSessionBusyException;
 import org.jetbrains.dba.sql.SQLCommand;
 import org.jetbrains.dba.sql.SQLQuery;
