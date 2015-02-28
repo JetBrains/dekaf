@@ -1,8 +1,8 @@
 package org.jetbrains.dba.rdbms.oracle;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dba.access.DBTransaction;
-import org.jetbrains.dba.access.InTransactionNoResult;
+import org.jetbrains.dba.core.DBTransaction;
+import org.jetbrains.dba.core.InTransactionNoResult;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import testing.categories.ForOracle;

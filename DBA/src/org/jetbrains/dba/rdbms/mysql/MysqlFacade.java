@@ -2,8 +2,8 @@ package org.jetbrains.dba.rdbms.mysql;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dba.Rdbms;
-import org.jetbrains.dba.access.BaseFacade;
-import org.jetbrains.dba.access.DBErrorRecognizer;
+import org.jetbrains.dba.core.BaseFacade;
+import org.jetbrains.dba.core.DBErrorRecognizer;
 import org.jetbrains.dba.sql.SQL;
 
 import javax.sql.DataSource;

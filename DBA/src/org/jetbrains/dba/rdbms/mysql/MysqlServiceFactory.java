@@ -2,7 +2,7 @@ package org.jetbrains.dba.rdbms.mysql;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dba.Rdbms;
-import org.jetbrains.dba.access.DBServiceFactory;
+import org.jetbrains.dba.core.DBServiceFactory;
 import org.jetbrains.dba.sql.SQL;
 
 import javax.sql.DataSource;

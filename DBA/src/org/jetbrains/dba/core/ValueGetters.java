@@ -1,0 +1,314 @@
+package org.jetbrains.dba.core;
+
+import com.google.common.collect.ImmutableMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.dba.core.errors.DBPreparingError;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Map;
+
+
+
+/**
+ * Value getters factory.
+ * <p/>
+ * Stateless service.
+ *
+ * @author Leonid Bushuev from JetBrains
+ */
+public final class ValueGetters {
+
+  //// INSTANCE PLENTY \\\\
+
+  @NotNull
+  private static final Map<Class, ValueGetter<?>> getters
+    = ImmutableMap.<Class, ValueGetter<?>>builder()
+    .put(boolean.class, BoolGetter.INSTANCE)
+    .put(Boolean.class, BoolGetter.INSTANCE)
+    .put(byte.class, ByteGetter.INSTANCE)
+    .put(Byte.class, ByteGetter.INSTANCE)
+    .put(short.class, ShortGetter.INSTANCE)
+    .put(Short.class, ShortGetter.INSTANCE)
+    .put(int.class, IntGetter.INSTANCE)
+    .put(Integer.class, IntGetter.INSTANCE)
+    .put(long.class, LongGetter.INSTANCE)
+    .put(Long.class, LongGetter.INSTANCE)
+    .put(float.class, FloatGetter.INSTANCE)
+    .put(Float.class, FloatGetter.INSTANCE)
+    .put(double.class, DoubleGetter.INSTANCE)
+    .put(Double.class, DoubleGetter.INSTANCE)
+    .put(String.class, StringGetter.INSTANCE)
+    .put(char.class, CharGetter.INSTANCE)
+    .put(Character.class, CharGetter.INSTANCE)
+    .put(java.util.Date.class, JavaDateGetter.INSTANCE)
+    .put(java.sql.Date.class, DateGetter.INSTANCE)
+    .put(java.sql.Timestamp.class, TimestampGetter.INSTANCE)
+    .put(java.sql.Time.class, TimeGetter.INSTANCE)
+    .put(Object.class, ObjectGetter.INSTANCE)
+    .build();
+
+
+  @NotNull
+  @SuppressWarnings("unchecked")
+  static <W> ValueGetter<W> of(@NotNull final Class<W> clazz) {
+    ValueGetter<W> getter = find(clazz);
+    if (getter == null) throw new DBPreparingError("Unknown how to get a value of class "+clazz.getSimpleName());
+    return getter;
+  }
+
+
+  @Nullable
+  @SuppressWarnings("unchecked")
+  static <W> ValueGetter<W> find(@NotNull final Class<W> clazz) {
+    return (ValueGetter<W>)getters.get(clazz);
+  }
+
+
+  //// SUBCLASSES \\\\
+
+
+
+  /**
+   * @author Leonid Bushuev from JetBrains
+   */
+  static final class BoolGetter extends ValueGetter<Boolean> {
+    @Override
+    @Nullable
+    Boolean getValue(@NotNull final ResultSet rset, final int index)
+      throws SQLException {
+      final int value = rset.getInt(index);
+      return rset.wasNull() ? null : value > 0;
+    }
+
+
+    static final BoolGetter INSTANCE = new BoolGetter();
+  }
+
+
+
+  /**
+   * @author Leonid Bushuev from JetBrains
+   */
+  static final class ByteGetter extends ValueGetter<Byte> {
+    @Override
+    @Nullable
+    Byte getValue(@NotNull final ResultSet rset, final int index)
+      throws SQLException {
+      final byte value = rset.getByte(index);
+      return rset.wasNull() ? null : value;
+    }
+
+
+    final static ByteGetter INSTANCE = new ByteGetter();
+  }
+
+
+
+  /**
+   * @author Leonid Bushuev from JetBrains
+   */
+  static final class ShortGetter extends ValueGetter<Short> {
+    @Override
+    @Nullable
+    Short getValue(@NotNull final ResultSet rset, final int index)
+      throws SQLException {
+      final short value = rset.getShort(index);
+      return rset.wasNull() ? null : value;
+    }
+
+
+    final static ShortGetter INSTANCE = new ShortGetter();
+  }
+
+
+
+  /**
+   * @author Leonid Bushuev from JetBrains
+   */
+  static final class IntGetter extends ValueGetter<Integer> {
+    @Override
+    @Nullable
+    Integer getValue(@NotNull final ResultSet rset, final int index)
+      throws SQLException {
+      final int value = rset.getInt(index);
+      return rset.wasNull() ? null : value;
+    }
+
+
+    final static IntGetter INSTANCE = new IntGetter();
+  }
+
+
+
+  /**
+   * @author Leonid Bushuev from JetBrains
+   */
+  static final class LongGetter extends ValueGetter<Long> {
+    @Override
+    @Nullable
+    Long getValue(@NotNull final ResultSet rset, final int index)
+      throws SQLException {
+      final long value = rset.getLong(index);
+      return rset.wasNull() ? null : value;
+    }
+
+
+    final static LongGetter INSTANCE = new LongGetter();
+  }
+
+
+
+  /**
+   * @author Leonid Bushuev from JetBrains
+   */
+  static final class FloatGetter extends ValueGetter<Float> {
+    @Override
+    @Nullable
+    Float getValue(@NotNull final ResultSet rset, final int index)
+      throws SQLException {
+      final float value = rset.getFloat(index);
+      return rset.wasNull() ? null : value;
+    }
+
+
+    final static FloatGetter INSTANCE = new FloatGetter();
+  }
+
+
+
+  /**
+   * @author Leonid Bushuev from JetBrains
+   */
+  static final class DoubleGetter extends ValueGetter<Double> {
+    @Override
+    @Nullable
+    Double getValue(@NotNull final ResultSet rset, final int index)
+      throws SQLException {
+      final double value = rset.getDouble(index);
+      return rset.wasNull() ? null : value;
+    }
+
+
+    final static DoubleGetter INSTANCE = new DoubleGetter();
+  }
+
+
+
+  /**
+   * @author Leonid Bushuev from JetBrains
+   */
+  static final class StringGetter extends ValueGetter<String> {
+    @Override
+    @Nullable
+    String getValue(@NotNull final ResultSet rset, final int index)
+      throws SQLException {
+      return rset.getString(index);
+    }
+
+
+    static final StringGetter INSTANCE = new StringGetter();
+  }
+
+
+
+  /**
+   * @author Leonid Bushuev from JetBrains
+   */
+  static final class CharGetter extends ValueGetter<Character> {
+    @Override
+    @Nullable
+    Character getValue(@NotNull final ResultSet rset, final int index)
+      throws SQLException {
+      final String str = rset.getString(index);
+      if (rset.wasNull() || str == null || str.length() == 0) {
+        return null;
+      }
+      return str.charAt(0);
+    }
+
+
+    final static CharGetter INSTANCE = new CharGetter();
+  }
+
+
+
+  /**
+   * @author Leonid Bushuev from JetBrains
+   */
+  static final class JavaDateGetter extends ValueGetter<java.util.Date> {
+    @Override
+    @Nullable
+    java.util.Date getValue(@NotNull final ResultSet rset, final int index)  throws SQLException {
+      final Timestamp timestamp = rset.getTimestamp(index);
+      return rset.wasNull() ? null : new java.util.Date(timestamp.getTime());
+    }
+
+
+    final static JavaDateGetter INSTANCE = new JavaDateGetter();
+  }
+
+
+  /**
+   * @author Leonid Bushuev from JetBrains
+   */
+  static final class DateGetter extends ValueGetter<java.sql.Date> {
+    @Override
+    @Nullable
+    java.sql.Date getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
+      return rset.getDate(index);
+    }
+
+
+    final static DateGetter INSTANCE = new DateGetter();
+  }
+
+
+  /**
+   * @author Leonid Bushuev from JetBrains
+   */
+  static final class TimestampGetter extends ValueGetter<java.sql.Timestamp> {
+    @Override
+    @Nullable
+    java.sql.Timestamp getValue(@NotNull final ResultSet rset, final int index)  throws SQLException {
+      return rset.getTimestamp(index);
+    }
+
+
+    final static TimestampGetter INSTANCE = new TimestampGetter();
+  }
+
+
+  /**
+   * @author Leonid Bushuev from JetBrains
+   */
+  static final class TimeGetter extends ValueGetter<java.sql.Time> {
+    @Override
+    @Nullable
+    java.sql.Time getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
+      return rset.getTime(index);
+    }
+
+
+    final static TimeGetter INSTANCE = new TimeGetter();
+  }
+
+
+
+  /**
+   * @author Leonid Bushuev from JetBrains
+   */
+  static final class ObjectGetter extends ValueGetter<Object> {
+    @Override
+    @Nullable
+    Object getValue(@NotNull final ResultSet rset, final int index)
+      throws SQLException {
+      return rset.getObject(index);
+    }
+
+
+    static final ObjectGetter INSTANCE = new ObjectGetter();
+  }
+}

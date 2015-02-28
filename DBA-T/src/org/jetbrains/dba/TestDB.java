@@ -1,10 +1,10 @@
 package org.jetbrains.dba;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dba.access.DBFacade;
-import org.jetbrains.dba.access.DBSession;
-import org.jetbrains.dba.access.InSessionNoResult;
-import org.jetbrains.dba.access.JdbcDBProvider;
+import org.jetbrains.dba.core.DBFacade;
+import org.jetbrains.dba.core.DBSession;
+import org.jetbrains.dba.core.InSessionNoResult;
+import org.jetbrains.dba.jdbc.JdbcDBProvider;
 import org.jetbrains.dba.sql.SQLCommand;
 import org.jetbrains.dba.utils.*;
 
