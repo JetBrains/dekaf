@@ -11,6 +11,7 @@ out
 .idea/workspace.xml
 .idea/uiDesigner.xml
 .idea/deployment.xml
+.idea/shelf
 
 test-db.config
 test-db.properties

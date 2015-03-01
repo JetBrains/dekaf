@@ -2,8 +2,10 @@ import junit.runner.Version;
 import org.jetbrains.dba.RdbmsCategories;
 import org.jetbrains.dba.TestDBSpecificTest;
 import org.jetbrains.dba.TestDBTest;
-import org.jetbrains.dba.access.*;
-import org.jetbrains.dba.pooling.ConnectionPoolTest;
+import org.jetbrains.dba.core.*;
+import org.jetbrains.dba.jdbc.pooling.ConnectionPoolTest;
+import org.jetbrains.dba.rdbms.oracle.OraFacadeTest;
+import org.jetbrains.dba.rdbms.oracle.OraSessionTest;
 import org.jetbrains.dba.sql.*;
 import org.jetbrains.dba.utils.NumberUtilsTest;
 import org.jetbrains.dba.utils.StringsTest;
@@ -49,7 +51,7 @@ public class Tests {
                         SQLScriptBuilderTest.class,
                         SQLScriptTest.class,
                         OraSQLTest.class,
-                        MicrosoftSQLTest.class,
+                        MicrosoftTSQLTest.class,
                         ValueGetterTest.class,
                         StructRowFetcherTest.class,
                         ConnectionPoolTest.class

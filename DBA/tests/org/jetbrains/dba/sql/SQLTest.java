@@ -12,7 +12,7 @@ import testing.junit.TestWithParams;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jetbrains.dba.access.RowsCollectors.oneRow;
+import static org.jetbrains.dba.core.RowsCollectors.oneRow;
 import static org.jetbrains.dba.utils.Strings.removeEnding;
 
 

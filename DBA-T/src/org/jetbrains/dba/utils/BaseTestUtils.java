@@ -1,7 +1,7 @@
 package org.jetbrains.dba.utils;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dba.access.*;
+import org.jetbrains.dba.core.*;
 import org.jetbrains.dba.sql.SQL;
 import org.jetbrains.dba.sql.SQLQuery;
 

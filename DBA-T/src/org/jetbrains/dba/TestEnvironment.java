@@ -1,6 +1,6 @@
 package org.jetbrains.dba;
 
-import org.jetbrains.dba.access.JdbcDriverSupport;
+import org.jetbrains.dba.jdbc.JdbcDriverSupport;
 
 
 

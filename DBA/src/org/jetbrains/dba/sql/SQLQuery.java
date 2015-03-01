@@ -1,7 +1,7 @@
 package org.jetbrains.dba.sql;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dba.access.DBRowsCollector;
+import org.jetbrains.dba.core.DBRowsCollector;
 
 
 
