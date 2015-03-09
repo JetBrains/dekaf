@@ -13,11 +13,19 @@ configurations {
 
 dependencies {
 
-    lib "org.jetbrains:annotations:13.0",
-        "junit:junit:4.11",
-        "org.assertj:assertj-core:1.7.1",
+    lib ("org.jetbrains:annotations:13.0") {
+      force = true
+    }
+
+    lib ("junit:junit:4.11") {
+      force = true
+    }
 
     lib ("com.google.guava:guava:17.0") {
+        force = true
+    }
+
+    lib ("org.assertj:assertj-core:1.7.1") {
         force = true
     }
 
