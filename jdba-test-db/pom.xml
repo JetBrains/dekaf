@@ -12,7 +12,7 @@
 
   <artifactId>jdba-test-db</artifactId>
   <name>JDBA Test-DB Supply</name>
-  <version>1.0-SNAPSHOT</version>
+  <version>${jdba.version}</version>
   <packaging>jar</packaging>
 
   <dependencies>
