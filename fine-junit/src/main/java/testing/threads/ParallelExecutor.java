@@ -1,7 +1,5 @@
 package testing.threads;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -57,7 +55,7 @@ public class ParallelExecutor<T> {
   //// METHODS \\\\
 
   @SuppressWarnings("unchecked")
-  public ParallelExecutor(@NotNull final Callable<T>[] callables) {
+  public ParallelExecutor(final Callable<T>[] callables) {
     n = callables.length;
     myThreads = new Thread[n];
     myResults = (T[]) new Object[n];

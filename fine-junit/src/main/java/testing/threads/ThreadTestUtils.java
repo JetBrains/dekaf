@@ -1,7 +1,5 @@
 package testing.threads;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.PrintStream;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -14,7 +12,7 @@ import java.util.concurrent.Callable;
 public class ThreadTestUtils {
 
 
-  public static <T> T[] parallel(@NotNull final Callable<T> task, final int numberOfThreads, final int timeLimit) throws Exception {
+  public static <T> T[] parallel(final Callable<T> task, final int numberOfThreads, final int timeLimit) throws Exception {
     final int n = numberOfThreads;
     @SuppressWarnings("unchecked")
     final Callable<T>[] tasks = (Callable<T>[]) new Callable[n];

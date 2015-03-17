@@ -1,5 +1,6 @@
 package org.jetbrains.dba.utils;
 
+import org.junit.Test;
 import testing.junit.FineRunner;
 import testing.junit.TestWithParams;
 import org.junit.runner.RunWith;

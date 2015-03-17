@@ -4,13 +4,17 @@
 *.ear
 *.zip
 
+*.iml
+
 lib
 out
+*/target
 .gradle
 
 .idea/workspace.xml
 .idea/uiDesigner.xml
 .idea/deployment.xml
+.idea/libraries
 .idea/shelf
 
 test-db.config
