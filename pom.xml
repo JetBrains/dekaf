@@ -6,7 +6,7 @@
 
   <groupId>org.jetbrains.jdba</groupId>
   <artifactId>jdba</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>${jdba.version}</version>
   <packaging>pom</packaging>
   <name>JDBA</name>
   <description>Java Database Access Layer Framework</description>
@@ -20,6 +20,8 @@
   </modules>
 
   <properties>
+    <jdba.build.nr>XXX</jdba.build.nr>
+    <jdba.version>1.0.${jdba.build.nr}</jdba.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
