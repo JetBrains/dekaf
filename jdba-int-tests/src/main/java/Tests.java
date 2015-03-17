@@ -1,8 +1,8 @@
 import junit.runner.Version;
-import org.jetbrains.dba.RdbmsCategories;
-import org.jetbrains.dba.core.*;
-import org.jetbrains.dba.rdbms.oracle.OraFacadeTest;
-import org.jetbrains.dba.rdbms.oracle.OraSessionTest;
+import org.jetbrains.jdba.RdbmsCategories;
+import org.jetbrains.jdba.core.*;
+import org.jetbrains.jdba.rdbms.oracle.OraFacadeTest;
+import org.jetbrains.jdba.rdbms.oracle.OraSessionTest;
 import org.junit.internal.JUnitSystem;
 import org.junit.internal.RealSystem;
 import org.junit.internal.TextListener;
