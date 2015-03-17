@@ -1,15 +1,8 @@
 import junit.runner.Version;
 import org.jetbrains.dba.RdbmsCategories;
-import org.jetbrains.dba.TestDBSpecificTest;
-import org.jetbrains.dba.TestDBTest;
 import org.jetbrains.dba.core.*;
-import org.jetbrains.dba.jdbc.pooling.ConnectionPoolTest;
 import org.jetbrains.dba.rdbms.oracle.OraFacadeTest;
 import org.jetbrains.dba.rdbms.oracle.OraSessionTest;
-import org.jetbrains.dba.sql.*;
-import org.jetbrains.dba.utils.NumberUtilsTest;
-import org.jetbrains.dba.utils.StringsTest;
-import org.jetbrains.dba.utils.VersionTest;
 import org.junit.internal.JUnitSystem;
 import org.junit.internal.RealSystem;
 import org.junit.internal.TextListener;
@@ -39,44 +32,6 @@ public class Tests {
 
 
   /**
-   * Pure unit tests - tests that don't require DB connections and even JDBC drivers.
-   */
-  @RunWith(Suite.class)
-  @Suite.SuiteClasses({
-  // ------------------------------------------ \\
-                        NumberUtilsTest.class,
-                        StringsTest.class,
-                        VersionTest.class,
-                        SQLTest.class,
-                        SQLScriptBuilderTest.class,
-                        SQLScriptTest.class,
-                        OraSQLTest.class,
-                        MicrosoftTSQLTest.class,
-                        ValueGetterTest.class,
-                        StructRowFetcherTest.class,
-                        ConnectionPoolTest.class
-  // ------------------------------------------ \\
-                      })
-  public static class UnitTestsSuite {}
-
-
-
-  /**
-   * JDBC tests - they require JDBC drivers downloaded,
-   * but the don't require DB connections.
-   */
-  @RunWith(Suite.class)
-  @Suite.SuiteClasses({
-  // ------------------------------------------ \\
-                        JdbcDriverSupportTest.class,
-                        DBProviderJdbcTest.class
-  // ------------------------------------------ \\
-                      })
-  public static class JdbcTestsSuite {}
-
-
-
-  /**
    * Connection tests - to ensure logic of connect/disconnect,
    * credentials and other properties.
    * Required connection to a test database.
@@ -84,8 +39,6 @@ public class Tests {
   @RunWith(RdbmsCategories.class)
   @Suite.SuiteClasses({
   // --------------------------------------------------------------- \\
-                        TestDBTest.class,
-                        TestDBSpecificTest.class,
                         DBFacadeTest.class,
                         DBFacadeSpecificTest.class,
                         OraFacadeTest.class,
@@ -96,7 +49,7 @@ public class Tests {
                         RowsCollectorsTest.class
   // --------------------------------------------------------------- \\
                       })
-  public static class IntTestsSuite {}
+  public static class IntegrationTests {}
 
 
 
@@ -152,13 +105,11 @@ public class Tests {
     // gather suites
     List<Class> suites = new ArrayList<Class>();
     for (String arg : args) {
-      if (arg.equalsIgnoreCase(UnitTestsSuite.class.getSimpleName())) suites.add(UnitTestsSuite.class);
-      else if (arg.equalsIgnoreCase(JdbcTestsSuite.class.getSimpleName())) suites.add(JdbcTestsSuite.class);
-      else if (arg.equalsIgnoreCase(IntTestsSuite.class.getSimpleName())) suites.add(IntTestsSuite.class);
+      if (arg.equalsIgnoreCase(IntegrationTests.class.getSimpleName())) suites.add(IntegrationTests.class);
       else System.err.println("Suite "+arg+" not found");
     }
     if (args.length == 0) {
-      suites.add(UnitTestsSuite.class);
+      suites.add(IntegrationTests.class);
     }
 
     // prepare junit

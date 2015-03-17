@@ -4,5 +4,7 @@
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fine-junit" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jdba-core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jdba-int-tests" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jdba-test-db" charset="UTF-8" />
   </component>
 </project>
