@@ -1,4 +1,4 @@
-jdba
+JDBA
 ====
 
-Java Database Access Layer
+Java Database Access Layer Framework
