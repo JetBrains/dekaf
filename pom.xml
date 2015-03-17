@@ -87,6 +87,9 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <skipIfEmpty>true</skipIfEmpty>
+        </configuration>
       </plugin>
     </plugins>
   </build>
