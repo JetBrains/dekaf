@@ -16,6 +16,9 @@ out
 .idea/deployment.xml
 .idea/libraries
 .idea/shelf
+.idea/modules.xml
+.idea/ant.xml
+.idea/compiler.xml
 
 test-db.config
 test-db.properties

@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.jetbrains.jdba</groupId>
     <artifactId>jdba</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>${jdba.version}</version>
   </parent>
 
   <artifactId>fine-junit</artifactId>

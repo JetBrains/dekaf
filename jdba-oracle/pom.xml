@@ -7,24 +7,24 @@
   <parent>
     <groupId>org.jetbrains.jdba</groupId>
     <artifactId>jdba</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>${jdba.version}</version>
   </parent>
 
   <artifactId>jdba-oracle</artifactId>
   <name>JDBA Oracle Database Integration</name>
-  <version>1.0-SNAPSHOT</version>
+  <version>${jdba.version}</version>
   <packaging>jar</packaging>
 
   <dependencies>
     <dependency>
       <groupId>org.jetbrains.jdba</groupId>
       <artifactId>jdba-core</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${jdba.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.jdba</groupId>
       <artifactId>jdba-test-db</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${jdba.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -35,7 +35,7 @@
     <dependency>
       <groupId>org.jetbrains.jdba</groupId>
       <artifactId>fine-junit</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${jdba.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>

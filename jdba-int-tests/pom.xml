@@ -7,34 +7,34 @@
   <parent>
     <groupId>org.jetbrains.jdba</groupId>
     <artifactId>jdba</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>${jdba.version}</version>
   </parent>
 
   <artifactId>jdba-int-tests</artifactId>
   <name>JDBA Integration Tests</name>
-  <version>1.0-SNAPSHOT</version>
+  <version>${jdba.version}</version>
   <packaging>jar</packaging>
 
   <dependencies>
     <dependency>
       <groupId>org.jetbrains.jdba</groupId>
       <artifactId>jdba-core</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${jdba.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.jdba</groupId>
       <artifactId>jdba-test-db</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${jdba.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>fine-junit</artifactId>
+      <version>${jdba.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jetbrains</groupId>
       <artifactId>annotations</artifactId>
       <version>13.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>fine-junit</artifactId>
-      <version>1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

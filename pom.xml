@@ -6,7 +6,7 @@
 
   <groupId>org.jetbrains.jdba</groupId>
   <artifactId>jdba</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>${jdba.version}</version>
   <packaging>pom</packaging>
   <name>JDBA</name>
   <description>Java Database Access Layer Framework</description>
@@ -24,13 +24,15 @@
   </modules>
 
   <properties>
+    <jdba.build.nr>XXX</jdba.build.nr>
+    <jdba.version>1.0.${jdba.build.nr}</jdba.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <repositories>
     <repository>
       <id>central</id>
-      <name>Maven Repository Switchboard</name>
+      <name>Central Maven Repository</name>
       <url>http://repo1.maven.org/maven2</url>
       <layout>default</layout>
       <snapshots><enabled>false</enabled></snapshots>
@@ -63,6 +65,34 @@
             <include>**/*UnitTests.java</include>
           </includes>
           <!--groups>testing.categories.UnitTest</groups-->
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.4</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.6</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <skipIfEmpty>true</skipIfEmpty>
         </configuration>
       </plugin>
     </plugins>
