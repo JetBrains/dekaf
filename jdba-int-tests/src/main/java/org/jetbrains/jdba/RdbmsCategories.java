@@ -34,7 +34,7 @@ public class RdbmsCategories extends Suite {
 
 
     static {
-      Rdbms rdbms = TestEnvironment.RDBMS;
+      Rdbms rdbms = TestEnvironment2.RDBMS;
       System.out.printf("Using test categories for %s", rdbms.toString());
       Couple<Class<?>> categories = RDBMS_CATEGORIES.get(rdbms);
       if (categories != null) {

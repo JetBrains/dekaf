@@ -5,7 +5,7 @@ import org.junit.experimental.categories.Category;
 import testing.categories.ForOracle;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jetbrains.jdba.TestDB.FACADE;
+import static org.jetbrains.jdba.TestDB2.FACADE;
 
 
 @Category(ForOracle.class)

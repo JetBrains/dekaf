@@ -7,7 +7,7 @@ import org.junit.runners.MethodSorters;
 import testing.categories.ForEveryRdbms;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jetbrains.jdba.TestDB.FACADE;
+import static org.jetbrains.jdba.TestDB2.FACADE;
 
 
 
@@ -16,7 +16,8 @@ import static org.jetbrains.jdba.TestDB.FACADE;
  */
 @Category(ForEveryRdbms.class)
 @FixMethodOrder(MethodSorters.JVM)
-public class TestDBTest {
+@Deprecated
+public class TestDB2Test {
 
   @Test
   public void connect() {

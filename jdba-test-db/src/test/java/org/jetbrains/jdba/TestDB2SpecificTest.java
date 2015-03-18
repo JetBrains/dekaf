@@ -13,11 +13,12 @@ import testing.categories.ForOracle;
  * @author Leonid Bushuev from JetBrains
  */
 @FixMethodOrder(MethodSorters.JVM)
-public class TestDBSpecificTest {
+@Deprecated
+public class TestDB2SpecificTest {
 
   @Test @Category({ForOracle.class, ForMSSQL.class})
   public void zapSchema() {
-    TestDB.zapSchema();
+    TestDB2.zapSchema();
   }
 
 

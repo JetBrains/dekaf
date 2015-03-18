@@ -9,8 +9,8 @@ import testing.categories.ForOracle;
 
 import java.util.Date;
 
-import static org.jetbrains.jdba.TestDB.FACADE;
-import static org.jetbrains.jdba.TestDB.UTILS;
+import static org.jetbrains.jdba.TestDB2.FACADE;
+import static org.jetbrains.jdba.TestDB2.UTILS;
 
 
 

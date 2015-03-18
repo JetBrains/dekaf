@@ -7,7 +7,7 @@ import org.junit.experimental.categories.Category;
 import org.junit.runners.MethodSorters;
 import testing.categories.ForMSSQL;
 
-import static org.jetbrains.jdba.TestDB.FACADE;
+import static org.jetbrains.jdba.TestDB2.FACADE;
 
 
 

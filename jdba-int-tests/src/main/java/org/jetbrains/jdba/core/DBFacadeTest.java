@@ -7,7 +7,7 @@ import org.junit.runners.MethodSorters;
 import testing.categories.ForEveryRdbms;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jetbrains.jdba.TestDB.FACADE;
+import static org.jetbrains.jdba.TestDB2.FACADE;
 
 
 

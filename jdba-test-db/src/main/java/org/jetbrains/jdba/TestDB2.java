@@ -4,26 +4,28 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.core.DBFacade;
 import org.jetbrains.jdba.core.DBSession;
 import org.jetbrains.jdba.core.InSessionNoResult;
+import org.jetbrains.jdba.core.TestEnvironment;
 import org.jetbrains.jdba.jdbc.JdbcDBProvider;
 import org.jetbrains.jdba.sql.SQLCommand;
-import org.jetbrains.jdba.utils.*;
+import org.jetbrains.jdba.utils.BaseTestUtils;
 
 
 
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public class TestDB {
+@Deprecated
+public class TestDB2 {
 
   /**
    * Test database provider.
    */
-  public static final JdbcDBProvider PROVIDER = new JdbcDBProvider(true, TestEnvironment.TEP.obtainJdbcDriversDir());
+  public static final JdbcDBProvider PROVIDER = new JdbcDBProvider(true, TestEnvironment2.TEP.obtainJdbcDriversDir());
 
   /**
    * Test database facade.
    */
-  public static final DBFacade FACADE = PROVIDER.provide(TestEnvironment.TEP.obtainConnectionString(), null, 1);
+  public static final DBFacade FACADE = PROVIDER.provide(TestEnvironment.obtainConnectionString(), null, 1);
 
   /**
    * Test utils.
@@ -40,9 +42,9 @@ public class TestDB {
     Rdbms rdbms = FACADE.rdbms();
     System.out.printf(infoString,
                       rdbms.toString(),
-                      TestEnvironment.TEP.obtainConnectionString(),
+                      TestEnvironment.obtainConnectionString(),
                       System.getProperty("user.dir"));
-    FACADE.sql().assignResources(TestDB.class);
+    FACADE.sql().assignResources(TestDB2.class);
   }
 
   private static BaseTestUtils getUtils(@NotNull final DBFacade facade) {

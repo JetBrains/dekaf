@@ -10,8 +10,8 @@ import testing.categories.ForEveryRdbms;
 import java.util.Map;
 
 import static org.assertj.core.api.BDDAssertions.then;
-import static org.jetbrains.jdba.TestDB.FACADE;
-import static org.jetbrains.jdba.TestDB.UTILS;
+import static org.jetbrains.jdba.TestDB2.FACADE;
+import static org.jetbrains.jdba.TestDB2.UTILS;
 
 
 

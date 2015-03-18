@@ -14,8 +14,8 @@ import testing.categories.ForOracle;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jetbrains.jdba.TestDB.FACADE;
-import static org.jetbrains.jdba.TestDB.zapSchema;
+import static org.jetbrains.jdba.TestDB2.FACADE;
+import static org.jetbrains.jdba.TestDB2.zapSchema;
 
 
 
