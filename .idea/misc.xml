@@ -11,6 +11,10 @@
         <option value="$PROJECT_DIR$/jdba-core/pom.xml" />
         <option value="$PROJECT_DIR$/jdba-test-db/pom.xml" />
         <option value="$PROJECT_DIR$/jdba-int-tests/pom.xml" />
+        <option value="$PROJECT_DIR$/jdba-postgre/pom.xml" />
+        <option value="$PROJECT_DIR$/jdba-oracle/pom.xml" />
+        <option value="$PROJECT_DIR$/jdba-mssql/pom.xml" />
+        <option value="$PROJECT_DIR$/jdba-mysql/pom.xml" />
       </list>
     </option>
   </component>

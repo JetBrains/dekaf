@@ -1,6 +1,5 @@
 package org.jetbrains.jdba.jdbc;
 
-import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Rdbms;
@@ -8,10 +7,6 @@ import org.jetbrains.jdba.core.DBFacade;
 import org.jetbrains.jdba.core.DBProvider;
 import org.jetbrains.jdba.core.DBServiceFactory;
 import org.jetbrains.jdba.core.errors.DBFactoryError;
-import org.jetbrains.jdba.rdbms.microsoft.MicrosoftServiceFactory;
-import org.jetbrains.jdba.rdbms.mysql.MysqlServiceFactory;
-import org.jetbrains.jdba.rdbms.oracle.OracleServiceFactory;
-import org.jetbrains.jdba.rdbms.postgre.PostgreServiceFactory;
 
 import javax.sql.DataSource;
 import java.io.File;
@@ -38,15 +33,6 @@ import java.util.regex.Matcher;
 public final class JdbcDBProvider implements DBProvider {
 
 
-  private static final ImmutableList<Class<? extends DBServiceFactory>> KNOWN_SERVICE_FACTORIES =
-    ImmutableList.of(
-      PostgreServiceFactory.class,
-      OracleServiceFactory.class,
-      MicrosoftServiceFactory.class,
-      MysqlServiceFactory.class
-    );
-
-
   @NotNull
   private CopyOnWriteArrayList<DBServiceFactory> myServiceFactories;
 
@@ -58,25 +44,19 @@ public final class JdbcDBProvider implements DBProvider {
    * Instantiates a new provider.
    * @see #JdbcDBProvider(boolean, java.io.File)
    */
-  public JdbcDBProvider(boolean registerKnownRDBMS) {
+  public JdbcDBProvider() {
     myServiceFactories = new CopyOnWriteArrayList<DBServiceFactory>();
     myDriverSupport = new JdbcDriverSupport();
-
-    if (registerKnownRDBMS) {
-      for (Class<? extends DBServiceFactory> factoryClass : KNOWN_SERVICE_FACTORIES) {
-        registerServiceFactory(factoryClass);
-      }
-    }
   }
 
 
   /**
    * Instantiates a new provider and specify the directory where JDBC drivers are placed.
    * @param jdbcDir   directory with JDBC drivers.
-   * @see #JdbcDBProvider(boolean)
+   * @see #JdbcDBProvider()
    */
   public JdbcDBProvider(boolean registerKnownRDBMS, @NotNull File jdbcDir) {
-    this(registerKnownRDBMS);
+    this();
     addJdbcDriversDir(jdbcDir);
   }
 

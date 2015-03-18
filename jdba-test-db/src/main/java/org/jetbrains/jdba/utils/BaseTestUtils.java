@@ -76,7 +76,7 @@ public abstract class BaseTestUtils {
   }
 
 
-  abstract String prepareQueryToListTablesWithSimilarNames(int n);
+  protected abstract String prepareQueryToListTablesWithSimilarNames(int n);
 
 
   public void dropTables(final String... tableCatNames) {

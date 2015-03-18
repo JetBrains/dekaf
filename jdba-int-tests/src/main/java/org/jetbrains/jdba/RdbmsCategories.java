@@ -7,7 +7,6 @@ import org.junit.runner.manipulation.NoTestsRemainException;
 import org.junit.runners.Suite;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.RunnerBuilder;
-import testing.categories.*;
 
 import java.util.Map;
 
@@ -21,10 +20,12 @@ public class RdbmsCategories extends Suite {
 
     static final Map<Rdbms, Couple<Class<?>>> RDBMS_CATEGORIES =
       ImmutableMap.of(
+        /*
         org.jetbrains.jdba.rdbms.postgre.Postgre.RDBMS, Couple.of(ForPostgre.class, NotForPostgre.class),
         org.jetbrains.jdba.rdbms.oracle.Oracle.RDBMS, Couple.of(ForOracle.class, NotForOracle.class),
         org.jetbrains.jdba.rdbms.microsoft.MicrosoftSQL.RDBMS, Couple.of(ForMSSQL.class, NotForMSSQL.class),
         org.jetbrains.jdba.rdbms.mysql.MySQL.RDBMS, Couple.of(ForMySQL.class, NotForMySQL.class)
+        */
       );
 
 

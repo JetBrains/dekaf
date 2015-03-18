@@ -19,7 +19,9 @@ public class BaseQueryRunnerTest {
 
   @Test
   public void query_1_inSession() {
-    final String ourSelect1 = FACADE.rdbms() == org.jetbrains.jdba.rdbms.oracle.Oracle.RDBMS ? "select 1 from dual" : "select 1";
+    // TODO condition
+    final String ourSelect1 = FACADE.rdbms().code.equalsIgnoreCase("ORACLE") ? "select 1 from dual" : "select 1";
+
     final SQLQuery<Integer> query = FACADE.sql().query(ourSelect1, RowsCollectors.oneRow(Integer.class));
     FACADE.inSession(new InSessionNoResult() {
       @Override
@@ -33,7 +35,7 @@ public class BaseQueryRunnerTest {
 
   @Test
   public void query_1_inTransaction() {
-    final String ourSelect1 = FACADE.rdbms() == org.jetbrains.jdba.rdbms.oracle.Oracle.RDBMS ? "select 1 from dual" : "select 1";
+    final String ourSelect1 = FACADE.rdbms().code.equalsIgnoreCase("ORACLE") ? "select 1 from dual" : "select 1";
     final SQLQuery<Integer> query = FACADE.sql().query(ourSelect1, RowsCollectors.oneRow(Integer.class));
     FACADE.inTransaction(new InTransactionNoResult() {
       @Override

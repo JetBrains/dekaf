@@ -1,8 +1,6 @@
 import junit.runner.Version;
 import org.jetbrains.jdba.RdbmsCategories;
 import org.jetbrains.jdba.core.*;
-import org.jetbrains.jdba.rdbms.oracle.OraFacadeTest;
-import org.jetbrains.jdba.rdbms.oracle.OraSessionTest;
 import org.junit.internal.JUnitSystem;
 import org.junit.internal.RealSystem;
 import org.junit.internal.TextListener;
@@ -41,8 +39,6 @@ public class Tests {
   // --------------------------------------------------------------- \\
                         DBFacadeTest.class,
                         DBFacadeSpecificTest.class,
-                        OraFacadeTest.class,
-                        OraSessionTest.class,
   // --------------------------------------------------------------- \\
                         BaseCommandRunnerTest.class,
                         BaseQueryRunnerTest.class,

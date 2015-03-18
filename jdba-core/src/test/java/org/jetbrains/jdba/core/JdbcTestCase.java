@@ -50,12 +50,14 @@ public abstract class JdbcTestCase {
 
 
   public static final DriverExample[] DRIVER_EXAMPLES = {
+    /*
     new DriverExample(org.jetbrains.jdba.rdbms.postgre.Postgre.RDBMS, "Postgre",      "jdbc:postgresql://localhost/database?user=masha&password=secret",    Version.of(8,2)),
     new DriverExample(org.jetbrains.jdba.rdbms.oracle.Oracle.RDBMS,  "Oracle-OCI",   "jdbc:oracle:thin:username/password@host:1521:ServiceName",           Version.of(10)),
     new DriverExample(org.jetbrains.jdba.rdbms.oracle.Oracle.RDBMS,  "Oracle-thin",  "jdbc:oracle:thin:username/password@host:1521:ServiceName",           Version.of(10)),
     new DriverExample(org.jetbrains.jdba.rdbms.microsoft.MicrosoftSQL.RDBMS,   "MSSQL-native", "jdbc:sqlserver://host\\instanceName:1433;databaseName=MyDB",         Version.of(3)),
     new DriverExample(org.jetbrains.jdba.rdbms.microsoft.MicrosoftSQL.RDBMS,   "MSSQL-jtds",   "jdbc:jtds:sqlserver://host:1433/MyDatabase;instanceName=MyInstance", Version.of(1)),
     new DriverExample(org.jetbrains.jdba.rdbms.mysql.MySQL.RDBMS,   "MySQL",        "jdbc:mysql://localhost:3306/Rabbit?user=masha&password=secret",      Version.of(2)),
+    */
   };
 
 }

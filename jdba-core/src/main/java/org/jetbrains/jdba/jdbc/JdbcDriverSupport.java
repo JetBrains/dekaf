@@ -2,7 +2,6 @@ package org.jetbrains.jdba.jdbc;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.KnownRdbms;
 import org.jetbrains.jdba.Rdbms;
 import org.jetbrains.jdba.core.errors.DBDriverError;
 
@@ -25,7 +24,8 @@ import static org.jetbrains.jdba.utils.Strings.matches;
  */
 public class JdbcDriverSupport {
 
-  private final static List<JdbcDriverDef> myDriverDefs = new CopyOnWriteArrayList<JdbcDriverDef>(
+  private final static List<JdbcDriverDef> myDriverDefs = new CopyOnWriteArrayList<JdbcDriverDef>();
+  /*
     Arrays.asList(
       new JdbcDriverDef(org.jetbrains.jdba.rdbms.postgre.Postgre.RDBMS, "^jdbc:postgresql:.*$", "^postgresql-.*[\\-\\.]jdbc\\d?\\.jar$", "org.postgresql.Driver"),
       new JdbcDriverDef(org.jetbrains.jdba.rdbms.oracle.Oracle.RDBMS, "^jdbc:oracle:.*$", "^(ojdbc.*|orai18n)\\.jar$", "oracle.jdbc.driver.OracleDriver"),
@@ -35,6 +35,7 @@ public class JdbcDriverSupport {
       new JdbcDriverDef(KnownRdbms.HSQL, "^jdbc:hsqldb:.*$", "^hsqldb\\.jar$", "org.hsqldb.jdbc.JDBCDriver")
     )
   );
+  */
 
 
   private final LinkedHashSet<File> myJdbcDirs = new LinkedHashSet<File>();

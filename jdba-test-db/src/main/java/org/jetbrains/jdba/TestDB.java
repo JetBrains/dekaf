@@ -47,10 +47,12 @@ public class TestDB {
 
   private static BaseTestUtils getUtils(@NotNull final DBFacade facade) {
     Rdbms rdbms = facade.rdbms();
+    /*
     if (rdbms == org.jetbrains.jdba.rdbms.postgre.Postgre.RDBMS) return new PostgreTestUtils(facade);
     if (rdbms == org.jetbrains.jdba.rdbms.oracle.Oracle.RDBMS) return new OracleTestUtils(facade);
     if (rdbms == org.jetbrains.jdba.rdbms.microsoft.MicrosoftSQL.RDBMS) return new MicrosoftTestUtils(facade);
     if (rdbms == org.jetbrains.jdba.rdbms.mysql.MySQL.RDBMS) return new MysqlTestUtils(facade);
+    */
     throw new IllegalStateException("Test utils for "+rdbms+" don't exist.");
   }
 
@@ -60,9 +62,12 @@ public class TestDB {
 
   public static void zapSchema() {
     Rdbms rdbms = FACADE.rdbms();
+    /*
     if (rdbms == org.jetbrains.jdba.rdbms.oracle.Oracle.RDBMS) zapOracleSchema();
     else if (rdbms == org.jetbrains.jdba.rdbms.microsoft.MicrosoftSQL.RDBMS) zapMicrosoftSchema();
     else throw new IllegalStateException("I don't know how to cleanup a schema in " + FACADE.rdbms() + ".");
+    */
+    throw new IllegalStateException("I don't know how to cleanup a schema in " + FACADE.rdbms() + ".");
   }
 
 

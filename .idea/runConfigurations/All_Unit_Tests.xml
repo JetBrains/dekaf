@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="All Unit Tests" type="JUnit" factoryName="JUnit">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-    <module name="jdba-core" />
+    <module name="" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" value="" />
     <option name="PACKAGE_NAME" />
@@ -14,12 +14,14 @@
     <option name="ENV_VARIABLES" />
     <option name="PASS_PARENT_ENVS" value="true" />
     <option name="TEST_SEARCH_SCOPE">
-      <value defaultName="moduleWithDependencies" />
+      <value defaultName="wholeProject" />
     </option>
     <envs />
     <category value="testing.categories.UnitTest" />
     <patterns>
-      <pattern testClass="org.jetbrains.dba.CoreUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.core.CoreUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.oracle.OracleUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.microsoft.MicrosoftUnitTests" />
     </patterns>
     <method />
   </configuration>
