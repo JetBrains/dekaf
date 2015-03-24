@@ -19,5 +19,6 @@ Build a development package:
     
 Build a package with build number:
      
-    mvn package -Djdba.build.nr=999
+    mvn versions:set -DnewVersion=2.0.0-B.1234 versions:commit 
+    mvn package -Djdba.build.nr=1234
     
