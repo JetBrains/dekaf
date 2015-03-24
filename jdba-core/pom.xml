@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.jetbrains.jdba</groupId>
     <artifactId>jdba</artifactId>
-    <version>${jdba.version}</version>
+    <version>2.0.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>jdba-core</artifactId>
@@ -31,7 +31,7 @@
     <dependency>
       <groupId>org.jetbrains.jdba</groupId>
       <artifactId>fine-junit</artifactId>
-      <version>${jdba.version}</version>
+      <version>2.0.0-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
     <dependency>

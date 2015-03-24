@@ -6,7 +6,7 @@
 
   <groupId>org.jetbrains.jdba</groupId>
   <artifactId>jdba</artifactId>
-  <version>${jdba.version}</version>
+  <version>2.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>JDBA</name>
   <description>Java Database Access Layer Framework</description>
@@ -24,8 +24,7 @@
   </modules>
 
   <properties>
-    <jdba.build.nr>XXX</jdba.build.nr>
-    <jdba.version>1.0.${jdba.build.nr}</jdba.version>
+    <jdba.build.nr>0</jdba.build.nr>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -96,6 +95,11 @@
         <configuration>
           <skipIfEmpty>true</skipIfEmpty>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <version>2.0</version>
       </plugin>
     </plugins>
   </build>
