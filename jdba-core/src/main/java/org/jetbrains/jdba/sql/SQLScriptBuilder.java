@@ -19,14 +19,6 @@ public class SQLScriptBuilder {
   private final ImmutableList.Builder<SQLCommand> myCommands =
     new ImmutableList.Builder<SQLCommand>();
 
-  @NotNull
-  private final SQL sql;
-
-
-  SQLScriptBuilder(@NotNull final SQL sql) {
-    this.sql = sql;
-  }
-
 
 
   public void add(@NotNull SQLCommand... commands) {
@@ -120,7 +112,7 @@ public class SQLScriptBuilder {
     }
 
     String plText = rtrim(walker.getText().substring(begin.offset, rowOffset));
-    SQLCommand command = sql.instantiateCommand(begin.row - 1, plText);
+    SQLCommand command = new SQLCommand(begin.row - 1, plText);
     myCommands.add(command);
   }
 
@@ -135,7 +127,7 @@ public class SQLScriptBuilder {
     final Matcher matcher = walker.skipToPattern(SQL_END_MARKER);
 
     final String sqlText = rtrim(walker.getText().substring(begin.offset, walker.getOffset()));
-    SQLCommand command = sql.instantiateCommand(begin.row - 1, sqlText);
+    SQLCommand command = new SQLCommand(begin.row - 1, sqlText);
     myCommands.add(command);
 
     if (matcher != null) {
@@ -190,7 +182,7 @@ public class SQLScriptBuilder {
   @NotNull
   public SQLScript build() {
     ImmutableList<SQLCommand> commands = myCommands.build();
-    return commands.size() > 0 ? sql.instantiateSQLScript(commands) : sql.getEmptyScript();
+    return commands.size() > 0 ? new SQLScript(commands) : SQL.EMPTY_SCRIPT;
   }
 
 

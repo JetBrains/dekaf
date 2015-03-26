@@ -172,7 +172,7 @@ public class SQL implements Serializable, Cloneable {
 
   @NotNull
   public SQLScriptBuilder scriptBuilder() {
-    return new SQLScriptBuilder(this);
+    return new SQLScriptBuilder();
   }
 
   @NotNull
@@ -192,7 +192,7 @@ public class SQL implements Serializable, Cloneable {
     return EMPTY_SCRIPT;
   }
 
-  private static final SQLScript EMPTY_SCRIPT = new SQLScript(ImmutableList.<SQLCommand>of());
+  static final SQLScript EMPTY_SCRIPT = new SQLScript(ImmutableList.<SQLCommand>of());
 
 
 

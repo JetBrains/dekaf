@@ -2,6 +2,7 @@ package org.jetbrains.jdba.sql;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jdba.core.DBRowsCollector;
 import org.jetbrains.jdba.utils.Strings;
 
 import java.util.ArrayList;
@@ -90,7 +91,7 @@ public final class Scriptum {
    * @return      the found script, or <i>null</i> if not found.
    */
   @Nullable
-  public final String find(@NotNull String name) {
+  public final String findText(@NotNull String name) {
     String text;
     final String nameWithDialect = myDialect == null ? null : name + '+' + myDialect;
     for (int i = myResources.length-1; i >= 0; i--) {
@@ -117,10 +118,32 @@ public final class Scriptum {
    * @throws ScriptNotFoundException if no such script.
    */
   @NotNull
-  public final String get(@NotNull String name) throws ScriptNotFoundException{
-    String text = find(name);
+  public final String getText(@NotNull String name) throws ScriptNotFoundException{
+    String text = findText(name);
     if (text == null) throw new ScriptNotFoundException("No such script: " + name);
     return text;
+  }
+
+
+  @NotNull
+  public final <S> SQLQuery<S> query(@NotNull final String name,
+                                     @NotNull final DBRowsCollector<S> collector) {
+    String text = getText(name);
+    return new SQLQuery<S>(text, collector);
+  }
+
+  @NotNull
+  public final SQLCommand command(@NotNull final String name) {
+    String text = getText(name);
+    return new SQLCommand(text);
+  }
+
+  @NotNull
+  public final SQLScript script(@NotNull final String name) {
+    String text = getText(name);
+    SQLScriptBuilder b = new SQLScriptBuilder();
+    b.parse(text);
+    return new SQLScript(b.build());
   }
 
 

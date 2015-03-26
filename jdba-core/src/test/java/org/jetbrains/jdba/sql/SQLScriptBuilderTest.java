@@ -113,7 +113,7 @@ public class SQLScriptBuilderTest {
 
 
   private SQLScript build(String text) {
-    SQLScriptBuilder b = new SQLScriptBuilder(new SQL());
+    SQLScriptBuilder b = new SQLScriptBuilder();
     b.parse(text);
     return b.build();
   }
