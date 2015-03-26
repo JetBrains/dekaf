@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
@@ -16,11 +17,18 @@ import java.util.regex.Pattern;
 @SuppressWarnings("SpellCheckingInspection")
 public abstract class Strings {
 
-  @SuppressWarnings("StringEquality")
+  @SuppressWarnings({"StringEquality", "SimplifiableIfStatement"})
   public static boolean eq(final String str1, final String str2) {
     if (str1 == str2) return true;
     if (str1 == null || str2 == null) return false;
     return str1.equals(str2);
+  }
+
+  @SuppressWarnings({"StringEquality", "SimplifiableIfStatement"})
+  public static boolean eq(final String str1, final String str2, final boolean caseSensitive) {
+    if (str1 == str2) return true;
+    if (str1 == null || str2 == null) return false;
+    return caseSensitive ? str1.equals(str2) : str1.equalsIgnoreCase(str2);
   }
 
 
@@ -164,6 +172,20 @@ public abstract class Strings {
   public static String lower(@Nullable final String string) {
     return string == null ? null : string.toLowerCase();
   }
+
+
+  @Contract("!null->!null; null->null")
+  public static String minimizeSpaces(@Nullable final String string) {
+    if (string == null) return null;
+    String s = string.trim();
+    if (s.isEmpty()) return "";
+
+    Matcher m = SEVERAL_SPACES.matcher(s);
+    return m.replaceAll(" ");
+  }
+
+  private static final Pattern SEVERAL_SPACES =
+          Pattern.compile("[ \\s\\t\\r\\n]{2,}");
 
 
 }
