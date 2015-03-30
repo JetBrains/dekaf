@@ -17,7 +17,7 @@ dependencies {
       force = true
     }
 
-    lib ("junit:junit:4.11") {
+    lib ("junit:junit:4.12") {
       force = true
     }
 

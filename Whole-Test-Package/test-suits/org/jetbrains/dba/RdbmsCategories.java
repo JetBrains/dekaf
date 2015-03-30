@@ -50,7 +50,9 @@ public class RdbmsCategories extends Suite {
     public RdbmsCategories(Class<?> klass, RunnerBuilder builder) throws InitializationError {
       super(klass, builder);
       try {
-        filter(new Categories.CategoryFilter(myIncludeCategory, myExcludeCategory));
+        filter(Categories.CategoryFilter.include(myIncludeCategory));
+        filter(Categories.CategoryFilter.exclude(myExcludeCategory));
+        //filter(new Categories.CategoryFilter(myIncludeCategory, myExcludeCategory));
       }
       catch (NoTestsRemainException e) {
         throw new InitializationError(e);
