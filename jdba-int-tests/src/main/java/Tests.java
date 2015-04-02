@@ -1,14 +1,13 @@
 import junit.runner.Version;
 import org.jetbrains.jdba.RdbmsCategories;
 import org.jetbrains.jdba.core.*;
+import org.jetbrains.jdba.junitft.TeamCityListener;
 import org.junit.internal.JUnitSystem;
 import org.junit.internal.RealSystem;
 import org.junit.internal.TextListener;
-import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.RunWith;
-import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 import org.junit.runners.Suite;
 
@@ -49,44 +48,6 @@ public class Tests {
 
 
 
-
-
-
-
-  /**
-   * Reports test runs to TeamCity using TC service messages.
-   * See <a href="http://confluence.jetbrains.com/display/TCD8/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-ServiceMessages">Interaction with TeamCity</a> for details.
-   */
-  private static class MyListener extends RunListener {
-
-    @Override
-    public void testStarted(Description d) throws Exception {
-      say("##teamcity[testStarted name='%s' captureStandardOutput='true']", getTestName(d));
-    }
-
-    @Override
-    public void testFailure(Failure f) throws Exception {
-      Description d = f.getDescription();
-      say("##teamcity[testFailed name='%s' message='%s' details='%s']", getTestName(d), f.getMessage(), f.getTrace());
-    }
-
-    @Override
-    public void testIgnored(Description d) throws Exception {
-      say("##teamcity[testIgnored name='%s'", getTestName(d));
-    }
-
-    @Override
-    public void testFinished(Description d) throws Exception {
-      say("##teamcity[testFinished name='%s']", getTestName(d));
-    }
-
-    private String getTestName(Description d) {
-      return d.getClassName() + "." + d.getMethodName();
-    }
-  }
-
-
-
   /**
    * Runs unit tests from command line.
    */
@@ -111,7 +72,7 @@ public class Tests {
     // prepare junit
     JUnitSystem system = new RealSystem();
     JUnitCore core = new JUnitCore();
-    RunListener listener = underTC ? new MyListener() : new TextListener(system);
+    RunListener listener = underTC ? new TeamCityListener() : new TextListener(system);
     core.addListener(listener);
 
     // run suites

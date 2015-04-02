@@ -40,7 +40,7 @@ public class BaseCommandRunnerTest {
     final SQLCommand drop = SQL.command("drop table table_1");
 
     FACADE.inSession(new InSessionNoResult() {
-      @Override
+      //@Override
       public void run(@NotNull DBSession session) {
 
         session.command(create).run();
@@ -60,7 +60,7 @@ public class BaseCommandRunnerTest {
     final SQLCommand drop = SQL.command("drop table table_2");
 
     FACADE.inSession(new InSessionNoResult() {
-      @Override
+      //@Override
       public void run(@NotNull DBSession session) {
 
         session.command(create).run();

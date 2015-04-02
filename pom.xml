@@ -17,6 +17,7 @@
     <module>jdba-core</module>
     <module>jdba-test-db</module>
     <module>jdba-postgre</module>
+    <module>jdba-postgre-tests</module>
     <module>jdba-oracle</module>
     <module>jdba-mssql</module>
     <module>jdba-mysql</module>
@@ -50,6 +51,20 @@
         -->
         <version>2.3.2</version>
       </plugin>
+      <!--plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -93,6 +108,11 @@
           </execution>
         </executions>
         <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+            </manifest>
+          </archive>
           <skipIfEmpty>true</skipIfEmpty>
         </configuration>
       </plugin>
