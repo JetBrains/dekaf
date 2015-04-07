@@ -21,6 +21,7 @@
     <module>jdba-mssql</module>
     <module>jdba-mysql</module>
     <module>jdba-int-tests</module>
+    <module>test-pack</module>
   </modules>
 
   <properties>
