@@ -21,6 +21,13 @@ public class SQLScriptBuilder {
 
 
 
+  public void add(@NotNull String... commands) {
+    for (String command : commands) {
+      SQLCommand cmd = new SQLCommand(command);
+      myCommands.add(cmd);
+    }
+  }
+
   public void add(@NotNull SQLCommand... commands) {
     for (SQLCommand command : commands) {
       myCommands.add(command);

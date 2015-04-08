@@ -1,4 +1,4 @@
-package org.jetbrains.jdba.rdbms.oracle;
+package org.jetbrains.jdba.oracle;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.core.DBTransaction;
@@ -9,16 +9,13 @@ import testing.categories.ForOracle;
 
 import java.util.Date;
 
-import static org.jetbrains.jdba.TestDB2.FACADE;
-import static org.jetbrains.jdba.TestDB2.UTILS;
-
 
 
 /**
  * @author Leonid Bushuev from JetBrains
  */
 @Category(ForOracle.class)
-public class OraSessionTest {
+public class OraSessionTest extends OracleIntegrationCase {
 
   @Test
   public void pass_different_parameters() {
@@ -63,11 +60,10 @@ public class OraSessionTest {
       new byte[] {1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,11,22,33,44,55,66,77,88,99,100}
     };
 
-    UTILS.ensureNoTablesLike("VARIETY_COLUMNS");
-    UTILS.run(createCmd);
+    db.ensureNoTables("VARIETY_COLUMNS");
+    db.performCommandInSession(createCmd);
 
-    FACADE.inTransaction(new InTransactionNoResult() {
-      @Override
+    db.facade.inTransaction(new InTransactionNoResult() {
       public void run(@NotNull DBTransaction tran) {
 
         tran.command(insertCmd).withParams(params).run();
