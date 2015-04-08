@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.jdbc.JdbcDataSource;
 import org.jetbrains.jdba.sql.SQL;
 
+import java.sql.Driver;
+
 
 
 /**
@@ -19,8 +21,11 @@ public class BaseTestDB {
 
 
   public static BaseTestDB connect() {
-    DBServiceFactory serviceFactory = TestEnvironment.getServiceFactory();
-    JdbcDataSource dataSource = new JdbcDataSource(TestEnvironment.getConnectionString(), null, TestEnvironment.getJdbcDriver());
+    final DBServiceFactory serviceFactory = TestEnvironment.getServiceFactory();
+    final String connectionString = TestEnvironment.getConnectionString();
+    final Driver jdbcDriver = TestEnvironment.getJdbcDriver();
+    JdbcDataSource dataSource = new JdbcDataSource(connectionString, null,
+                                                   jdbcDriver);
     DBFacade facade = serviceFactory.createFacade(dataSource);
     facade.connect();
 

@@ -48,8 +48,9 @@ public class JdbcDataSource implements DataSource {
   }
 
 
-  private static void checkDriverAcceptsConnectionString(String connectionString, Driver driver)
-    throws IllegalArgumentException, DriverDoesNotAcceptConnectionStringException {
+  private static void checkDriverAcceptsConnectionString(@NotNull final String connectionString, @NotNull final Driver driver)
+          throws IllegalArgumentException, DriverDoesNotAcceptConnectionStringException
+  {
     try {
       if (!driver.acceptsURL(connectionString)) throw new DriverDoesNotAcceptConnectionStringException(driver, connectionString);
     }
