@@ -56,6 +56,18 @@
       <version>1.2.0</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>oracle.jdbc</groupId>
+      <artifactId>ojdbc6</artifactId>
+      <version>12.1.0.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>oracle.jdbc</groupId>
+      <artifactId>orai18n</artifactId>
+      <version>12.1.0.2</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
 </project>

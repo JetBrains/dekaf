@@ -6,6 +6,7 @@ import org.jetbrains.jdba.core.BaseSession;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 
@@ -21,6 +22,15 @@ final class OraSession extends BaseSession {
     super(facade, connection, ownConnection);
   }
 
+
+  @NotNull
+  @Override
+  protected PreparedStatement prepareStatementForQuery(@NotNull final String queryText,
+                                                       final boolean expectManyRows) throws SQLException {
+    return myConnection.prepareStatement(queryText,
+                                         ResultSet.TYPE_FORWARD_ONLY,
+                                         ResultSet.CONCUR_READ_ONLY);
+  }
 
   @Override
   protected BaseCommandRunner command(@NotNull String commandText, int offset) {

@@ -199,7 +199,7 @@ public class BaseSession implements DBSession {
 
 
   @NotNull
-  PreparedStatement prepareStatementForQuery(@NotNull final String queryText, boolean expectManyRows) throws SQLException {
+  protected PreparedStatement prepareStatementForQuery(@NotNull final String queryText, boolean expectManyRows) throws SQLException {
     return myConnection.prepareStatement(queryText,
                                        ResultSet.TYPE_FORWARD_ONLY,
                                        ResultSet.CONCUR_READ_ONLY,

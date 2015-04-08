@@ -1,7 +1,5 @@
 package org.jetbrains.jdba.core;
 
-import org.jetbrains.jdba.jdbc.JdbcDataSource;
-
 
 
 /**
@@ -9,17 +7,13 @@ import org.jetbrains.jdba.jdbc.JdbcDataSource;
  */
 public abstract class BaseIntegrationCase {
 
-  protected final DBServiceFactory myServiceFactory;
 
-  protected final JdbcDataSource myDataSource;
-
-  protected final DBFacade myFacade;
+  protected static BaseTestDB db;
 
 
-
-  protected BaseIntegrationCase() {
-    myServiceFactory = TestEnvironment.getServiceFactory();
-    myDataSource = new JdbcDataSource(TestEnvironment.getConnectionString(), null, TestEnvironment.getJdbcDriver());
-    myFacade = myServiceFactory.createFacade(myDataSource);
+  public static void connectToDB() {
+    db = BaseTestDB.connect();
   }
+
+
 }

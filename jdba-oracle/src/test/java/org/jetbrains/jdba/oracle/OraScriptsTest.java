@@ -1,21 +1,17 @@
 package org.jetbrains.jdba.oracle;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.core.DBSession;
-import org.jetbrains.jdba.core.InSessionNoResult;
+import org.jetbrains.jdba.core.DBTransaction;
+import org.jetbrains.jdba.core.InTransactionNoResult;
 import org.jetbrains.jdba.core.RowsCollectors;
 import org.jetbrains.jdba.sql.SQLQuery;
-import org.jetbrains.jdba.sql.SQLScript;
-import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.runners.MethodSorters;
 import testing.categories.ForOracle;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jetbrains.jdba.TestDB2.FACADE;
-import static org.jetbrains.jdba.TestDB2.zapSchema;
 
 
 
@@ -23,8 +19,33 @@ import static org.jetbrains.jdba.TestDB2.zapSchema;
  * @author Leonid Bushuev from JetBrains
  */
 @Category(ForOracle.class)
-public class OraScriptsTest {
+@FixMethodOrder(MethodSorters.JVM)
+public class OraScriptsTest extends OracleIntegrationCase {
 
+
+  @Test
+  public void isConnected() {
+    assertThat(db.facade.isConnected()).isTrue();
+  }
+
+  @Test
+  public void select_1() {
+    final SQLQuery<Integer> query1 =
+            new SQLQuery<Integer>("select 1 from dual", RowsCollectors.oneRow(Integer.class));
+
+    db.facade.inTransaction(new InTransactionNoResult() {
+      public void run(@NotNull final DBTransaction tran) {
+
+        Integer value = tran.query(query1).run();
+
+        assertThat(value).isEqualTo(1);
+
+      }
+    });
+  }
+
+
+  /*
   final OraSQL mySQL = prepareSQL();
 
 
@@ -48,7 +69,6 @@ public class OraScriptsTest {
     final SQLScript script = mySQL.script("##simple-ddl-script");
     final SQLQuery<List<String>> query = mySQL.query("select Note from Topic order by Id", RowsCollectors.list(String.class));
     FACADE.inSession(new InSessionNoResult() {
-      @Override
       public void run(@NotNull DBSession session) {
         session.script(script).run();
         List<String> notes = session.query(query).run();
@@ -58,6 +78,7 @@ public class OraScriptsTest {
       }
     });
   }
+  */
 
 
 }

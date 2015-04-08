@@ -37,6 +37,11 @@
       <layout>default</layout>
       <snapshots><enabled>false</enabled></snapshots>
     </repository>
+    <repository>
+      <id>repo.labs.intellij.net</id>
+      <name>repo.labs.intellij.net-releases</name>
+      <url>http://repo.labs.intellij.net/thirdparty</url>
+    </repository>
   </repositories>
 
   <build>
