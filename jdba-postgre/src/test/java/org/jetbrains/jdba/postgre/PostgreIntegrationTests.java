@@ -17,7 +17,8 @@ import org.junit.runners.Suite;
 
                             CommonBasicIntTest.class,
                             CommonRowsCollectorsTest.class,
-                            PostgreFacadeTest.class
+                            PostgreFacadeTest.class,
+                            PostgreBitBoolTest.class
 
 })
 public class PostgreIntegrationTests {
