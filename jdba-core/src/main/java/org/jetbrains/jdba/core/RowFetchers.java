@@ -1,5 +1,6 @@
 package org.jetbrains.jdba.core;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.core.errors.DBError;
 import org.jetbrains.jdba.core.errors.DBPreparingError;
 
@@ -13,9 +14,9 @@ import org.jetbrains.jdba.core.errors.DBPreparingError;
 public final class RowFetchers {
 
   @SuppressWarnings("unchecked")
-  static <R> RowFetcher<R> createFor(Class<R> rowClass) {
+  static <R> RowFetcher<R> createFor(@NotNull final ColumnBriefInfo[] columns, Class<R> rowClass) {
     // check whether it is a known primitive
-    final ValueGetter<?> singleGetter = ValueGetters.find(rowClass);
+    final ValueGetter<?> singleGetter = ValueGetters.find(columns[0].jdbcType, rowClass);
     if (singleGetter != null) {
       return new SingleValueRowFetcher<R>((ValueGetter<R>)singleGetter);
     }
@@ -24,13 +25,13 @@ public final class RowFetchers {
     if (rowClass.isArray()) {
       final Class<?> componentClass = rowClass.getComponentType();
       assert componentClass != null;
-      return new ArrayRowFetcher(componentClass);
+      return new ArrayRowFetcher(columns, componentClass);
     }
 
     // check whether it is a structure
     try {
       if (rowClass.getDeclaredConstructor() != null && rowClass.getDeclaredFields().length > 0) {
-        return new StructRowFetcher<R>(rowClass);
+        return new StructRowFetcher<R>(columns, rowClass);
       }
     }
     catch (DBError dbe) {

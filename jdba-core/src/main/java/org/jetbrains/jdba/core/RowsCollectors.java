@@ -1,9 +1,9 @@
 package org.jetbrains.jdba.core;
 
-import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.core.errors.DBFetchingError;
 
 import java.lang.reflect.Array;
@@ -105,15 +105,20 @@ public final class RowsCollectors {
     @NotNull
     private final Class<R> rowClass;
 
-    @NotNull
-    private final RowFetcher<R> rowFetcher;
+    private RowFetcher<R> rowFetcher = null;
 
 
     private OneRowCollector(@NotNull final Class<R> rowClass) {
       this.rowClass = rowClass;
-      this.rowFetcher = RowFetchers.createFor(rowClass);
     }
 
+    @Override
+    protected void setupColumns(@NotNull final ColumnBriefInfo[] columns) {
+      super.setupColumns(columns);
+
+      assert columns.length > 0 : "Empty MetaData";
+      this.rowFetcher = RowFetchers.createFor(columns, rowClass);
+    }
 
     @Override
     public boolean expectManyRows() {
@@ -126,6 +131,7 @@ public final class RowsCollectors {
       throws SQLException {
       if (rset.next()) {
         rowFetcher.init(rset);
+        //noinspection UnnecessaryLocalVariable
         R row = rowFetcher.fetchRow(rset);
         return row;
       }
@@ -141,14 +147,18 @@ public final class RowsCollectors {
     @NotNull
     private final Class<R> rowClass;
 
-    @NotNull
-    private final RowFetcher<R> rowFetcher;
+    @Nullable
+    private RowFetcher<R> rowFetcher;
 
     private ListCollector(@NotNull final Class<R> rowClass) {
       this.rowClass = rowClass;
-      this.rowFetcher = RowFetchers.createFor(rowClass);
     }
 
+    @Override
+    protected void setupColumns(@NotNull final ColumnBriefInfo[] columns) {
+      super.setupColumns(columns);
+      this.rowFetcher = RowFetchers.createFor(columns, rowClass);
+    }
 
     @Override
     public boolean expectManyRows() {
@@ -157,8 +167,8 @@ public final class RowsCollectors {
 
 
     @Override
-    public List<R> collectRows(@NotNull final ResultSet rset)
-      throws SQLException {
+    public List<R> collectRows(@NotNull final ResultSet rset) throws SQLException {
+      assert rowFetcher != null;
       rowFetcher.init(rset);
       ImmutableList.Builder<R> builder = ImmutableList.builder();
       while (rset.next()) {
@@ -184,6 +194,11 @@ public final class RowsCollectors {
       myRowClass = rowClass;
     }
 
+    @Override
+    protected void setupColumns(@NotNull final ColumnBriefInfo[] columns) {
+      super.setupColumns(columns);
+      myListCollector.setupColumns(columns);
+    }
 
     @Override
     public R[] collectRows(@NotNull ResultSet rset) throws SQLException {
@@ -211,21 +226,30 @@ public final class RowsCollectors {
     @NotNull
     private final Class<V> myValueClass;
 
-    @NotNull
-    private final ValueGetter<K> myKeyGetter;
+    private ValueGetter<K> myKeyGetter = null;
 
-    @NotNull
-    private final ValueGetter<V> myValueGetter;
+    private ValueGetter<V> myValueGetter = null;
 
 
     public MapCollector(@NotNull final Class<K> keyClass,
                         @NotNull final Class<V> valueClass) {
       myKeyClass = keyClass;
       myValueClass = valueClass;
-      myKeyGetter = ValueGetters.of(keyClass);
-      myValueGetter = ValueGetters.of(valueClass);
     }
 
+    @Override
+    protected void setupColumns(@NotNull final ColumnBriefInfo[] columns) {
+      super.setupColumns(columns);
+
+      if (columns.length < 2) {
+        String message = String.format("The cursor contain too few columns to fetch a map (expected 2 but got %d)",
+                                       columns.length);
+        throw new DBFetchingError(message, String.format("Fetching %s -> %S", myKeyClass.getSimpleName(), myValueClass.getSimpleName()));
+      }
+
+      myKeyGetter = ValueGetters.of(columns[0].jdbcType, myKeyClass);
+      myValueGetter = ValueGetters.of(columns[1].jdbcType, myValueClass);
+    }
 
     @Override
     public boolean expectManyRows() {
@@ -237,7 +261,7 @@ public final class RowsCollectors {
     public Map<K,V> collectRows(@NotNull final ResultSet rset)
       throws SQLException
     {
-      ImmutableMap.Builder<K,V> builder = ImmutableBiMap.builder();
+      ImmutableMap.Builder<K,V> builder = ImmutableMap.builder();
       while (rset.next()) {
         K k = myKeyGetter.getValue(rset, 1);
         V v = myValueGetter.getValue(rset, 2);

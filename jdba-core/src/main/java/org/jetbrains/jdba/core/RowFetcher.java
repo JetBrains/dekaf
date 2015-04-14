@@ -17,8 +17,7 @@ import java.sql.SQLException;
  */
 public abstract class RowFetcher<R> {
 
-  void init(@NotNull final ResultSet rset)
-    throws SQLException {
+  void init(@NotNull final ResultSet rset) throws SQLException {
   }
 
 

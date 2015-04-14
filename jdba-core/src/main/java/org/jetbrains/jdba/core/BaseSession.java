@@ -181,6 +181,11 @@ public class BaseSession implements DBSession {
           assignParameters(stmt, params);
         }
         final ResultSet rset = stmt.executeQuery();
+        if (collector instanceof BaseRowsCollector) {
+          if (((BaseRowsCollector) collector).needMetaData()) {
+            ((BaseRowsCollector) collector).setupMetaData(rset.getMetaData());
+          }
+        }
         try {
           return collector.collectRows(rset);
         }

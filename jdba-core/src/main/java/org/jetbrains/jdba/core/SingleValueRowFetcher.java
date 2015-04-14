@@ -1,7 +1,6 @@
 package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.core.errors.DBPreparingError;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,10 +11,12 @@ import java.sql.SQLException;
  * @author Leonid Bushuev from JetBrains
  */
 final class SingleValueRowFetcher<V> extends RowFetcher<V> {
+
   @NotNull
   final ValueGetter<V> getter;
 
 
+  /*
   SingleValueRowFetcher(@NotNull final Class<V> valueClass) {
     final ValueGetter<V> theGetter = ValueGetters.find(valueClass);
     if (theGetter == null) {
@@ -24,6 +25,7 @@ final class SingleValueRowFetcher<V> extends RowFetcher<V> {
 
     this.getter = theGetter;
   }
+  */
 
 
   SingleValueRowFetcher(@NotNull final ValueGetter<V> valueGetter) {

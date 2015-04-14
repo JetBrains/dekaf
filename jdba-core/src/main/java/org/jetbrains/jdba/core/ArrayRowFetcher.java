@@ -1,11 +1,9 @@
 package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.core.errors.DBPreparingError;
 
 import java.lang.reflect.Array;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 
@@ -14,57 +12,41 @@ import java.sql.SQLException;
  * @author Leonid Bushuev from JetBrains
  */
 final class ArrayRowFetcher<C> extends RowFetcher<C[]> {
+
   @NotNull
   final Class<C> componentClass;
 
-  @NotNull
-  final ValueGetter<C> componentGetter;
+  private final int columnCount;
 
-  private final Object initSync = new Object();
-
-  // cached count of columns
-  private transient int columnCount = 0;
+  private final ValueGetter<C>[] getters;
 
 
-  ArrayRowFetcher(@NotNull final Class<C> componentClass) {
+  ArrayRowFetcher(final ColumnBriefInfo[] columns, @NotNull final Class<C> componentClass) {
+    final int n = columns.length;
+    this.columnCount = n;
     this.componentClass = componentClass;
 
-    final ValueGetter<C> theComponentGetter = ValueGetters.find(componentClass);
-    if (theComponentGetter == null) {
-      throw new DBPreparingError("The component of an array should be of a primitive type but given " + componentClass.getSimpleName());
-    }
-
-    this.componentGetter = theComponentGetter;
-  }
-
-
-  @Override
-  void init(@NotNull final ResultSet rset)
-    throws SQLException {
-    if (columnCount == 0) {
-      synchronized (initSync) {
-        if (columnCount == 0) {
-          final ResultSetMetaData metaData = rset.getMetaData();
-          columnCount = metaData.getColumnCount();
-        }
-      }
+    //noinspection unchecked
+    this.getters = (ValueGetter<C>[]) instantiateArray(ValueGetter.class, n);
+    for (int i = 0; i < n; i++) {
+      this.getters[i] = ValueGetters.of(columns[i].jdbcType, componentClass);
     }
   }
 
 
   @Override
-  C[] fetchRow(@NotNull final ResultSet rset)
-    throws SQLException {
-    C[] row = instantiateArray();
+  C[] fetchRow(@NotNull final ResultSet rset) throws SQLException {
+    C[] row = instantiateArray(componentClass, columnCount);
     for (int i = 0; i < columnCount; i++) {
-      row[i] = componentGetter.getValue(rset, i + 1);
+      row[i] = getters[i].getValue(rset, i + 1);
     }
     return row;
   }
 
 
   @SuppressWarnings("unchecked")
-  private C[] instantiateArray() {
-    return (C[])Array.newInstance(componentClass, columnCount);
+  private static <X> X[] instantiateArray(final Class<X> componentClass, final int n) {
+    return (X[])Array.newInstance(componentClass, n);
   }
+
 }

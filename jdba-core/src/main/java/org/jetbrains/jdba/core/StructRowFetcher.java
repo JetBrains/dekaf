@@ -44,8 +44,9 @@ final class StructRowFetcher<R> extends RowFetcher<R> {
   transient boolean initialized;
 
 
-  StructRowFetcher(@NotNull final Class<R> rowClass) {
+  StructRowFetcher(final ColumnBriefInfo[] columns, @NotNull final Class<R> rowClass) {
     this.rowClass = rowClass;
+    final int N = columns.length;
 
     try {
       this.rowConstructor = rowClass.getDeclaredConstructor();
@@ -60,6 +61,7 @@ final class StructRowFetcher<R> extends RowFetcher<R> {
         field.setAccessible(true);
         fields.add(field);
       }
+
       final int n = fields.size();
       this.fields = fields.toArray(new Field[n]);
 
@@ -67,10 +69,15 @@ final class StructRowFetcher<R> extends RowFetcher<R> {
       for (int i = 0; i < n; i++) {
         Field f = this.fields[i];
         Class<?> type = f.getType();
-        ValueGetter<?> getter = ValueGetters.find(type);
-        if (getter == null) {
-          throw new DBPreparingError(
-            "Unknown how to getting value for " + rowClass.getSimpleName() + "." + f.getName() + " fo type " + type.getSimpleName());
+        ValueGetter<?> getter;
+        if (i < N) {
+          getter = ValueGetters.find(columns[i].jdbcType, type);
+          if (getter == null) {
+            throw new DBPreparingError("Unknown how to getting value for " + rowClass.getSimpleName() + "." + f.getName() + " fo type " + type.getSimpleName());
+          }
+        }
+        else {
+          getter = ValueGetters.DumbNullGetter.INSTANCE;
         }
         getters[i] = getter;
       }

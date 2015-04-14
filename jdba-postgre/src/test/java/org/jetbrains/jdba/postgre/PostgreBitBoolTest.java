@@ -5,6 +5,7 @@ import org.jetbrains.jdba.core.DBTransaction;
 import org.jetbrains.jdba.core.InTransactionNoResult;
 import org.jetbrains.jdba.core.RowsCollectors;
 import org.jetbrains.jdba.sql.SQLQuery;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,6 +17,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class PostgreBitBoolTest extends PostgreIntegrationCase {
 
+  @BeforeClass
+  public static void setupClass() {
+    connectToDB();
+  }
 
   @Test
   public void get_bit_as_boolean() {

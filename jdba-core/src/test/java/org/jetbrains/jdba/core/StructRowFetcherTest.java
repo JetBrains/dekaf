@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
+import java.sql.Types;
+
 
 
 /**
@@ -29,8 +31,18 @@ public class StructRowFetcherTest {
 
   @Test
   public void test_for_StructRowFetcherTest() {
+    ColumnBriefInfo[] columns = new ColumnBriefInfo[] {
+        new ColumnBriefInfo("x", "x", Types.BOOLEAN),
+        new ColumnBriefInfo("x", "x", Types.TINYINT),
+        new ColumnBriefInfo("x", "x", Types.SMALLINT),
+        new ColumnBriefInfo("x", "x", Types.INTEGER),
+        new ColumnBriefInfo("x", "x", Types.BIGINT),
+        new ColumnBriefInfo("x", "x", Types.FLOAT),
+        new ColumnBriefInfo("x", "x", Types.DOUBLE)
+    };
+
     StructRowFetcher<StructWithPrimitives> f =
-      new StructRowFetcher<StructWithPrimitives>(StructWithPrimitives.class);
+      new StructRowFetcher<StructWithPrimitives>(columns, StructWithPrimitives.class);
     Assertions.assertThat(f.fields[0].getName()).isEqualTo("myBoolean");
     Assertions.assertThat(f.fields[0].getType()).isEqualTo((Class)boolean.class);
   }
