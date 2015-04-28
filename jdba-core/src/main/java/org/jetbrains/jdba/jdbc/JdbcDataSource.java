@@ -2,7 +2,7 @@ package org.jetbrains.jdba.jdbc;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.errors.DBDriverError;
+import org.jetbrains.jdba.core.exceptions.DBDriverException;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;
@@ -59,7 +59,7 @@ public class JdbcDataSource implements DataSource {
     }
   }
 
-  public static class DriverDoesNotAcceptConnectionStringException extends DBDriverError {
+  public static class DriverDoesNotAcceptConnectionStringException extends DBDriverException {
 
     final SQLException myInnerException;
 

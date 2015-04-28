@@ -1,4 +1,4 @@
-package org.jetbrains.jdba.core.errors;
+package org.jetbrains.jdba.core.exceptions;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,38 +10,45 @@ import java.sql.SQLException;
 /**
  * Abstract database access error
  */
-public abstract class DBError extends RuntimeException {
+public abstract class DBException extends RuntimeException {
 
   public final int vendorErrorCode;
   public final String statementText;
 
 
-  protected DBError(@NotNull final SQLException sqlException, @Nullable String statementText) {
+  protected DBException(@NotNull final SQLException sqlException, @Nullable String statementText) {
     this(sqlException.getMessage(), sqlException, sqlException.getErrorCode(), statementText);
   }
 
 
-  protected DBError(@NotNull final String message, @NotNull final SQLException sqlException, @Nullable String statementText) {
+  protected DBException(@NotNull final String message,
+                        @NotNull final SQLException sqlException,
+                        @Nullable String statementText) {
     this(message, sqlException, sqlException.getErrorCode(), statementText);
   }
 
 
-  protected DBError(@NotNull final String message, @NotNull final Exception exception, String statementText) {
+  protected DBException(@NotNull final String message,
+                        @NotNull final Exception exception,
+                        String statementText) {
     this(message, exception, 0, statementText);
   }
 
 
-  protected DBError(@NotNull final String message, @Nullable String statementText) {
+  protected DBException(@NotNull final String message, @Nullable String statementText) {
     this(message, null, 0, statementText);
   }
 
 
-  public DBError(String message, Throwable cause, @Nullable String statementText) {
+  public DBException(String message, Throwable cause, @Nullable String statementText) {
     this(message, cause, 0, statementText);
   }
 
 
-  private DBError(@NotNull String message, @Nullable Throwable cause, int vendorErrorCode, @Nullable String statementText) {
+  private DBException(@NotNull String message,
+                      @Nullable Throwable cause,
+                      int vendorErrorCode,
+                      @Nullable String statementText) {
     super(makeErrorText(message, cause), cause);
     this.vendorErrorCode = vendorErrorCode;
     this.statementText = statementText;

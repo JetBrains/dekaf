@@ -2,7 +2,7 @@ package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.errors.DBError;
+import org.jetbrains.jdba.core.exceptions.DBException;
 
 import java.sql.SQLException;
 
@@ -14,6 +14,6 @@ import java.sql.SQLException;
 public interface DBErrorRecognizer {
 
   @NotNull
-  DBError recognizeError(@NotNull SQLException sqlException, @Nullable String statementText);
+  DBException recognizeError(@NotNull SQLException sqlException, @Nullable String statementText);
 
 }

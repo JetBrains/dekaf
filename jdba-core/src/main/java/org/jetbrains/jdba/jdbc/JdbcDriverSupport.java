@@ -3,7 +3,7 @@ package org.jetbrains.jdba.jdbc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Rdbms;
-import org.jetbrains.jdba.core.errors.DBDriverError;
+import org.jetbrains.jdba.core.exceptions.DBDriverException;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -73,7 +73,7 @@ public class JdbcDriverSupport {
 
   @NotNull
   public JdbcDataSource createDataSource(@NotNull final String connectionString, @Nullable final Properties connectionProperties)
-      throws DBDriverError
+      throws DBDriverException
   {
     Driver driver = obtainDriver(connectionString);
     return new JdbcDataSource(connectionString, connectionProperties, driver);
@@ -82,11 +82,11 @@ public class JdbcDriverSupport {
 
   @NotNull
   public Driver obtainDriver(@NotNull final String connectionString)
-      throws DBDriverError
+      throws DBDriverException
   {
     final JdbcDriverDef driverDef = determineDriverDef(connectionString);
     if (driverDef == null) {
-      throw new DBDriverError("Failed to determine driver by the following connection string: " + connectionString);
+      throw new DBDriverException("Failed to determine driver by the following connection string: " + connectionString);
     }
 
     Driver driver = myLoadedDrivers.get(driverDef);
@@ -101,7 +101,7 @@ public class JdbcDriverSupport {
 
   @NotNull
   private Driver obtainDriver(@NotNull final JdbcDriverDef driverDef, @NotNull final String connectionString)
-      throws DBDriverError
+      throws DBDriverException
   {
     // WAY 1: check whether the driver just is already loaded
     try {
@@ -115,7 +115,7 @@ public class JdbcDriverSupport {
       // it's not needed to handle this exception somehow
     }
     catch (Exception e) {
-      throw new DBDriverError("Failed to instantiate a JDBC driver: " + e.getMessage(), e);
+      throw new DBDriverException("Failed to instantiate a JDBC driver: " + e.getMessage(), e);
     }
 
     // WAY 2: load from the directory list
@@ -135,11 +135,11 @@ public class JdbcDriverSupport {
         // no driver
       }
       catch (InstantiationException e) {
-        throw new DBDriverError(
+        throw new DBDriverException(
           String.format("Failed to use JDBC driver for %s: could not instantiate a driver class %s.", driverDef.rdbms, driverDef.driverClassName), e);
       }
       catch (IllegalAccessException e) {
-        throw new DBDriverError(
+        throw new DBDriverException(
           String.format("Failed to use JDBC driver for %s: could not instantiate a driver class %s.", driverDef.rdbms, driverDef.driverClassName), e);
       }
     }
@@ -148,7 +148,7 @@ public class JdbcDriverSupport {
     // TODO
 
     // not found so far
-    throw new DBDriverError("No driver for the following connection string: " + connectionString);
+    throw new DBDriverException("No driver for the following connection string: " + connectionString);
   }
 
 

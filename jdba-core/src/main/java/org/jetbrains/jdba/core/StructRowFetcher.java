@@ -1,8 +1,8 @@
 package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.core.errors.DBFetchingError;
-import org.jetbrains.jdba.core.errors.DBPreparingError;
+import org.jetbrains.jdba.core.exceptions.DBFetchingException;
+import org.jetbrains.jdba.core.exceptions.DBPreparingException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -73,7 +73,7 @@ final class StructRowFetcher<R> extends RowFetcher<R> {
         if (i < N) {
           getter = ValueGetters.find(columns[i].jdbcType, type);
           if (getter == null) {
-            throw new DBPreparingError("Unknown how to getting value for " + rowClass.getSimpleName() + "." + f.getName() + " fo type " + type.getSimpleName());
+            throw new DBPreparingException("Unknown how to getting value for " + rowClass.getSimpleName() + "." + f.getName() + " fo type " + type.getSimpleName());
           }
         }
         else {
@@ -85,7 +85,7 @@ final class StructRowFetcher<R> extends RowFetcher<R> {
       indices = new int[n];
     }
     catch (Exception e) {
-      throw new DBPreparingError("Failed to introspect class " + rowClass.getSimpleName() + ": " + e.getMessage(), e);
+      throw new DBPreparingException("Failed to introspect class " + rowClass.getSimpleName() + ": " + e.getMessage(), e);
     }
   }
 
@@ -118,7 +118,7 @@ final class StructRowFetcher<R> extends RowFetcher<R> {
         }
       }
       if (index == 0) {
-        throw new DBPreparingError("Cursor has no column named \"" + fieldName + "\".");
+        throw new DBPreparingException("Cursor has no column named \"" + fieldName + "\".");
       }
       indices[i] = index;
     }
@@ -149,7 +149,7 @@ final class StructRowFetcher<R> extends RowFetcher<R> {
       throw sqle;
     }
     catch (Exception e) {
-      throw new DBFetchingError("Failed to instantiate and/or populate class " + rowClass.getSimpleName(), null);
+      throw new DBFetchingException("Failed to instantiate and/or populate class " + rowClass.getSimpleName(), null);
     }
   }
 }

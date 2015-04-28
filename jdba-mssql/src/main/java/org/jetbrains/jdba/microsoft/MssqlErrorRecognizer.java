@@ -3,9 +3,9 @@ package org.jetbrains.jdba.microsoft;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.core.BaseErrorRecognizer;
-import org.jetbrains.jdba.core.errors.DBError;
-import org.jetbrains.jdba.core.errors.DuplicateKeyError;
-import org.jetbrains.jdba.core.errors.UnknownDBError;
+import org.jetbrains.jdba.core.exceptions.DBException;
+import org.jetbrains.jdba.core.exceptions.DuplicateKeyException;
+import org.jetbrains.jdba.core.exceptions.UnknownDBException;
 
 import java.sql.SQLException;
 
@@ -18,14 +18,14 @@ public class MssqlErrorRecognizer extends BaseErrorRecognizer {
 
   @NotNull
   @Override
-  protected DBError recognizeSpecificError(@NotNull final SQLException sqlException, @Nullable final String statementText) {
+  protected DBException recognizeSpecificError(@NotNull final SQLException sqlException, @Nullable final String statementText) {
     int code = sqlException.getErrorCode();
 
     switch (code) {
       case 2601:
-        return new DuplicateKeyError(sqlException, statementText);
+        return new DuplicateKeyException(sqlException, statementText);
       default:
-        return new UnknownDBError(sqlException, statementText);
+        return new UnknownDBException(sqlException, statementText);
     }
   }
 }

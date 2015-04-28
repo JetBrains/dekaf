@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.errors.DBFetchingError;
+import org.jetbrains.jdba.core.exceptions.DBFetchingException;
 
 import java.lang.reflect.Array;
 import java.sql.ResultSet;
@@ -244,7 +244,7 @@ public final class RowsCollectors {
       if (columns.length < 2) {
         String message = String.format("The cursor contain too few columns to fetch a map (expected 2 but got %d)",
                                        columns.length);
-        throw new DBFetchingError(message, String.format("Fetching %s -> %S", myKeyClass.getSimpleName(), myValueClass.getSimpleName()));
+        throw new DBFetchingException(message, String.format("Fetching %s -> %S", myKeyClass.getSimpleName(), myValueClass.getSimpleName()));
       }
 
       myKeyGetter = ValueGetters.of(columns[0].jdbcType, myKeyClass);
@@ -265,8 +265,8 @@ public final class RowsCollectors {
       while (rset.next()) {
         K k = myKeyGetter.getValue(rset, 1);
         V v = myValueGetter.getValue(rset, 2);
-        if (k == null) throw new DBFetchingError("Got null key when collecting rows for a map of {"+myKeyClass.getSimpleName()+"->"+myValueClass.getSimpleName()+"}.", null);
-        if (v == null) throw new DBFetchingError("Got null value when collecting rows for a map of {"+myKeyClass.getSimpleName()+"->"+myValueClass.getSimpleName()+"}.", null);
+        if (k == null) throw new DBFetchingException("Got null key when collecting rows for a map of {"+myKeyClass.getSimpleName()+"->"+myValueClass.getSimpleName()+"}.", null);
+        if (v == null) throw new DBFetchingException("Got null value when collecting rows for a map of {"+myKeyClass.getSimpleName()+"->"+myValueClass.getSimpleName()+"}.", null);
         builder.put(k, v);
       }
       return builder.build();

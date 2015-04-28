@@ -3,9 +3,9 @@ package org.jetbrains.jdba.oracle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.core.BaseErrorRecognizer;
-import org.jetbrains.jdba.core.errors.DBError;
-import org.jetbrains.jdba.core.errors.DuplicateKeyError;
-import org.jetbrains.jdba.core.errors.UnknownDBError;
+import org.jetbrains.jdba.core.exceptions.DBException;
+import org.jetbrains.jdba.core.exceptions.DuplicateKeyException;
+import org.jetbrains.jdba.core.exceptions.UnknownDBException;
 
 import java.sql.SQLException;
 import java.util.regex.Pattern;
@@ -19,17 +19,17 @@ public class OraErrorRecognizer extends BaseErrorRecognizer {
 
   @NotNull
   @Override
-  protected DBError recognizeSpecificError(@NotNull final SQLException sqlException, @Nullable final String statementText) {
+  protected DBException recognizeSpecificError(@NotNull final SQLException sqlException, @Nullable final String statementText) {
     int code = sqlException.getErrorCode();
 
     switch (code) {
       case 1:
-        return new DuplicateKeyError(sqlException, statementText);
+        return new DuplicateKeyException(sqlException, statementText);
       default:
         String msg = sqlException.getMessage().trim();
         boolean hasNumber = NUMBERED_ERROR_PATTERN.matcher(msg).matches();
         if (!hasNumber) msg = "Oracle SQL error " + code + ": " + msg;
-        return new UnknownDBError(msg, sqlException, statementText);
+        return new UnknownDBException(msg, sqlException, statementText);
     }
   }
 

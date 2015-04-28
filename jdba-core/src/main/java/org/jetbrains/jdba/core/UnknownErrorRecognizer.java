@@ -2,8 +2,8 @@ package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.errors.DBError;
-import org.jetbrains.jdba.core.errors.UnknownDBError;
+import org.jetbrains.jdba.core.exceptions.DBException;
+import org.jetbrains.jdba.core.exceptions.UnknownDBException;
 
 import java.sql.SQLException;
 
@@ -16,8 +16,8 @@ final class UnknownErrorRecognizer extends BaseErrorRecognizer {
 
   @NotNull
   @Override
-  protected DBError recognizeSpecificError(@NotNull final SQLException sqlException, @Nullable final String statementText) {
-    return new UnknownDBError(sqlException, statementText);
+  protected DBException recognizeSpecificError(@NotNull final SQLException sqlException, @Nullable final String statementText) {
+    return new UnknownDBException(sqlException, statementText);
   }
 
 }

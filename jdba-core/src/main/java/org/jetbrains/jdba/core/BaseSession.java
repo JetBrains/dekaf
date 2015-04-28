@@ -2,8 +2,8 @@ package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.errors.DBError;
-import org.jetbrains.jdba.core.errors.UnhandledTypeError;
+import org.jetbrains.jdba.core.exceptions.DBException;
+import org.jetbrains.jdba.core.exceptions.UnhandledTypeException;
 import org.jetbrains.jdba.sql.SQLCommand;
 import org.jetbrains.jdba.sql.SQLQuery;
 import org.jetbrains.jdba.sql.SQLScript;
@@ -303,7 +303,7 @@ public class BaseSession implements DBSession {
     else {
       boolean assigned = assignSpecificParameter(stmt, index, object);
       if (!assigned) {
-        throw new UnhandledTypeError("I don't know how to pass an instance of class " +
+        throw new UnhandledTypeException("I don't know how to pass an instance of class " +
                                      object.getClass().getSimpleName() + " as the " +
                                      index + "th parameter into a SQL statement.", null);
       }
@@ -327,7 +327,7 @@ public class BaseSession implements DBSession {
 
 
   @NotNull
-  public DBError recognizeError(@NotNull final SQLException sqlException, @Nullable final String statementText) {
+  public DBException recognizeError(@NotNull final SQLException sqlException, @Nullable final String statementText) {
     return myFacade.getErrorRecognizer().recognizeError(sqlException, statementText);
   }
 

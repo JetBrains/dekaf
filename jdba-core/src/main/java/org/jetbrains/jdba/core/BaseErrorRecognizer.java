@@ -2,7 +2,8 @@ package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.errors.DBError;
+import org.jetbrains.jdba.core.exceptions.DBException;
+import org.jetbrains.jdba.core.exceptions.UnexpectedJdbcException;
 
 import java.sql.SQLException;
 
@@ -11,11 +12,11 @@ import java.sql.SQLException;
 /**
  *
  **/
-public abstract class BaseErrorRecognizer implements DBErrorRecognizer {
+public class BaseErrorRecognizer implements DBErrorRecognizer {
 
   @Override
   @NotNull
-  public DBError recognizeError(@NotNull final SQLException sqlException, @Nullable final String statementText) {
+  public final DBException recognizeError(@NotNull final SQLException sqlException, @Nullable final String statementText) {
     // unroll the exception - it's needed when the given exception is wrapped
     //                        by some external framework wrappers, connection pools, etc.
     SQLException e = sqlException;
@@ -29,5 +30,9 @@ public abstract class BaseErrorRecognizer implements DBErrorRecognizer {
 
 
   @NotNull
-  protected abstract DBError recognizeSpecificError(@NotNull final SQLException sqlException, @Nullable final String statementText);
+  protected DBException recognizeSpecificError(@NotNull final SQLException sqlException,
+                                               @Nullable final String statementText) {
+    // the inheritor should override this method
+    return new UnexpectedJdbcException(sqlException, statementText);
+  }
 }

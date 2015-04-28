@@ -6,7 +6,7 @@ import org.jetbrains.jdba.Rdbms;
 import org.jetbrains.jdba.core.DBFacade;
 import org.jetbrains.jdba.core.DBProvider;
 import org.jetbrains.jdba.core.DBServiceFactory;
-import org.jetbrains.jdba.core.errors.DBFactoryError;
+import org.jetbrains.jdba.core.exceptions.DBFactoryException;
 
 import javax.sql.DataSource;
 import java.io.File;
@@ -69,7 +69,7 @@ public final class JdbcDBProvider implements DBProvider {
     catch (Exception e) {
       String msg = String.format("Failed to instantiate DB service factory class %s: %s: %s",
                                  factoryClass.getSimpleName(), e.getClass().getSimpleName(), e.getMessage());
-      throw new DBFactoryError(msg, e);
+      throw new DBFactoryException(msg, e);
     }
 
     Rdbms rdbms = factory.rdbms();

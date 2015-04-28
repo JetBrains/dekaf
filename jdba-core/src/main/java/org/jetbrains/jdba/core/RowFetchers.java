@@ -1,8 +1,8 @@
 package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.core.errors.DBError;
-import org.jetbrains.jdba.core.errors.DBPreparingError;
+import org.jetbrains.jdba.core.exceptions.DBException;
+import org.jetbrains.jdba.core.exceptions.DBPreparingException;
 
 
 
@@ -34,14 +34,14 @@ public final class RowFetchers {
         return new StructRowFetcher<R>(columns, rowClass);
       }
     }
-    catch (DBError dbe) {
+    catch (DBException dbe) {
       throw dbe;
     }
     catch (Exception e) {
-      throw new DBPreparingError("Failing to introspect class " + rowClass.getSimpleName(), e);
+      throw new DBPreparingException("Failing to introspect class " + rowClass.getSimpleName(), e);
     }
 
     // unknown
-    throw new DBPreparingError("Unknown how to fetch values of class " + rowClass.getSimpleName());
+    throw new DBPreparingException("Unknown how to fetch values of class " + rowClass.getSimpleName());
   }
 }

@@ -1,4 +1,4 @@
-package org.jetbrains.jdba.core.errors;
+package org.jetbrains.jdba.core.exceptions;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  *
  **/
-public class DBIsNotConnected extends DBError {
+public class DBIsNotConnected extends DBException {
   public DBIsNotConnected(@NotNull final String message) {
     super(message, null);
   }

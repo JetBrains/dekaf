@@ -3,7 +3,7 @@ package org.jetbrains.jdba.core;
 import com.google.common.collect.ImmutableMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.errors.DBPreparingError;
+import org.jetbrains.jdba.core.exceptions.DBPreparingException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -110,7 +110,7 @@ public final class ValueGetters {
   @SuppressWarnings("unchecked")
   static <W> ValueGetter<W> of(final int jdbcType, @NotNull final Class<W> clazz) {
     ValueGetter<W> getter = find(jdbcType, clazz);
-    if (getter == null) throw new DBPreparingError("Unknown how to get a value of class "+clazz.getSimpleName());
+    if (getter == null) throw new DBPreparingException("Unknown how to get a value of class "+clazz.getSimpleName());
     return getter;
   }
 

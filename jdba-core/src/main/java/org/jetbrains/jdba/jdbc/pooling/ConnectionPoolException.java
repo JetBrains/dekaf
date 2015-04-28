@@ -2,14 +2,14 @@ package org.jetbrains.jdba.jdbc.pooling;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.errors.DBError;
+import org.jetbrains.jdba.core.exceptions.DBException;
 
 
 
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public class ConnectionPoolException extends DBError {
+public class ConnectionPoolException extends DBException {
 
   public ConnectionPoolException(@NotNull String message, @NotNull Throwable cause, @Nullable String statementText) {
     super(message, cause, statementText);
