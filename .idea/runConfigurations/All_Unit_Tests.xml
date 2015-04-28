@@ -22,6 +22,7 @@
       <pattern testClass="org.jetbrains.jdba.core.CoreUnitTests" />
       <pattern testClass="org.jetbrains.jdba.oracle.OracleUnitTests" />
       <pattern testClass="org.jetbrains.jdba.microsoft.MicrosoftUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.jdbc.JdbcUnitTests" />
     </patterns>
     <method />
   </configuration>
