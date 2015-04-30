@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.core.DBErrorRecognizer;
 import org.jetbrains.jdba.core.DBInterSession;
-import org.jetbrains.jdba.core.QueryKind;
+import org.jetbrains.jdba.core.ParameterDef;
 import org.jetbrains.jdba.core.exceptions.DBException;
 import org.jetbrains.jdba.core.exceptions.DBSessionIsClosedException;
 
@@ -81,6 +81,8 @@ public class JdbcInterSession implements DBInterSession {
   public void rollback() {
     if (myClosed) return;
 
+    // TODO close all seances here
+
     myInTransaction = false;
 
     try {
@@ -95,29 +97,28 @@ public class JdbcInterSession implements DBInterSession {
 
   @NotNull
   @Override
-  public JdbcInterSeance openSeance(@NotNull final QueryKind queryKind) {
+  public JdbcInterSeance openSeance(@NotNull final String statementText,
+                                    @Nullable final ParameterDef[] outParameterDefs) {
     checkNotClosed();
-    switch (queryKind) {
-      case SELECT: return openQuerySeance();
-      case IUD: return openModificationSeance();
-      default: return openOtherCommandSeance();
+    if (outParameterDefs == null) {
+      return openSimpleStatementSeance(statementText);
+    }
+    else {
+      return openPreparedStatementSeance(statementText, outParameterDefs);
     }
   }
 
   @NotNull
-  protected JdbcInterQuerySeance openQuerySeance() {
-    return new JdbcInterQuerySeance(this);
+  protected JdbcSimpleSeance openSimpleStatementSeance(@NotNull final String statementText) {
+    return new JdbcSimpleSeance(this, statementText);
   }
 
   @NotNull
-  protected JdbcInterModificationSeance openModificationSeance() {
-    return new JdbcInterModificationSeance(this);
+  protected JdbcCallableStatementSeance openPreparedStatementSeance(@NotNull final String statementText,
+                                                                    @NotNull final ParameterDef[] outParameterDefs) {
+    return new JdbcCallableStatementSeance(this, statementText, outParameterDefs);
   }
 
-  @NotNull
-  protected JdbcInterOtherCommandSeance openOtherCommandSeance() {
-    return new JdbcInterOtherCommandSeance(this);
-  }
 
   @Override
   public void close() {
@@ -138,6 +139,15 @@ public class JdbcInterSession implements DBInterSession {
       }
     }
   }
+
+
+  //// INTERNAL METHODS \\\\
+
+  @NotNull
+  protected Connection getConnection() {
+    return myConnection;
+  }
+
 
 
   //// USEFUL METHODS \\\\

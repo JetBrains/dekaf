@@ -1,6 +1,7 @@
 package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 
@@ -25,7 +26,8 @@ public interface DBInterSession {
   //// SEANCES \\\\
 
   @NotNull
-  DBInterSeance openSeance(@NotNull final QueryKind queryKind);
+  DBInterSeance openSeance(@NotNull final String statementText,
+                           @Nullable final ParameterDef[] outParameters);
 
 
 

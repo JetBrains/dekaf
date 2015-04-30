@@ -11,15 +11,12 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface DBInterSeance {
 
-  /**
-   * Prepares the specified query.
-   *
-   * @param queryText
-   */
-  void prepare(@NotNull String queryText);
-
 
   void setInParameters(@NotNull Object[] parameters);
+
+  void execute();
+
+  int getAffectedRowsCount();
 
 
   @NotNull

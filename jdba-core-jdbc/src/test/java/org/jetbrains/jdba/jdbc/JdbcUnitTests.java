@@ -13,6 +13,7 @@ import testing.categories.UnitTest;
 @Category(UnitTest.class)
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-                            JdbcInterSessionTest.class
+                            JdbcInterSessionTest.class,
+                            JdbcInterSeanceSimpleTest.class
 })
 public class JdbcUnitTests {}

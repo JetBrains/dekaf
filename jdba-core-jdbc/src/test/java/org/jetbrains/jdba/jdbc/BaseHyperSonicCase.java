@@ -1,5 +1,6 @@
 package org.jetbrains.jdba.jdbc;
 
+import org.jetbrains.jdba.core.DBErrorRecognizer;
 import org.junit.BeforeClass;
 
 import java.sql.Connection;
@@ -17,6 +18,8 @@ public class BaseHyperSonicCase {
   protected static final String HSQL_URL = "jdbc:hsqldb:mem:mymemdb?user=SA";
 
   protected static Driver ourHSDriver;
+
+  protected static DBErrorRecognizer ourErrorRecognizer = new BaseErrorRecognizer();
 
 
   @BeforeClass
@@ -45,6 +48,13 @@ public class BaseHyperSonicCase {
       throw new RuntimeException("Failed to get an HSQL connection: "+e.getMessage(), e);
     }
     return connection;
+  }
+
+
+  protected JdbcInterSession openSession() {
+    Connection connection = obtainConnection();
+    JdbcInterSession session = new JdbcInterSession(ourErrorRecognizer, connection, true);
+    return session;
   }
 
 }
