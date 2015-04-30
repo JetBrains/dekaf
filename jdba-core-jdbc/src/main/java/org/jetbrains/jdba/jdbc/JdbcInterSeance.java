@@ -40,6 +40,9 @@ public abstract class JdbcInterSeance implements DBInterSeance {
 
   protected int myAffectedRowsCount;
 
+  @Nullable
+  protected JdbcInterCursor<?> myDefaultCursor;
+
 
   //// CONSTRUCTORS \\\\
 
@@ -55,7 +58,7 @@ public abstract class JdbcInterSeance implements DBInterSeance {
 
 
   @Override
-  public void setInParameters(@NotNull final Object[] parameters) {
+  public synchronized void setInParameters(@NotNull final Object[] parameters) {
     // TODO implement JdbcInterSeance.setInParameters()
     throw new RuntimeException("Method JdbcInterSeance.setInParameters() is not implemented yet.");
 
@@ -63,12 +66,15 @@ public abstract class JdbcInterSeance implements DBInterSeance {
 
 
   @Override
-  public void execute() {
+  public synchronized void execute() {
     try {
       boolean gotResultSet = statement.execute();
       if (gotResultSet)  {
         myDefaultResultSet = statement.getResultSet();
         myDefaultResultSetHasRows = myDefaultResultSet.next();  // download first rows
+        if (!myDefaultResultSetHasRows)  {
+          myDefaultResultSet.close(); // close it if it has no rows
+        }
       }
       else {
         myAffectedRowsCount = statement.getUpdateCount();
@@ -84,20 +90,42 @@ public abstract class JdbcInterSeance implements DBInterSeance {
     return myAffectedRowsCount;
   }
 
-  @NotNull
-  @Override
-  public <R> DBInterCursor<R> openCursor(final int parameterPosition,
-                                         @NotNull final ResultLayout<R> layout) {
-    // TODO implement JdbcInterSeance.openCursor()
-    throw new RuntimeException("Method JdbcInterSeance.openCursor() is not implemented yet.");
 
+  protected <R> DBInterCursor<R> openDefaultCursor(final @NotNull ResultLayout<R> layout) {
+    if (myDefaultResultSet == null) {
+      throw new IllegalStateException("Cannot open cursor: the statement was not executed or it has not returned cursor.");
+    }
+
+    if (myDefaultCursor == null) {
+      JdbcInterCursor<R> cursor = new JdbcInterCursor<R>(this, myDefaultResultSet, layout,
+                                                         true, myDefaultResultSetHasRows ? Boolean.TRUE : Boolean.FALSE);
+      myDefaultCursor = cursor;
+      return cursor;
+    }
+    else {
+      if (layout.equals(myDefaultCursor.myResultLayout)) {
+        //noinspection unchecked
+        return (DBInterCursor<R>) myDefaultCursor;
+      }
+      else {
+        throw new IllegalStateException("The cursor already opened with another layout.");
+      }
+    }
   }
 
+
   @Override
-  public void close() {
+  public synchronized void close() {
+    if (myDefaultCursor != null && myDefaultCursor.isOpened()) {
+      myDefaultCursor.close();
+      myDefaultCursor = null;
+    }
+
     if (myDefaultResultSet != null) {
       try {
-        myDefaultResultSet.close();
+        if (!myDefaultResultSet.isClosed()) {
+          myDefaultResultSet.close();
+        }
       }
       catch (SQLException sqle) {
         // TODO log somehow
@@ -109,7 +137,9 @@ public abstract class JdbcInterSeance implements DBInterSeance {
 
     if (statement != null) {
       try {
-        statement.close();
+        if (!statement.isClosed()) {
+          statement.close();
+        }
       }
       catch (SQLException sqle) {
         // TODO log somehow
@@ -119,6 +149,4 @@ public abstract class JdbcInterSeance implements DBInterSeance {
       }
     }
   }
-
-
 }

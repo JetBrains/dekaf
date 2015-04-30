@@ -109,14 +109,14 @@ public class JdbcInterSession implements DBInterSession {
   }
 
   @NotNull
-  protected JdbcSimpleSeance openSimpleStatementSeance(@NotNull final String statementText) {
-    return new JdbcSimpleSeance(this, statementText);
+  protected JdbcInterSimpleSeance openSimpleStatementSeance(@NotNull final String statementText) {
+    return new JdbcInterSimpleSeance(this, statementText);
   }
 
   @NotNull
-  protected JdbcCallableStatementSeance openPreparedStatementSeance(@NotNull final String statementText,
+  protected JdbcInterCallableStatementSeance openPreparedStatementSeance(@NotNull final String statementText,
                                                                     @NotNull final ParameterDef[] outParameterDefs) {
-    return new JdbcCallableStatementSeance(this, statementText, outParameterDefs);
+    return new JdbcInterCallableStatementSeance(this, statementText, outParameterDefs);
   }
 
 
