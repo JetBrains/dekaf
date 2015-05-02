@@ -53,7 +53,6 @@ public class JdbcInterCallableStatementSeance extends JdbcInterSeance {
     }
     else {
       return openCursorFromParameter(parameterPosition, layout);
-
     }
   }
 

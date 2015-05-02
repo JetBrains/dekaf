@@ -2,7 +2,6 @@ package org.jetbrains.jdba.jdbc;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.DBInterCursor;
 import org.jetbrains.jdba.core.DBInterSeance;
 import org.jetbrains.jdba.core.ResultLayout;
 
@@ -16,11 +15,6 @@ import java.sql.SQLException;
  * @author Leonid Bushuev from JetBrains
  */
 public abstract class JdbcInterSeance implements DBInterSeance {
-
-  //// SOME CONSTANTS \\\\
-
-  protected static final boolean EXECUTE_RETURNS_CURSOR = true;
-  protected static final boolean EXECUTE_RETURNS_AFFECTED_ROWS_COUNT = false;
 
 
   //// STATE \\\\
@@ -91,7 +85,7 @@ public abstract class JdbcInterSeance implements DBInterSeance {
   }
 
 
-  protected <R> DBInterCursor<R> openDefaultCursor(final @NotNull ResultLayout<R> layout) {
+  protected <R> JdbcInterCursor<R> openDefaultCursor(final @NotNull ResultLayout<R> layout) {
     if (myDefaultResultSet == null) {
       throw new IllegalStateException("Cannot open cursor: the statement was not executed or it has not returned cursor.");
     }
@@ -105,7 +99,7 @@ public abstract class JdbcInterSeance implements DBInterSeance {
     else {
       if (layout.equals(myDefaultCursor.myResultLayout)) {
         //noinspection unchecked
-        return (DBInterCursor<R>) myDefaultCursor;
+        return (JdbcInterCursor<R>) myDefaultCursor;
       }
       else {
         throw new IllegalStateException("The cursor already opened with another layout.");

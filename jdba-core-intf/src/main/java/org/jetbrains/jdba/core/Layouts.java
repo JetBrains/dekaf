@@ -18,7 +18,7 @@ public abstract class Layouts {
 
   @NotNull
   public static <V> RowLayout<V> oneOf(@NotNull final Class<V> valueClass) {
-    return new RowLayout<V>(true, valueClass, valueClass);
+    return new RowLayout<V>(RowLayout.Kind.ONE_VALUE, valueClass, valueClass, valueClass);
   }
 
   @SuppressWarnings("unchecked")
@@ -28,23 +28,27 @@ public abstract class Layouts {
     Class resultClass = example.getClass();
     Class<C>[] componentClasses = (Class<C>[]) new Class[n];
     for (int i = 0; i < n; i++) componentClasses[i] = componentClass;
-    return new RowLayout<C[]>(true, resultClass, componentClasses);
+    return new RowLayout<C[]>(RowLayout.Kind.ARRAY, resultClass, componentClass, componentClasses);
   }
 
   @NotNull
   public static RowLayout<Object[]> arrayOf(@NotNull final Class... componentClasses) {
-    return new RowLayout<Object[]>(true, Object[].class, componentClasses);
+    return new RowLayout<Object[]>(RowLayout.Kind.ARRAY, Object[].class, Object.class, componentClasses);
   }
 
 
   //// RESULT LAYOUTS \\\\
 
   public static <V> ResultLayout<V> singleOf(@NotNull final Class<V> valueClass) {
-    return new ResultLayout<V>(ResultLayout.Kind.SINGLE, false, oneOf(valueClass));
+    return new ResultLayout<V>(ResultLayout.Kind.SINGLE_ROW, false, oneOf(valueClass));
   }
 
   public static <R> ResultLayout<R> rowOf(@NotNull final RowLayout<R> rowLayout) {
-    return new ResultLayout<R>(ResultLayout.Kind.SINGLE, false, rowLayout);
+    return new ResultLayout<R>(ResultLayout.Kind.SINGLE_ROW, false, rowLayout);
+  }
+
+  public static <V> ResultLayout<V[]> columnOf(@NotNull final Class<V> valueClass) {
+    return new ResultLayout<V[]>(ResultLayout.Kind.ARRAY, false, oneOf(valueClass));
   }
 
   public static <R> ResultLayout<R[]> arrayOf(@NotNull final RowLayout<R> rowLayout) {

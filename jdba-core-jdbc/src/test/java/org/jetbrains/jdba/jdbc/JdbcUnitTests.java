@@ -14,6 +14,7 @@ import testing.categories.UnitTest;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
                             JdbcInterSessionTest.class,
-                            JdbcInterSeanceSimpleTest.class
+                            JdbcInterSeanceSimpleTest.class,
+                            JdbcInterCursorTest.class
 })
 public class JdbcUnitTests {}

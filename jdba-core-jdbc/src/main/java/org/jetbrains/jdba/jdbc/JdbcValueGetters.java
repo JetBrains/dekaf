@@ -1,6 +1,5 @@
-package org.jetbrains.jdba.core;
+package org.jetbrains.jdba.jdbc;
 
-import com.google.common.collect.ImmutableMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.core.exceptions.DBPreparingException;
@@ -9,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -20,34 +20,13 @@ import java.util.Map;
  *
  * @author Leonid Bushuev from JetBrains
  */
-public final class ValueGetters {
-
-
-
-  @NotNull
-  @SuppressWarnings("unchecked")
-  protected static <W> ValueGetter<W> of(final int jdbcType, @NotNull final Class<W> clazz) {
-    ValueGetter<W> getter = find(jdbcType, clazz);
-    if (getter == null) throw new DBPreparingException("Unknown how to get a value of class "+clazz.getSimpleName());
-    return getter;
-  }
-
-
-  @Nullable
-  @SuppressWarnings("unchecked")
-  protected static <W> ValueGetter<W> find(final int jdbcType, @NotNull final Class<W> clazz) {
-    ValueGetter<?> getter = null;
-    if (jdbcType != Types.OTHER) getter = SPECIFIC_GETTERS.get(new SpecificKey(jdbcType, clazz));
-    if (getter == null) getter = NORMAL_GETTERS.get(clazz);
-    return (ValueGetter<W>) getter;
-  }
-
+public final class JdbcValueGetters {
 
 
 
   //// INTERNAL STRUCTURES \\\\
 
-  private static final class SpecificKey {
+  protected static final class SpecificKey {
     final int jdbcType;
     final @NotNull Class<?> desiredClass;
 
@@ -76,64 +55,88 @@ public final class ValueGetters {
   //// INSTANCE PLENTY \\\\
 
   @NotNull
-  private static final Map<Class<?>, ValueGetter<?>> NORMAL_GETTERS =
-    ImmutableMap.<Class<?>, ValueGetter<?>>builder()
-          .put(boolean.class, IntBoolGetter.INSTANCE)
-          .put(Boolean.class, IntBoolGetter.INSTANCE)
-          .put(byte.class, ByteGetter.INSTANCE)
-          .put(Byte.class, ByteGetter.INSTANCE)
-          .put(short.class, ShortGetter.INSTANCE)
-          .put(Short.class, ShortGetter.INSTANCE)
-          .put(int.class, IntGetter.INSTANCE)
-          .put(Integer.class, IntGetter.INSTANCE)
-          .put(long.class, LongGetter.INSTANCE)
-          .put(Long.class, LongGetter.INSTANCE)
-          .put(float.class, FloatGetter.INSTANCE)
-          .put(Float.class, FloatGetter.INSTANCE)
-          .put(double.class, DoubleGetter.INSTANCE)
-          .put(Double.class, DoubleGetter.INSTANCE)
-          .put(String.class, StringGetter.INSTANCE)
-          .put(char.class, CharGetter.INSTANCE)
-          .put(Character.class, CharGetter.INSTANCE)
-          .put(java.util.Date.class, JavaDateGetter.INSTANCE)
-          .put(java.sql.Date.class, DateGetter.INSTANCE)
-          .put(java.sql.Timestamp.class, TimestampGetter.INSTANCE)
-          .put(java.sql.Time.class, TimeGetter.INSTANCE)
-          .put(Object.class, ObjectGetter.INSTANCE)
-          .build();
+  private static final Map<Class<?>, JdbcValueGetter<?>> NORMAL_GETTERS;
 
-  private static final Map<SpecificKey, ValueGetter<?>> SPECIFIC_GETTERS =
-    ImmutableMap.<SpecificKey, ValueGetter<?>>builder()
-          .put(new SpecificKey(Types.BOOLEAN, boolean.class), BoolBoolGetter.INSTANCE)
-          .put(new SpecificKey(Types.BOOLEAN, Boolean.class), BoolBoolGetter.INSTANCE)
-          .put(new SpecificKey(Types.BOOLEAN, byte.class), BoolByteGetter.INSTANCE)
-          .put(new SpecificKey(Types.BOOLEAN, Byte.class), BoolByteGetter.INSTANCE)
-          .put(new SpecificKey(Types.BOOLEAN, short.class), BoolShortGetter.INSTANCE)
-          .put(new SpecificKey(Types.BOOLEAN, Short.class), BoolShortGetter.INSTANCE)
-          .put(new SpecificKey(Types.BOOLEAN, int.class), BoolIntGetter.INSTANCE)
-          .put(new SpecificKey(Types.BOOLEAN, Integer.class), BoolIntGetter.INSTANCE)
-          .put(new SpecificKey(Types.BIT, boolean.class), BoolBoolGetter.INSTANCE)
-          .put(new SpecificKey(Types.BIT, Boolean.class), BoolBoolGetter.INSTANCE)
-          .put(new SpecificKey(Types.BIT, byte.class), BoolByteGetter.INSTANCE)
-          .put(new SpecificKey(Types.BIT, Byte.class), BoolByteGetter.INSTANCE)
-          .put(new SpecificKey(Types.BIT, short.class), BoolShortGetter.INSTANCE)
-          .put(new SpecificKey(Types.BIT, Short.class), BoolShortGetter.INSTANCE)
-          .put(new SpecificKey(Types.BIT, int.class), BoolIntGetter.INSTANCE)
-          .put(new SpecificKey(Types.BIT, Integer.class), BoolIntGetter.INSTANCE)
-          .put(new SpecificKey(Types.TINYINT, boolean.class), IntBoolGetter.INSTANCE)
-          .put(new SpecificKey(Types.TINYINT, Boolean.class), IntBoolGetter.INSTANCE)
-          .put(new SpecificKey(Types.SMALLINT, boolean.class), IntBoolGetter.INSTANCE)
-          .put(new SpecificKey(Types.SMALLINT, Boolean.class), IntBoolGetter.INSTANCE)
-          .put(new SpecificKey(Types.INTEGER, boolean.class), IntBoolGetter.INSTANCE)
-          .put(new SpecificKey(Types.INTEGER, Boolean.class), IntBoolGetter.INSTANCE)
-          .build();
+  @NotNull
+  private static final Map<SpecificKey, JdbcValueGetter<?>> SPECIFIC_GETTERS;
+
+
+  static {
+    NORMAL_GETTERS = new HashMap<Class<?>, JdbcValueGetter<?>>(30);
+    NORMAL_GETTERS.put(boolean.class, IntBoolGetter.INSTANCE);
+    NORMAL_GETTERS.put(Boolean.class, IntBoolGetter.INSTANCE);
+    NORMAL_GETTERS.put(byte.class, ByteGetter.INSTANCE);
+    NORMAL_GETTERS.put(Byte.class, ByteGetter.INSTANCE);
+    NORMAL_GETTERS.put(short.class, ShortGetter.INSTANCE);
+    NORMAL_GETTERS.put(Short.class, ShortGetter.INSTANCE);
+    NORMAL_GETTERS.put(int.class, IntGetter.INSTANCE);
+    NORMAL_GETTERS.put(Integer.class, IntGetter.INSTANCE);
+    NORMAL_GETTERS.put(long.class, LongGetter.INSTANCE);
+    NORMAL_GETTERS.put(Long.class, LongGetter.INSTANCE);
+    NORMAL_GETTERS.put(float.class, FloatGetter.INSTANCE);
+    NORMAL_GETTERS.put(Float.class, FloatGetter.INSTANCE);
+    NORMAL_GETTERS.put(double.class, DoubleGetter.INSTANCE);
+    NORMAL_GETTERS.put(Double.class, DoubleGetter.INSTANCE);
+    NORMAL_GETTERS.put(String.class, StringGetter.INSTANCE);
+    NORMAL_GETTERS.put(char.class, CharGetter.INSTANCE);
+    NORMAL_GETTERS.put(Character.class, CharGetter.INSTANCE);
+    NORMAL_GETTERS.put(java.util.Date.class, JavaDateGetter.INSTANCE);
+    NORMAL_GETTERS.put(java.sql.Date.class, DateGetter.INSTANCE);
+    NORMAL_GETTERS.put(Timestamp.class, TimestampGetter.INSTANCE);
+    NORMAL_GETTERS.put(java.sql.Time.class, TimeGetter.INSTANCE);
+    NORMAL_GETTERS.put(Object.class, ObjectGetter.INSTANCE);
+
+    SPECIFIC_GETTERS = new HashMap<SpecificKey, JdbcValueGetter<?>>(30);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, boolean.class), BoolBoolGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, Boolean.class), BoolBoolGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, byte.class), BoolByteGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, Byte.class), BoolByteGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, short.class), BoolShortGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, Short.class), BoolShortGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, int.class), BoolIntGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, Integer.class), BoolIntGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BIT, boolean.class), BoolBoolGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BIT, Boolean.class), BoolBoolGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BIT, byte.class), BoolByteGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BIT, Byte.class), BoolByteGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BIT, short.class), BoolShortGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BIT, Short.class), BoolShortGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BIT, int.class), BoolIntGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BIT, Integer.class), BoolIntGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.TINYINT, boolean.class), IntBoolGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.TINYINT, Boolean.class), IntBoolGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.SMALLINT, boolean.class), IntBoolGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.SMALLINT, Boolean.class), IntBoolGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.INTEGER, boolean.class), IntBoolGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.INTEGER, Boolean.class), IntBoolGetter.INSTANCE);
+  }
+
+
+
+  @NotNull
+  @SuppressWarnings("unchecked")
+  static <W> JdbcValueGetter<W> of(final int jdbcType, @NotNull final Class<W> clazz) {
+    JdbcValueGetter<W> getter = find(jdbcType, clazz);
+    if (getter == null) throw new DBPreparingException("Unknown how to get a value of class "+clazz.getSimpleName());
+    return getter;
+  }
+
+
+  @Nullable
+  @SuppressWarnings("unchecked")
+  static <W> JdbcValueGetter<W> find(final int jdbcType, @NotNull final Class<W> clazz) {
+    JdbcValueGetter<?> getter = null;
+    if (jdbcType != Types.OTHER) getter = SPECIFIC_GETTERS.get(new SpecificKey(jdbcType, clazz));
+    if (getter == null) getter = NORMAL_GETTERS.get(clazz);
+    return (JdbcValueGetter<W>) getter;
+  }
 
 
 
   //// GETTERS \\\\
 
 
-  static final class BoolBoolGetter extends ValueGetter<Boolean> {
+  static final class BoolBoolGetter extends JdbcValueGetter<Boolean> {
     @Override
     @Nullable
     Boolean getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
@@ -146,7 +149,7 @@ public final class ValueGetters {
   }
 
   @SuppressWarnings("UnnecessaryBoxing")
-  static final class BoolByteGetter extends ValueGetter<Byte> {
+  static final class BoolByteGetter extends JdbcValueGetter<Byte> {
     @Override
     @Nullable
     Byte getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
@@ -161,7 +164,7 @@ public final class ValueGetters {
   }
 
   @SuppressWarnings("UnnecessaryBoxing")
-  static final class BoolShortGetter extends ValueGetter<Short> {
+  static final class BoolShortGetter extends JdbcValueGetter<Short> {
     @Override
     @Nullable
     Short getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
@@ -176,7 +179,7 @@ public final class ValueGetters {
   }
 
   @SuppressWarnings("UnnecessaryBoxing")
-  static final class BoolIntGetter extends ValueGetter<Integer> {
+  static final class BoolIntGetter extends JdbcValueGetter<Integer> {
     @Override
     @Nullable
     Integer getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
@@ -192,7 +195,7 @@ public final class ValueGetters {
 
 
 
-  static final class IntBoolGetter extends ValueGetter<Boolean> {
+  static final class IntBoolGetter extends JdbcValueGetter<Boolean> {
     @Override
     @Nullable
     Boolean getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
@@ -206,7 +209,7 @@ public final class ValueGetters {
 
 
 
-  static final class ByteGetter extends ValueGetter<Byte> {
+  static final class ByteGetter extends JdbcValueGetter<Byte> {
     @Override
     @Nullable
     Byte getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
@@ -219,7 +222,7 @@ public final class ValueGetters {
   }
 
 
-  static final class ShortGetter extends ValueGetter<Short> {
+  static final class ShortGetter extends JdbcValueGetter<Short> {
     @Override
     @Nullable
     Short getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
@@ -233,7 +236,7 @@ public final class ValueGetters {
 
 
 
-  static final class IntGetter extends ValueGetter<Integer> {
+  static final class IntGetter extends JdbcValueGetter<Integer> {
     @Override
     @Nullable
     Integer getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
@@ -247,7 +250,7 @@ public final class ValueGetters {
 
 
 
-  static final class LongGetter extends ValueGetter<Long> {
+  static final class LongGetter extends JdbcValueGetter<Long> {
     @Override
     @Nullable
     Long getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
@@ -261,7 +264,7 @@ public final class ValueGetters {
 
 
 
-  static final class FloatGetter extends ValueGetter<Float> {
+  static final class FloatGetter extends JdbcValueGetter<Float> {
     @Override
     @Nullable
     Float getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
@@ -275,7 +278,7 @@ public final class ValueGetters {
 
 
 
-  static final class DoubleGetter extends ValueGetter<Double> {
+  static final class DoubleGetter extends JdbcValueGetter<Double> {
     @Override
     @Nullable
     Double getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
@@ -289,7 +292,7 @@ public final class ValueGetters {
 
 
 
-  static final class StringGetter extends ValueGetter<String> {
+  static final class StringGetter extends JdbcValueGetter<String> {
     @Override
     @Nullable
     String getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
@@ -302,7 +305,7 @@ public final class ValueGetters {
 
 
 
-  static final class CharGetter extends ValueGetter<Character> {
+  static final class CharGetter extends JdbcValueGetter<Character> {
     @Override
     @Nullable
     Character getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
@@ -319,7 +322,7 @@ public final class ValueGetters {
 
 
 
-  static final class JavaDateGetter extends ValueGetter<java.util.Date> {
+  static final class JavaDateGetter extends JdbcValueGetter<java.util.Date> {
     @Override
     @Nullable
     java.util.Date getValue(@NotNull final ResultSet rset, final int index)  throws SQLException {
@@ -332,7 +335,7 @@ public final class ValueGetters {
   }
 
 
-  static final class DateGetter extends ValueGetter<java.sql.Date> {
+  static final class DateGetter extends JdbcValueGetter<java.sql.Date> {
     @Override
     @Nullable
     java.sql.Date getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
@@ -344,10 +347,10 @@ public final class ValueGetters {
   }
 
 
-  static final class TimestampGetter extends ValueGetter<java.sql.Timestamp> {
+  static final class TimestampGetter extends JdbcValueGetter<Timestamp> {
     @Override
     @Nullable
-    java.sql.Timestamp getValue(@NotNull final ResultSet rset, final int index)  throws SQLException {
+    Timestamp getValue(@NotNull final ResultSet rset, final int index)  throws SQLException {
       return rset.getTimestamp(index);
     }
 
@@ -356,7 +359,7 @@ public final class ValueGetters {
   }
 
 
-  static final class TimeGetter extends ValueGetter<java.sql.Time> {
+  static final class TimeGetter extends JdbcValueGetter<java.sql.Time> {
     @Override
     @Nullable
     java.sql.Time getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
@@ -369,7 +372,7 @@ public final class ValueGetters {
 
 
 
-  static final class ObjectGetter extends ValueGetter<Object> {
+  static final class ObjectGetter extends JdbcValueGetter<Object> {
     @Override
     @Nullable
     Object getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
@@ -381,7 +384,7 @@ public final class ValueGetters {
   }
 
 
-  static final class DumbNullGetter extends ValueGetter<Object> {
+  static final class DumbNullGetter extends JdbcValueGetter<Object> {
     @Nullable
     @Override
     Object getValue(@NotNull final ResultSet rset, final int index) {

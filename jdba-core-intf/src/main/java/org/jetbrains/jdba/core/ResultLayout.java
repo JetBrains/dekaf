@@ -14,7 +14,7 @@ public final class ResultLayout<T> implements Serializable {
   //// INNER DECLARATIONS \\\\
 
   public enum Kind {
-    SINGLE,
+    SINGLE_ROW,
     ARRAY,
     LIST,
     SET,

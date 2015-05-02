@@ -12,22 +12,36 @@ import java.util.Arrays;
  */
 public final class RowLayout<R> implements Serializable {
 
-  public final boolean portable;
+  public enum Kind {
+    ONE_VALUE,
+    ARRAY,
+    CLASS_BY_POSITIONS,
+    CLASS_BY_NAMES
+  }
+
+  @NotNull
+  public final Kind kind;
 
   @NotNull
   public final Class<R> rowClass;
 
   @NotNull
+  public final Class commonComponentClass;
+
+  @NotNull
   public final Class[] componentClasses;
 
 
-  RowLayout(final boolean portable,
+  RowLayout(@NotNull final Kind kind,
             @NotNull final Class<R> rowClass,
+            @NotNull final Class commonComponentClass,
             @NotNull final Class... componentClasses) {
-    this.portable = portable;
+    this.kind = kind;
     this.rowClass = rowClass;
+    this.commonComponentClass = commonComponentClass;
     this.componentClasses = componentClasses;
   }
+
 
 
   @Override
@@ -35,9 +49,11 @@ public final class RowLayout<R> implements Serializable {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    RowLayout rowLayout = (RowLayout) o;
+    RowLayout<?> rowLayout = (RowLayout<?>) o;
 
-    if (portable != rowLayout.portable) return false;
+    if (kind != rowLayout.kind) return false;
+    if (!rowClass.equals(rowLayout.rowClass)) return false;
+    if (!commonComponentClass.equals(rowLayout.commonComponentClass)) return false;
     // Probably incorrect - comparing Object[] arrays with Arrays.equals
     return Arrays.equals(componentClasses, rowLayout.componentClasses);
 
@@ -45,6 +61,10 @@ public final class RowLayout<R> implements Serializable {
 
   @Override
   public int hashCode() {
-    return Arrays.hashCode(componentClasses);
+    int result = kind.hashCode();
+    result = 31 * result + rowClass.hashCode();
+    result = 31 * result + commonComponentClass.hashCode();
+    result = 31 * result + Arrays.hashCode(componentClasses);
+    return result;
   }
 }
