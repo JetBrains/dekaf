@@ -134,6 +134,18 @@ public class JdbcInterCursor<R> implements DBInterCursor<R> {
       case ARRAY:
         collector = JdbcRowsCollectors.createArrayCollector(fetcher);
         break;
+      case ARRAY_OF_PRIMITIVES:
+        Class<?> componentClass = resultLayout.row.commonComponentClass;
+        if (componentClass == int.class) {
+          collector = JdbcRowsCollectors.createArrayOfIntsCollector(resultLayout.initialCapacity);
+        }
+        else if (componentClass == long.class) {
+          collector = JdbcRowsCollectors.createArrayOfLongsCollector(resultLayout.initialCapacity);
+        }
+        else {
+          throw new DBPreparingException("Primiver array of "+componentClass.getName()+" is not supported");
+        }
+        break;
       case LIST:
         collector = JdbcRowsCollectors.createListCollector(fetcher);
         break;

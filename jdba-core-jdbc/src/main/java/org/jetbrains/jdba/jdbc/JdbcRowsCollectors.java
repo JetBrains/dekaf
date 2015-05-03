@@ -6,6 +6,7 @@ import java.lang.reflect.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -22,6 +23,14 @@ public class JdbcRowsCollectors {
 
   public static <R> ArrayCollector<R> createArrayCollector(final JdbcRowFetcher<R> fetcher) {
     return new ArrayCollector<R>(fetcher);
+  }
+
+  public static ArrayOfIntsCollector createArrayOfIntsCollector(int initialCapacity) {
+    return new ArrayOfIntsCollector(initialCapacity);
+  }
+
+  public static ArrayOfLongsCollector createArrayOfLongsCollector(int initialCapacity) {
+    return new ArrayOfLongsCollector(initialCapacity);
   }
 
   public static <R> ListCollector<R> createListCollector(final JdbcRowFetcher<R> fetcher) {
@@ -79,6 +88,86 @@ public class JdbcRowsCollectors {
       else {
         //noinspection unchecked
         array = (R[]) new Object[0];
+      }
+
+      return array;
+    }
+  }
+
+
+  protected static class ArrayOfIntsCollector extends JdbcRowsCollector<int[]> {
+
+    private final int initialCapacity;
+
+    private ArrayOfIntsCollector(final int initialCapacity) {
+      this.initialCapacity = initialCapacity;
+    }
+
+    @Override
+    protected int[] collectRows(@NotNull final ResultSet rset, final int limit)
+            throws SQLException
+    {
+      int k = 0;
+      int[] array = new int[initialCapacity];
+      int len = array.length;
+
+      while (hasMoreRows && k < limit) {
+
+        if (k >= len) {
+          int newSize = len <= 4096
+                                ? len << 1
+                                : len + (len >> 1);
+          array = Arrays.copyOf(array, newSize);
+          len = array.length;
+        }
+
+        int value = rset.getInt(1);
+        array[k++] = value;
+        hasMoreRows = rset.next();
+      }
+
+      if (k != array.length) {
+        array = Arrays.copyOf(array, k);
+      }
+
+      return array;
+    }
+  }
+
+
+  protected static class ArrayOfLongsCollector extends JdbcRowsCollector<long[]> {
+
+    private final int initialCapacity;
+
+    private ArrayOfLongsCollector(final int initialCapacity) {
+      this.initialCapacity = initialCapacity;
+    }
+
+    @Override
+    protected long[] collectRows(@NotNull final ResultSet rset, final int limit)
+            throws SQLException
+    {
+      int k = 0;
+      long[] array = new long[initialCapacity];
+      int len = array.length;
+
+      while (hasMoreRows && k < limit) {
+
+        if (k >= len) {
+          int newSize = len <= 4096
+                                ? len << 1
+                                : len + (len >> 1);
+          array = Arrays.copyOf(array, newSize);
+          len = array.length;
+        }
+
+        long value = rset.getLong(1);
+        array[k++] = value;
+        hasMoreRows = rset.next();
+      }
+
+      if (k != array.length) {
+        array = Arrays.copyOf(array, k);
       }
 
       return array;

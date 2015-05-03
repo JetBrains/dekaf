@@ -51,6 +51,14 @@ public abstract class Layouts {
     return new ResultLayout<V[]>(ResultLayout.Kind.ARRAY, false, oneOf(valueClass));
   }
 
+  public static ResultLayout<int[]> columnOfInts(int initialCapacity) {
+    return new ResultLayout<int[]>(ResultLayout.Kind.ARRAY_OF_PRIMITIVES, false, oneOf(int.class), initialCapacity);
+  }
+
+  public static ResultLayout<long[]> columnOfLongs(int initialCapacity) {
+    return new ResultLayout<long[]>(ResultLayout.Kind.ARRAY_OF_PRIMITIVES, false, oneOf(long.class), initialCapacity);
+  }
+
   public static <R> ResultLayout<R[]> arrayOf(@NotNull final RowLayout<R> rowLayout) {
     return new ResultLayout<R[]>(ResultLayout.Kind.ARRAY, false, rowLayout);
   }

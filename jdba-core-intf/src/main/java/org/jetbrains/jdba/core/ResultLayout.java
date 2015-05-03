@@ -16,6 +16,7 @@ public final class ResultLayout<T> implements Serializable {
   public enum Kind {
     SINGLE_ROW,
     ARRAY,
+    ARRAY_OF_PRIMITIVES,
     LIST,
     SET,
     MAP
@@ -31,6 +32,7 @@ public final class ResultLayout<T> implements Serializable {
   @NotNull
   public final RowLayout<?> row;
 
+  public final int initialCapacity;
 
 
   //// CONSTRUCTORS \\\\
@@ -39,7 +41,16 @@ public final class ResultLayout<T> implements Serializable {
     this.kind = kind;
     this.sorted = sorted;
     this.row = row;
+    this.initialCapacity = 1024;
   }
 
-
+  ResultLayout(@NotNull final Kind kind,
+                       final boolean sorted,
+                       @NotNull final RowLayout<?> row,
+                       int initialCapacity) {
+    this.kind = kind;
+    this.sorted = sorted;
+    this.row = row;
+    this.initialCapacity = initialCapacity;
+  }
 }
