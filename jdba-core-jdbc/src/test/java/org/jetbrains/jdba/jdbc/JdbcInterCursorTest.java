@@ -1,7 +1,10 @@
 package org.jetbrains.jdba.jdbc;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jdba.core.Layouts;
 import org.junit.Test;
+
+import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jetbrains.jdba.core.Layouts.*;
@@ -115,8 +118,108 @@ public class JdbcInterCursorTest extends BaseHyperSonicCase {
   }
 
 
+  @Test
+  public void query_number_basic() {
+    final String[] createTable = new String[]{
+           "create table basic_numbers_table (B tinyint, S smallint, I integer, L bigint)",
+           "insert into basic_numbers_table values (10, 1000, 1000000, 1000000000000)"
+    };
+
+    final String query = "select * from basic_numbers_table";
+
+    JdbcInterSession session = openSession();
+    performStatements(session, createTable);
+
+    JdbcInterSeance seance = session.openSeance(query, null);
+    seance.execute();
+    JdbcInterCursor<Number[]> cursor =
+            seance.openDefaultCursor(Layouts.rowOf(arrayOf(4, Number.class)));
+    Number[] row = cursor.fetch();
+    seance.close();
+
+    assertThat(row).isNotNull()
+                   .hasSize(4);
+    assertThat(row[0]).isInstanceOf(Byte.class).isEqualTo((byte) 10);
+    assertThat(row[1]).isInstanceOf(Short.class).isEqualTo((short) 1000);
+    assertThat(row[2]).isInstanceOf(Integer.class).isEqualTo(1000000);
+    assertThat(row[3]).isInstanceOf(Long.class).isEqualTo(1000000000000L);
+  }
+
+
+  @Test
+  public void query_floats() {
+    final String[] createTable = new String[]{
+           "create table float_numbers_table (F float, D double, R real)",
+           "insert into float_numbers_table values (3.1415, 2.718281828, 26.74)"
+    };
+
+    final String query = "select * from float_numbers_table";
+
+    JdbcInterSession session = openSession();
+    performStatements(session, createTable);
+
+    JdbcInterSeance seance = session.openSeance(query, null);
+    seance.execute();
+    JdbcInterCursor<Object[]> cursor =
+            seance.openDefaultCursor(Layouts.rowOf(arrayOf(Float.class, Double.class, Number.class)));
+    Object[] row = cursor.fetch();
+    seance.close();
+
+    assertThat(row).isNotNull()
+                   .hasSize(3);
+    assertThat(row[0]).isInstanceOf(Float.class).isEqualTo(3.1415f);
+    assertThat(row[1]).isInstanceOf(Double.class).isEqualTo(2.718281828d);
+    assertThat(row[2]).isInstanceOfAny(Float.class, Double.class);
+  }
+
+
+  @Test
+  public void query_decimals() {
+    final String[] createTable = new String[]{
+           "create table decimal_numbers_table (D1 decimal(24), D2 decimal(36,6))",
+           "insert into decimal_numbers_table values (123456781234567812345678, 123456789012345678901234567890.666666)"
+    };
+
+    final String query = "select * from decimal_numbers_table";
+
+    JdbcInterSession session = openSession();
+    performStatements(session, createTable);
+
+    JdbcInterSeance seance = session.openSeance(query, null);
+    seance.execute();
+    JdbcInterCursor<BigDecimal[]> cursor =
+            seance.openDefaultCursor(Layouts.rowOf(arrayOf(2, BigDecimal.class)));
+    BigDecimal[] row = cursor.fetch();
+    seance.close();
+
+    assertThat(row).isNotNull()
+                   .hasSize(2);
+    assertThat(row[0]).isInstanceOf(BigDecimal.class).isEqualTo(new BigDecimal("123456781234567812345678"));
+    assertThat(row[1]).isInstanceOf(BigDecimal.class).isEqualTo(new BigDecimal("123456789012345678901234567890.666666"));
+  }
+
+
+  private void performStatement(final JdbcInterSession session, final String statementText) {
+    JdbcInterSeance seance =
+            session.openSeance(statementText, null);
+    try {
+      seance.execute();
+    }
+    finally {
+      seance.close();
+    }
+  }
+
+  private void performStatements(final JdbcInterSession session, final String... statementTexts) {
+    for (String statementText : statementTexts) {
+      performStatement(session, statementText);
+    }
+  }
+
+
   @NotNull
-  private JdbcInterSeance query(final String queryText) {JdbcInterSession session = openSession();
+  private JdbcInterSeance query(final String queryText) {
+    JdbcInterSession session = openSession();
     JdbcInterSeance seance = session.openSeance(queryText, null);
     seance.execute();
     return seance;

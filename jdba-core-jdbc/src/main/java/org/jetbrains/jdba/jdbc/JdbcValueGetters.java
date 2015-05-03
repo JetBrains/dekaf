@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.core.exceptions.DBPreparingException;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -77,6 +78,7 @@ public final class JdbcValueGetters {
     NORMAL_GETTERS.put(Float.class, FloatGetter.INSTANCE);
     NORMAL_GETTERS.put(double.class, DoubleGetter.INSTANCE);
     NORMAL_GETTERS.put(Double.class, DoubleGetter.INSTANCE);
+    NORMAL_GETTERS.put(BigDecimal.class, BigDecimalGetter.INSTANCE);
     NORMAL_GETTERS.put(String.class, StringGetter.INSTANCE);
     NORMAL_GETTERS.put(char.class, CharGetter.INSTANCE);
     NORMAL_GETTERS.put(Character.class, CharGetter.INSTANCE);
@@ -95,6 +97,7 @@ public final class JdbcValueGetters {
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, Short.class), BoolShortGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, int.class), BoolIntGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, Integer.class), BoolIntGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, Number.class), BoolByteGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BIT, boolean.class), BoolBoolGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BIT, Boolean.class), BoolBoolGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BIT, byte.class), BoolByteGetter.INSTANCE);
@@ -103,12 +106,20 @@ public final class JdbcValueGetters {
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BIT, Short.class), BoolShortGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BIT, int.class), BoolIntGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BIT, Integer.class), BoolIntGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BIT, Number.class), BoolByteGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.TINYINT, boolean.class), IntBoolGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.TINYINT, Boolean.class), IntBoolGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.TINYINT, Number.class), ByteGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.SMALLINT, boolean.class), IntBoolGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.SMALLINT, Boolean.class), IntBoolGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.SMALLINT, Number.class), ShortGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.INTEGER, boolean.class), IntBoolGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.INTEGER, Boolean.class), IntBoolGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.INTEGER, Number.class), IntGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BIGINT, Number.class), LongGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.FLOAT, Number.class), FloatGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.DOUBLE, Number.class), DoubleGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.DECIMAL, Number.class), BigDecimalGetter.INSTANCE);
   }
 
 
@@ -288,6 +299,19 @@ public final class JdbcValueGetters {
 
 
     final static DoubleGetter INSTANCE = new DoubleGetter();
+  }
+
+
+
+  static final class BigDecimalGetter extends JdbcValueGetter<BigDecimal> {
+    @Override
+    @Nullable
+    BigDecimal getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
+      return rset.getBigDecimal(index);
+    }
+
+
+    final static BigDecimalGetter INSTANCE = new BigDecimalGetter();
   }
 
 
