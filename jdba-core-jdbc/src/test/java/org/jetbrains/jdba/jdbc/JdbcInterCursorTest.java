@@ -11,7 +11,7 @@ public class JdbcInterCursorTest extends BaseHyperSonicCase {
 
 
   @Test
-  public void query_single_int() {
+  public void query_single_Integer() {
     String queryText = "select 123 from information_schema.schemata limit 1";
     JdbcInterSession session = openSession();
     JdbcInterSeance seance = session.openSeance(queryText, null);
@@ -24,8 +24,9 @@ public class JdbcInterCursorTest extends BaseHyperSonicCase {
     assertThat(cursor.isOpened()).isFalse();
   }
 
+
   @Test
-  public void query_single_row_array_of_int() {
+  public void query_single_row_array_of_Integers() {
     String queryText = "select 123, 456, 789 from information_schema.schemata limit 1";
     JdbcInterSession session = openSession();
     JdbcInterSeance seance = session.openSeance(queryText, null);
@@ -40,7 +41,7 @@ public class JdbcInterCursorTest extends BaseHyperSonicCase {
 
 
   @Test
-  public void query_one_column_of_int() {
+  public void query_one_column_of_Integers() {
     String queryText =
             "select min(123) from information_schema.schemata \n" +
             "union all                                        \n" +
@@ -61,7 +62,7 @@ public class JdbcInterCursorTest extends BaseHyperSonicCase {
 
 
   @Test
-  public void query_matrix_of_int() {
+  public void query_matrix_of_Integers() {
     String queryText =
             "select min(111), min(222), min(333) from information_schema.schemata \n" +
             "union all                                                            \n" +
