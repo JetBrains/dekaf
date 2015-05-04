@@ -5,6 +5,7 @@ import org.jetbrains.jdba.core.Layouts;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jetbrains.jdba.core.Layouts.*;
@@ -120,7 +121,7 @@ public class JdbcInterCursorTest extends BaseHyperSonicCase {
 
   @Test
   public void query_number_basic() {
-    final String[] createTable = new String[]{
+    final String[] createTable = new String[] {
            "create table basic_numbers_table (B tinyint, S smallint, I integer, L bigint)",
            "insert into basic_numbers_table values (10, 1000, 1000000, 1000000000000)"
     };
@@ -148,7 +149,7 @@ public class JdbcInterCursorTest extends BaseHyperSonicCase {
 
   @Test
   public void query_floats() {
-    final String[] createTable = new String[]{
+    final String[] createTable = new String[] {
            "create table float_numbers_table (F float, D double, R real)",
            "insert into float_numbers_table values (3.1415, 2.718281828, 26.74)"
     };
@@ -175,7 +176,7 @@ public class JdbcInterCursorTest extends BaseHyperSonicCase {
 
   @Test
   public void query_decimals() {
-    final String[] createTable = new String[]{
+    final String[] createTable = new String[] {
            "create table decimal_numbers_table (D1 decimal(24), D2 decimal(36,6))",
            "insert into decimal_numbers_table values (123456781234567812345678, 123456789012345678901234567890.666666)"
     };
@@ -196,6 +197,27 @@ public class JdbcInterCursorTest extends BaseHyperSonicCase {
                    .hasSize(2);
     assertThat(row[0]).isInstanceOf(BigDecimal.class).isEqualTo(new BigDecimal("123456781234567812345678"));
     assertThat(row[1]).isInstanceOf(BigDecimal.class).isEqualTo(new BigDecimal("123456789012345678901234567890.666666"));
+  }
+
+
+  @Test
+  public void query_hash_map() {
+    JdbcInterSession session = openSession();
+    performStatements(session,
+                      "create table if not exists map_1 (K integer, V bigint)",
+                      "insert into map_1 values (11,10000001), (22,20000002), (33,30000003)"
+    );
+
+    JdbcInterSeance seance = session.openSeance("select * from map_1", null);
+    seance.execute();
+    JdbcInterCursor<Map<Integer, Long>> cursor =
+            seance.openDefaultCursor(Layouts.hashMapOf(Integer.class, Long.class));
+    Map<Integer, Long> map = cursor.fetch();
+
+    assertThat(map).containsEntry(11, 10000001L)
+                   .containsEntry(22, 20000002L)
+                   .containsEntry(33, 30000003L)
+                   .hasSize(3);
   }
 
 

@@ -143,11 +143,20 @@ public class JdbcInterCursor<R> implements DBInterCursor<R> {
           collector = JdbcRowsCollectors.createArrayOfLongsCollector(resultLayout.initialCapacity);
         }
         else {
-          throw new DBPreparingException("Primiver array of "+componentClass.getName()+" is not supported");
+          throw new DBPreparingException("Primitive array of "+componentClass.getName()+" is not supported");
         }
         break;
       case LIST:
         collector = JdbcRowsCollectors.createListCollector(fetcher);
+        break;
+      case MAP:
+        if (resultLayout.sorted) {
+          collector = JdbcRowsCollectors.createHashMapCollector(getters[0], getters[1]);
+        }
+        else {
+          JdbcValueGetter keyGetter = getters[0];
+          collector = JdbcRowsCollectors.createSortedMapCollector(keyGetter, getters[1]);
+        }
         break;
       default:
         throw new DBPreparingException(format("Unknown how to handle the result layout %s", resultLayout.kind.toString()));

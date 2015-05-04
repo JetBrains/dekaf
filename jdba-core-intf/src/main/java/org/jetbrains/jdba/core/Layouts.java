@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 
 
 
@@ -69,6 +70,10 @@ public abstract class Layouts {
 
   public static <K,V> ResultLayout<Map<K,V>> hashMapOf(@NotNull final Class<K> keyClass, @NotNull final Class<V> valueClass) {
     return new ResultLayout<Map<K,V>>(ResultLayout.Kind.MAP, false, Layouts.arrayOf(keyClass, valueClass));
+  }
+
+  public static <K extends Comparable<K>, V> ResultLayout<SortedMap<K,V>> sortedMapOf(@NotNull final Class<K> keyClass, @NotNull final Class<V> valueClass) {
+    return new ResultLayout<SortedMap<K,V>>(ResultLayout.Kind.MAP, true, Layouts.arrayOf(keyClass, valueClass));
   }
 
 

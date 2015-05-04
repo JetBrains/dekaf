@@ -5,9 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 
@@ -37,6 +35,16 @@ public class JdbcRowsCollectors {
     return new ListCollector<R>(fetcher);
   }
 
+  public static <K,V> HashMapCollector<K,V> createHashMapCollector(final JdbcValueGetter<K> keyGetter,
+                                                                   final JdbcValueGetter<V> valueGetter) {
+    return new HashMapCollector<K, V>(keyGetter, valueGetter);
+  }
+
+  public static <K extends Comparable<K>, V> SortedMapCollector<K,V> createSortedMapCollector(
+                                                                final JdbcValueGetter<K> keyGetter,
+                                                                final JdbcValueGetter<V> valueGetter) {
+    return new SortedMapCollector<K, V>(keyGetter, valueGetter);
+  }
 
 
   //// COLLECTORS \\\\
@@ -190,6 +198,60 @@ public class JdbcRowsCollectors {
       while (hasMoreRows && result.size() < limit) {
         R row = fetcher.fetchRow(rset);
         result.add(row);
+        hasMoreRows = rset.next();
+      }
+
+      return result;
+    }
+  }
+
+
+  protected static class HashMapCollector<K,V> extends JdbcRowsCollector<Map<K,V>> {
+
+    private final JdbcValueGetter<K> keyGetter;
+    private final JdbcValueGetter<V> valueGetter;
+
+    private HashMapCollector(final JdbcValueGetter<K> keyGetter,
+                             final JdbcValueGetter<V> valueGetter) {
+      this.keyGetter = keyGetter;
+      this.valueGetter = valueGetter;
+    }
+
+    @Override
+    protected Map<K,V> collectRows(@NotNull final ResultSet rset, final int limit) throws SQLException {
+      Map<K,V> result = new HashMap<K,V>(Math.min(limit, 1000));
+
+      while (hasMoreRows && result.size() < limit) {
+        K k = keyGetter.getValue(rset, 1);
+        V v = valueGetter.getValue(rset, 2);
+        result.put(k, v);
+        hasMoreRows = rset.next();
+      }
+
+      return result;
+    }
+  }
+
+
+  protected static class SortedMapCollector<K extends Comparable<K>, V> extends JdbcRowsCollector<Map<K,V>> {
+
+    private final JdbcValueGetter<K> keyGetter;
+    private final JdbcValueGetter<V> valueGetter;
+
+    private SortedMapCollector(final JdbcValueGetter<K> keyGetter,
+                              final JdbcValueGetter<V> valueGetter) {
+      this.keyGetter = keyGetter;
+      this.valueGetter = valueGetter;
+    }
+
+    @Override
+    protected Map<K,V> collectRows(@NotNull final ResultSet rset, final int limit) throws SQLException {
+      Map<K,V> result = new TreeMap<K,V>();
+
+      while (hasMoreRows && result.size() < limit) {
+        K k = keyGetter.getValue(rset, 1);
+        V v = valueGetter.getValue(rset, 2);
+        result.put(k, v);
         hasMoreRows = rset.next();
       }
 
