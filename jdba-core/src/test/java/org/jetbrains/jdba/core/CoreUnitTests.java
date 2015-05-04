@@ -1,6 +1,5 @@
 package org.jetbrains.jdba.core;
 
-import org.jetbrains.jdba.jdbc.pooling.ConnectionPoolTest;
 import org.jetbrains.jdba.sql.*;
 import org.jetbrains.jdba.utils.NumberUtilsTest;
 import org.jetbrains.jdba.utils.StringsTest;
@@ -30,7 +29,6 @@ import testing.categories.UnitTest;
                             SQLScriptTest.class,
                             // CORE
                             ValueGetterTest.class,
-                            StructRowFetcherTest.class,
-                            ConnectionPoolTest.class
+                            StructRowFetcherTest.class
 })
 public class CoreUnitTests {}

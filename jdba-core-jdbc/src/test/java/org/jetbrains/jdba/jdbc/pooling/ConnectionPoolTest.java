@@ -1,10 +1,10 @@
 package org.jetbrains.jdba.jdbc.pooling;
 
+import org.jetbrains.jdba.junitft.ThreadTestUtils;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-import org.jetbrains.jdba.junitft.ThreadTestUtils;
 
 import java.sql.Connection;
 import java.sql.SQLException;

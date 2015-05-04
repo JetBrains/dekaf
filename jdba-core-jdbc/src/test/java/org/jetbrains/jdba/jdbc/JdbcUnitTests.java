@@ -1,5 +1,6 @@
 package org.jetbrains.jdba.jdbc;
 
+import org.jetbrains.jdba.jdbc.pooling.ConnectionPoolTest;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -13,6 +14,7 @@ import testing.categories.UnitTest;
 @Category(UnitTest.class)
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+                            ConnectionPoolTest.class,
                             JdbcInterFacadeTest.class,
                             JdbcInterSessionTest.class,
                             JdbcInterSeanceSimpleTest.class,
