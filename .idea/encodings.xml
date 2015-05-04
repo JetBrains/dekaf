@@ -5,6 +5,8 @@
     <file url="file://$PROJECT_DIR$/fine-junit" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jdba-common-int" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jdba-core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jdba-core-intf" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jdba-core-jdbc" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jdba-mssql" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jdba-mysql" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jdba-oracle" charset="UTF-8" />

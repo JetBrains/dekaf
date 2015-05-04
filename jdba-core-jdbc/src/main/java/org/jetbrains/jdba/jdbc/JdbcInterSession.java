@@ -18,6 +18,9 @@ import java.sql.SQLException;
  */
 public class JdbcInterSession implements DBInterSession {
 
+  @Nullable
+  private final JdbcInterFacade myFacade;
+
   @NotNull
   private final DBErrorRecognizer myErrorRecognizer;
 
@@ -31,9 +34,11 @@ public class JdbcInterSession implements DBInterSession {
   private boolean myClosed;
 
 
-  protected JdbcInterSession(final @NotNull DBErrorRecognizer errorRecognizer,
+  protected JdbcInterSession(@Nullable final JdbcInterFacade facade,
+                             @NotNull final DBErrorRecognizer errorRecognizer,
                              @NotNull final Connection connection,
                              final boolean ownConnection) {
+    myFacade = facade;
     myErrorRecognizer = errorRecognizer;
     myConnection = connection;
     myOwnConnection = ownConnection;
@@ -129,6 +134,10 @@ public class JdbcInterSession implements DBInterSession {
     }
 
     myClosed = true;
+
+    if (myFacade != null) {
+      myFacade.sessionIsClosed(this, myConnection);
+    }
 
     if (myOwnConnection) {
       try {

@@ -176,7 +176,7 @@ public class ConnectionPool {
       sleep(11);
       //noinspection MismatchedQueryAndUpdateOfCollection
       final Collection<Connection> toClose = new ArrayList<Connection>(myConnectionsLimit);
-      myFreeConnections.drainTo(toClose);
+      myFreeConnections.drainTo(toClose, 100);
       myAllConnections.removeAll(toClose);
       for (Connection connection : toClose) closeConnection(connection);
       toClose.clear();

@@ -53,7 +53,7 @@ public class BaseHyperSonicCase {
 
   protected JdbcInterSession openSession() {
     Connection connection = obtainConnection();
-    JdbcInterSession session = new JdbcInterSession(ourErrorRecognizer, connection, true);
+    JdbcInterSession session = new JdbcInterSession(null, ourErrorRecognizer, connection, true);
     return session;
   }
 
