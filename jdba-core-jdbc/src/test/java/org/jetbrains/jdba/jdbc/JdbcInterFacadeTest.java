@@ -92,4 +92,37 @@ public class JdbcInterFacadeTest {
     verify(mockConnection, atLeastOnce()).close();
   }
 
+  @Test
+  public void basic_lifecycle_2_parallel() throws SQLException {
+    // mocking
+    DataSource mockDataSource = mock(DataSource.class);
+    Connection mockConnection1 = mock(Connection.class);
+    Connection mockConnection2 = mock(Connection.class);
+    DBErrorRecognizer mockErrorRecognizer = mock(DBErrorRecognizer.class);
+
+    when(mockDataSource.getConnection()).thenReturn(mockConnection1)
+                                        .thenReturn(mockConnection2)
+                                        .thenThrow(new RuntimeException("Too many connections"));
+
+    // testing
+    JdbcInterFacade facade = new JdbcInterFacade(mockDataSource, 2, mockErrorRecognizer);
+    facade.connect();
+
+    final JdbcInterSession session1 = facade.openSession();
+    final JdbcInterSession session2 = facade.openSession();
+
+    assertThat(session2.getConnection()).isNotSameAs(session1.getConnection());
+
+    assertThat(facade.countOpenedConnections()).isEqualTo(2);
+    assertThat(facade.countOpenedSessions()).isEqualTo(2);
+
+    session1.close();
+    session2.close();
+
+    assertThat(facade.countOpenedSessions()).isZero();
+
+    facade.disconnect();
+  }
+
+
 }
