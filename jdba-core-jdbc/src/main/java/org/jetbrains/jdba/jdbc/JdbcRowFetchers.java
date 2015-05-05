@@ -21,7 +21,7 @@ public class JdbcRowFetchers {
 
   public static <V> ArrayFetcher<V> createArrayFetcher(final int position,
                                                        final Class<V> commonClass,
-                                                       final JdbcValueGetter<V>[] getters) {
+                                                       final JdbcValueGetter<? extends V>[] getters) {
     return new ArrayFetcher<V>(position, commonClass, getters);
   }
 
@@ -51,12 +51,12 @@ public class JdbcRowFetchers {
 
     private final int position;
     private final Class<V> commonClass;
-    private final JdbcValueGetter<V>[] getters;
+    private final JdbcValueGetter<? extends V>[] getters;
 
 
     private ArrayFetcher(final int position,
                          final Class<V> commonClass,
-                         final JdbcValueGetter<V>[] getters) {
+                         final JdbcValueGetter<? extends V>[] getters) {
       this.position = position;
       this.commonClass = commonClass;
       this.getters = getters;

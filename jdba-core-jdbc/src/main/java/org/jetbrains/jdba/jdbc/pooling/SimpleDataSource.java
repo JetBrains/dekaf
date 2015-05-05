@@ -8,7 +8,9 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import static java.lang.String.format;
 
@@ -103,5 +105,13 @@ public class SimpleDataSource implements DataSource {
   @Override
   public boolean isWrapperFor(@SuppressWarnings("SpellCheckingInspection") final Class<?> iface) throws SQLException {
     return iface.isAssignableFrom(SimpleDataSource.class);
+  }
+
+
+  //// NOT-SUPPORTED STUFF \\\\
+
+  @SuppressWarnings("unused") // it's needed for compilation by 1.7.
+  public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+    throw new SQLFeatureNotSupportedException("The SimpleDataSource.getParentLogger is not supported in JDBA 2.0.");
   }
 }
