@@ -72,7 +72,7 @@ public class JdbcInterFacade implements DBInterFacade {
   @NotNull
   @Override
   public Rdbms rdbms() {
-    return UnknownDB.RDBMS;
+    return UnknownDatabase.RDBMS;
   }
 
 

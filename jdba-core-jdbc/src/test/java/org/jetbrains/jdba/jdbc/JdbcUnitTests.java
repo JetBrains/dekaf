@@ -18,6 +18,7 @@ import testing.categories.UnitTest;
                             JdbcInterFacadeTest.class,
                             JdbcInterSessionTest.class,
                             JdbcInterSeanceSimpleTest.class,
-                            JdbcInterCursorTest.class
+                            JdbcInterCursorTest.class,
+                            UnknownDatabaseServiceProviderTest.class
 })
 public class JdbcUnitTests {}

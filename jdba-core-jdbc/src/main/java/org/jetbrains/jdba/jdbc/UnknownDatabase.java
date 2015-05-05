@@ -9,7 +9,7 @@ import org.jetbrains.jdba.Rdbms;
  *
  * @author Leonid Bushuev from JetBrains
  */
-public abstract class UnknownDB {
+public abstract class UnknownDatabase {
 
   /**
    * Unknown RDBMS marker.
