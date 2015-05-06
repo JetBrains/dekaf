@@ -60,7 +60,7 @@
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
 
-    <!-- JUNIT JARS -->
+    <!-- TESTING STUFF -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
