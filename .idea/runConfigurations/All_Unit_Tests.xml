@@ -23,7 +23,11 @@
       <pattern testClass="org.jetbrains.jdba.oracle.OracleUnitTests" />
       <pattern testClass="org.jetbrains.jdba.microsoft.MicrosoftUnitTests" />
       <pattern testClass="org.jetbrains.jdba.jdbc.JdbcUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.jdbc.OracleJdbcUnitTests" />
     </patterns>
+    <RunnerSettings RunnerId="Profile ">
+      <option name="myExternalizedOptions" value="&#13;&#10;additional-options2=onexit\=snapshot&#13;&#10;" />
+    </RunnerSettings>
     <method />
   </configuration>
 </component>

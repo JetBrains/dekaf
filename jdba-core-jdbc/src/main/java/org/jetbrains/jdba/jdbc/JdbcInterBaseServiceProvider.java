@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.core.DBInterFacade;
 import org.jetbrains.jdba.core.DBInterRdbmsServiceProvider;
+import org.jetbrains.jdba.core.exceptions.DBPreparingException;
 
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -16,6 +17,12 @@ import java.util.Properties;
  * @author Leonid Bushuev from JetBrains
  */
 public abstract class JdbcInterBaseServiceProvider implements DBInterRdbmsServiceProvider {
+
+
+  /**
+   * Unfortunately, JDBC framework doesn't provide constant for this strange text 8-/
+   */
+  private static final String DAMN_JDBC_DRIVER_NOT_REGISTERED_ERROR_STATE = "08001";
 
 
   @Override
@@ -34,6 +41,56 @@ public abstract class JdbcInterBaseServiceProvider implements DBInterRdbmsServic
     }
     catch (SQLException sqle) {
       throw getErrorRecognizer().recognizeError(sqle, "DriverManager.getDriver for: " + connectionString);
+    }
+  }
+
+
+  protected void loadAndRegisterDriverIfNeeded(final String connectionStringExample) {
+    if (!whetherApplicableDriverAlreadyRegistered(connectionStringExample)) {
+      Driver driver = loadDriver();
+      if (driver != null) {
+        registerDriver(driver);
+      }
+    }
+  }
+
+
+  @Nullable
+  abstract Driver loadDriver();
+
+
+  protected boolean whetherApplicableDriverAlreadyRegistered(@NotNull final String connectionString) {
+    try {
+      DriverManager.getDriver(connectionString);
+      return true;
+    }
+    catch (SQLException sqle) {
+      if (!sqle.getSQLState().equals(DAMN_JDBC_DRIVER_NOT_REGISTERED_ERROR_STATE)) {
+        // TODO log it somehow
+      }
+      return false;
+    }
+  }
+
+
+  protected void registerDriver(final Driver driver) {
+    try {
+      DriverManager.registerDriver(driver);
+    }
+    catch (SQLException sqle) {
+      throw new DBPreparingException("Failed to register JDBC Driver: " + sqle.getMessage());
+    }
+  }
+
+
+  protected Class<Driver> getSimpleAccessibleDriverClass(@NotNull final String driverClassName) {
+    Class<Driver> driverClass;
+    try {
+      //noinspection unchecked
+      return (Class<Driver>) Class.forName(driverClassName);
+    }
+    catch (ClassNotFoundException e) {
+      return null;
     }
   }
 

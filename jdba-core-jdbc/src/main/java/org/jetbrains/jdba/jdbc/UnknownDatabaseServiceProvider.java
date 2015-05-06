@@ -1,7 +1,9 @@
 package org.jetbrains.jdba.jdbc;
 
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Rdbms;
 
+import java.sql.Driver;
 import java.util.regex.Pattern;
 
 
@@ -31,6 +33,12 @@ public final class UnknownDatabaseServiceProvider extends JdbcInterBaseServicePr
   @Override
   public byte specificity() {
     return SPECIFICITY_UNSPECIFIC;
+  }
+
+  @Nullable
+  @Override
+  Driver loadDriver() {
+    return null;
   }
 
   @Override
