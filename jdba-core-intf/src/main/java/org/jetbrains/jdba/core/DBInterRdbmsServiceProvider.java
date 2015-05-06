@@ -5,22 +5,42 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Rdbms;
 
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 
 
 /**
- * Provides with services specific for one RDBMS.
+ * Provides with services that are specific for one RDBMS.
  *
  * @author Leonid Bushuev from JetBrains
  */
 public interface DBInterRdbmsServiceProvider {
 
+  //// API \\\\
 
   /**
    * The RDBMS this provider is for.
    * @return the RDBMS marker.
    */
   Rdbms rdbms();
+
+
+  /**
+   * The pattern for connection string that accepts this provider.
+   * @return the pattern.
+   */
+  Pattern connectionStringPattern();
+
+
+  /**
+   * Specificity of this provider — in other words,
+   * how natively this provider supports the database. Lower values means more specific case (lower — better).
+   * @return the specificity.
+   * @see #SPECIFICITY_NATIVE
+   * @see #SPECIFICITY_INTERMEDIATE
+   * @see #SPECIFICITY_UNSPECIFIC
+   */
+  byte specificity();
 
 
   /**
@@ -40,5 +60,14 @@ public interface DBInterRdbmsServiceProvider {
    * @return an instance of error recognizer (usually a singleton instance).
    */
   DBErrorRecognizer getErrorRecognizer();
+
+
+
+  //// CONSTANTS \\\\
+
+  byte SPECIFICITY_NATIVE = 10;
+  byte SPECIFICITY_INTERMEDIATE = 50;
+  byte SPECIFICITY_UNSPECIFIC = 90;
+
 
 }

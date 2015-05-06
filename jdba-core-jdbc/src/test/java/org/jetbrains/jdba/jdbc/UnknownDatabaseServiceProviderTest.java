@@ -1,6 +1,8 @@
 package org.jetbrains.jdba.jdbc;
 
+import org.jetbrains.jdba.assertions.PatternAssert;
 import org.jetbrains.jdba.core.DBInterFacade;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,12 +14,29 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class UnknownDatabaseServiceProviderTest extends BaseHyperSonicCase {
 
+  public static final String HSQL_MEM_CONNECTION_STRING = "jdbc:hsqldb:mem:mymemdb?user=SA";
+
+  private UnknownDatabaseServiceProvider myProvider;
+
+
+  @Before
+  public void setup() {
+    myProvider = UnknownDatabaseServiceProvider.INSTANCE;
+  }
+
+
+  @Test
+  public void accepts_connectionString_HSQL() {
+    PatternAssert.assertThat(myProvider.connectionStringPattern()).fits(HSQL_MEM_CONNECTION_STRING);
+  }
+
+
   @Test
   public void openFacade_for_HSQL() {
-    String connectionString = "jdbc:hsqldb:mem:mymemdb?user=SA";
     final DBInterFacade facade =
-            UnknownDatabaseServiceProvider.INSTANCE.openFacade(connectionString, null, 1);
+            myProvider.openFacade(HSQL_MEM_CONNECTION_STRING, null, 1);
             // we expect no exceptions here
+
     facade.connect();
     assertThat(facade.isConnected()).isTrue();
     facade.disconnect();
