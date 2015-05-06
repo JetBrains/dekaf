@@ -1,9 +1,9 @@
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSortedMap;
+import org.jetbrains.jdba.Postgre;
 import org.jetbrains.jdba.junitft.TestSuiteExecutor;
 import org.jetbrains.jdba.oracle.Oracle;
 import org.jetbrains.jdba.oracle.OracleIntegrationTests;
-import org.jetbrains.jdba.postgre.Postgre;
 import org.jetbrains.jdba.postgre.PostgreIntegrationTests;
 import org.jetbrains.jdba.utils.CaseInsensitiveStringComparator;
 

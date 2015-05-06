@@ -13,6 +13,8 @@
     <file url="file://$PROJECT_DIR$/jdba-oracle-common" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jdba-oracle-jdbc" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jdba-postgre" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jdba-postgre-common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jdba-postgre-jdbc" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jdba-test-db" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/test-pack" charset="UTF-8" />
   </component>

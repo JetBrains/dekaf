@@ -1,6 +1,7 @@
 package org.jetbrains.jdba.postgre;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jdba.Postgre;
 import org.jetbrains.jdba.Rdbms;
 import org.jetbrains.jdba.core.DBServiceFactory;
 import org.jetbrains.jdba.sql.SQL;

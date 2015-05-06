@@ -1,8 +1,4 @@
-package org.jetbrains.jdba.postgre;
-
-import org.jetbrains.jdba.Rdbms;
-
-
+package org.jetbrains.jdba;
 
 /**
  * PostgreSQL declaration class.
