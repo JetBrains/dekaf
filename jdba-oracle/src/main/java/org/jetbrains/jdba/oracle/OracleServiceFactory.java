@@ -1,6 +1,7 @@
 package org.jetbrains.jdba.oracle;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jdba.Oracle;
 import org.jetbrains.jdba.Rdbms;
 import org.jetbrains.jdba.core.DBServiceFactory;
 

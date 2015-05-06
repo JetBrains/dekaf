@@ -1,5 +1,6 @@
 package org.jetbrains.jdba.oracle;
 
+import org.jetbrains.jdba.Oracle;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import testing.categories.ForOracle;
