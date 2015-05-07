@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.core1.DBTransaction;
 import org.jetbrains.jdba.core1.InTransactionNoResult;
 import org.jetbrains.jdba.core1.RowsCollectors;
-import org.jetbrains.jdba.sql.SQLQuery;
+import org.jetbrains.jdba.sql.SqlQuery;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -43,8 +43,8 @@ public class PostgreBitBoolTest extends PostgreIntegrationCase {
   }
 
   private void get_X_as_boolean(final String queryText) {
-    final SQLQuery<Boolean> query =
-            new SQLQuery<Boolean>(queryText, RowsCollectors.oneRow(Boolean.class));
+    final SqlQuery<Boolean> query =
+            new SqlQuery<Boolean>(queryText, RowsCollectors.oneRow(Boolean.class));
 
     db.facade.inTransaction(new InTransactionNoResult() {
       public void run(@NotNull final DBTransaction tran) {
@@ -59,8 +59,8 @@ public class PostgreBitBoolTest extends PostgreIntegrationCase {
   }
 
   private void get_X_as_integer(final String queryText) {
-    final SQLQuery<Integer> query =
-            new SQLQuery<Integer>(queryText, RowsCollectors.oneRow(Integer.class));
+    final SqlQuery<Integer> query =
+            new SqlQuery<Integer>(queryText, RowsCollectors.oneRow(Integer.class));
 
     db.facade.inTransaction(new InTransactionNoResult() {
       public void run(@NotNull final DBTransaction tran) {

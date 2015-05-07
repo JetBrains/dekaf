@@ -3,7 +3,7 @@ package org.jetbrains.jdba.util;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.core1.*;
 import org.jetbrains.jdba.sql.SQL;
-import org.jetbrains.jdba.sql.SQLQuery;
+import org.jetbrains.jdba.sql.SqlQuery;
 
 import static org.jetbrains.jdba.util.Strings.replace;
 
@@ -41,11 +41,11 @@ public abstract class BaseTestUtils {
   public <D> D query(@NotNull final String queryText,
                      @NotNull final DBRowsCollector<D> collector,
                      final Object... params) {
-    SQLQuery<D> query = sql.query(queryText, collector);
+    SqlQuery<D> query = sql.query(queryText, collector);
     return query(query, params);
   }
 
-  public <D> D query(@NotNull final SQLQuery<D> query, final Object... params) {
+  public <D> D query(@NotNull final SqlQuery<D> query, final Object... params) {
     return facade.inTransaction(new InTransaction<D>() {
       @Override
       public D run(@NotNull DBTransaction tran) {

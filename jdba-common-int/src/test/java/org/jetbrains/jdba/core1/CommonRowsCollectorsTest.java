@@ -1,6 +1,6 @@
 package org.jetbrains.jdba.core1;
 
-import org.jetbrains.jdba.sql.SQLQuery;
+import org.jetbrains.jdba.sql.SqlQuery;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -36,7 +36,7 @@ public class CommonRowsCollectorsTest extends CommonIntegrationCase {
   public void oneRow_basic_big() {
     prepareOneRowTable();
 
-    SQLQuery<BasicBigRow> query =
+    SqlQuery<BasicBigRow> query =
       db.sql.query("select * from one_row_table", RowsCollectors.oneRow(BasicBigRow.class));
 
     BasicBigRow row = db.performQuery(query);
@@ -50,7 +50,7 @@ public class CommonRowsCollectorsTest extends CommonIntegrationCase {
   public void oneRow_basic_small() {
     prepareOneRowTable();
 
-    SQLQuery<BasicSmallRow> query =
+    SqlQuery<BasicSmallRow> query =
       db.sql.query("select * from one_row_table", RowsCollectors.oneRow(BasicSmallRow.class));
 
     BasicSmallRow row = db.performQuery(query);
@@ -64,7 +64,7 @@ public class CommonRowsCollectorsTest extends CommonIntegrationCase {
   public void rowsExist_basic() {
     prepareOneRowTable();
 
-    SQLQuery<Boolean> query =
+    SqlQuery<Boolean> query =
       db.sql.query("select 1 from one_row_table", RowsCollectors.rowsExist());
 
     // exactly one row
@@ -112,7 +112,7 @@ public class CommonRowsCollectorsTest extends CommonIntegrationCase {
     db.performCommandInTran("insert into map_table values (3, 'Drei')");
     db.performCommandInTran("insert into map_table values (4, 'Vier')");
 
-    SQLQuery<Map<Integer,String>> query =
+    SqlQuery<Map<Integer,String>> query =
       db.sql.query("select * from map_table", RowsCollectors.map(Integer.class, String.class));
     Map<Integer,String> map = db.performQuery(query);
 

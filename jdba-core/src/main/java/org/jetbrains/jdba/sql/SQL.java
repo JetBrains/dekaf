@@ -114,17 +114,17 @@ public class SQL implements Serializable, Cloneable {
 
 
   @NotNull
-  public SQLCommand command(@NotNull final String sourceText) {
+  public SqlCommand command(@NotNull final String sourceText) {
     String text = preprocessOneStatementText(sourceText);
-    return new SQLCommand(text);
+    return new SqlCommand(text);
   }
 
 
   @NotNull
-  public <S> SQLQuery<S> query(@NotNull final String sourceText,
+  public <S> SqlQuery<S> query(@NotNull final String sourceText,
                                @NotNull final DBRowsCollector<S> collector) {
     String text = preprocessOneStatementText(sourceText);
-    return new SQLQuery<S>(text, collector);
+    return new SqlQuery<S>(text, collector);
   }
 
 
@@ -162,8 +162,8 @@ public class SQL implements Serializable, Cloneable {
    * @return SQL script.
    */
   @NotNull
-  public SQLScript script(@NotNull final String sourceText) {
-    final SQLScriptBuilder scriptBuilder = scriptBuilder();
+  public SqlScript script(@NotNull final String sourceText) {
+    final SqlScriptBuilder scriptBuilder = scriptBuilder();
     String text = substituteReferredText(sourceText);
     scriptBuilder.parse(text);
     return scriptBuilder.build();
@@ -171,28 +171,28 @@ public class SQL implements Serializable, Cloneable {
 
 
   @NotNull
-  public SQLScriptBuilder scriptBuilder() {
-    return new SQLScriptBuilder();
+  public SqlScriptBuilder scriptBuilder() {
+    return new SqlScriptBuilder();
   }
 
   @NotNull
-  protected SQLScript instantiateSQLScript(@NotNull final ImmutableList<SQLCommand> commands) {
-    return new SQLScript(commands);
-  }
-
-
-  @NotNull
-  protected SQLCommand instantiateCommand(final int begin, @NotNull final String sourceText) {
-    return new SQLCommand(begin, sourceText);
+  protected SqlScript instantiateSQLScript(@NotNull final ImmutableList<SqlCommand> commands) {
+    return new SqlScript(commands);
   }
 
 
   @NotNull
-  protected SQLScript getEmptyScript() {
+  protected SqlCommand instantiateCommand(final int begin, @NotNull final String sourceText) {
+    return new SqlCommand(begin, sourceText);
+  }
+
+
+  @NotNull
+  protected SqlScript getEmptyScript() {
     return EMPTY_SCRIPT;
   }
 
-  static final SQLScript EMPTY_SCRIPT = new SQLScript(ImmutableList.<SQLCommand>of());
+  static final SqlScript EMPTY_SCRIPT = new SqlScript(ImmutableList.<SqlCommand>of());
 
 
 

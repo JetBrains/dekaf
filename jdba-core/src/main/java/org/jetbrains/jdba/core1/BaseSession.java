@@ -2,11 +2,12 @@ package org.jetbrains.jdba.core1;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jdba.core.DBQueryRunner;
 import org.jetbrains.jdba.core.exceptions.DBException;
 import org.jetbrains.jdba.core.exceptions.UnhandledTypeException;
-import org.jetbrains.jdba.sql.SQLCommand;
-import org.jetbrains.jdba.sql.SQLQuery;
-import org.jetbrains.jdba.sql.SQLScript;
+import org.jetbrains.jdba.sql.SqlCommand;
+import org.jetbrains.jdba.sql.SqlQuery;
+import org.jetbrains.jdba.sql.SqlScript;
 
 import java.sql.*;
 
@@ -165,7 +166,7 @@ public class BaseSession implements DBSession {
 
 
   @Override
-  public <S> DBQueryRunner<S> query(@NotNull final SQLQuery<S> query) {
+  public <S> DBQueryRunner<S> query(@NotNull final SqlQuery<S> query) {
     return new BaseQueryRunner<S>(this, query);
   }
 
@@ -213,7 +214,7 @@ public class BaseSession implements DBSession {
 
 
   @Override
-  public final BaseCommandRunner command(@NotNull final SQLCommand command) {
+  public final BaseCommandRunner command(@NotNull final SqlCommand command) {
     return command(command.getSourceText(), command.getLineOffset());
   }
 
@@ -318,7 +319,7 @@ public class BaseSession implements DBSession {
 
 
   @Override
-  public BaseScriptRunner script(@NotNull SQLScript script) {
+  public BaseScriptRunner script(@NotNull SqlScript script) {
     return new BaseScriptRunner(this, script);
   }
 

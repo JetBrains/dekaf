@@ -6,7 +6,7 @@ import org.jetbrains.jdba.core1.DBSession;
 import org.jetbrains.jdba.core1.InSessionNoResult;
 import org.jetbrains.jdba.core1.TestEnvironment;
 import org.jetbrains.jdba.jdbc.JdbcDBProvider;
-import org.jetbrains.jdba.sql.SQLCommand;
+import org.jetbrains.jdba.sql.SqlCommand;
 import org.jetbrains.jdba.util.BaseTestUtils;
 
 
@@ -74,7 +74,7 @@ public class TestDB2 {
 
 
   private static void zapOracleSchema() {
-    final SQLCommand zapCommand = FACADE.sql().command("##ora/zap-schema");
+    final SqlCommand zapCommand = FACADE.sql().command("##ora/zap-schema");
     FACADE.inSession(new InSessionNoResult() {
       @Override
       public void run(@NotNull DBSession session) {
@@ -88,11 +88,11 @@ public class TestDB2 {
 
   private static void zapMicrosoftSchema() {
 
-    final SQLCommand dropProcedures = FACADE.sql().command("##mssql/zap-schema:dropProcedures");
-    final SQLCommand dropViews = FACADE.sql().command("##mssql/zap-schema:dropViews");
-    final SQLCommand dropFunctions = FACADE.sql().command("##mssql/zap-schema:dropFunctions");
-    final SQLCommand dropForeignKeys = FACADE.sql().command("##mssql/zap-schema:dropForeignKeys");
-    final SQLCommand dropTables = FACADE.sql().command("##mssql/zap-schema:dropTables");
+    final SqlCommand dropProcedures = FACADE.sql().command("##mssql/zap-schema:dropProcedures");
+    final SqlCommand dropViews = FACADE.sql().command("##mssql/zap-schema:dropViews");
+    final SqlCommand dropFunctions = FACADE.sql().command("##mssql/zap-schema:dropFunctions");
+    final SqlCommand dropForeignKeys = FACADE.sql().command("##mssql/zap-schema:dropForeignKeys");
+    final SqlCommand dropTables = FACADE.sql().command("##mssql/zap-schema:dropTables");
 
     FACADE.inSession(new InSessionNoResult() {
       @Override

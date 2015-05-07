@@ -14,29 +14,29 @@ import static org.jetbrains.jdba.util.Strings.rtrim;
  * A builder for SQL script.
  * @author Leonid Bushuev from JetBrains
  */
-public class SQLScriptBuilder {
+public class SqlScriptBuilder {
 
-  private final ImmutableList.Builder<SQLCommand> myCommands =
-    new ImmutableList.Builder<SQLCommand>();
+  private final ImmutableList.Builder<SqlCommand> myCommands =
+    new ImmutableList.Builder<SqlCommand>();
 
 
 
   public void add(@NotNull String... commands) {
     for (String command : commands) {
-      SQLCommand cmd = new SQLCommand(command);
+      SqlCommand cmd = new SqlCommand(command);
       myCommands.add(cmd);
     }
   }
 
-  public void add(@NotNull SQLCommand... commands) {
-    for (SQLCommand command : commands) {
+  public void add(@NotNull SqlCommand... commands) {
+    for (SqlCommand command : commands) {
       myCommands.add(command);
     }
   }
 
-  public void add(@NotNull SQLScript... scripts) {
-    for (SQLScript script : scripts) {
-      for (SQLCommand command : script.myCommands) {
+  public void add(@NotNull SqlScript... scripts) {
+    for (SqlScript script : scripts) {
+      for (SqlCommand command : script.myCommands) {
         myCommands.add(command);
       }
     }
@@ -119,7 +119,7 @@ public class SQLScriptBuilder {
     }
 
     String plText = rtrim(walker.getText().substring(begin.offset, rowOffset));
-    SQLCommand command = new SQLCommand(begin.row - 1, plText);
+    SqlCommand command = new SqlCommand(begin.row - 1, plText);
     myCommands.add(command);
   }
 
@@ -134,7 +134,7 @@ public class SQLScriptBuilder {
     final Matcher matcher = walker.skipToPattern(SQL_END_MARKER);
 
     final String sqlText = rtrim(walker.getText().substring(begin.offset, walker.getOffset()));
-    SQLCommand command = new SQLCommand(begin.row - 1, sqlText);
+    SqlCommand command = new SqlCommand(begin.row - 1, sqlText);
     myCommands.add(command);
 
     if (matcher != null) {
@@ -187,10 +187,13 @@ public class SQLScriptBuilder {
 
 
   @NotNull
-  public SQLScript build() {
-    ImmutableList<SQLCommand> commands = myCommands.build();
-    return commands.size() > 0 ? new SQLScript(commands) : SQL.EMPTY_SCRIPT;
+  public SqlScript build() {
+    ImmutableList<SqlCommand> commands = myCommands.build();
+    return commands.size() > 0 ? new SqlScript(commands) : EMPTY_SCRIPT;
   }
 
+
+
+  static final SqlScript EMPTY_SCRIPT = new SqlScript(ImmutableList.<SqlCommand>of());
 
 }

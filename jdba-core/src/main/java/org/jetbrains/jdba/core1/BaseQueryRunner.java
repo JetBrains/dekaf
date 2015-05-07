@@ -2,7 +2,8 @@ package org.jetbrains.jdba.core1;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.sql.SQLQuery;
+import org.jetbrains.jdba.core.DBQueryRunner;
+import org.jetbrains.jdba.sql.SqlQuery;
 
 
 
@@ -16,14 +17,14 @@ public class BaseQueryRunner<S> implements DBQueryRunner {
   protected final BaseSession session;
 
   @NotNull
-  protected final SQLQuery<S> query;
+  protected final SqlQuery<S> query;
 
 
   @Nullable
   protected Object[] params;
 
 
-  BaseQueryRunner(@NotNull final BaseSession session, @NotNull final SQLQuery<S> query) {
+  BaseQueryRunner(@NotNull final BaseSession session, @NotNull final SqlQuery<S> query) {
     this.session = session;
     this.query = query;
   }

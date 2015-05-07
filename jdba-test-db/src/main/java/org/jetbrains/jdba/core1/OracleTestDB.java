@@ -1,8 +1,8 @@
 package org.jetbrains.jdba.core1;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.sql.SQLQuery;
-import org.jetbrains.jdba.sql.SQLScriptBuilder;
+import org.jetbrains.jdba.sql.SqlQuery;
+import org.jetbrains.jdba.sql.SqlScriptBuilder;
 import org.jetbrains.jdba.util.Strings;
 
 
@@ -26,7 +26,7 @@ public class OracleTestDB extends BaseTestDB {
     final String queryText = "select table_name from tabs where table_name in ("
                            + Strings.repeat("upper(?)", ",", n)
                            + ")";
-    final SQLQuery<String[]> query = new SQLQuery<String[]>(queryText, RowsCollectors.array(String.class));
+    final SqlQuery<String[]> query = new SqlQuery<String[]>(queryText, RowsCollectors.array(String.class));
 
     facade.inSession(new InSessionNoResult() {
       public void run(@NotNull final DBSession session) {
@@ -35,7 +35,7 @@ public class OracleTestDB extends BaseTestDB {
                 session.query(query).withParams(names).run();
 
         if (namesToDrop.length > 0) {
-          SQLScriptBuilder b = new SQLScriptBuilder();
+          SqlScriptBuilder b = new SqlScriptBuilder();
           for (String name : namesToDrop) {
             b.add("drop table "+name+" cascade constraints");
           }

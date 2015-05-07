@@ -2,7 +2,7 @@ package org.jetbrains.jdba.sql;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core1.DBRowsCollector;
+import org.jetbrains.jdba.core.ResultLayout;
 import org.jetbrains.jdba.util.Strings;
 
 import java.util.ArrayList;
@@ -126,24 +126,24 @@ public final class Scriptum {
 
 
   @NotNull
-  public final <S> SQLQuery<S> query(@NotNull final String name,
-                                     @NotNull final DBRowsCollector<S> collector) {
+  public final <S> SqlQuery<S> query(@NotNull final String name,
+                                     @NotNull final ResultLayout<S> layout) {
     String text = getText(name);
-    return new SQLQuery<S>(text, collector);
+    return new SqlQuery<S>(text, layout);
   }
 
   @NotNull
-  public final SQLCommand command(@NotNull final String name) {
+  public final SqlCommand command(@NotNull final String name) {
     String text = getText(name);
-    return new SQLCommand(text);
+    return new SqlCommand(text);
   }
 
   @NotNull
-  public final SQLScript script(@NotNull final String name) {
+  public final SqlScript script(@NotNull final String name) {
     String text = getText(name);
-    SQLScriptBuilder b = new SQLScriptBuilder();
+    SqlScriptBuilder b = new SqlScriptBuilder();
     b.parse(text);
-    return new SQLScript(b.build());
+    return new SqlScript(b.build());
   }
 
 

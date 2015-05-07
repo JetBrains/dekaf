@@ -1,10 +1,11 @@
 package org.jetbrains.jdba.core1;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jdba.core.DBCommandRunner;
 import org.jetbrains.jdba.jdbc.JdbcDataSource;
 import org.jetbrains.jdba.sql.SQL;
-import org.jetbrains.jdba.sql.SQLCommand;
-import org.jetbrains.jdba.sql.SQLQuery;
+import org.jetbrains.jdba.sql.SqlCommand;
+import org.jetbrains.jdba.sql.SqlQuery;
 
 import java.sql.Driver;
 
@@ -56,11 +57,11 @@ public class BaseTestDB {
   //// USEFUL PROCEDURES \\\\
 
   public void performCommandInTran(@NotNull final String command, final Object... params) {
-    SQLCommand cmd = new SQLCommand(command);
+    SqlCommand cmd = new SqlCommand(command);
     performCommandInTran(cmd, params);
   }
 
-  public void performCommandInTran(@NotNull final SQLCommand command, final Object... params) {
+  public void performCommandInTran(@NotNull final SqlCommand command, final Object... params) {
     facade.inTransaction(new InTransactionNoResult() {
       public void run(@NotNull final DBTransaction tran) {
 
@@ -73,11 +74,11 @@ public class BaseTestDB {
   }
 
   public void performCommandInSession(@NotNull final String command) {
-    SQLCommand cmd = new SQLCommand(command);
+    SqlCommand cmd = new SqlCommand(command);
     performCommandInSession(cmd);
   }
 
-  public void performCommandInSession(@NotNull final SQLCommand command) {
+  public void performCommandInSession(@NotNull final SqlCommand command) {
     facade.inSession(new InSessionNoResult() {
       public void run(@NotNull final DBSession session) {
 
@@ -91,19 +92,19 @@ public class BaseTestDB {
     int n = commands.length;
     if (n == 0) return;
 
-    SQLCommand[] cmds = new SQLCommand[n];
+    SqlCommand[] cmds = new SqlCommand[n];
     for (int i = 0; i <= n; i++) {
-      cmds[i] = new SQLCommand(commands[i]);
+      cmds[i] = new SqlCommand(commands[i]);
     }
 
     performCommandsInSession(cmds);
   }
 
-  public void performCommandsInSession(@NotNull final SQLCommand... commands) {
+  public void performCommandsInSession(@NotNull final SqlCommand... commands) {
     facade.inSession(new InSessionNoResult() {
       public void run(@NotNull final DBSession session) {
 
-        for (SQLCommand command : commands) {
+        for (SqlCommand command : commands) {
           session.command(command).run();
         }
 
@@ -112,7 +113,7 @@ public class BaseTestDB {
   }
 
 
-  public <R> R performQuery(@NotNull final SQLQuery<R> query, final Object... params) {
+  public <R> R performQuery(@NotNull final SqlQuery<R> query, final Object... params) {
     return facade.inTransaction(new InTransaction<R>() {
       public R run(@NotNull final DBTransaction tran) {
 
@@ -132,9 +133,9 @@ public class BaseTestDB {
     final int n = names != null ? names.length : 0;
     if (n == 0) return;
 
-    SQLCommand[] commands = new SQLCommand[n];
+    SqlCommand[] commands = new SqlCommand[n];
     for (int i = 0; i < n; i++)
-      commands[i] = new SQLCommand("drop table if exists " + names[i]);
+      commands[i] = new SqlCommand("drop table if exists " + names[i]);
 
     performCommandsInSession(commands);
   }

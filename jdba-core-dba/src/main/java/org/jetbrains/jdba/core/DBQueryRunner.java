@@ -1,4 +1,4 @@
-package org.jetbrains.jdba.core1;
+package org.jetbrains.jdba.core;
 
 /**
  * @author Leonid Bushuev from JetBrains

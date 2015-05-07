@@ -15,15 +15,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @FixMethodOrder(MethodSorters.JVM)
 @RunWith(FineRunner.class)
-public class SQLScriptTest {
+public class SqlScriptTest {
 
-  private final SQL sql = new SQL();
 
   @Test
   public void construct_2() {
-    SQLScript script1 = sql.script("command1"),
-              script2 = sql.script("command2");
-    SQLScript script = new SQLScript(script1, script2);
+    SqlScript script1 = new SqlScript("command1"),
+              script2 = new SqlScript("command2");
+    SqlScript script = new SqlScript(script1, script2);
     assertThat((Integer)script.getCommands().size()).isEqualTo((Integer)2);
     assertThat(script.getCommands().get(0).getSourceText()).isEqualTo("command1");
     assertThat(script.getCommands().get(1).getSourceText()).isEqualTo("command2");
@@ -31,10 +30,10 @@ public class SQLScriptTest {
 
   @Test
   public void toString_contains_all_commands() {
-    SQLScript script = sql.script("command 1\ncommand 2");
+    SqlScript script = new SqlScript("command 1", "command 2");
     final String text = script.toString();
-    assertThat(text).contains("command 1");
-    assertThat(text).contains("command 2");
+    assertThat(text).contains("command 1")
+                    .contains("command 2");
   }
 
 }

@@ -1,8 +1,9 @@
 package org.jetbrains.jdba.core1;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.sql.SQLCommand;
-import org.jetbrains.jdba.sql.SQLScript;
+import org.jetbrains.jdba.core.DBScriptRunner;
+import org.jetbrains.jdba.sql.SqlCommand;
+import org.jetbrains.jdba.sql.SqlScript;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ public class BaseScriptRunner implements DBScriptRunner {
   protected final BaseSession mySession;
 
   @NotNull
-  protected final SQLScript myScript;
+  protected final SqlScript myScript;
 
   @NotNull
   protected final List<BaseCommandRunner> myCommandRunners;
@@ -26,14 +27,14 @@ public class BaseScriptRunner implements DBScriptRunner {
 
 
   public BaseScriptRunner(@NotNull final BaseSession session,
-                          @NotNull final SQLScript script) {
+                          @NotNull final SqlScript script) {
     mySession = session;
     myScript = script;
 
-    List<SQLCommand> commands = script.getCommands();
+    List<SqlCommand> commands = script.getCommands();
     myCommandRunners = new ArrayList<BaseCommandRunner>(commands.size());
 
-    for (SQLCommand command : commands) {
+    for (SqlCommand command : commands) {
       final BaseCommandRunner runner = mySession.command(command);
       myCommandRunners.add(runner);
     }

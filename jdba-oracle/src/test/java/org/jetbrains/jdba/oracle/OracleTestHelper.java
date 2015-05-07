@@ -4,8 +4,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.core1.DBFacade;
 import org.jetbrains.jdba.core1.DBSession;
 import org.jetbrains.jdba.core1.InSessionNoResult;
-import org.jetbrains.jdba.sql.SQLCommand;
 import org.jetbrains.jdba.sql.Scriptum;
+import org.jetbrains.jdba.sql.SqlCommand;
 
 
 
@@ -25,7 +25,7 @@ public class OracleTestHelper {
   }
 
   public void cleanupDatabase() {
-    final SQLCommand zapSchemaCommand = myScriptum.command("ZapSchema");
+    final SqlCommand zapSchemaCommand = myScriptum.command("ZapSchema");
     myFacade.inSession(new InSessionNoResult() {
       public void run(@NotNull final DBSession session) {
         session.command(zapSchemaCommand).run();

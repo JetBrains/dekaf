@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.core1.DBTransaction;
 import org.jetbrains.jdba.core1.InTransactionNoResult;
 import org.jetbrains.jdba.core1.RowsCollectors;
-import org.jetbrains.jdba.sql.SQLQuery;
+import org.jetbrains.jdba.sql.SqlQuery;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -30,8 +30,8 @@ public class OraScriptsTest extends OracleIntegrationCase {
 
   @Test
   public void select_1() {
-    final SQLQuery<Integer> query1 =
-            new SQLQuery<Integer>("select 1 from dual", RowsCollectors.oneRow(Integer.class));
+    final SqlQuery<Integer> query1 =
+            new SqlQuery<Integer>("select 1 from dual", RowsCollectors.oneRow(Integer.class));
 
     db.facade.inTransaction(new InTransactionNoResult() {
       public void run(@NotNull final DBTransaction tran) {

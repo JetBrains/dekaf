@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public abstract class SQLExecutable {
+public abstract class SqlExecutable {
 
   /**
    * Number of lines skipped from source text.
@@ -22,13 +22,13 @@ public abstract class SQLExecutable {
   final String mySourceText;
 
 
-  protected SQLExecutable(@NotNull String sourceText) {
+  protected SqlExecutable(@NotNull String sourceText) {
     this.mySourceText = sourceText;
     this.myLineOffset = 0;
   }
 
 
-  public SQLExecutable(@NotNull final String sourceText, final int lineOffset) {
+  public SqlExecutable(@NotNull final String sourceText, final int lineOffset) {
     this.mySourceText = sourceText;
     this.myLineOffset = lineOffset;
   }

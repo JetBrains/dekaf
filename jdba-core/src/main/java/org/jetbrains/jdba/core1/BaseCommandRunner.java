@@ -2,6 +2,7 @@ package org.jetbrains.jdba.core1;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jdba.core.DBCommandRunner;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;

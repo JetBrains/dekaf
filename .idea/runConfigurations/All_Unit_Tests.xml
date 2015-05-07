@@ -20,7 +20,8 @@
     <category value="testing.categories.UnitTest" />
     <patterns>
       <pattern testClass="org.jetbrains.jdba.CoreCommonUnitTests" />
-      <pattern testClass="org.jetbrains.jdba.core1.CoreUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.CoreDbaUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.core1.CoreOldUnitTests" />
       <pattern testClass="org.jetbrains.jdba.oracle.OracleUnitTests" />
       <pattern testClass="org.jetbrains.jdba.microsoft.MicrosoftUnitTests" />
       <pattern testClass="org.jetbrains.jdba.jdbc.JdbcUnitTests" />

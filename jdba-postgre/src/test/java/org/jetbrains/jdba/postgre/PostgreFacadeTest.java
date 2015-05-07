@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.core1.DBTransaction;
 import org.jetbrains.jdba.core1.InTransactionNoResult;
 import org.jetbrains.jdba.core1.RowsCollectors;
-import org.jetbrains.jdba.sql.SQLQuery;
+import org.jetbrains.jdba.sql.SqlQuery;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,8 +23,8 @@ public class PostgreFacadeTest extends PostgreIntegrationCase {
 
   @Test
   public void select_1() {
-    final SQLQuery<Integer> query1 =
-            new SQLQuery<Integer>("select 1", RowsCollectors.oneRow(Integer.class));
+    final SqlQuery<Integer> query1 =
+            new SqlQuery<Integer>("select 1", RowsCollectors.oneRow(Integer.class));
 
     db.facade.inTransaction(new InTransactionNoResult() {
       public void run(@NotNull final DBTransaction tran) {

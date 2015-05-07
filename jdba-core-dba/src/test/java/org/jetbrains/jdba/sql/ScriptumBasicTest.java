@@ -1,7 +1,7 @@
 package org.jetbrains.jdba.sql;
 
 
-import org.jetbrains.jdba.core1.RowsCollectors;
+import org.jetbrains.jdba.core.Layouts;
 import org.jetbrains.jdba.junitft.FineRunner;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,8 +27,8 @@ public class ScriptumBasicTest {
 
   @Test
   public void theSimplestQuery() {
-    SQLQuery<Character> query = myScriptum.query("TheSimplestQuery",
-                                                 RowsCollectors.oneRow(Character.class));
+    SqlQuery<Character> query = myScriptum.query("TheSimplestQuery",
+                                                 Layouts.singleOf(Character.class));
     assertThat(query.mySourceText).isEqualTo("select 1");
   }
 
@@ -37,15 +37,15 @@ public class ScriptumBasicTest {
     Scriptum scriptumForOracle =
             Scriptum.of(myScriptum, "Oracle");
 
-    SQLQuery<Character> query = scriptumForOracle.query("TheSimplestQuery",
-                                                        RowsCollectors.oneRow(Character.class));
+    SqlQuery<Character> query = scriptumForOracle.query("TheSimplestQuery",
+                                                        Layouts.singleOf(Character.class));
     assertThat(query.mySourceText).isEqualTo("select 1 from dual");
   }
 
 
   @Test
   public void basicCommand() {
-    SQLCommand command = myScriptum.command("BasicCommand");
+    SqlCommand command = myScriptum.command("BasicCommand");
     assertThat(command.mySourceText)
             .startsWith("insert")
             .endsWith("values (1,2,3)");

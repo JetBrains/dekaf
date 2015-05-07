@@ -12,45 +12,58 @@ import java.util.List;
  *
  * @author Leonid Bushuev from JetBrains
  */
-public class SQLScript {
+public class SqlScript {
 
   @NotNull
-  final ImmutableList<SQLCommand> myCommands;
+  final ImmutableList<SqlCommand> myCommands;
 
   final int myCount;
 
 
-  @Deprecated
-  public SQLScript(@NotNull final SQLCommand... commands) {
+
+  public SqlScript(@NotNull final String... commands) {
+    this(makeCommandsFromStrings(commands));
+  }
+
+  @NotNull
+  private static ImmutableList<SqlCommand> makeCommandsFromStrings(final @NotNull String[] commands) {
+    ImmutableList.Builder<SqlCommand> builder = ImmutableList.builder();
+    for (String command : commands) {
+      SqlCommand cmd = new SqlCommand(command);
+      builder.add(cmd);
+    }
+    return builder.build();
+  }
+
+  public SqlScript(@NotNull final SqlCommand... commands) {
     this(ImmutableList.copyOf(commands));
   }
 
-  @Deprecated
-  public SQLScript(@NotNull final List<SQLCommand> commands) {
+  public SqlScript(@NotNull final List<SqlCommand> commands) {
     this(ImmutableList.copyOf(commands));
   }
 
-  public SQLScript(@NotNull final SQLScript... scripts) {
+  public SqlScript(@NotNull final SqlScript... scripts) {
     this(joinCommands(scripts));
   }
 
-  private static ImmutableList<SQLCommand> joinCommands(SQLScript[] scripts) {
-    ImmutableList.Builder<SQLCommand> b = ImmutableList.builder();
-    for (SQLScript script : scripts) {
+  private static ImmutableList<SqlCommand> joinCommands(SqlScript[] scripts) {
+    ImmutableList.Builder<SqlCommand> b = ImmutableList.builder();
+    for (SqlScript script : scripts) {
       b.addAll(script.getCommands());
     }
     return b.build();
   }
 
 
-  protected SQLScript(@NotNull final ImmutableList<SQLCommand> commands) {
+  protected SqlScript(@NotNull final ImmutableList<SqlCommand> commands) {
     this.myCommands = commands;
     this.myCount = commands.size();
   }
 
 
   @NotNull
-  public List<SQLCommand> getCommands() {
+  public List<SqlCommand> getCommands() {
     return myCommands;
   }
 

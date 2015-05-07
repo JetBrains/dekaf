@@ -15,13 +15,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @FixMethodOrder(MethodSorters.JVM)
 @RunWith(FineRunner.class)
-public class SQLScriptBuilderTest {
+public class SqlScriptBuilderTest {
 
 
   @Test
   public void parse_1() {
     String commandText = "select * from dual";
-    final SQLScript script = build(commandText);
+    final SqlScript script = build(commandText);
 
     assertThat((Integer)script.myCount).isEqualTo((Integer)1);
     assertThat(script.getCommands().get(0).getSourceText()).isEqualTo(commandText);
@@ -44,7 +44,7 @@ public class SQLScriptBuilderTest {
   @Test
   public void parse_2_in_2_lines() {
     String text = "create table X;\n drop table X";
-    final SQLScript script = build(text);
+    final SqlScript script = build(text);
 
     assertThat((Integer)script.myCount).isEqualTo((Integer)2);
     assertThat(script.getCommands().get(0).getSourceText()).isEqualTo("create table X");
@@ -56,7 +56,7 @@ public class SQLScriptBuilderTest {
   public void parse_singleLineComment() {
     String text = "-- a single line comment \n" +
                   "do something";
-    final SQLScript script = build(text);
+    final SqlScript script = build(text);
 
     assertThat((Integer)script.myCount).isEqualTo((Integer)1);
     assertThat(script.getCommands().get(0).getSourceText()).isEqualTo("do something");
@@ -68,7 +68,7 @@ public class SQLScriptBuilderTest {
     String text = "select --+index(i) \n" +
                   "      all fields   \n" +
                   "from my_table      \n";
-    final SQLScript script = build(text);
+    final SqlScript script = build(text);
 
     assertThat((Integer)script.myCount).isEqualTo((Integer)1);
     final String queryText = script.getCommands().get(0).getSourceText();
@@ -80,7 +80,7 @@ public class SQLScriptBuilderTest {
   public void parse_multiLineComment_1() {
     String text = "/* a multi-line comment*/\n" +
                   "do something";
-    final SQLScript script = build(text);
+    final SqlScript script = build(text);
 
     assertThat((Integer)script.myCount).isEqualTo((Integer)1);
     assertThat(script.getCommands().get(0).getSourceText()).isEqualTo("do something");
@@ -93,7 +93,7 @@ public class SQLScriptBuilderTest {
                   " * a multi-line comment \n" +
                   " */                     \n" +
                   "do something            \n";
-    final SQLScript script = build(text);
+    final SqlScript script = build(text);
 
     assertThat((Integer)script.myCount).isEqualTo((Integer)1);
     assertThat(script.getCommands().get(0).getSourceText()).isEqualTo("do something");
@@ -104,7 +104,7 @@ public class SQLScriptBuilderTest {
   public void parse_multiLineComment_preserveOracleHint() {
     String text = "select /*+index(i)*/ * \n" +
                   "from table             \n";
-    final SQLScript script = build(text);
+    final SqlScript script = build(text);
 
     assertThat((Integer)script.myCount).isEqualTo((Integer)1);
     final String queryText = script.getCommands().get(0).getSourceText();
@@ -112,8 +112,8 @@ public class SQLScriptBuilderTest {
   }
 
 
-  private SQLScript build(String text) {
-    SQLScriptBuilder b = new SQLScriptBuilder();
+  private SqlScript build(String text) {
+    SqlScriptBuilder b = new SqlScriptBuilder();
     b.parse(text);
     return b.build();
   }

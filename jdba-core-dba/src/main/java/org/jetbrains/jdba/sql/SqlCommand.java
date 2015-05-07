@@ -9,15 +9,15 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Leonid Bushuev from JetBrains
  */
-public class SQLCommand extends SQLExecutable {
+public class SqlCommand extends SqlExecutable {
 
 
-  public SQLCommand(final int lineOffset, @NotNull final String sourceText) {
+  public SqlCommand(final int lineOffset, @NotNull final String sourceText) {
     super(sourceText, lineOffset);
   }
 
 
-  public SQLCommand(@NotNull final String sourceText) {
+  public SqlCommand(@NotNull final String sourceText) {
     this(0, sourceText);
   }
 }

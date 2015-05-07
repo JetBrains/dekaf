@@ -1,7 +1,7 @@
 package org.jetbrains.jdba.sql;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.core1.DBRowsCollector;
+import org.jetbrains.jdba.core.ResultLayout;
 
 
 
@@ -15,18 +15,17 @@ public class SqlQuery<S> extends SqlExecutable {
 
 
   @NotNull
-  final DBRowsCollector<S> collector;
+  final ResultLayout<S> layout;
 
 
   private transient String displayName;
 
 
-  public SqlQuery(@NotNull final String sourceText,
-                  @NotNull final DBRowsCollector<S> collector) {
+  SqlQuery(@NotNull final String sourceText,
+           @NotNull final ResultLayout<S> layout) {
     super(sourceText);
-    this.collector = collector;
+    this.layout = layout;
   }
-
 
   public String getDisplayName() {
     if (displayName == null) {
@@ -50,12 +49,6 @@ public class SqlQuery<S> extends SqlExecutable {
   @NotNull
   public String getSourceText() {
     return mySourceText;
-  }
-
-
-  @NotNull
-  public DBRowsCollector<S> getCollector() {
-    return collector;
   }
 
 
