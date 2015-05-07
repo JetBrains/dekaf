@@ -20,7 +20,7 @@ public class TestSuiteExecutor {
 
 
 
-  public static void run(final Class suite) {
+  public static void run(final Class... suites) {
 
     // header
     System.out.println("Java version: " + System.getProperty("java.version"));
@@ -34,22 +34,24 @@ public class TestSuiteExecutor {
     RunListener listener = underTC ? new TeamCityListener() : new TextListener(system);
     core.addListener(listener);
 
-    // run tests
-    sayNothing();
-    if (underTC) say("##teamcity[testSuiteStarted name='%s']", suite.getSimpleName());
-
-    Result result = core.run(suite);
-
     int success = 0,
         failures = 0,
         ignores = 0;
 
-    success += result.getRunCount() - (result.getFailureCount() + result.getIgnoreCount());
-    failures += result.getFailureCount();
-    ignores += result.getIgnoreCount();
+    // run tests
+    for (Class suite : suites) {
+      sayNothing();
+      if (underTC) say("##teamcity[testSuiteStarted name='%s']", suite.getSimpleName());
 
-    if (underTC) say("##teamcity[testSuiteFinished name='%s']", suite.getSimpleName());
-    sayNothing();
+      Result result = core.run(suite);
+
+      success += result.getRunCount() - (result.getFailureCount() + result.getIgnoreCount());
+      failures += result.getFailureCount();
+      ignores += result.getIgnoreCount();
+
+      if (underTC) say("##teamcity[testSuiteFinished name='%s']", suite.getSimpleName());
+      sayNothing();
+    }
 
     // the end
     System.exit((failures > 0 && !underTC) ? 1 : 0);

@@ -46,6 +46,10 @@ public class RunIntegrationTests {
                             .build();
 
 
+  static {
+    System.setProperty("java.awt.headless", "true");
+  }
+
 
   public static void main(String[] args) {
 
@@ -55,23 +59,18 @@ public class RunIntegrationTests {
     }
 
     String dbmsCode = args[0];
-    System.out.println("Testing " + dbmsCode);
-
-    executeSuite(dbmsCode, ourJdbcSuites, "JDBC suite");
-    executeSuite(dbmsCode, ourLegacySuites, "Legacy suite");
-  }
-
-  private static void executeSuite(final String dbmsCode,
-                                   final ImmutableMap<String, Class> suites,
-                                   final String suiteDescription) {
-    Class suite = suites.get(dbmsCode);
-    if (suite == null) {
-      System.out.println(String.format("I don't know how to test %s for %s", suiteDescription, dbmsCode));
+    if (dbmsCode == null || dbmsCode.length() == 0) {
+      System.out.println("Please specify the correct RDBMS code\n");
       return;
     }
 
-    System.out.println("Executing " + suiteDescription);
-    TestSuiteExecutor.run(suite);
+    dbmsCode = dbmsCode.trim().toUpperCase();
+    System.out.println("Testing " + dbmsCode);
+
+    Class suite1 = ourJdbcSuites.get(dbmsCode);
+    Class suite2 = ourLegacySuites.get(dbmsCode);
+
+    TestSuiteExecutor.run(suite1, suite2);
   }
 
 }
