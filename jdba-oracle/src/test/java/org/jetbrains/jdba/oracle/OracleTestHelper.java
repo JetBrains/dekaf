@@ -1,9 +1,9 @@
 package org.jetbrains.jdba.oracle;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.core.DBFacade;
-import org.jetbrains.jdba.core.DBSession;
-import org.jetbrains.jdba.core.InSessionNoResult;
+import org.jetbrains.jdba.core1.DBFacade;
+import org.jetbrains.jdba.core1.DBSession;
+import org.jetbrains.jdba.core1.InSessionNoResult;
 import org.jetbrains.jdba.sql.SQLCommand;
 import org.jetbrains.jdba.sql.Scriptum;
 

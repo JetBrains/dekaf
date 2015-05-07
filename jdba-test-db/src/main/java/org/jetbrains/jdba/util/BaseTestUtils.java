@@ -1,7 +1,7 @@
 package org.jetbrains.jdba.util;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.core.*;
+import org.jetbrains.jdba.core1.*;
 import org.jetbrains.jdba.sql.SQL;
 import org.jetbrains.jdba.sql.SQLQuery;
 

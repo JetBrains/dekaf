@@ -1,9 +1,9 @@
 package org.jetbrains.jdba.postgre;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.core.DBTransaction;
-import org.jetbrains.jdba.core.InTransactionNoResult;
-import org.jetbrains.jdba.core.RowsCollectors;
+import org.jetbrains.jdba.core1.DBTransaction;
+import org.jetbrains.jdba.core1.InTransactionNoResult;
+import org.jetbrains.jdba.core1.RowsCollectors;
 import org.jetbrains.jdba.sql.SQLQuery;
 import org.junit.BeforeClass;
 import org.junit.Test;

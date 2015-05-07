@@ -1,8 +1,8 @@
 package org.jetbrains.jdba.oracle;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.core.BaseCommandRunner;
-import org.jetbrains.jdba.core.BaseSession;
+import org.jetbrains.jdba.core1.BaseCommandRunner;
+import org.jetbrains.jdba.core1.BaseSession;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

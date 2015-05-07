@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-import static org.jetbrains.jdba.core.TestEnvironment.getVar;
+import static org.jetbrains.jdba.core1.TestEnvironment.getVar;
 
 
 

@@ -1,7 +1,7 @@
 package org.jetbrains.jdba.sql;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.core.DBRowsCollector;
+import org.jetbrains.jdba.core1.DBRowsCollector;
 
 
 

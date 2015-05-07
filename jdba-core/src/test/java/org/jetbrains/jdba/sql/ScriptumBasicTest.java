@@ -1,7 +1,7 @@
 package org.jetbrains.jdba.sql;
 
 
-import org.jetbrains.jdba.core.RowsCollectors;
+import org.jetbrains.jdba.core1.RowsCollectors;
 import org.jetbrains.jdba.junitft.FineRunner;
 import org.junit.BeforeClass;
 import org.junit.Test;

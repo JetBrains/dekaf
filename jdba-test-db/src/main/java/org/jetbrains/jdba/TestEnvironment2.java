@@ -1,6 +1,6 @@
 package org.jetbrains.jdba;
 
-import org.jetbrains.jdba.core.TestEnvironment;
+import org.jetbrains.jdba.core1.TestEnvironment;
 import org.jetbrains.jdba.jdbc.JdbcDriverSupport;
 
 

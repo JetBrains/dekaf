@@ -3,7 +3,7 @@ package org.jetbrains.jdba.sql;
 import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.DBRowsCollector;
+import org.jetbrains.jdba.core1.DBRowsCollector;
 import org.jetbrains.jdba.util.JavaResource;
 import org.jetbrains.jdba.util.Resource;
 

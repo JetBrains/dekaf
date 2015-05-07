@@ -12,7 +12,7 @@ import org.junit.runners.MethodSorters;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jetbrains.jdba.core.RowsCollectors.oneRow;
+import static org.jetbrains.jdba.core1.RowsCollectors.oneRow;
 import static org.jetbrains.jdba.util.Strings.removeEnding;
 
 

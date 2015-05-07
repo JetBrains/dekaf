@@ -1,8 +1,8 @@
 package org.jetbrains.jdba.oracle;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.core.DBTransaction;
-import org.jetbrains.jdba.core.InTransactionNoResult;
+import org.jetbrains.jdba.core1.DBTransaction;
+import org.jetbrains.jdba.core1.InTransactionNoResult;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import testing.categories.ForOracle;

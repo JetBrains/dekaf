@@ -1,9 +1,9 @@
 package org.jetbrains.jdba.postgre;
 
-import org.jetbrains.jdba.core.BaseIntegrationCase;
-import org.jetbrains.jdba.core.CommonBasicIntTest;
-import org.jetbrains.jdba.core.CommonRowsCollectorsTest;
-import org.jetbrains.jdba.core.TestEnvironment;
+import org.jetbrains.jdba.core1.BaseIntegrationCase;
+import org.jetbrains.jdba.core1.CommonBasicIntTest;
+import org.jetbrains.jdba.core1.CommonRowsCollectorsTest;
+import org.jetbrains.jdba.core1.TestEnvironment;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

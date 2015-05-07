@@ -1,7 +1,7 @@
 package org.jetbrains.jdba.postgre;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.core.DBFacade;
+import org.jetbrains.jdba.core1.DBFacade;
 import org.jetbrains.jdba.util.BaseTestUtils;
 import org.jetbrains.jdba.util.Strings;
 

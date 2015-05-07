@@ -3,10 +3,10 @@ package org.jetbrains.jdba.jdbc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Rdbms;
-import org.jetbrains.jdba.core.DBFacade;
-import org.jetbrains.jdba.core.DBProvider;
-import org.jetbrains.jdba.core.DBServiceFactory;
 import org.jetbrains.jdba.core.exceptions.DBFactoryException;
+import org.jetbrains.jdba.core1.DBFacade;
+import org.jetbrains.jdba.core1.DBProvider;
+import org.jetbrains.jdba.core1.DBServiceFactory;
 
 import javax.sql.DataSource;
 import java.io.File;
@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 
 
 /**
- * Implements {@link org.jetbrains.jdba.core.DBProvider}.
+ * Implements {@link DBProvider}.
  *
  * <p>
  *   This provider is responsible for maintain JDBC drivers with their class loader,

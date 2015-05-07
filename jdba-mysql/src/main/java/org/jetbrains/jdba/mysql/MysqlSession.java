@@ -1,7 +1,7 @@
 package org.jetbrains.jdba.mysql;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.core.BaseSession;
+import org.jetbrains.jdba.core1.BaseSession;
 
 import java.sql.Connection;
 
