@@ -12,7 +12,7 @@
 
   <artifactId>jdba-core-jdbc</artifactId>
   <packaging>jar</packaging>
-  <name>JDBA Core JDBC-side</name>
+  <name>JDBA Core, the JDBC-side</name>
   <description>JDBA Core  JDBC-related implementation</description>
 
   <dependencies>
@@ -20,7 +20,7 @@
     <!-- production dependencies -->
     <dependency>
       <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-core-intf</artifactId>
+      <artifactId>jdba-core-common</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>

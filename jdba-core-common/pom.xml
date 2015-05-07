@@ -10,9 +10,9 @@
     <version>2.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>jdba-core-intf</artifactId>
+  <artifactId>jdba-core-common</artifactId>
   <packaging>jar</packaging>
-  <name>JDBA Core Interfaces</name>
+  <name>JDBA Core, the common side</name>
   <description>JDBA Core Portable Interfaces</description>
 
   <dependencies>
