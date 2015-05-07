@@ -1,10 +1,9 @@
 package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.sql.SQLCommand;
 import org.jetbrains.jdba.sql.SQLQuery;
 import org.jetbrains.jdba.sql.SQLScriptBuilder;
-import org.jetbrains.jdba.utils.Strings;
+import org.jetbrains.jdba.util.Strings;
 
 
 

@@ -7,7 +7,7 @@ import org.jetbrains.jdba.core.InSessionNoResult;
 import org.jetbrains.jdba.core.TestEnvironment;
 import org.jetbrains.jdba.jdbc.JdbcDBProvider;
 import org.jetbrains.jdba.sql.SQLCommand;
-import org.jetbrains.jdba.utils.BaseTestUtils;
+import org.jetbrains.jdba.util.BaseTestUtils;
 
 
 

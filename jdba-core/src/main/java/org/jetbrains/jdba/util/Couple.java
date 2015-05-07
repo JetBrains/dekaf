@@ -1,4 +1,4 @@
-package org.jetbrains.jdba.utils;
+package org.jetbrains.jdba.util;
 
 import org.jetbrains.annotations.NotNull;
 

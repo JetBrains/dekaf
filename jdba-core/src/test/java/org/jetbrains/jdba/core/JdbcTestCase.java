@@ -2,7 +2,7 @@ package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.Rdbms;
-import org.jetbrains.jdba.utils.Version;
+import org.jetbrains.jdba.util.Version;
 
 import java.io.File;
 

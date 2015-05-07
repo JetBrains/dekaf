@@ -1,9 +1,7 @@
 package org.jetbrains.jdba.core;
 
 import org.jetbrains.jdba.sql.*;
-import org.jetbrains.jdba.utils.NumberUtilsTest;
-import org.jetbrains.jdba.utils.StringsTest;
-import org.jetbrains.jdba.utils.VersionTest;
+import org.jetbrains.jdba.util.VersionTest;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -18,8 +16,6 @@ import testing.categories.UnitTest;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
                             // UTILS
-                            NumberUtilsTest.class,
-                            StringsTest.class,
                             VersionTest.class,
                             // SQL
                             ScriptumResourceFromJavaTest.class,

@@ -1,12 +1,12 @@
-package org.jetbrains.jdba.utils;
+package org.jetbrains.jdba.util;
 
 import org.jetbrains.jdba.junitft.FineRunner;
 import org.jetbrains.jdba.junitft.TestWithParams;
 import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jetbrains.jdba.utils.NumberUtils.parseIntSafe;
-import static org.jetbrains.jdba.utils.NumberUtils.parseLongSafe;
+import static org.jetbrains.jdba.util.Numbers.parseIntSafe;
+import static org.jetbrains.jdba.util.Numbers.parseLongSafe;
 
 
 
@@ -14,7 +14,7 @@ import static org.jetbrains.jdba.utils.NumberUtils.parseLongSafe;
  * @author Leonid Bushuev from JetBrains
  */
 @RunWith(FineRunner.class)
-public class NumberUtilsTest {
+public class NumbersTest {
 
 
   static Object[][] INT_CASES = new Object[][] {

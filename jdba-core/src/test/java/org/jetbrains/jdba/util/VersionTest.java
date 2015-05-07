@@ -1,11 +1,11 @@
-package org.jetbrains.jdba.utils;
+package org.jetbrains.jdba.util;
 
+import org.jetbrains.jdba.junitft.FineRunner;
+import org.jetbrains.jdba.junitft.TestWithParams;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
-import org.jetbrains.jdba.junitft.FineRunner;
-import org.jetbrains.jdba.junitft.TestWithParams;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -3,7 +3,7 @@ package org.jetbrains.jdba.sql;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.utils.Strings;
+import org.jetbrains.jdba.util.Strings;
 
 import java.io.*;
 import java.util.LinkedHashMap;

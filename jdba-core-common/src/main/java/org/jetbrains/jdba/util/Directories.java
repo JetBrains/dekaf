@@ -1,4 +1,4 @@
-package org.jetbrains.jdba.utils;
+package org.jetbrains.jdba.util;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -10,16 +10,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static org.jetbrains.jdba.utils.Strings.matches;
+import static org.jetbrains.jdba.util.Strings.matches;
 
 
 
 /**
  * File-access utility functions.
  * @author Leonid Bushuev from JetBrains
- * // TODO think out a goode name?
  */
-public class MyFiles {
+public class Directories {
 
   @NotNull
   public List<File> listFilesRecursively(@NotNull final File dir,

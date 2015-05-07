@@ -4,7 +4,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Rdbms;
-import org.jetbrains.jdba.utils.Version;
+import org.jetbrains.jdba.util.Version;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -1,4 +1,4 @@
-package org.jetbrains.jdba.utils;
+package org.jetbrains.jdba.util;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public final class NumberUtils {
+public final class Numbers {
 
   public static int parseIntSafe(@Nullable final String str) {
     if (str == null) {

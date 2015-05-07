@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.core.DBRowsCollector;
-import org.jetbrains.jdba.utils.JavaResource;
-import org.jetbrains.jdba.utils.Resource;
+import org.jetbrains.jdba.util.JavaResource;
+import org.jetbrains.jdba.util.Resource;
 
 import java.io.IOException;
 import java.io.Serializable;

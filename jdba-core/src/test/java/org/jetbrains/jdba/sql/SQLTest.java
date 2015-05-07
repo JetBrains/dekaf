@@ -1,19 +1,19 @@
 package org.jetbrains.jdba.sql;
 
 
+import org.jetbrains.jdba.junitft.FineRunner;
+import org.jetbrains.jdba.junitft.TestWithParams;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
-import org.jetbrains.jdba.junitft.FineRunner;
-import org.jetbrains.jdba.junitft.TestWithParams;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jetbrains.jdba.core.RowsCollectors.oneRow;
-import static org.jetbrains.jdba.utils.Strings.removeEnding;
+import static org.jetbrains.jdba.util.Strings.removeEnding;
 
 
 

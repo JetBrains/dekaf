@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Pattern;
 
-import static org.jetbrains.jdba.utils.Strings.matches;
+import static org.jetbrains.jdba.util.Strings.matches;
 
 
 

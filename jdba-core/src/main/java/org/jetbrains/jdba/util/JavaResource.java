@@ -1,4 +1,4 @@
-package org.jetbrains.jdba.utils;
+package org.jetbrains.jdba.util;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.net.URL;
 
-import static org.jetbrains.jdba.utils.Strings.ensureEndsWith;
+import static org.jetbrains.jdba.util.Strings.ensureEndsWith;
 
 
 

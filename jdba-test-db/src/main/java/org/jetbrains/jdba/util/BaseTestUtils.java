@@ -1,11 +1,11 @@
-package org.jetbrains.jdba.utils;
+package org.jetbrains.jdba.util;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.core.*;
 import org.jetbrains.jdba.sql.SQL;
 import org.jetbrains.jdba.sql.SQLQuery;
 
-import static org.jetbrains.jdba.utils.Strings.replace;
+import static org.jetbrains.jdba.util.Strings.replace;
 
 
 

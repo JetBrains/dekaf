@@ -1,11 +1,11 @@
-package org.jetbrains.jdba.utils;
+package org.jetbrains.jdba.util;
 
 import org.junit.Test;
 
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jetbrains.jdba.utils.Strings.*;
+import static org.jetbrains.jdba.util.Strings.*;
 
 
 

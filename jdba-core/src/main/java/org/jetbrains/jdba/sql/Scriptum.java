@@ -3,7 +3,7 @@ package org.jetbrains.jdba.sql;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.core.DBRowsCollector;
-import org.jetbrains.jdba.utils.Strings;
+import org.jetbrains.jdba.util.Strings;
 
 import java.util.ArrayList;
 
