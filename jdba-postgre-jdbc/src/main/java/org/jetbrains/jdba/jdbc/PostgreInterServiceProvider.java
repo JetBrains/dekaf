@@ -34,9 +34,12 @@ public class PostgreInterServiceProvider extends JdbcInterBaseServiceProvider {
 
   //// INITIALIZATION \\\\
 
+  static {
+    JdbcInterFederatedServiceProvider.INSTANCE.registerProvider(INSTANCE);
+  }
+
   private PostgreInterServiceProvider() {
     loadAndRegisterDriverIfNeeded(POSTGRE_CONNECTION_STRING_EXAMPLE);
-    JdbcInterFederatedServiceProvider.INSTANCE.registerProvider(this);
   }
 
 

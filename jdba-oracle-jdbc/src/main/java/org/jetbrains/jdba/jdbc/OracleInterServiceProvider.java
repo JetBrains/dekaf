@@ -34,9 +34,12 @@ public class OracleInterServiceProvider extends JdbcInterBaseServiceProvider {
 
   //// INITIALIZATION \\\\
 
+  static {
+    JdbcInterFederatedServiceProvider.INSTANCE.registerProvider(INSTANCE);
+  }
+
   private OracleInterServiceProvider() {
     loadAndRegisterDriverIfNeeded(ORACLE_CONNECTION_STRING_EXAMPLE);
-    JdbcInterFederatedServiceProvider.INSTANCE.registerProvider(this);
   }
 
 
