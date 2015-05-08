@@ -28,6 +28,7 @@
     <module>jdba-mssql</module>
     <module>jdba-mysql</module>
     <module>jdba-common-int</module>
+    <module>test-with-hsql</module>
     <module>test-pack</module>
   </modules>
 

@@ -8,7 +8,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jetbrains.jdba.jdbc.OracleInterServiceProvider.ORACLE_CONNECTION_STRING_EXAMPLE;
+import static org.jetbrains.jdba.jdbc.OracleProvider.ORACLE_CONNECTION_STRING_EXAMPLE;
 
 
 
@@ -17,11 +17,11 @@ import static org.jetbrains.jdba.jdbc.OracleInterServiceProvider.ORACLE_CONNECTI
  */
 public class OracleInterServiceProviderTest {
 
-  protected OracleInterServiceProvider myProvider;
+  protected OracleProvider myProvider;
 
   @Before
   public void setup() {
-    myProvider = OracleInterServiceProvider.INSTANCE;
+    myProvider = OracleProvider.INSTANCE;
   }
 
   @Test

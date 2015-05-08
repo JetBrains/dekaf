@@ -3,7 +3,7 @@ package org.jetbrains.jdba.microsoft;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.Rdbms;
 import org.jetbrains.jdba.core1.BaseFacade;
-import org.jetbrains.jdba.inter.DBErrorRecognizer;
+import org.jetbrains.jdba.intermediate.DBErrorRecognizer;
 import org.jetbrains.jdba.sql.SQL;
 
 import javax.sql.DataSource;

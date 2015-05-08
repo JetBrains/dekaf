@@ -15,11 +15,11 @@ import testing.categories.UnitTest;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
                             ConnectionPoolTest.class,
-                            JdbcInterFacadeTest.class,
-                            JdbcInterSessionTest.class,
-                            JdbcInterSeanceSimpleTest.class,
-                            JdbcInterCursorTest.class,
-                            UnknownDatabaseServiceProviderTest.class,
-                            JdbcInterFederatedServiceProviderTest.class
+                            JdbcIntermediateFacadeTest.class,
+                            JdbcIntermediateSessionTest.class,
+                            JdbcIntermediateSeanceSimpleTest.class,
+                            JdbcIntermediateCursorTest.class,
+                            UnknownDatabaseProviderTest.class,
+                            JdbcIntermediateFederatedProviderTest.class
 })
 public class JdbcUnitTests {}

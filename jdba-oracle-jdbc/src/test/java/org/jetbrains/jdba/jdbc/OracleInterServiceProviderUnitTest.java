@@ -3,8 +3,8 @@ package org.jetbrains.jdba.jdbc;
 import org.jetbrains.jdba.assertions.PatternAssert;
 import org.junit.Test;
 
-import static org.jetbrains.jdba.jdbc.OracleInterServiceProvider.ORACLE_CONNECTION_STRING_EXAMPLE;
-import static org.jetbrains.jdba.jdbc.OracleInterServiceProvider.ORACLE_CONNECTION_STRING_PATTERN;
+import static org.jetbrains.jdba.jdbc.OracleProvider.ORACLE_CONNECTION_STRING_EXAMPLE;
+import static org.jetbrains.jdba.jdbc.OracleProvider.ORACLE_CONNECTION_STRING_PATTERN;
 
 
 

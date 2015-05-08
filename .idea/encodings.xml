@@ -18,5 +18,6 @@
     <file url="file://$PROJECT_DIR$/jdba-postgre-jdbc" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jdba-test-db" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/test-pack" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test-with-hsql" charset="UTF-8" />
   </component>
 </project>

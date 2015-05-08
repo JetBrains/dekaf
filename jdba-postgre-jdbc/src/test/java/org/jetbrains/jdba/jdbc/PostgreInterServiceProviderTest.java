@@ -8,7 +8,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jetbrains.jdba.jdbc.PostgreInterServiceProvider.POSTGRE_CONNECTION_STRING_EXAMPLE;
+import static org.jetbrains.jdba.jdbc.PostgreProvider.POSTGRE_CONNECTION_STRING_EXAMPLE;
 
 
 
@@ -17,11 +17,11 @@ import static org.jetbrains.jdba.jdbc.PostgreInterServiceProvider.POSTGRE_CONNEC
  */
 public class PostgreInterServiceProviderTest {
 
-  protected PostgreInterServiceProvider myProvider;
+  protected PostgreProvider myProvider;
 
   @Before
   public void setup() {
-    myProvider = PostgreInterServiceProvider.INSTANCE;
+    myProvider = PostgreProvider.INSTANCE;
   }
 
   @Test

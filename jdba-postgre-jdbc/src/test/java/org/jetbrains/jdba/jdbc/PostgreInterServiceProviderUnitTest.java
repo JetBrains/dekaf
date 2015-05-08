@@ -3,8 +3,8 @@ package org.jetbrains.jdba.jdbc;
 import org.jetbrains.jdba.assertions.PatternAssert;
 import org.junit.Test;
 
-import static org.jetbrains.jdba.jdbc.PostgreInterServiceProvider.POSTGRE_CONNECTION_STRING_EXAMPLE;
-import static org.jetbrains.jdba.jdbc.PostgreInterServiceProvider.POSTGRE_CONNECTION_STRING_PATTERN;
+import static org.jetbrains.jdba.jdbc.PostgreProvider.POSTGRE_CONNECTION_STRING_EXAMPLE;
+import static org.jetbrains.jdba.jdbc.PostgreProvider.POSTGRE_CONNECTION_STRING_PATTERN;
 
 
 

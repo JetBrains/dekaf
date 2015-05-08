@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.exceptions.DBException;
 import org.jetbrains.jdba.exceptions.UnexpectedJdbcException;
-import org.jetbrains.jdba.inter.DBErrorRecognizer;
+import org.jetbrains.jdba.intermediate.DBErrorRecognizer;
 
 import java.sql.SQLException;
 

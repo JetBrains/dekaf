@@ -1,5 +1,6 @@
 package org.jetbrains.jdba;
 
+import org.jetbrains.jdba.intermediate.AdaptIntermediateRdbmsProviderTest;
 import org.jetbrains.jdba.sql.ScriptumBasicTest;
 import org.jetbrains.jdba.sql.ScriptumResourceFromJavaTest;
 import org.jetbrains.jdba.sql.SqlScriptBuilderTest;
@@ -21,6 +22,8 @@ import org.junit.runners.Suite;
                             ScriptumResourceFromJavaTest.class,
                             ScriptumBasicTest.class,
                             SqlScriptBuilderTest.class,
-                            SqlScriptTest.class
+                            SqlScriptTest.class,
+                            // Intermediate Layer
+                            AdaptIntermediateRdbmsProviderTest.class
 })
 public class CoreDbaUnitTests {}
