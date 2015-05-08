@@ -15,16 +15,16 @@ public class SqlQuery<S> extends SqlExecutable {
 
 
   @NotNull
-  final ResultLayout<S> layout;
+  private final ResultLayout<S> myLayout;
 
 
   private transient String displayName;
 
 
-  SqlQuery(@NotNull final String sourceText,
+  public SqlQuery(@NotNull final String sourceText,
            @NotNull final ResultLayout<S> layout) {
     super(sourceText);
-    this.layout = layout;
+    this.myLayout = layout;
   }
 
   public String getDisplayName() {
@@ -51,6 +51,11 @@ public class SqlQuery<S> extends SqlExecutable {
     return mySourceText;
   }
 
+
+  @NotNull
+  public ResultLayout<S> getLayout() {
+    return myLayout;
+  }
 
   @Override
   public String toString() {
