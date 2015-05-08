@@ -2,8 +2,8 @@ package org.jetbrains.jdba.jdbc;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.DBInterSeance;
 import org.jetbrains.jdba.core.ResultLayout;
+import org.jetbrains.jdba.inter.DBInterSeance;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -1,4 +1,4 @@
-package org.jetbrains.jdba.core.exceptions;
+package org.jetbrains.jdba.exceptions;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

@@ -1,9 +1,9 @@
 package org.jetbrains.jdba.jdbc;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.core.DBInterCursor;
 import org.jetbrains.jdba.core.ParameterDef;
 import org.jetbrains.jdba.core.ResultLayout;
+import org.jetbrains.jdba.inter.DBInterCursor;
 
 import java.sql.CallableStatement;
 import java.sql.SQLException;

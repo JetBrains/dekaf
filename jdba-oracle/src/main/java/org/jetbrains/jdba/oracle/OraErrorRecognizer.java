@@ -2,9 +2,9 @@ package org.jetbrains.jdba.oracle;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.exceptions.DBException;
-import org.jetbrains.jdba.core.exceptions.DuplicateKeyException;
-import org.jetbrains.jdba.core.exceptions.UnknownDBException;
+import org.jetbrains.jdba.exceptions.DBException;
+import org.jetbrains.jdba.exceptions.DuplicateKeyException;
+import org.jetbrains.jdba.exceptions.UnknownDBException;
 import org.jetbrains.jdba.jdbc.BaseErrorRecognizer;
 
 import java.sql.SQLException;

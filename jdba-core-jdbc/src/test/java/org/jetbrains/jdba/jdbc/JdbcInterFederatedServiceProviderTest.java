@@ -1,6 +1,6 @@
 package org.jetbrains.jdba.jdbc;
 
-import org.jetbrains.jdba.core.DBInterRdbmsServiceProvider;
+import org.jetbrains.jdba.inter.DBInterRdbmsServiceProvider;
 import org.junit.Before;
 import org.junit.Test;
 

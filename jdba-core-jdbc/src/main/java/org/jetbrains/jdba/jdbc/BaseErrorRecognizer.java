@@ -2,9 +2,9 @@ package org.jetbrains.jdba.jdbc;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.DBErrorRecognizer;
-import org.jetbrains.jdba.core.exceptions.DBException;
-import org.jetbrains.jdba.core.exceptions.UnexpectedJdbcException;
+import org.jetbrains.jdba.exceptions.DBException;
+import org.jetbrains.jdba.exceptions.UnexpectedJdbcException;
+import org.jetbrains.jdba.inter.DBErrorRecognizer;
 
 import java.sql.SQLException;
 

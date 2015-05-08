@@ -2,7 +2,7 @@ package org.jetbrains.jdba.jdbc;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.exceptions.DBException;
+import org.jetbrains.jdba.exceptions.DBException;
 
 import java.sql.SQLException;
 

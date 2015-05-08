@@ -2,9 +2,9 @@ package org.jetbrains.jdba.jdbc;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.DBInterFacade;
-import org.jetbrains.jdba.core.DBInterRdbmsServiceProvider;
-import org.jetbrains.jdba.core.exceptions.DBPreparingException;
+import org.jetbrains.jdba.exceptions.DBPreparingException;
+import org.jetbrains.jdba.inter.DBInterFacade;
+import org.jetbrains.jdba.inter.DBInterRdbmsServiceProvider;
 
 import java.sql.Driver;
 import java.sql.DriverManager;

@@ -2,7 +2,7 @@ package org.jetbrains.jdba.jdbc;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.exceptions.DBDriverException;
+import org.jetbrains.jdba.exceptions.DBDriverException;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;

@@ -2,10 +2,10 @@ package org.jetbrains.jdba.jdbc;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.DBInterCursor;
 import org.jetbrains.jdba.core.ResultLayout;
 import org.jetbrains.jdba.core.RowLayout;
-import org.jetbrains.jdba.core.exceptions.DBPreparingException;
+import org.jetbrains.jdba.exceptions.DBPreparingException;
+import org.jetbrains.jdba.inter.DBInterCursor;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;

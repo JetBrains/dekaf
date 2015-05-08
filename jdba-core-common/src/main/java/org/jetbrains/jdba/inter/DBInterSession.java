@@ -1,7 +1,8 @@
-package org.jetbrains.jdba.core;
+package org.jetbrains.jdba.inter;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jdba.core.ParameterDef;
 
 
 

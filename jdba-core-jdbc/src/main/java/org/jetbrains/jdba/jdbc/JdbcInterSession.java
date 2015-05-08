@@ -2,11 +2,11 @@ package org.jetbrains.jdba.jdbc;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.DBErrorRecognizer;
-import org.jetbrains.jdba.core.DBInterSession;
 import org.jetbrains.jdba.core.ParameterDef;
-import org.jetbrains.jdba.core.exceptions.DBException;
-import org.jetbrains.jdba.core.exceptions.DBSessionIsClosedException;
+import org.jetbrains.jdba.exceptions.DBException;
+import org.jetbrains.jdba.exceptions.DBSessionIsClosedException;
+import org.jetbrains.jdba.inter.DBErrorRecognizer;
+import org.jetbrains.jdba.inter.DBInterSession;
 
 import java.sql.Connection;
 import java.sql.SQLException;

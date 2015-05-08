@@ -3,7 +3,7 @@ package org.jetbrains.jdba.jdbc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Rdbms;
-import org.jetbrains.jdba.core.exceptions.DBDriverException;
+import org.jetbrains.jdba.exceptions.DBDriverException;
 
 import java.io.File;
 import java.net.MalformedURLException;

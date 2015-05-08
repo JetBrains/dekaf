@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.exceptions.DBFetchingException;
+import org.jetbrains.jdba.exceptions.DBFetchingException;
 
 import java.lang.reflect.Array;
 import java.sql.ResultSet;

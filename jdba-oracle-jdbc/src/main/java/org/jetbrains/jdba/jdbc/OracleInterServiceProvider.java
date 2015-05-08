@@ -2,7 +2,7 @@ package org.jetbrains.jdba.jdbc;
 
 import org.jetbrains.jdba.Oracle;
 import org.jetbrains.jdba.Rdbms;
-import org.jetbrains.jdba.core.exceptions.DBPreparingException;
+import org.jetbrains.jdba.exceptions.DBPreparingException;
 
 import java.sql.Driver;
 import java.util.regex.Pattern;

@@ -3,10 +3,10 @@ package org.jetbrains.jdba.jdbc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Rdbms;
-import org.jetbrains.jdba.core.exceptions.DBFactoryException;
 import org.jetbrains.jdba.core1.DBFacade;
 import org.jetbrains.jdba.core1.DBProvider;
 import org.jetbrains.jdba.core1.DBServiceFactory;
+import org.jetbrains.jdba.exceptions.DBFactoryException;
 
 import javax.sql.DataSource;
 import java.io.File;

@@ -3,10 +3,10 @@ package org.jetbrains.jdba.jdbc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Rdbms;
-import org.jetbrains.jdba.core.DBInterFacade;
-import org.jetbrains.jdba.core.DBInterFederatedServiceProvider;
-import org.jetbrains.jdba.core.DBInterRdbmsServiceProvider;
-import org.jetbrains.jdba.core.exceptions.DBFactoryException;
+import org.jetbrains.jdba.exceptions.DBFactoryException;
+import org.jetbrains.jdba.inter.DBInterFacade;
+import org.jetbrains.jdba.inter.DBInterFederatedServiceProvider;
+import org.jetbrains.jdba.inter.DBInterRdbmsServiceProvider;
 
 import java.util.Collections;
 import java.util.List;

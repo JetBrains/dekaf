@@ -1,8 +1,8 @@
 package org.jetbrains.jdba.core1;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.core.exceptions.DBFetchingException;
-import org.jetbrains.jdba.core.exceptions.DBPreparingException;
+import org.jetbrains.jdba.exceptions.DBFetchingException;
+import org.jetbrains.jdba.exceptions.DBPreparingException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

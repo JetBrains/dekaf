@@ -2,7 +2,7 @@ package org.jetbrains.jdba.jdbc;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.exceptions.DBPreparingException;
+import org.jetbrains.jdba.exceptions.DBPreparingException;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;

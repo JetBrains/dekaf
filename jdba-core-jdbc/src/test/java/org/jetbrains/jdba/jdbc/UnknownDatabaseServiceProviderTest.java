@@ -1,7 +1,7 @@
 package org.jetbrains.jdba.jdbc;
 
 import org.jetbrains.jdba.assertions.PatternAssert;
-import org.jetbrains.jdba.core.DBInterFacade;
+import org.jetbrains.jdba.inter.DBInterFacade;
 import org.junit.Before;
 import org.junit.Test;
 

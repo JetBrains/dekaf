@@ -1,7 +1,7 @@
 package org.jetbrains.jdba.jdbc;
 
-import org.jetbrains.jdba.core.DBErrorRecognizer;
-import org.jetbrains.jdba.core.DBInterSession;
+import org.jetbrains.jdba.inter.DBErrorRecognizer;
+import org.jetbrains.jdba.inter.DBInterSession;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;

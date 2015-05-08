@@ -1,6 +1,6 @@
 package org.jetbrains.jdba.jdbc;
 
-import org.jetbrains.jdba.core.DBErrorRecognizer;
+import org.jetbrains.jdba.inter.DBErrorRecognizer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 

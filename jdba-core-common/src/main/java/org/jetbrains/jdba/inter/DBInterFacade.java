@@ -1,4 +1,4 @@
-package org.jetbrains.jdba.core;
+package org.jetbrains.jdba.inter;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.Rdbms;

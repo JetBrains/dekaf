@@ -2,8 +2,8 @@ package org.jetbrains.jdba.core1;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.Rdbms;
-import org.jetbrains.jdba.core.DBErrorRecognizer;
-import org.jetbrains.jdba.core.exceptions.DBIsNotConnected;
+import org.jetbrains.jdba.exceptions.DBIsNotConnected;
+import org.jetbrains.jdba.inter.DBErrorRecognizer;
 import org.jetbrains.jdba.jdbc.pooling.ConnectionPool;
 import org.jetbrains.jdba.sql.SQL;
 

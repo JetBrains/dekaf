@@ -3,7 +3,7 @@ package org.jetbrains.jdba.core1;
 import com.google.common.collect.ImmutableMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.core.exceptions.DBPreparingException;
+import org.jetbrains.jdba.exceptions.DBPreparingException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

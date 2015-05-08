@@ -2,7 +2,7 @@ package org.jetbrains.jdba.core1;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.Rdbms;
-import org.jetbrains.jdba.core.DBErrorRecognizer;
+import org.jetbrains.jdba.inter.DBErrorRecognizer;
 import org.jetbrains.jdba.sql.SQL;
 
 import javax.sql.DataSource;

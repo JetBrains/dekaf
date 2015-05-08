@@ -3,8 +3,8 @@ package org.jetbrains.jdba.jdbc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Rdbms;
-import org.jetbrains.jdba.core.DBErrorRecognizer;
-import org.jetbrains.jdba.core.DBInterFacade;
+import org.jetbrains.jdba.inter.DBErrorRecognizer;
+import org.jetbrains.jdba.inter.DBInterFacade;
 import org.jetbrains.jdba.jdbc.pooling.ConnectionPool;
 import org.jetbrains.jdba.jdbc.pooling.SimpleDataSource;
 
