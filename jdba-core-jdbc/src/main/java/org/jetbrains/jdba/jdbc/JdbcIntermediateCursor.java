@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.core.ResultLayout;
 import org.jetbrains.jdba.core.RowLayout;
 import org.jetbrains.jdba.exceptions.DBPreparingException;
+import org.jetbrains.jdba.intermediate.DBIntermediateConsts;
 import org.jetbrains.jdba.intermediate.IntegralIntermediateCursor;
 
 import java.sql.ResultSet;
@@ -35,7 +36,7 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
 
   private boolean myHasRows;
 
-  private int myFetchLimit = 1000000;
+  private int myFetchLimit = DBIntermediateConsts.DEFAULT_FETCH_LIMIT;
 
   private JdbcRowsCollector<R> myRowsCollector;
 
@@ -55,7 +56,7 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
       myOpened = !myResultSet.isClosed();
     }
     catch (SQLException sqle) {
-      throw seance.session.recognizeException(sqle, seance.statementText);
+      throw seance.mySession.recognizeException(sqle, seance.myStatementText);
     }
 
     if (myOpened) {
@@ -64,7 +65,7 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
           myHasRows = resultSet.next(); // attempt to get the first portion of rows
         }
         catch (SQLException sqle) {
-          throw seance.session.recognizeException(sqle, seance.statementText);
+          throw seance.mySession.recognizeException(sqle, seance.myStatementText);
         }
       }
       else {
@@ -77,10 +78,10 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
 
     if (myHasRows) {
       try {
-        myRowsCollector = createRowsCollector(resultLayout, myResultSet, seance.statementText);
+        myRowsCollector = createRowsCollector(resultLayout, myResultSet, seance.myStatementText);
       }
       catch (SQLException sqle) {
-        throw seance.session.recognizeException(sqle, seance.statementText);
+        throw seance.mySession.recognizeException(sqle, seance.myStatementText);
       }
     }
   }
@@ -198,7 +199,7 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
     }
     catch (SQLException sqle) {
       close();
-      throw mySeance.session.recognizeException(sqle, mySeance.statementText);
+      throw mySeance.mySession.recognizeException(sqle, mySeance.myStatementText);
     }
 
     myHasRows = myRowsCollector.hasMoreRows;

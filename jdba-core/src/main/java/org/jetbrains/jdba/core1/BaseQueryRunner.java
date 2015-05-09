@@ -30,15 +30,27 @@ public class BaseQueryRunner<S> implements DBQueryRunner {
   }
 
 
+  @NotNull
   @Override
   public DBQueryRunner<S> withParams(final Object... params) {
     this.params = params;
     return this;
   }
 
+  @NotNull
+  @Override
+  public DBQueryRunner packBy(final int rowsPerPack) {
+    throw new RuntimeException("Method BaseQueryRunner.packBy() is not implemented yet.");
+  }
+
 
   @Override
   public S run() {
     return session.processQuery(query.getSourceText(), params, query.getCollector());
+  }
+
+  @Override
+  public Object nextPack() {
+    throw new RuntimeException("Method BaseQueryRunner.nextPack() is not implemented yet.");
   }
 }

@@ -74,10 +74,18 @@ public class BaseSession implements DBSession, DBTransaction  {
 
   @NotNull
   @Override
-  public <S> DBQueryRunner<S> query(@NotNull final SqlQuery<S> query) {
+  public <S> BaseQueryRunner<S> query(@NotNull final SqlQuery<S> query) {
     final IntegralIntermediateSeance interSeance =
             myInterSession.openSeance(query.getSourceText(), null);
     return new BaseQueryRunner<S>(interSeance, query.getLayout());
+  }
+
+  @NotNull
+  @Override
+  public <S> BaseQueryRunner<S> query(@NotNull final String queryText,
+                                      @NotNull final ResultLayout<S> layout) {
+    SqlQuery<S> query = new SqlQuery<S>(queryText, layout);
+    return this.query(query);
   }
 
   @NotNull

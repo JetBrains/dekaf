@@ -22,6 +22,10 @@ public interface DBTransaction {
   <S> DBQueryRunner<S> query(@NotNull final SqlQuery<S> query);
 
   @NotNull
+  <S> DBQueryRunner<S> query(@NotNull final String queryText,
+                             @NotNull final ResultLayout<S> layout);
+
+  @NotNull
   DBScriptRunner script(@NotNull final SqlScript script);
 
 }

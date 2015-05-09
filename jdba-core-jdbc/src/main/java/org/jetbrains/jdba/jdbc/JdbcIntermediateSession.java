@@ -10,6 +10,8 @@ import org.jetbrains.jdba.intermediate.IntegralIntermediateSession;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 
 
@@ -32,6 +34,10 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
   private boolean myInTransaction;
 
   private boolean myClosed;
+
+  @NotNull
+  private final Queue<JdbcIntermediateSeance> mySeances =
+          new LinkedBlockingQueue<JdbcIntermediateSeance>(4);
 
 
   protected JdbcIntermediateSession(@Nullable final JdbcIntermediateFacade facade,
@@ -103,14 +109,19 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
   @NotNull
   @Override
   public JdbcIntermediateSeance openSeance(@NotNull final String statementText,
-                                    @Nullable final ParameterDef[] outParameterDefs) {
+                                           @Nullable final ParameterDef[] outParameterDefs) {
     checkNotClosed();
+
+    final JdbcIntermediateSeance seance;
     if (outParameterDefs == null) {
-      return openSimpleStatementSeance(statementText);
+      seance = openSimpleStatementSeance(statementText);
     }
     else {
-      return openPreparedStatementSeance(statementText, outParameterDefs);
+      seance = openPreparedStatementSeance(statementText, outParameterDefs);
     }
+
+    mySeances.add(seance);
+    return seance;
   }
 
   @NotNull
@@ -128,6 +139,8 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
   @Override
   public void close() {
     if (myClosed) return;
+
+    closeSeances();
 
     if (myInTransaction) {
       rollback();
@@ -148,6 +161,26 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
       }
     }
   }
+
+  private void closeSeances() {
+
+  }
+
+
+  //// DIAGNOSTIC METHODS \\\\
+
+  public int countOpenedSeances() {
+    int count = 0;
+    for (JdbcIntermediateSeance seance : mySeances) if (seance.isStatementOpened()) count++;
+    return count;
+  }
+
+  public int countOpenedCursors() {
+    int count = 0;
+    for (JdbcIntermediateSeance seance : mySeances) count += seance.countOpenedCursors();
+    return count;
+  }
+
 
 
   //// INTERNAL METHODS \\\\

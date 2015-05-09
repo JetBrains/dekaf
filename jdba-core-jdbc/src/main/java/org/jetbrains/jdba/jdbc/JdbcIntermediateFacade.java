@@ -77,7 +77,7 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
 
 
   @Override
-  public void connect() {
+  public synchronized void connect() {
     try {
       myPool.connect();
     }
@@ -87,13 +87,13 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
   }
 
   @Override
-  public void reconnect() {
+  public synchronized void reconnect() {
     // TODO implement JdbcInterFacade.reconnect
     throw new RuntimeException("The JdbcInterFacade.reconnect has not been implemented yet.");
   }
 
   @Override
-  public void disconnect() {
+  public synchronized void disconnect() {
     try {
       while (!mySessions.isEmpty()) {
         Thread.sleep(10);
@@ -155,4 +155,15 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
     return myPool.countAllConnections();
   }
 
+  public int countOpenedSeances() {
+    int count = 0;
+    for (JdbcIntermediateSession session : mySessions) count += session.countOpenedSeances();
+    return count;
+  }
+
+  public int countOpenedCursors() {
+    int count = 0;
+    for (JdbcIntermediateSession session : mySessions) count += session.countOpenedCursors();
+    return count;
+  }
 }

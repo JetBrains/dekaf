@@ -3,7 +3,6 @@ package org.jetbrains.jdba.jdbc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.exceptions.DBPreparingException;
-import org.jetbrains.jdba.intermediate.IntegralIntermediateFacade;
 import org.jetbrains.jdba.intermediate.IntegralIntermediateRdbmsProvider;
 
 import java.sql.Driver;
@@ -26,9 +25,9 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
 
 
   @Override
-  public IntegralIntermediateFacade openFacade(@NotNull final String connectionString,
-                                               @Nullable final Properties connectionProperties,
-                                               final int connectionsLimit) {
+  public JdbcIntermediateFacade openFacade(@NotNull final String connectionString,
+                                           @Nullable final Properties connectionProperties,
+                                           final int connectionsLimit) {
     Driver driver = getDriver(connectionString);
     BaseErrorRecognizer errorRecognizer = getErrorRecognizer();
     return new JdbcIntermediateFacade(connectionString, connectionProperties, driver, connectionsLimit, errorRecognizer);

@@ -22,7 +22,7 @@ public class SqlQuery<S> extends SqlExecutable {
 
 
   public SqlQuery(@NotNull final String sourceText,
-           @NotNull final ResultLayout<S> layout) {
+                  @NotNull final ResultLayout<S> layout) {
     super(sourceText);
     this.myLayout = layout;
   }

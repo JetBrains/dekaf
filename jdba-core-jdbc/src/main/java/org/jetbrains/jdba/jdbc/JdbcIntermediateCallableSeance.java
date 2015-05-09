@@ -37,7 +37,7 @@ public class JdbcIntermediateCallableSeance extends JdbcIntermediateSeance {
         // TODO register it correctly
         stmt.registerOutParameter(i+1, Types.VARCHAR);
       }
-      statement = stmt;
+      myStatement = stmt;
     }
     catch (SQLException sqle) {
       throw session.recognizeException(sqle, statementText);

@@ -3,11 +3,10 @@ package org.jetbrains.jdba.jdbc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.core.ResultLayout;
+import org.jetbrains.jdba.exceptions.UnhandledTypeException;
 import org.jetbrains.jdba.intermediate.IntegralIntermediateSeance;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 
 
@@ -20,12 +19,12 @@ public abstract class JdbcIntermediateSeance implements IntegralIntermediateSean
   //// STATE \\\\
 
   @NotNull
-  protected final JdbcIntermediateSession session;
+  protected final JdbcIntermediateSession mySession;
 
   @NotNull
-  protected final String statementText;
+  protected final String myStatementText;
 
-  protected PreparedStatement statement;
+  protected PreparedStatement myStatement;
 
   @Nullable
   protected ResultSet myDefaultResultSet;
@@ -43,8 +42,8 @@ public abstract class JdbcIntermediateSeance implements IntegralIntermediateSean
 
   protected JdbcIntermediateSeance(@NotNull final JdbcIntermediateSession session,
                                    @NotNull final String statementText) {
-    this.session = session;
-    this.statementText = statementText;
+    this.mySession = session;
+    this.myStatementText = statementText;
   }
 
 
@@ -54,31 +53,116 @@ public abstract class JdbcIntermediateSeance implements IntegralIntermediateSean
 
   @Override
   public synchronized void setInParameters(@NotNull final Object[] parameters) {
-    // TODO implement JdbcInterSeance.setInParameters()
-    throw new RuntimeException("Method JdbcInterSeance.setInParameters() is not implemented yet.");
+    assert myStatement != null;
+    try {
+      assignParameters(myStatement, parameters);
+    }
+    catch (SQLException sqle) {
+      throw mySession.recognizeException(sqle, myStatementText);
+    }
+  }
 
+
+  protected void assignParameters(@NotNull final PreparedStatement stmt, final Object[] params)
+          throws SQLException
+  {
+    if (params == null) {
+      return;
+    }
+    for (int i = 0; i < params.length; i++) {
+      Object param = params[i];
+      assignParameter(stmt, i + 1, param);
+    }
+  }
+
+
+  protected void assignParameter(@NotNull final PreparedStatement stmt,
+                                 final int index,
+                                 @Nullable final Object object)
+          throws SQLException
+  {
+    if (object == null) {
+      stmt.setNull(index, Types.BIT);
+    }
+    else if (object instanceof Boolean) {
+      stmt.setBoolean(index, (Boolean)object);
+    }
+    else if (object instanceof Byte) {
+      stmt.setByte(index, (Byte)object);
+    }
+    else if (object instanceof Short) {
+      stmt.setShort(index, (Short)object);
+    }
+    else if (object instanceof Integer) {
+      stmt.setInt(index, (Integer)object);
+    }
+    else if (object instanceof Float) {
+      stmt.setFloat(index, (Float)object);
+    }
+    else if (object instanceof Double) {
+      stmt.setDouble(index, (Double)object);
+    }
+    else if (object instanceof Long) {
+      stmt.setLong(index, (Long)object);
+    }
+    else if (object instanceof Character) {
+      stmt.setString(index, object.toString());
+    }
+    else if (object instanceof String) {
+      stmt.setString(index, (String)object);
+    }
+    else if (object instanceof java.sql.Date) {
+      stmt.setDate(index, (java.sql.Date)object);
+    }
+    else if (object instanceof java.sql.Timestamp) {
+      stmt.setTimestamp(index, (java.sql.Timestamp)object);
+    }
+    else if (object instanceof java.sql.Time) {
+      stmt.setTime(index, (java.sql.Time)object);
+    }
+    else if (object instanceof java.util.Date) {
+      stmt.setTimestamp(index, new Timestamp(((java.util.Date)object).getTime()));
+    }
+    else if (object instanceof byte[]) {
+      stmt.setBytes(index, (byte[])object);
+    }
+    else {
+      boolean assigned = assignSpecificParameter(stmt, index, object);
+      if (!assigned) {
+        throw new UnhandledTypeException("I don't know how to pass an instance of class " +
+                                                 object.getClass().getSimpleName() + " as the " +
+                                                 index + "th parameter into a SQL statement.", null);
+      }
+    }
+  }
+
+  protected boolean assignSpecificParameter(@NotNull final PreparedStatement stmt,
+                                            final int index,
+                                            @NotNull final Object object) throws SQLException {
+    return false;
   }
 
 
   @Override
   public synchronized void execute() {
     try {
-      boolean gotResultSet = statement.execute();
+      boolean gotResultSet = myStatement.execute();
       if (gotResultSet)  {
-        myDefaultResultSet = statement.getResultSet();
+        myDefaultResultSet = myStatement.getResultSet();
         myDefaultResultSetHasRows = myDefaultResultSet.next();  // download first rows
         if (!myDefaultResultSetHasRows)  {
           myDefaultResultSet.close(); // close it if it has no rows
         }
       }
       else {
-        myAffectedRowsCount = statement.getUpdateCount();
+        myAffectedRowsCount = myStatement.getUpdateCount();
       }
     }
-    catch (SQLException e) {
-      e.printStackTrace();
+    catch (SQLException sqle) {
+      throw mySession.recognizeException(sqle, myStatementText);
     }
   }
+
 
   @Override
   public int getAffectedRowsCount() {
@@ -130,18 +214,37 @@ public abstract class JdbcIntermediateSeance implements IntegralIntermediateSean
       }
     }
 
-    if (statement != null) {
+    if (myStatement != null) {
       try {
-        if (!statement.isClosed()) {
-          statement.close();
+        if (!myStatement.isClosed()) {
+          myStatement.close();
         }
       }
       catch (SQLException sqle) {
         // TODO log somehow
       }
       finally {
-        statement = null;
+        myStatement = null;
       }
     }
   }
+
+
+  //// DIAGNOSTIC METHODS \\\\
+
+  public boolean isStatementOpened() {
+    try {
+      return myStatement != null
+          && !myStatement.isClosed();
+    }
+    catch (SQLException sqle) {
+      // TODO log somehow
+      return false;
+    }
+  }
+
+  public int countOpenedCursors() {
+    return myDefaultCursor != null && myDefaultCursor.isOpened() ? 1 : 0;
+  }
+
 }
