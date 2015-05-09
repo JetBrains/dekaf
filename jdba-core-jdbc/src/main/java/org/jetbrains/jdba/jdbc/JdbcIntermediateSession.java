@@ -37,7 +37,7 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
 
   @NotNull
   private final Queue<JdbcIntermediateSeance> mySeances =
-          new LinkedBlockingQueue<JdbcIntermediateSeance>(4);
+                new LinkedBlockingQueue<JdbcIntermediateSeance>(4);
 
 
   protected JdbcIntermediateSession(@Nullable final JdbcIntermediateFacade facade,
@@ -53,7 +53,7 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
 
 
   @Override
-  public void beginTransaction() {
+  public synchronized void beginTransaction() {
     checkNotClosed();
 
     if (!myInTransaction) {
@@ -72,7 +72,7 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
   }
 
   @Override
-  public void commit() {
+  public synchronized void commit() {
     if (myInTransaction) {
       myInTransaction = false;
       try {
@@ -89,7 +89,7 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
   }
 
   @Override
-  public void rollback() {
+  public synchronized void rollback() {
     if (myClosed) return;
 
     // TODO close all seances here
@@ -108,8 +108,8 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
 
   @NotNull
   @Override
-  public JdbcIntermediateSeance openSeance(@NotNull final String statementText,
-                                           @Nullable final ParameterDef[] outParameterDefs) {
+  public synchronized JdbcIntermediateSeance openSeance(@NotNull final String statementText,
+                                                        @Nullable final ParameterDef[] outParameterDefs) {
     checkNotClosed();
 
     final JdbcIntermediateSeance seance;
@@ -137,7 +137,32 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
 
 
   @Override
-  public void close() {
+  public <I> I getSpecificService(@NotNull final Class<I> serviceInterface,
+                                  @NotNull final String name) {
+    if (name.equalsIgnoreCase("jdbc-connection")) {
+      try {
+        if (serviceInterface.isAssignableFrom(myConnection.getClass())) {
+          //noinspection unchecked
+          return (I) myConnection;
+        }
+        else if (myConnection.isWrapperFor(serviceInterface)) {
+          return myConnection.unwrap(serviceInterface);
+        }
+        else {
+          return null;
+        }
+      }
+      catch (SQLException sqle) {
+        throw recognizeException(sqle, "getting specific service "+name);
+      }
+    }
+    else {
+      throw new IllegalArgumentException("Unknown specific service: " + name);
+    }
+  }
+
+  @Override
+  public synchronized void close() {
     if (myClosed) return;
 
     closeSeances();
@@ -163,7 +188,10 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
   }
 
   private void closeSeances() {
-
+    while (!mySeances.isEmpty()) {
+      JdbcIntermediateSeance seanceToClose = mySeances.poll();
+      seanceToClose.close();
+    }
   }
 
 

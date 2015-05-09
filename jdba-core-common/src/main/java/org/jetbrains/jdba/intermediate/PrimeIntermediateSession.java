@@ -28,9 +28,12 @@ public interface PrimeIntermediateSession {
 
   @NotNull
   PrimeIntermediateSeance openSeance(@NotNull final String statementText,
-                           @Nullable final ParameterDef[] outParameters);
+                                     @Nullable final ParameterDef[] outParameters);
 
 
+  //// OTHER \\\\
+
+  <I> I getSpecificService(@NotNull Class<I> serviceInterface, @NotNull String name);
 
 
   //// CLOSE \\\\

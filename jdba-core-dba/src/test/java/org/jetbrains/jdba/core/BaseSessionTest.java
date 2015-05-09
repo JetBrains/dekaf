@@ -113,6 +113,21 @@ public class BaseSessionTest extends BaseHyperSonicCase {
   }
 
 
+  @Test
+  public void getting_jdbc_connection() {
+    ourFacade.inSession(new InSessionNoResult() {
+      @Override
+      public void run(@NotNull final DBSession session) {
+
+        Object connection = session.getSpecificService(java.sql.Connection.class, "jdbc-connection");
+        assertThat(connection).isNotNull()
+                              .isInstanceOf(java.sql.Connection.class);
+
+      }
+    });
+  }
+
+
   private void checkAllAreClosed() {
     assertThat(ourInterFacade.countOpenedCursors()).isZero();
     assertThat(ourInterFacade.countOpenedSeances()).isZero();

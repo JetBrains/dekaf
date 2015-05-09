@@ -95,4 +95,10 @@ public class BaseSession implements DBSession, DBTransaction  {
     throw new RuntimeException("The BaseSession.script has not been implemented yet.");
   }
 
+
+  public <I> I getSpecificService(@NotNull final Class<I> serviceInterface,
+                                  @NotNull final String name) {
+    return myInterSession.getSpecificService(serviceInterface, name);
+  }
+
 }

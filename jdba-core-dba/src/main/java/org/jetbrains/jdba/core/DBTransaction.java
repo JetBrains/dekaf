@@ -28,4 +28,8 @@ public interface DBTransaction {
   @NotNull
   DBScriptRunner script(@NotNull final SqlScript script);
 
+
+  <I> I getSpecificService(@NotNull final Class<I> serviceInterface,
+                           @NotNull final String name);
+
 }
