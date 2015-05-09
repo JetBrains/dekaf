@@ -39,6 +39,7 @@ public class AdaptIntermediateSession implements IntegralIntermediateSession {
   }
 
   @Override
+  @Nullable
   public <I> I getSpecificService(@NotNull final Class<I> serviceInterface,
                                   @NotNull final String name) {
     return myRemoteSession.getSpecificService(serviceInterface,  name);

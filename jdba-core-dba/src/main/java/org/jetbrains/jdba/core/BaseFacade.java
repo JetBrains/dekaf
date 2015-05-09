@@ -81,6 +81,7 @@ public class BaseFacade implements DBFacade {
     try {
       final BaseSession session = new BaseSession(interSession);
       result = operation.run(session);
+      session.closeRunners();
     }
     finally {
       interSession.close();
@@ -97,6 +98,7 @@ public class BaseFacade implements DBFacade {
     try {
       final BaseSession session = new BaseSession(interSession);
       operation.run(session);
+      session.closeRunners();
     }
     finally {
       interSession.close();

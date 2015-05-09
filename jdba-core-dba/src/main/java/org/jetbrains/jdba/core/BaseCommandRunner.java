@@ -7,7 +7,7 @@ import org.jetbrains.jdba.intermediate.IntegralIntermediateSeance;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public class BaseCommandRunner implements DBCommandRunner {
+public class BaseCommandRunner implements DBCommandRunner, BaseSeanceRunner {
 
   private final IntegralIntermediateSeance myInterSeance;
 
@@ -25,5 +25,11 @@ public class BaseCommandRunner implements DBCommandRunner {
   public DBCommandRunner run() {
     myInterSeance.execute();
     return this;
+  }
+
+
+  @Override
+  public void close() {
+    myInterSeance.close();
   }
 }

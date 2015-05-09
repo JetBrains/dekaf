@@ -11,10 +11,10 @@ import org.jetbrains.jdba.intermediate.IntegralIntermediateSeance;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public class BaseQueryRunner<S> implements DBQueryRunner<S> {
+public class BaseQueryRunner<S> implements DBQueryRunner<S>, BaseSeanceRunner {
 
   @NotNull
-  private final IntegralIntermediateSeance myInterSeance;
+  protected final IntegralIntermediateSeance myInterSeance;
 
   @NotNull
   private final ResultLayout<S> myResultLayout;

@@ -3,6 +3,7 @@ package org.jetbrains.jdba.core;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.jdbc.BaseHyperSonicCase;
 import org.jetbrains.jdba.jdbc.JdbcIntermediateFacade;
+import org.jetbrains.jdba.jdbc.JdbcIntermediateSession;
 import org.jetbrains.jdba.jdbc.UnknownDatabaseProvider;
 import org.jetbrains.jdba.sql.SqlQuery;
 import org.junit.*;
@@ -110,6 +111,37 @@ public class BaseSessionTest extends BaseHyperSonicCase {
     });
 
     checkAllAreClosed();
+  }
+
+
+  @Test
+  public void transaction_should_close_seances() {
+    ourFacade.inSession(new InSessionNoResult() {
+      @Override
+      public void run(@NotNull final DBSession session) {
+
+        session.command("create table just_table_333 (x integer)").run();
+
+        session.inTransaction(new InTransactionNoResult() {
+          @Override
+          public void run(@NotNull final DBTransaction tran) {
+
+            tran.command("insert into just_table_333 values (111), (222), (333)").run();
+            tran.query("select * from just_table_333", Layouts.singleOf(Integer.class))
+                .packBy(1)
+                .run();
+
+          }
+        });
+
+        JdbcIntermediateSession intermediateSession =
+                session.getSpecificService(JdbcIntermediateSession.class, "inter-session");
+        assert intermediateSession != null;
+        assertThat(intermediateSession.countOpenedSeances()).isZero();
+        assertThat(intermediateSession.countOpenedCursors()).isZero();
+
+      }
+    });
   }
 
 

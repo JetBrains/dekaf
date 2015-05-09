@@ -33,6 +33,7 @@ public interface PrimeIntermediateSession {
 
   //// OTHER \\\\
 
+  @Nullable
   <I> I getSpecificService(@NotNull Class<I> serviceInterface, @NotNull String name);
 
 
