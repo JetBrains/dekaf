@@ -100,7 +100,7 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
         n = 1;
         break;
       default:
-        n = rowLayout.componentClasses.length;
+        n = rowLayout.components.length;
     }
 
     if (n < metaData.getColumnCount()) {
@@ -112,7 +112,7 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
     JdbcValueGetter<?>[] getters = new JdbcValueGetter[n];
     for (int i = 0; i < n; i++) {
       int jdbcType = metaData.getColumnType(i+1);
-      getters[i] = JdbcValueGetters.of(jdbcType, rowLayout.componentClasses[i]);
+      getters[i] = JdbcValueGetters.of(jdbcType, rowLayout.components[i].clazz);
     }
 
     JdbcRowFetcher<?> fetcher;

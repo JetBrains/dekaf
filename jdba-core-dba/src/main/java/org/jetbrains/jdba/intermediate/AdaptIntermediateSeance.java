@@ -3,6 +3,8 @@ package org.jetbrains.jdba.intermediate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.core.ResultLayout;
 
+import java.util.List;
+
 
 
 /**
@@ -32,10 +34,19 @@ public class AdaptIntermediateSeance implements IntegralIntermediateSeance {
   @NotNull
   public <R> IntegralIntermediateCursor<R> openCursor(final int parameterPosition,
                                                       @NotNull final ResultLayout<R> layout) {
+    if (layout.isPortable()) {
+      final PrimeIntermediateCursor<R> remoteCursor =
+              myRemoteSeance.openCursor(parameterPosition, layout);
+      return new AdaptIntermediatePortableCursor<R>(remoteCursor);
+    }
+    else {
+      ResultLayout<List<Object[]>> intermediateLayout =
+              layout.makeIntermediateLayout();
+      final PrimeIntermediateCursor<List<Object[]>> remoteCursor =
+              myRemoteSeance.openCursor(parameterPosition, intermediateLayout);
+      return new AdaptIntermediateStructCollectingCursor<R>(remoteCursor, layout);
+    }
 
-    final PrimeIntermediateCursor<R> remoteCursor =
-            myRemoteSeance.openCursor(parameterPosition, layout);
-    return new AdaptIntermediateCursor<R>(remoteCursor);
   }
 
   @Override

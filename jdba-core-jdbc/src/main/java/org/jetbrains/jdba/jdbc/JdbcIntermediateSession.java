@@ -156,6 +156,15 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
         throw recognizeException(sqle, "getting specific service "+name);
       }
     }
+    else if (name.equals("inter-session")) {
+      if (serviceInterface.isAssignableFrom(this.getClass())) {
+        //noinspection unchecked
+        return (I) this;
+      }
+      else {
+        return null;
+      }
+    }
     else {
       throw new IllegalArgumentException("Unknown specific service: " + name);
     }

@@ -1,6 +1,8 @@
 package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jdba.util.Classes;
+import org.jetbrains.jdba.util.NameAndClass;
 
 import java.lang.reflect.Array;
 import java.util.List;
@@ -24,17 +26,23 @@ public abstract class Layouts {
 
   @SuppressWarnings("unchecked")
   @NotNull
-  public static <C> RowLayout<C[]> arrayOf(int n, @NotNull final Class<C> componentClass) {
-    C[] example = (C[]) Array.newInstance(componentClass,0);
+  public static <V> RowLayout<V[]> arrayOf(int n, @NotNull final Class<V> componentClass) {
+    V[] example = (V[]) Array.newInstance(componentClass,0);
     Class resultClass = example.getClass();
-    Class<C>[] componentClasses = (Class<C>[]) new Class[n];
+    Class<V>[] componentClasses = (Class<V>[]) new Class[n];
     for (int i = 0; i < n; i++) componentClasses[i] = componentClass;
-    return new RowLayout<C[]>(RowLayout.Kind.ARRAY, resultClass, componentClass, componentClasses);
+    return new RowLayout<V[]>(RowLayout.Kind.ARRAY, resultClass, componentClass, componentClasses);
   }
 
   @NotNull
   public static RowLayout<Object[]> arrayOf(@NotNull final Class... componentClasses) {
     return new RowLayout<Object[]>(RowLayout.Kind.ARRAY, Object[].class, Object.class, componentClasses);
+  }
+
+  @NotNull
+  public static <C> RowLayout<C> structOf(@NotNull final Class<C> structClass) {
+    final NameAndClass[] assignableFields = Classes.assignableFieldsOf(structClass);
+    return new RowLayout<C>(RowLayout.Kind.CLASS_BY_NAMES, structClass, Object.class, assignableFields);
   }
 
 

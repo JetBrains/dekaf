@@ -1,15 +1,15 @@
 package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.jdbc.BaseHyperSonicCase;
-import org.jetbrains.jdba.jdbc.JdbcIntermediateFacade;
 import org.jetbrains.jdba.jdbc.JdbcIntermediateSession;
-import org.jetbrains.jdba.jdbc.UnknownDatabaseProvider;
 import org.jetbrains.jdba.sql.SqlQuery;
-import org.junit.*;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.jetbrains.jdba.core.Layouts.columnOf;
+import static org.jetbrains.jdba.core.Layouts.singleOf;
 
 
 
@@ -17,28 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Leonid Bushuev from JetBrains
  */
 @FixMethodOrder(MethodSorters.JVM)
-public class BaseSessionTest extends BaseHyperSonicCase {
+public class BaseSessionTest extends BaseHyperSonicFacadeTest {
 
-  private static JdbcIntermediateFacade ourInterFacade;
-
-  private static BaseFacade ourFacade;
-
-
-  @BeforeClass
-  public static void setup() {
-    ourInterFacade = UnknownDatabaseProvider.INSTANCE.openFacade(HSQL_CONNECTION_STRING, null, 1);
-    ourFacade = new BaseFacade(ourInterFacade);
-  }
-
-  @Before
-  public void connect() {
-    ourFacade.connect();
-  }
-
-  @After
-  public void disconnect() {
-    ourFacade.disconnect();
-  }
 
   @Test
   public void basic_scenario() {
@@ -58,7 +38,7 @@ public class BaseSessionTest extends BaseHyperSonicCase {
         });
 
         final SqlQuery<Integer> query =
-                new SqlQuery<Integer>("select * from tab1", Layouts.singleOf(Integer.class));
+                new SqlQuery<Integer>("select * from tab1", singleOf(Integer.class));
         int x = session.inTransaction(new InTransaction<Integer>() {
           @Override
           public Integer run(@NotNull final DBTransaction tran) {
@@ -92,7 +72,7 @@ public class BaseSessionTest extends BaseHyperSonicCase {
           cr.withParams(i).run();
 
         DBQueryRunner<Short[]> qr =
-                session.query("select * from Turbo2000 order by 1", Layouts.columnOf(Short.class))
+                session.query("select * from Turbo2000 order by 1", columnOf(Short.class))
                        .packBy(100);
         Short[] pack = qr.run();
 
@@ -127,7 +107,7 @@ public class BaseSessionTest extends BaseHyperSonicCase {
           public void run(@NotNull final DBTransaction tran) {
 
             tran.command("insert into just_table_333 values (111), (222), (333)").run();
-            tran.query("select * from just_table_333", Layouts.singleOf(Integer.class))
+            tran.query("select * from just_table_333", singleOf(Integer.class))
                 .packBy(1)
                 .run();
 
@@ -159,11 +139,5 @@ public class BaseSessionTest extends BaseHyperSonicCase {
     });
   }
 
-
-  private void checkAllAreClosed() {
-    assertThat(ourInterFacade.countOpenedCursors()).isZero();
-    assertThat(ourInterFacade.countOpenedSeances()).isZero();
-    assertThat(ourInterFacade.countOpenedSessions()).isZero();
-  }
 
 }

@@ -1,6 +1,7 @@
 package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jdba.util.NameAndClass;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -29,20 +30,65 @@ public final class RowLayout<R> implements Serializable {
   public final Class commonComponentClass;
 
   @NotNull
-  public final Class[] componentClasses;
+  public final NameAndClass[] components;
+
+  private final boolean portable;
 
 
   RowLayout(@NotNull final Kind kind,
             @NotNull final Class<R> rowClass,
             @NotNull final Class commonComponentClass,
-            @NotNull final Class... componentClasses) {
+            @NotNull final NameAndClass[] components) {
     this.kind = kind;
     this.rowClass = rowClass;
     this.commonComponentClass = commonComponentClass;
-    this.componentClasses = componentClasses;
+
+    this.components = components;
+
+    // portability
+    switch (kind) {
+      case ONE_VALUE:
+      case ARRAY:
+        portable = true;
+        break;
+      case CLASS_BY_NAMES:
+      case CLASS_BY_POSITIONS:
+        String className = rowClass.getName();
+        portable = className.startsWith("java.") || className.startsWith("javax.");
+        break;
+      default:
+        portable = false;
+    }
+  }
+
+  RowLayout(@NotNull final Kind kind,
+            @NotNull final Class<R> rowClass,
+            @NotNull final Class commonComponentClass,
+            @NotNull final Class... componentClasses) {
+    this(kind, rowClass, commonComponentClass, unnamedComponentsOf(componentClasses));
+  }
+
+  @NotNull
+  private static NameAndClass[] unnamedComponentsOf(final @NotNull Class[] componentClasses) {
+    final int n = componentClasses.length;
+    final NameAndClass[] components = new NameAndClass[n];
+    for (int i = 0; i < n; i++) components[i] =
+                                        new NameAndClass('#'+Integer.toString(i+1), componentClasses[i]);
+    return components;
   }
 
 
+  public boolean isPortable() {
+    return portable;
+  }
+
+
+  public RowLayout<Object[]> makeIntermediateLayout() {
+    return new RowLayout<Object[]>(Kind.ARRAY, Object[].class, commonComponentClass, components);
+  }
+
+
+  //// LEGACY METHODS \\\\
 
   @Override
   public boolean equals(final Object o) {
@@ -55,7 +101,7 @@ public final class RowLayout<R> implements Serializable {
     if (!rowClass.equals(rowLayout.rowClass)) return false;
     if (!commonComponentClass.equals(rowLayout.commonComponentClass)) return false;
     // Probably incorrect - comparing Object[] arrays with Arrays.equals
-    return Arrays.equals(componentClasses, rowLayout.componentClasses);
+    return Arrays.equals(components, rowLayout.components);
 
   }
 
@@ -64,7 +110,24 @@ public final class RowLayout<R> implements Serializable {
     int result = kind.hashCode();
     result = 31 * result + rowClass.hashCode();
     result = 31 * result + commonComponentClass.hashCode();
-    result = 31 * result + Arrays.hashCode(componentClasses);
+    result = 31 * result + Arrays.hashCode(components);
     return result;
+  }
+
+
+  @Override
+  public String toString() {
+    switch (kind) {
+      case ONE_VALUE:
+        return commonComponentClass.getSimpleName();
+      case ARRAY:
+        return commonComponentClass.getSimpleName() + "[]";
+      case CLASS_BY_NAMES:
+        return rowClass + "(fields names)";
+      case CLASS_BY_POSITIONS:
+        return rowClass + "(positions)";
+      default:
+        return "???";
+    }
   }
 }

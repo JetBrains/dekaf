@@ -139,7 +139,7 @@ public class BaseSession implements DBSession, DBTransaction  {
         return (I) myInterSession;
       }
       else {
-        return null;
+        return myInterSession.getSpecificService(serviceInterface, name);
       }
     }
     else {

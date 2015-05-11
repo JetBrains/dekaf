@@ -3,6 +3,7 @@ package org.jetbrains.jdba.core;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 
@@ -45,12 +46,33 @@ public final class ResultLayout<T> implements Serializable {
   }
 
   ResultLayout(@NotNull final Kind kind,
-                       final boolean sorted,
-                       @NotNull final RowLayout<?> row,
-                       int initialCapacity) {
+               final boolean sorted,
+               @NotNull final RowLayout<?> row,
+               int initialCapacity) {
     this.kind = kind;
     this.sorted = sorted;
     this.row = row;
     this.initialCapacity = initialCapacity;
   }
+
+
+  //// PORTABILITY METHODS \\\\
+
+  public boolean isPortable() {
+    return row.isPortable();
+  }
+
+  public ResultLayout<List<Object[]>> makeIntermediateLayout() {
+    return new ResultLayout<List<Object[]>>(Kind.LIST, false, row.makeIntermediateLayout());
+  }
+
+
+  //// LEGACY METHODS \\\\
+
+
+  @Override
+  public String toString() {
+    return kind.name() + " of " + row.toString();
+  }
+
 }
