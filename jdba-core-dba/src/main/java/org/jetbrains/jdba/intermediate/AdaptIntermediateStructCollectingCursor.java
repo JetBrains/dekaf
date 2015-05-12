@@ -21,9 +21,17 @@ import static org.jetbrains.jdba.util.Classes.defaultConstructorOf;
 public class AdaptIntermediateStructCollectingCursor<T> extends AdaptIntermediateCursor<T,List<Object[]>> {
 
 
+  /**
+   * The result layout.
+   * Comes from the {@link org.jetbrains.jdba.sql.SqlQuery}.
+   */
   @NotNull
   private ResultLayout<T> myResultLayout;
 
+  /**
+   * The default (without parameters) constructor
+   * that is used to instantiate a row class.
+   */
   @NotNull
   private Constructor myRowConstructor;
 

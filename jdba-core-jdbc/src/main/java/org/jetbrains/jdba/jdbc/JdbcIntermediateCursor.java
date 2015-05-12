@@ -179,9 +179,16 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
   public String[] getColumnNames() {
     if (!myOpened) throw new IllegalStateException("The cursor is not opened or is yet closed.");
 
-    // TODO implement JdbcInterCursor.getColumnNames()
-    throw new RuntimeException("Method JdbcInterCursor.getColumnNames() is not implemented yet.");
-
+    try {
+      final ResultSetMetaData md = myResultSet.getMetaData();
+      int n = md.getColumnCount();
+      String[] names = new String[n];
+      for (int j = 0; j < n; j++) names[j] = md.getColumnName(j+1);
+      return names;
+    }
+    catch (SQLException sqle) {
+      throw mySeance.mySession.recognizeException(sqle, mySeance.myStatementText);
+    }
   }
 
   @Override
