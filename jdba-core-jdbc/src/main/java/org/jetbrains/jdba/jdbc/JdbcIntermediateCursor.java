@@ -124,7 +124,7 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
         fetcher = JdbcRowFetchers.createArrayFetcher(1, rowLayout.commonComponentClass, getters);
         break;
       default:
-        throw new DBPreparingException(format("Unknown jow to handle the row layout %s", rowLayout.kind.toString()));
+        throw new DBPreparingException(format("Unknown how to handle the row layout %s", rowLayout.kind.toString()));
     }
 
     JdbcRowsCollector<?> collector;

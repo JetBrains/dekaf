@@ -22,7 +22,7 @@ public class BaseSessionTest extends BaseHyperSonicFacadeTest {
 
   @Test
   public void basic_scenario() {
-    ourFacade.inSession(new InSessionNoResult() {
+    myFacade.inSession(new InSessionNoResult() {
       @Override
       public void run(@NotNull final DBSession session) {
 
@@ -61,7 +61,7 @@ public class BaseSessionTest extends BaseHyperSonicFacadeTest {
 
   @Test
   public void iterative_scenario() {
-    ourFacade.inSession(new InSessionNoResult() {
+    myFacade.inSession(new InSessionNoResult() {
       @Override
       public void run(@NotNull final DBSession session) {
 
@@ -96,7 +96,7 @@ public class BaseSessionTest extends BaseHyperSonicFacadeTest {
 
   @Test
   public void transaction_should_close_seances() {
-    ourFacade.inSession(new InSessionNoResult() {
+    myFacade.inSession(new InSessionNoResult() {
       @Override
       public void run(@NotNull final DBSession session) {
 
@@ -127,7 +127,7 @@ public class BaseSessionTest extends BaseHyperSonicFacadeTest {
 
   @Test
   public void getting_jdbc_connection() {
-    ourFacade.inSession(new InSessionNoResult() {
+    myFacade.inSession(new InSessionNoResult() {
       @Override
       public void run(@NotNull final DBSession session) {
 

@@ -1,6 +1,6 @@
 package org.jetbrains.jdba.core;
 
-import org.jetbrains.jdba.intermediate.AdaptIntermediateFacade;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.jdbc.BaseHyperSonicCase;
 import org.jetbrains.jdba.jdbc.JdbcIntermediateFacade;
 import org.jetbrains.jdba.jdbc.UnknownDatabaseProvider;
@@ -19,30 +19,39 @@ public class BaseHyperSonicFacadeTest extends BaseHyperSonicCase {
 
 
 
-  protected static BaseFacade ourFacade;
-  private static JdbcIntermediateFacade ourRemoteFacade;
-  private static AdaptIntermediateFacade ourInterFacade;
+  protected BaseFacade myFacade;
+  protected JdbcIntermediateFacade myJdbcFacade;
+
+
 
   @BeforeClass
   public static void setup() {
-    ourRemoteFacade = UnknownDatabaseProvider.INSTANCE.openFacade(HSQL_CONNECTION_STRING, null, 1);
-    ourInterFacade = new AdaptIntermediateFacade(ourRemoteFacade);
-    ourFacade = new BaseFacade(ourInterFacade);
   }
 
   @Before
   public void connect() {
-    ourFacade.connect();
+    myJdbcFacade = UnknownDatabaseProvider.INSTANCE.openFacade(HSQL_CONNECTION_STRING, null, 1);
+    myFacade = prepareBaseFacade(myJdbcFacade);
+    myFacade.connect();
+  }
+
+  @NotNull
+  protected BaseFacade prepareBaseFacade(@NotNull final JdbcIntermediateFacade jdbcFacade) {
+    return new BaseFacade(jdbcFacade);
+    /*
+    AdaptIntermediateFacade intermediateFacade = new AdaptIntermediateFacade(jdbcFacade);
+    return new BaseFacade(intermediateFacade);
+    */
   }
 
   @After
   public void disconnect() {
-    ourFacade.disconnect();
+    myFacade.disconnect();
   }
 
   protected void checkAllAreClosed() {
-    assertThat(ourRemoteFacade.countOpenedCursors()).isZero();
-    assertThat(ourRemoteFacade.countOpenedSeances()).isZero();
-    assertThat(ourRemoteFacade.countOpenedSessions()).isZero();
+    assertThat(myJdbcFacade.countOpenedCursors()).isZero();
+    assertThat(myJdbcFacade.countOpenedSeances()).isZero();
+    assertThat(myJdbcFacade.countOpenedSessions()).isZero();
   }
 }

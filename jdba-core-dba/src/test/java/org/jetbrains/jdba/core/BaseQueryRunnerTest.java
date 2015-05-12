@@ -14,12 +14,12 @@ import static org.jetbrains.jdba.core.Layouts.*;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public class BaseQueryRunnerTest extends BaseHyperSonicFacadeTest {
+public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeTest {
 
 
 
 
-  private static final class BasicStruct{
+  private static final class BasicStruct {
     int the_int_value;
     String the_string_value;
 
@@ -43,6 +43,42 @@ public class BaseQueryRunnerTest extends BaseHyperSonicFacadeTest {
   }
 
 
+  private static final class IntStruct {
+    int A, B, C;
+
+    IntStruct() {
+    }
+
+    IntStruct(final int a, final int b, final int c) {
+      A = a;
+      B = b;
+      C = c;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+
+      IntStruct that = (IntStruct) o;
+
+      return this.A == that.A && this.B == that.B && this.C == that.C;
+    }
+
+    @Override
+    public int hashCode() {
+      return A ^ B ^ C;
+    }
+
+    @Override
+    public String toString() {
+      return A + "," + B + "," + C;
+    }
+  }
+
+
+
+
   @Test
   public void return_one_basic_struct() {
     final String queryText =
@@ -53,7 +89,7 @@ public class BaseQueryRunnerTest extends BaseHyperSonicFacadeTest {
     final SqlQuery<BasicStruct> query =
             new SqlQuery<BasicStruct>(queryText, rowOf(structOf(BasicStruct.class)));
 
-    ourFacade.inTransaction(new InTransactionNoResult() {
+    myFacade.inTransaction(new InTransactionNoResult() {
       @Override
       public void run(@NotNull final DBTransaction tran) {
 
@@ -84,7 +120,7 @@ public class BaseQueryRunnerTest extends BaseHyperSonicFacadeTest {
             new SqlQuery<BasicStruct[]>(QUERY_RETURNS_TWO_BASIC_STRUCT_ROWS,
                                         arrayOf(structOf(BasicStruct.class)));
 
-    ourFacade.inTransaction(new InTransactionNoResult() {
+    myFacade.inTransaction(new InTransactionNoResult() {
       @Override
       public void run(@NotNull final DBTransaction tran) {
 
@@ -107,7 +143,7 @@ public class BaseQueryRunnerTest extends BaseHyperSonicFacadeTest {
             new SqlQuery<List<BasicStruct>>(QUERY_RETURNS_TWO_BASIC_STRUCT_ROWS,
                                             listOf(structOf(BasicStruct.class)));
 
-    ourFacade.inTransaction(new InTransactionNoResult() {
+    myFacade.inTransaction(new InTransactionNoResult() {
       @Override
       public void run(@NotNull final DBTransaction tran) {
 
@@ -124,5 +160,26 @@ public class BaseQueryRunnerTest extends BaseHyperSonicFacadeTest {
     });
   }
 
+
+  @Test
+  public void match_names() {
+    String queryText = "select 33 as C, 11 as A, 22 as B " +
+                       "from information_schema.schemata limit 1";
+
+    final SqlQuery<IntStruct> query =
+            new SqlQuery<IntStruct>(queryText, rowOf(structOf(IntStruct.class)));
+
+    IntStruct s =
+            myFacade.inTransaction(new InTransaction<IntStruct>() {
+              @Override
+              public IntStruct run(@NotNull final DBTransaction tran) {
+
+                return tran.query(query).run();
+
+              }
+            });
+
+    assertThat(s).isEqualTo(new IntStruct(11,22,33));
+  }
 
 }
