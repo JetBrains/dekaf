@@ -2,6 +2,7 @@ package org.jetbrains.jdba.intermediate;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.core.ResultLayout;
+import org.jetbrains.jdba.core.RowLayout;
 import org.jetbrains.jdba.exceptions.DBFetchingException;
 import org.jetbrains.jdba.util.NameAndClass;
 
@@ -11,6 +12,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 import static java.lang.String.format;
+import static org.jetbrains.jdba.util.ArrayFunctions.arrayToString;
 import static org.jetbrains.jdba.util.Classes.defaultConstructorOf;
 
 
@@ -19,7 +21,6 @@ import static org.jetbrains.jdba.util.Classes.defaultConstructorOf;
  * @author Leonid Bushuev from JetBrains
  */
 public class AdaptIntermediateStructCollectingCursor<T> extends AdaptIntermediateCursor<T,List<Object[]>> {
-
 
   /**
    * The result layout.
@@ -33,13 +34,24 @@ public class AdaptIntermediateStructCollectingCursor<T> extends AdaptIntermediat
    * that is used to instantiate a row class.
    */
   @NotNull
-  private Constructor myRowConstructor;
+  private final Constructor myRowConstructor;
 
   @NotNull
-  private Field[] myRowClassFields;
+  private FieldAndIndex[] myRowClassFields;
 
   private transient Collection myContainer;
 
+
+
+  private static final class FieldAndIndex {
+    final Field field;
+    final int index;
+
+    private FieldAndIndex(final Field field, final int index) {
+      this.field = field;
+      this.index = index;
+    }
+  }
 
 
 
@@ -51,6 +63,10 @@ public class AdaptIntermediateStructCollectingCursor<T> extends AdaptIntermediat
         || resultLayout.kind == ResultLayout.Kind.LIST
         || resultLayout.kind == ResultLayout.Kind.SET;
 
+    assert resultLayout.row.kind == RowLayout.Kind.CLASS_BY_NAMES;
+
+    final String[] columnNames = remoteCursor.getColumnNames();
+
     final Class<?> rowClass = resultLayout.row.rowClass;
     myResultLayout = resultLayout;
     myRowConstructor = defaultConstructorOf(rowClass);
@@ -58,19 +74,43 @@ public class AdaptIntermediateStructCollectingCursor<T> extends AdaptIntermediat
 
     final NameAndClass[] components = myResultLayout.row.components;
     final int n = components.length;
-    myRowClassFields = new Field[n];
+
+    ArrayList<FieldAndIndex> fields = new ArrayList<FieldAndIndex>(n);
     for (int i = 0; i < n; i++) {
-      Field field;
+      final String name = components[i].name;
+      final int columnIndex = indexOfStringInArray(name, columnNames);
+      if (columnIndex < 0) continue;
+
+      final Field field;
       try {
-        field = rowClass.getDeclaredField(components[i].name);
+        field = rowClass.getDeclaredField(name);
         field.setAccessible(true);
       }
       catch (NoSuchFieldException e) {
-        field = null;
+        continue;
       }
-      myRowClassFields[i] = field;
+
+      fields.add(new FieldAndIndex(field, columnIndex));
     }
+
+    if (fields.isEmpty()) {
+      String msg = format("The query result and the class %s have no common fields. Fields of the query result: [%s], fields of the class: [%s].",
+                          rowClass.getName(), arrayToString(columnNames, ", "), arrayToString(components, ", "));
+      throw new IllegalStateException(msg);
+    }
+
+    myRowClassFields = fields.toArray(new FieldAndIndex[fields.size()]);
   }
+
+
+  private static int indexOfStringInArray(@NotNull final String stringToSearch, @NotNull final String[] strings) {
+    for (int i = 0, n = strings.length; i < n; i++) {
+      String string = strings[i];
+      if (stringToSearch.equalsIgnoreCase(string)) return i;
+    }
+    return Integer.MIN_VALUE;
+  }
+
 
   @Override
   public synchronized T fetch() {
@@ -117,23 +157,22 @@ public class AdaptIntermediateStructCollectingCursor<T> extends AdaptIntermediat
                                     e, null);
     }
 
-    for (int i = 0, n = componentValues.length; i < n; i++) {
-      final Object value = componentValues[i];
-      if (value != null) {
-        Field f = myRowClassFields[i];
-        if (f != null) {
-          try {
-            f.set(row, value);
-          }
-          catch (IllegalAccessException e) {
-            throw new DBFetchingException(format("Failed to assign field %s of class %s with a value of class %s: error %s: %s. The value: \"%s\"",
-                                                 f.getName(), row.getClass().getName(), value.getClass().getSimpleName(),
-                                                 e.getClass().getSimpleName(), e.getMessage(),
-                                                 value.toString()),
-                                          e, null);
-          }
-        }
+    for (FieldAndIndex f : myRowClassFields) {
+      final Object value = f.index < componentValues.length
+                         ? componentValues[f.index]
+                         : null;
+
+      if (value == null) continue;
+      try {
+        f.field.set(row, value);
       }
+        catch (IllegalAccessException e) {
+          throw new DBFetchingException(format("Failed to assign field %s of class %s with a value of class %s: error %s: %s. The value: \"%s\"",
+                                               f.field.getName(), row.getClass().getName(), value.getClass().getSimpleName(),
+                                               e.getClass().getSimpleName(), e.getMessage(),
+                                               value.toString()),
+                                        e, null);
+        }
     }
 
     return row;
