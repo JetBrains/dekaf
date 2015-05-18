@@ -17,6 +17,7 @@
     <module>jdba-core-common</module>
     <module>jdba-core-dba</module>
     <module>jdba-core-jdbc</module>
+    <module>jdba-core-test-db</module>
     <module>jdba-core</module>
     <module>jdba-test-db</module>
     <module>jdba-postgre-common</module>
