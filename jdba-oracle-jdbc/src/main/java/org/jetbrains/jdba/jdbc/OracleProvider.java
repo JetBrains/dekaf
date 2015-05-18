@@ -18,10 +18,6 @@ public class OracleProvider extends JdbcIntermediateRdbmsProvider {
 
   //// SETTINGS AND STATE \\\\
 
-  public final static OracleProvider INSTANCE =
-          new OracleProvider();
-
-
   static final Pattern ORACLE_CONNECTION_STRING_PATTERN =
           Pattern.compile("^jdbc:oracle:(oci|thin):.*@.+$");
 
@@ -35,11 +31,7 @@ public class OracleProvider extends JdbcIntermediateRdbmsProvider {
 
   //// INITIALIZATION \\\\
 
-  static {
-    JdbcIntermediateFederatedProvider.INSTANCE.registerProvider(INSTANCE);
-  }
-
-  private OracleProvider() {
+  public OracleProvider() {
     loadAndRegisterDriverIfNeeded(ORACLE_CONNECTION_STRING_EXAMPLE);
   }
 

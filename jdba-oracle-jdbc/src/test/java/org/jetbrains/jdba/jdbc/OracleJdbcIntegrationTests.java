@@ -11,7 +11,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-                            OracleInterServiceProviderTest.class
+                            OracleProviderUnitTest.class
 })
 public class OracleJdbcIntegrationTests {
 
