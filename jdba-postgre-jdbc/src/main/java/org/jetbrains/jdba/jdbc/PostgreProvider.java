@@ -1,5 +1,6 @@
 package org.jetbrains.jdba.jdbc;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.Postgre;
 import org.jetbrains.jdba.Rdbms;
 import org.jetbrains.jdba.exceptions.DBPreparingException;
@@ -70,11 +71,13 @@ public class PostgreProvider extends JdbcIntermediateRdbmsProvider {
 
 
 
+  @NotNull
   @Override
   public Rdbms rdbms() {
     return Postgre.RDBMS;
   }
 
+  @NotNull
   @Override
   public Pattern connectionStringPattern() {
     return POSTGRE_CONNECTION_STRING_PATTERN;
@@ -86,6 +89,7 @@ public class PostgreProvider extends JdbcIntermediateRdbmsProvider {
   }
 
 
+  @NotNull
   @Override
   public BaseErrorRecognizer getErrorRecognizer() {
     return PostgreErrorRecognizer.INSTANCE;

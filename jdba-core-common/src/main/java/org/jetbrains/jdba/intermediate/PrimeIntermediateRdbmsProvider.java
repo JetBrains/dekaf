@@ -22,6 +22,7 @@ public interface PrimeIntermediateRdbmsProvider {
    * The RDBMS this provider is for.
    * @return the RDBMS marker.
    */
+  @NotNull
   Rdbms rdbms();
 
 
@@ -29,6 +30,7 @@ public interface PrimeIntermediateRdbmsProvider {
    * The pattern for connection string that accepts this provider.
    * @return the pattern.
    */
+  @NotNull
   Pattern connectionStringPattern();
 
 
@@ -50,15 +52,17 @@ public interface PrimeIntermediateRdbmsProvider {
    * @param connectionsLimit      how many server connections allowed at the same time.
    * @return                      the prepared facade (not connected).
    */
+  @NotNull
   PrimeIntermediateFacade openFacade(@NotNull String connectionString,
-                           @Nullable Properties connectionProperties,
-                           int connectionsLimit);
+                                     @Nullable Properties connectionProperties,
+                                     int connectionsLimit);
 
 
   /**
    * Provides with the error recognizer that applicable to this RDBMS.
    * @return an instance of error recognizer (usually a singleton instance).
    */
+  @NotNull
   DBErrorRecognizer getErrorRecognizer();
 
 

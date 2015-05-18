@@ -1,8 +1,6 @@
 package org.jetbrains.jdba;
 
-import org.jetbrains.jdba.core.BaseQueryRunnerDirectTest;
-import org.jetbrains.jdba.core.BaseQueryRunnerPseudoRemoteTest;
-import org.jetbrains.jdba.core.BaseSessionTest;
+import org.jetbrains.jdba.core.*;
 import org.jetbrains.jdba.intermediate.AdaptIntermediateRdbmsProviderTest;
 import org.jetbrains.jdba.sql.ScriptumBasicTest;
 import org.jetbrains.jdba.sql.ScriptumResourceFromJavaTest;
@@ -31,6 +29,8 @@ import org.junit.runners.Suite;
                             // Base client functionality
                             BaseSessionTest.class,
                             BaseQueryRunnerDirectTest.class,
-                            BaseQueryRunnerPseudoRemoteTest.class
+                            BaseQueryRunnerPseudoRemoteTest.class,
+                            BaseRdbmsProviderTest.class,
+                            BaseFederatedProviderTest.class
 })
 public class CoreDbaUnitTests {}

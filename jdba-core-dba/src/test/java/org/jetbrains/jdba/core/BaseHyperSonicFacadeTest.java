@@ -18,6 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BaseHyperSonicFacadeTest extends BaseHyperSonicCase {
 
 
+  protected static UnknownDatabaseProvider ourUnknownDatabaseProvider =
+          new UnknownDatabaseProvider();
 
   protected BaseFacade myFacade;
   protected JdbcIntermediateFacade myJdbcFacade;
@@ -30,7 +32,7 @@ public class BaseHyperSonicFacadeTest extends BaseHyperSonicCase {
 
   @Before
   public void connect() {
-    myJdbcFacade = UnknownDatabaseProvider.INSTANCE.openFacade(HSQL_CONNECTION_STRING, null, 1);
+    myJdbcFacade = ourUnknownDatabaseProvider.openFacade(HSQL_CONNECTION_STRING, null, 1);
     myFacade = prepareBaseFacade(myJdbcFacade);
     myFacade.connect();
   }

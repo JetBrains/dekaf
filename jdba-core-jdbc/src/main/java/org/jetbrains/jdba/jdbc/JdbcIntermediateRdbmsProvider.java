@@ -24,6 +24,7 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
   private static final String DAMN_JDBC_DRIVER_NOT_REGISTERED_ERROR_STATE = "08001";
 
 
+  @NotNull
   @Override
   public JdbcIntermediateFacade openFacade(@NotNull final String connectionString,
                                            @Nullable final Properties connectionProperties,
@@ -94,6 +95,7 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
   }
 
 
+  @NotNull
   public abstract BaseErrorRecognizer getErrorRecognizer();
 
 }

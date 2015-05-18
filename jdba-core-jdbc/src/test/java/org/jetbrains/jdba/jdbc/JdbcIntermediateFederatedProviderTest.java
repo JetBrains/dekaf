@@ -26,7 +26,7 @@ public class JdbcIntermediateFederatedProviderTest {
   public void the_UnknownDatabaseServiceProvider_is_registered() {
     PrimeIntermediateRdbmsProvider provider = myFederatedProvider.getSpecificServiceProvider(UnknownDatabase.RDBMS);
     assertThat(provider).isNotNull()
-                        .isSameAs(UnknownDatabaseProvider.INSTANCE);
+                        .isInstanceOf(UnknownDatabaseProvider.class);
   }
 
   @Test

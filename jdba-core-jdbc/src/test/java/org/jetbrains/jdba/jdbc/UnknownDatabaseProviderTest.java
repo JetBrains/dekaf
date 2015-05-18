@@ -21,7 +21,7 @@ public class UnknownDatabaseProviderTest extends BaseHyperSonicCase {
 
   @Before
   public void setup() {
-    myProvider = UnknownDatabaseProvider.INSTANCE;
+    myProvider = new UnknownDatabaseProvider();
   }
 
 

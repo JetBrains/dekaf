@@ -1,5 +1,6 @@
 package org.jetbrains.jdba.jdbc;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Rdbms;
 
@@ -13,18 +14,17 @@ import java.util.regex.Pattern;
  */
 public final class UnknownDatabaseProvider extends JdbcIntermediateRdbmsProvider {
 
-  public static final UnknownDatabaseProvider INSTANCE = new UnknownDatabaseProvider();
 
   private static final Pattern CONNECTION_STRING_PATTERN =
           Pattern.compile("^jdbc:.+$");
 
-  private UnknownDatabaseProvider() {}
-
+  @NotNull
   @Override
   public Rdbms rdbms() {
     return UnknownDatabase.RDBMS;
   }
 
+  @NotNull
   @Override
   public Pattern connectionStringPattern() {
     return CONNECTION_STRING_PATTERN;
@@ -41,6 +41,7 @@ public final class UnknownDatabaseProvider extends JdbcIntermediateRdbmsProvider
     return null;
   }
 
+  @NotNull
   @Override
   public BaseErrorRecognizer getErrorRecognizer() {
     return UnknownDatabaseErrorRecognizer.INSTANCE;

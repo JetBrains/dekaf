@@ -12,6 +12,7 @@ import java.util.Properties;
  */
 public interface IntegralIntermediateRdbmsProvider extends PrimeIntermediateRdbmsProvider {
 
+  @NotNull
   @Override
   IntegralIntermediateFacade openFacade(@NotNull String connectionString,
                                         @Nullable Properties connectionProperties,

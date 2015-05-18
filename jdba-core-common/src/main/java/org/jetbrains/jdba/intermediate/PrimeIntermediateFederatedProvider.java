@@ -35,8 +35,8 @@ public interface PrimeIntermediateFederatedProvider {
    */
   @NotNull
   PrimeIntermediateFacade openFacade(@NotNull String connectionString,
-                           @Nullable Properties connectionProperties,
-                           int connectionsLimit);
+                                     @Nullable Properties connectionProperties,
+                                     int connectionsLimit);
 
 
   /**

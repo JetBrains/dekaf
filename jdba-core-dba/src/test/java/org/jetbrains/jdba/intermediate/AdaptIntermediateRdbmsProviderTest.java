@@ -12,12 +12,15 @@ import org.junit.Test;
  */
 public class AdaptIntermediateRdbmsProviderTest extends BaseHyperSonicCase {
 
+  protected static UnknownDatabaseProvider ourUnknownDatabaseProvider =
+          new UnknownDatabaseProvider();
+
   @Test
   public void remote_scenario() throws Exception {
 
     // the vendor-code side
     // the driver is already registered in BaseHyperSonicCase
-    UnknownDatabaseProvider remoteProvider = UnknownDatabaseProvider.INSTANCE;
+    UnknownDatabaseProvider remoteProvider = ourUnknownDatabaseProvider;
 
     // the client side
     AdaptIntermediateRdbmsProvider provider = new AdaptIntermediateRdbmsProvider(remoteProvider);
