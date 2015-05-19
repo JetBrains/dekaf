@@ -21,9 +21,11 @@
     <module>jdba-core</module>
     <module>jdba-test-db</module>
     <module>jdba-postgre-common</module>
+    <module>jdba-postgre-dba</module>
     <module>jdba-postgre-jdbc</module>
     <module>jdba-postgre</module>
     <module>jdba-oracle-common</module>
+    <module>jdba-oracle-dba</module>
     <module>jdba-oracle-jdbc</module>
     <module>jdba-oracle</module>
     <module>jdba-mssql</module>

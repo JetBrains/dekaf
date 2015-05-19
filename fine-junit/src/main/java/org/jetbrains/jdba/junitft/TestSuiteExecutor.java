@@ -1,6 +1,5 @@
 package org.jetbrains.jdba.junitft;
 
-import junit.runner.Version;
 import org.junit.internal.JUnitSystem;
 import org.junit.internal.RealSystem;
 import org.junit.internal.TextListener;
@@ -22,11 +21,7 @@ public class TestSuiteExecutor {
 
   public static void run(final Class... suites) {
 
-    // header
-    System.out.println("Java version: " + System.getProperty("java.version"));
-    System.out.println("JUnit version: " + Version.id());
     boolean underTC = System.getenv(TEAMCITY_DETECT_VAR_NAME) != null;
-    if (underTC) System.out.println("TeamCity detected :)");
 
     // prepare junit
     JUnitSystem system = new RealSystem();
@@ -52,9 +47,6 @@ public class TestSuiteExecutor {
       if (underTC) say("##teamcity[testSuiteFinished name='%s']", suite.getSimpleName());
       sayNothing();
     }
-
-    // the end
-    System.exit((failures > 0 && !underTC) ? 1 : 0);
   }
 
 

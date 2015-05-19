@@ -1,9 +1,8 @@
 package org.jetbrains.jdba;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jdba.core.BaseFederatedProvider;
 import org.jetbrains.jdba.core.DBFacade;
-import org.jetbrains.jdba.core.DBFederatedProvider;
-import org.jetbrains.jdba.util.Providers;
 
 
 
@@ -21,10 +20,23 @@ public abstract class TestDB {
 
 
   static {
-    final DBFederatedProvider federatedProvider =
-            Providers.loadProvider(DBFederatedProvider.class);
+    BaseFederatedProvider provider = new BaseFederatedProvider();
+    provider.initLocally();
 
-    DB = federatedProvider.openFacade(TestEnvironment.obtainConnectionString(), null, 10, false);
+    DB = provider.openFacade(TestEnvironment.obtainConnectionString(), null, 10, false);
+  }
+
+  public static void connect() {
+    DB.connect();
+  }
+
+  public static void disconnect() {
+    DB.disconnect();
+  }
+
+
+  public static void printEnvironmentHeader() {
+
   }
 
 

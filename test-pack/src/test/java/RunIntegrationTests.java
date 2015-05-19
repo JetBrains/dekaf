@@ -1,13 +1,8 @@
 import com.google.common.collect.ImmutableMap;
-import org.jetbrains.jdba.Oracle;
-import org.jetbrains.jdba.Postgre;
+import org.jetbrains.jdba.*;
 import org.jetbrains.jdba.jdbc.OracleJdbcIntegrationTests;
 import org.jetbrains.jdba.jdbc.PostgreJdbcIntegrationTests;
 import org.jetbrains.jdba.junitft.TestSuiteExecutor;
-import org.jetbrains.jdba.oracle.OracleIntegrationTests;
-import org.jetbrains.jdba.postgre.PostgreIntegrationTests;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
 
 
 
@@ -17,33 +12,18 @@ import org.junit.runners.Suite;
 public class RunIntegrationTests {
 
 
-  @RunWith(Suite.class)
-  @Suite.SuiteClasses({
-                              PostgreJdbcIntegrationTests.class,
-                              PostgreIntegrationTests.class
-  })
-  public static final class PostgreSuite {}
-
-  @RunWith(Suite.class)
-  @Suite.SuiteClasses({
-                              OracleJdbcIntegrationTests.class,
-                              OracleIntegrationTests.class
-  })
-  public static final class OracleSuite {}
-
-
-
   private static final ImmutableMap<String,Class> ourJdbcSuites =
           ImmutableMap.<String,Class>builder()
                             .put(Postgre.RDBMS.code, PostgreJdbcIntegrationTests.class)
                             .put(Oracle.RDBMS.code, OracleJdbcIntegrationTests.class)
                             .build();
 
-  private static final ImmutableMap<String,Class> ourLegacySuites =
+  private static final ImmutableMap<String,Class> ourCoreSuites =
           ImmutableMap.<String,Class>builder()
                             .put(Postgre.RDBMS.code, PostgreIntegrationTests.class)
                             .put(Oracle.RDBMS.code, OracleIntegrationTests.class)
                             .build();
+
 
 
   static {
@@ -53,24 +33,49 @@ public class RunIntegrationTests {
 
   public static void main(String[] args) {
 
-    if (args.length == 0) {
-      System.out.println("Please specify the RDBMS code\n");
+    final Rdbms rdbms;
+
+    String connectionString = TestEnvironment.obtainConnectionString();
+    if (connectionString.startsWith("jdbc:postgresql:")) {
+      rdbms = Postgre.RDBMS;
+    }
+    else if (connectionString.startsWith("jdbc:oracle:")) {
+      rdbms = Oracle.RDBMS;
+    }
+    else {
+      System.err.println("Unknown which RDBMS supports this connections string: \n\t" + connectionString);
+      System.exit(128);
       return;
     }
 
-    String dbmsCode = args[0];
-    if (dbmsCode == null || dbmsCode.length() == 0) {
-      System.out.println("Please specify the correct RDBMS code\n");
-      return;
-    }
+    printBanner(
+        "RDBMS: " + rdbms.toString(),
+        "Java version: " + System.getProperty("java.version"),
+        "JUnit version: " + junit.runner.Version.id()
+    );
 
-    dbmsCode = dbmsCode.trim().toUpperCase();
-    System.out.println("Testing " + dbmsCode);
+    Class suite1 = ourJdbcSuites.get(rdbms.code);
+    Class suite2 = ourCoreSuites.get(rdbms.code);
 
-    Class suite1 = ourJdbcSuites.get(dbmsCode);
-    Class suite2 = ourLegacySuites.get(dbmsCode);
+    TestSuiteExecutor.run(suite1);
 
-    TestSuiteExecutor.run(suite1, suite2);
+    TestDB.connect();
+
+    TestSuiteExecutor.run(suite2);
+  }
+
+
+  private static final String DIV1 =
+          "================================================================================\n";
+  private static final String DIV2 =
+          "--------------------------------------------------------------------------------\n";
+
+  private static void printBanner(final String... text) {
+    StringBuilder b = new StringBuilder();
+    b.append(DIV1);
+    for (String textLine : text) b.append(textLine).append('\n');
+    b.append(DIV2);
+    System.out.println(b.toString());
   }
 
 }

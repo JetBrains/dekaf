@@ -37,7 +37,7 @@
           <option name="KEEP_MULTIPLE_EXPRESSIONS_IN_ONE_LINE" value="true" />
           <indentOptions>
             <option name="INDENT_SIZE" value="2" />
-            <option name="USE_RELATIVE_INDENTS" value="true" />
+            <option name="CONTINUATION_INDENT_SIZE" value="4" />
           </indentOptions>
         </codeStyleSettings>
         <codeStyleSettings language="XML">
