@@ -18,6 +18,8 @@ public class TestSuiteExecutor {
   private static final String TEAMCITY_DETECT_VAR_NAME = "TEAMCITY_PROJECT_NAME";
 
 
+  public static String suiteParameter;
+
 
   public static void run(final Class... suites) {
 
@@ -36,7 +38,12 @@ public class TestSuiteExecutor {
     // run tests
     for (Class suite : suites) {
       sayNothing();
-      if (underTC) say("##teamcity[testSuiteStarted name='%s']", suite.getSimpleName());
+      String suiteName = suite.getSimpleName();
+      if (suiteName.endsWith("Tests")) suiteName = suiteName.substring(0, suiteName.length()-"Tests".length());
+      if (suiteName.endsWith("Integration")) suiteName = suiteName.substring(0, suiteName.length()-"Integration".length());
+      if (suiteParameter != null) suiteName = suiteName + '[' + suiteParameter + ']';
+
+      if (underTC) say("##teamcity[testSuiteStarted name='%s']", suiteName);
 
       Result result = core.run(suite);
 
@@ -44,7 +51,7 @@ public class TestSuiteExecutor {
       failures += result.getFailureCount();
       ignores += result.getIgnoreCount();
 
-      if (underTC) say("##teamcity[testSuiteFinished name='%s']", suite.getSimpleName());
+      if (underTC) say("##teamcity[testSuiteFinished name='%s']", suiteName);
       sayNothing();
     }
   }

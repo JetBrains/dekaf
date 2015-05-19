@@ -59,8 +59,16 @@ public class RunIntegrationTests {
 
     TestSuiteExecutor.run(suite1);
 
+    printBanner("Direct Connection");
     TestDB.connect();
 
+    TestSuiteExecutor.suiteParameter = "direct";
+    TestSuiteExecutor.run(suite2);
+
+    printBanner("Pseudo-remote Connection");
+    TestDB.reinitDB(true);
+
+    TestSuiteExecutor.suiteParameter = "remote";
     TestSuiteExecutor.run(suite2);
   }
 
