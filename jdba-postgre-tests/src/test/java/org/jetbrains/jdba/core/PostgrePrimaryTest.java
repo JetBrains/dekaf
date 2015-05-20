@@ -15,11 +15,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @FixMethodOrder(MethodSorters.JVM)
 public class PostgrePrimaryTest extends CommonPrimaryTest {
 
-
   @Test
   public void rdbms_is_Postgre() {
     assertThat(DB.rdbms()).isEqualTo(Postgre.RDBMS);
   }
-
 
 }
