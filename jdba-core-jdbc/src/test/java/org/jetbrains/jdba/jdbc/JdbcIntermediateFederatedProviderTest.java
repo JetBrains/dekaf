@@ -18,7 +18,7 @@ public class JdbcIntermediateFederatedProviderTest {
 
   @Before
   public void setup() {
-    myFederatedProvider = JdbcIntermediateFederatedProvider.INSTANCE;
+    myFederatedProvider = new JdbcIntermediateFederatedProvider();
   }
 
 

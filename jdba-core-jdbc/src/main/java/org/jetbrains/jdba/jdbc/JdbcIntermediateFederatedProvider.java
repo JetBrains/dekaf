@@ -54,10 +54,8 @@ public final class JdbcIntermediateFederatedProvider
   
   private final ConcurrentMap<Rdbms, SpecificProvider> myBestProviders =
           new ConcurrentHashMap<Rdbms, SpecificProvider>();
-  
-  public static final JdbcIntermediateFederatedProvider INSTANCE = new JdbcIntermediateFederatedProvider();
-  
-  
+
+
   //// CONSTRUCTOR \\\\
 
   public JdbcIntermediateFederatedProvider() {

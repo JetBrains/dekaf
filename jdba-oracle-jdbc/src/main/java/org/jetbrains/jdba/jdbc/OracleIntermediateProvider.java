@@ -1,11 +1,13 @@
 package org.jetbrains.jdba.jdbc;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Oracle;
 import org.jetbrains.jdba.Rdbms;
 import org.jetbrains.jdba.exceptions.DBPreparingException;
 
 import java.sql.Driver;
+import java.util.Properties;
 import java.util.regex.Pattern;
 
 
@@ -13,7 +15,7 @@ import java.util.regex.Pattern;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public class OracleProvider extends JdbcIntermediateRdbmsProvider {
+public class OracleIntermediateProvider extends JdbcIntermediateRdbmsProvider {
 
 
   //// SETTINGS AND STATE \\\\
@@ -31,14 +33,15 @@ public class OracleProvider extends JdbcIntermediateRdbmsProvider {
 
   //// INITIALIZATION \\\\
 
-  public OracleProvider() {
+  public OracleIntermediateProvider() {
     loadAndRegisterDriverIfNeeded(ORACLE_CONNECTION_STRING_EXAMPLE);
   }
 
 
   @Override
   protected Driver loadDriver() {
-    Class<Driver> driverClass = getSimpleAccessibleDriverClass(ORACLE_DRIVER_CLASS_NAME);
+    Class<Driver> driverClass =
+        getSimpleAccessibleDriverClass(ORACLE_DRIVER_CLASS_NAME);
     if (driverClass == null) {
       // TODO try to load from jars
     }
@@ -62,7 +65,6 @@ public class OracleProvider extends JdbcIntermediateRdbmsProvider {
   //// IMPLEMENTATION \\\\
 
 
-
   @NotNull
   @Override
   public Rdbms rdbms() {
@@ -80,6 +82,18 @@ public class OracleProvider extends JdbcIntermediateRdbmsProvider {
     return SPECIFICITY_NATIVE;
   }
 
+  @NotNull
+  @Override
+  protected OracleIntermediateFacade instantiateFacade(@NotNull final String connectionString,
+                                           @Nullable final Properties connectionProperties,
+                                           final int connectionsLimit,
+                                           @NotNull final Driver driver) {
+    return new OracleIntermediateFacade(connectionString,
+                            connectionProperties,
+                            driver,
+                            connectionsLimit,
+                            OracleErrorRecognizer.INSTANCE);
+  }
 
   @NotNull
   @Override

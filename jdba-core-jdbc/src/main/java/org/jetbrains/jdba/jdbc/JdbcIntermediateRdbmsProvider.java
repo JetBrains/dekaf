@@ -30,6 +30,17 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
                                            @Nullable final Properties connectionProperties,
                                            final int connectionsLimit) {
     Driver driver = getDriver(connectionString);
+    return instantiateFacade(connectionString,
+                             connectionProperties,
+                             connectionsLimit,
+                             driver);
+  }
+
+  @NotNull
+  protected JdbcIntermediateFacade instantiateFacade(@NotNull final String connectionString,
+                                                     @Nullable final Properties connectionProperties,
+                                                     final int connectionsLimit,
+                                                     @NotNull final Driver driver) {
     BaseErrorRecognizer errorRecognizer = getErrorRecognizer();
     return new JdbcIntermediateFacade(connectionString, connectionProperties, driver, connectionsLimit, errorRecognizer);
   }

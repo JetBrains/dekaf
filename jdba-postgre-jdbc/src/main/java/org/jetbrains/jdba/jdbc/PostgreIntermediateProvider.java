@@ -1,11 +1,13 @@
 package org.jetbrains.jdba.jdbc;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Postgre;
 import org.jetbrains.jdba.Rdbms;
 import org.jetbrains.jdba.exceptions.DBPreparingException;
 
 import java.sql.Driver;
+import java.util.Properties;
 import java.util.regex.Pattern;
 
 
@@ -13,13 +15,13 @@ import java.util.regex.Pattern;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public class PostgreProvider extends JdbcIntermediateRdbmsProvider {
+public class PostgreIntermediateProvider extends JdbcIntermediateRdbmsProvider {
 
 
   //// SETTINGS AND STATE \\\\
 
-  public final static PostgreProvider INSTANCE =
-          new PostgreProvider();
+  public final static PostgreIntermediateProvider INSTANCE =
+          new PostgreIntermediateProvider();
 
 
   static final Pattern POSTGRE_CONNECTION_STRING_PATTERN =
@@ -35,11 +37,7 @@ public class PostgreProvider extends JdbcIntermediateRdbmsProvider {
 
   //// INITIALIZATION \\\\
 
-  static {
-    JdbcIntermediateFederatedProvider.INSTANCE.registerProvider(INSTANCE);
-  }
-
-  private PostgreProvider() {
+  public PostgreIntermediateProvider() {
     loadAndRegisterDriverIfNeeded(POSTGRE_CONNECTION_STRING_EXAMPLE);
   }
 
@@ -88,6 +86,19 @@ public class PostgreProvider extends JdbcIntermediateRdbmsProvider {
     return SPECIFICITY_NATIVE;
   }
 
+
+  @NotNull
+  @Override
+  protected PostgreIntermediateFacade instantiateFacade(@NotNull final String connectionString,
+                                                        @Nullable final Properties connectionProperties,
+                                                        final int connectionsLimit,
+                                                        @NotNull final Driver driver) {
+    return new PostgreIntermediateFacade(connectionString,
+                                         connectionProperties,
+                                         driver,
+                                         connectionsLimit,
+                                         PostgreErrorRecognizer.INSTANCE);
+  }
 
   @NotNull
   @Override

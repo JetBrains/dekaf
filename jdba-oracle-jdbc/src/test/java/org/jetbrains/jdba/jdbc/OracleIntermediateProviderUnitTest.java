@@ -13,8 +13,8 @@ import java.sql.SQLException;
 import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jetbrains.jdba.jdbc.OracleProvider.ORACLE_CONNECTION_STRING_EXAMPLE;
-import static org.jetbrains.jdba.jdbc.OracleProvider.ORACLE_CONNECTION_STRING_PATTERN;
+import static org.jetbrains.jdba.jdbc.OracleIntermediateProvider.ORACLE_CONNECTION_STRING_EXAMPLE;
+import static org.jetbrains.jdba.jdbc.OracleIntermediateProvider.ORACLE_CONNECTION_STRING_PATTERN;
 
 
 
@@ -22,7 +22,7 @@ import static org.jetbrains.jdba.jdbc.OracleProvider.ORACLE_CONNECTION_STRING_PA
  * @author Leonid Bushuev from JetBrains
  */
 @FixMethodOrder(MethodSorters.JVM)
-public class OracleProviderUnitTest {
+public class OracleIntermediateProviderUnitTest {
 
 
   @Test
@@ -41,7 +41,7 @@ public class OracleProviderUnitTest {
   public void provider_is_registered() {
     final Collection<IntegralIntermediateRdbmsProvider> providers =
             Providers.loadAllProviders(IntegralIntermediateRdbmsProvider.class);
-    assertThat(providers).extracting("class").contains(OracleProvider.class);
+    assertThat(providers).extracting("class").contains(OracleIntermediateProvider.class);
   }
 
 }
