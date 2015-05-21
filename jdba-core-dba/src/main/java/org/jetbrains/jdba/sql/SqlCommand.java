@@ -11,13 +11,16 @@ import org.jetbrains.annotations.NotNull;
  */
 public class SqlCommand extends SqlExecutable {
 
+  public SqlCommand(@NotNull final TextFragment sourceFragment) {
+    super(sourceFragment);
+  }
 
-  public SqlCommand(final int lineOffset, @NotNull final String sourceText) {
-    super(sourceText, lineOffset);
+  public SqlCommand(@NotNull final String sourceText, final int row) {
+    super(sourceText, row);
   }
 
 
   public SqlCommand(@NotNull final String sourceText) {
-    this(0, sourceText);
+    super(sourceText);
   }
 }

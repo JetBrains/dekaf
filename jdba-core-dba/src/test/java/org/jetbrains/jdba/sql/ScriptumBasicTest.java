@@ -26,20 +26,37 @@ public class ScriptumBasicTest {
   }
 
   @Test
-  public void theSimplestQuery() {
-    SqlQuery<Character> query = myScriptum.query("TheSimplestQuery",
-                                                 Layouts.singleOf(Character.class));
-    assertThat(query.mySourceText).isEqualTo("select 1");
+  public void theCommand() {
+    check_TheCommand("TheCommand");
   }
 
   @Test
-  public void theSimplestQuery_Oracle() {
+  public void theCommand_semicolon_sameString() {
+    check_TheCommand("TheCommand_semicolon_sameString");
+  }
+
+  @Test
+  public void theCommand_semicolon_nextString() {
+    check_TheCommand("TheCommand_semicolon_nextString");
+  }
+
+  @Test
+  public void theCommand_slash_nextString() {
+    check_TheCommand("TheCommand_slash_nextString");
+  }
+
+  protected void check_TheCommand(final String queryName) {
+    SqlQuery<Character> query = myScriptum.query(queryName, Layouts.singleOf(Character.class));
+    assertThat(query.mySourceText).isEqualTo("The Command");
+  }
+
+  @Test
+  public void theCommand_Oracle() {
     Scriptum scriptumForOracle =
             Scriptum.of(myScriptum, "Oracle");
 
-    SqlQuery<Character> query = scriptumForOracle.query("TheSimplestQuery",
-                                                        Layouts.singleOf(Character.class));
-    assertThat(query.mySourceText).isEqualTo("select 1 from dual");
+    SqlCommand command = scriptumForOracle.command("TheCommand");
+    assertThat(command.mySourceText).isEqualTo("The Oracle Command");
   }
 
 

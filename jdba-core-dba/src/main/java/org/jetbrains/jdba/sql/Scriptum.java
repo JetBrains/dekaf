@@ -3,9 +3,13 @@ package org.jetbrains.jdba.sql;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.core.ResultLayout;
-import org.jetbrains.jdba.util.Strings;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.jetbrains.jdba.util.Strings.eq;
+import static org.jetbrains.jdba.util.Strings.rtrim;
 
 
 
@@ -61,7 +65,7 @@ public final class Scriptum {
   }
 
   public static Scriptum of(@NotNull final Scriptum parentScriptum, @Nullable final String dialect) {
-    if (Strings.eq(parentScriptum.myDialect, dialect)) {
+    if (eq(parentScriptum.myDialect, dialect)) {
       return parentScriptum;
     }
     else {
@@ -91,17 +95,17 @@ public final class Scriptum {
    * @return      the found script, or <i>null</i> if not found.
    */
   @Nullable
-  public final String findText(@NotNull String name) {
-    String text;
+  public final TextFragment findText(@NotNull String name) {
+    TextFragment fragment;
     final String nameWithDialect = myDialect == null ? null : name + '+' + myDialect;
     for (int i = myResources.length-1; i >= 0; i--) {
       ScriptumResource r = myResources[i];
       if (nameWithDialect != null) {
-        text = r.find(nameWithDialect);
-        if (text != null) return text;
+        fragment = r.find(nameWithDialect);
+        if (fragment != null) return fragment;
       }
-      text = r.find(name);
-      if (text != null) return text;
+      fragment = r.find(name);
+      if (fragment != null) return fragment;
     }
     return null;
   }
@@ -118,33 +122,53 @@ public final class Scriptum {
    * @throws ScriptNotFoundException if no such script.
    */
   @NotNull
-  public final String getText(@NotNull String name) throws ScriptNotFoundException{
-    String text = findText(name);
-    if (text == null) throw new ScriptNotFoundException("No such script: " + name);
-    return text;
+  public final TextFragment getText(@NotNull String name) throws ScriptNotFoundException{
+    TextFragment fragment = findText(name);
+    if (fragment == null) throw new ScriptNotFoundException("No such script: " + name);
+    return fragment;
   }
 
 
   @NotNull
   public final <S> SqlQuery<S> query(@NotNull final String name,
                                      @NotNull final ResultLayout<S> layout) {
-    String text = getText(name);
-    return new SqlQuery<S>(text, layout);
+    TextFragment fragment = getText(name);
+    fragment = stripSingleStatement(fragment);
+    return new SqlQuery<S>(fragment, layout);
   }
 
   @NotNull
   public final SqlCommand command(@NotNull final String name) {
-    String text = getText(name);
-    return new SqlCommand(text);
+    TextFragment fragment = getText(name);
+    fragment = stripSingleStatement(fragment);
+    return new SqlCommand(fragment);
   }
 
   @NotNull
   public final SqlScript script(@NotNull final String name) {
-    String text = getText(name);
+    TextFragment fragment = getText(name);
     SqlScriptBuilder b = new SqlScriptBuilder();
-    b.parse(text);
+    b.parse(fragment.text);
     return new SqlScript(b.build());
   }
+
+
+  private static final Pattern STRIP_SINGLE_STATEMENT_PATTERN =
+      Pattern.compile("((\\;\\s*)+|(\\n\\/\\s*\\n?)+)$", Pattern.DOTALL);
+
+  @NotNull
+  private TextFragment stripSingleStatement(@NotNull final TextFragment fragment) {
+    Matcher m = STRIP_SINGLE_STATEMENT_PATTERN.matcher(fragment.text);
+    if (m.find()) {
+      int n = fragment.text.length();
+      n -= m.group(1).length();
+      return new TextFragment(rtrim(fragment.text.substring(0, n)), fragment.row, fragment.pos);
+    }
+    else {
+      return fragment;
+    }
+  }
+
 
 
   //// EXCEPTIONS \\\\

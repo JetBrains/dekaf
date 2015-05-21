@@ -73,26 +73,34 @@ final class ScriptumResourceFromJava extends ScriptumResource {
 
 
   private void loadScripts(@NotNull final BufferedReader reader) throws IOException {
-    Map<String,String> map = new LinkedHashMap<String, String>();
+    Map<String,TextFragment> map = new LinkedHashMap<String, TextFragment>();
     StringBuilder buf = new StringBuilder();
     String currentName = "0";
+    int row = 0;
+    int fragmentRow = 1;
     while(true) {
       String line = reader.readLine();
+      row++;
+
       if (line == null) break;
       line = Strings.rtrim(line);
       Matcher m = SECTION_HEADER_PATTERN.matcher(line);
       if (m.matches()) {
         // first save the previous text
-        putTheText(map, buf, currentName);
+        putTheText(map, buf, fragmentRow, currentName);
         // now start the new text
+        fragmentRow = row+1;
         buf.delete(0, buf.length());
         currentName = normalizeName(m);
+      }
+      else if (line.length() == 0 && buf.length() == 0) {
+        fragmentRow++; // skipping empty lines before command text
       }
       else {
         buf.append(line).append('\n');
       }
     }
-    putTheText(map, buf, currentName);
+    putTheText(map, buf, fragmentRow, currentName);
     myScripts = ImmutableMap.copyOf(map);
   }
 
@@ -102,11 +110,15 @@ final class ScriptumResourceFromJava extends ScriptumResource {
     return Strings.minimizeSpaces(m.group(1)).toUpperCase(Locale.GERMAN).replace(" + ", "+");
   }
 
-  private void putTheText(final Map<String, String> map,
+  private void putTheText(final Map<String, TextFragment> map,
                           final StringBuilder buf,
+                          final int row,
                           final String currentName) {
-    String text = buf.toString().trim();
-    if (!map.containsKey(currentName)) map.put(currentName, text);
+    String text = Strings.rtrim(buf.toString());
+    if (!map.containsKey(currentName)) {
+      TextFragment fragment = new TextFragment(text, row, 1);
+      map.put(currentName, fragment);
+    }
   }
 
 }

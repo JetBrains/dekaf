@@ -16,13 +16,13 @@ import java.util.Map;
 abstract class ScriptumResource {
 
   @Nullable
-  protected Map<String,String> myScripts = null;
+  protected Map<String,TextFragment> myScripts = null;
 
 
   protected abstract void load();
 
 
-  String find(@NotNull final String name) {
+  TextFragment find(@NotNull final String name) {
     if (myScripts == null) {
       load();
       assert myScripts != null;

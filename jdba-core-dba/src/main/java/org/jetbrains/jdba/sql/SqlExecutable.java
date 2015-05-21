@@ -13,7 +13,7 @@ public abstract class SqlExecutable {
    * Number of lines skipped from source text.
    * Zero if nothing skipped.
    */
-  final int myLineOffset;
+  final int myRow;
 
   /**
    * Query source text.
@@ -22,22 +22,26 @@ public abstract class SqlExecutable {
   final String mySourceText;
 
 
+  protected SqlExecutable(@NotNull TextFragment sourceFragment) {
+    this.mySourceText = sourceFragment.text;
+    this.myRow = sourceFragment.row;
+  }
+
+
   protected SqlExecutable(@NotNull String sourceText) {
     this.mySourceText = sourceText;
-    this.myLineOffset = 0;
+    this.myRow = 1;
   }
 
 
-  public SqlExecutable(@NotNull final String sourceText, final int lineOffset) {
+  public SqlExecutable(@NotNull final String sourceText, final int row) {
     this.mySourceText = sourceText;
-    this.myLineOffset = lineOffset;
+    this.myRow = row;
   }
 
-
-  public int getLineOffset() {
-    return myLineOffset;
+  public int getRow() {
+    return myRow;
   }
-
 
   @NotNull
   public String getSourceText() {

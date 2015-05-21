@@ -34,26 +34,26 @@ public class ScriptumResourceFromJavaTest {
 
   @Test
   public void first() {
-    String first = myResource.find("FIRST");
-    assertThat(first).isEqualTo("select something from anything");
+    TextFragment first = myResource.find("FIRST");
+    assertThat(first.text).isEqualTo("select something from anything");
   }
 
   @Test
   public void first_lower() {
-    String first = myResource.find("first");
-    assertThat(first).isEqualTo("select something from anything");
+    TextFragment first = myResource.find("first");
+    assertThat(first.text).isEqualTo("select something from anything");
   }
 
   @Test
   public void second() {
-    String second = myResource.find("SECOND");
-    assertThat(second).isEqualTo("select 2");
+    TextFragment second = myResource.find("SECOND");
+    assertThat(second.text).isEqualTo("select 2");
   }
 
   @Test
   public void second_oracle() {
-    String second = myResource.find("SECOND+ORACLE");
-    assertThat(second).isEqualTo("select 2 from dual");
+    TextFragment second = myResource.find("SECOND+ORACLE");
+    assertThat(second.text).isEqualTo("select 2 from dual");
   }
 
   @Test
@@ -62,44 +62,44 @@ public class ScriptumResourceFromJavaTest {
             "select columns\n" +
             "from table\n" +
             "where the condition is met";
-    String text = myResource.find("MULTI_LINE");
-    assertThat(text).isEqualTo(expectedText);
+    TextFragment text = myResource.find("MULTI_LINE");
+    assertThat(text.text).isEqualTo(expectedText);
   }
 
   @Test
   public void lower_case() {
-    String second = myResource.find("lower_case");
-    assertThat(second).isEqualTo("select something_lower_case");
+    TextFragment second = myResource.find("lower_case");
+    assertThat(second.text).isEqualTo("select something_lower_case");
   }
 
   @Test
   public void lower_case_in_upper_case() {
-    String second = myResource.find("LOWER_CASE");
-    assertThat(second).isEqualTo("select something_lower_case");
+    TextFragment second = myResource.find("LOWER_CASE");
+    assertThat(second.text).isEqualTo("select something_lower_case");
   }
 
   @Test
   public void international_German() {
-    String second = myResource.find("München_Straße");
-    assertThat(second).contains("etwas_von_München");
+    TextFragment second = myResource.find("München_Straße");
+    assertThat(second.text).contains("etwas_von_München");
   }
 
   @Test
   public void international_Russian() {
-    String second = myResource.find("Санкт-Петербург");
-    assertThat(second).contains("Невский Проспект");
+    TextFragment second = myResource.find("Санкт-Петербург");
+    assertThat(second.text).contains("Невский Проспект");
   }
 
   @Test
   public void zero() {
-    String second = myResource.find("0");
-    assertThat(second).contains("Some comment at the top of the file");
+    TextFragment second = myResource.find("0");
+    assertThat(second.text).contains("Some comment at the top of the file");
   }
 
   @Test
   public void the_end() {
-    String second = myResource.find("THE_END");
-    assertThat(second).contains("select last_value");
+    TextFragment second = myResource.find("THE_END");
+    assertThat(second.text).contains("select last_value");
   }
 
 

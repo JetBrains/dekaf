@@ -1,11 +1,28 @@
----- TheSimplestQuery ----
+---- TheCommand ----
 
-select 1
+The Command
 
 
----- TheSimplestQuery + Oracle ----
+---- TheCommand + Oracle ----
 
-select 1 from dual
+The Oracle Command
+
+
+---- TheCommand_semicolon_sameString ----
+
+The Command;
+
+
+---- TheCommand_semicolon_nextString ----
+
+The Command
+;
+
+
+---- TheCommand_slash_nextString ----
+
+The Command
+/
 
 
 ---- BasicCommand ----

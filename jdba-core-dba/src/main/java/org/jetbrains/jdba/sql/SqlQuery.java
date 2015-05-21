@@ -21,10 +21,20 @@ public class SqlQuery<S> extends SqlExecutable {
   private transient String displayName;
 
 
+  public SqlQuery(@NotNull final TextFragment sourceFragment,
+                  @NotNull final ResultLayout<S> layout) {
+    super(sourceFragment);
+    this.myLayout = layout;
+  }
+
   public SqlQuery(@NotNull final String sourceText,
                   @NotNull final ResultLayout<S> layout) {
     super(sourceText);
     this.myLayout = layout;
+  }
+
+  protected void setDisplayName(final String displayName) {
+    this.displayName = displayName;
   }
 
   public String getDisplayName() {
