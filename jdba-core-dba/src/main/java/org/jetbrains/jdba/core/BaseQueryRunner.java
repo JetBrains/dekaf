@@ -6,6 +6,9 @@ import org.jetbrains.jdba.intermediate.DBIntermediateConsts;
 import org.jetbrains.jdba.intermediate.IntegralIntermediateCursor;
 import org.jetbrains.jdba.intermediate.IntegralIntermediateSeance;
 
+import java.lang.reflect.Array;
+import java.util.Collections;
+
 
 
 /**
@@ -81,13 +84,25 @@ public class BaseQueryRunner<S> implements DBQueryRunner<S>, BaseSeanceRunner {
       myCursor.setFetchLimit(myPackLimit);
       S result = myCursor.fetch();
       ok = true;
-      return result;
+      return result != null ? result : emptyResult();
     }
     finally {
       if (!ok || !myMultiPackMode || !myCursor.hasRows()) {
         myCursor.close();
         myCursor = null;
       }
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  private S emptyResult() {
+    switch (myResultLayout.kind) {
+      case ARRAY:                return (S) Array.newInstance(myResultLayout.row.rowClass, 0);
+      case ARRAY_OF_PRIMITIVES:  return (S) Array.newInstance(myResultLayout.row.rowClass, 0);
+      case LIST:                 return (S) Collections.emptyList();
+      case SET:                  return (S) Collections.emptySet();
+      case MAP:                  return (S) Collections.emptyMap();
+      default:                   return null;
     }
   }
 

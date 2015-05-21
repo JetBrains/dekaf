@@ -7,8 +7,11 @@
         <option name="FIELD_NAME_PREFIX" value="my" />
         <option name="STATIC_FIELD_NAME_PREFIX" value="our" />
         <option name="GENERATE_FINAL_PARAMETERS" value="true" />
-        <option name="VISIBILITY" value="private" />
+        <option name="VISIBILITY" value="EscalateVisible" />
         <option name="RIGHT_MARGIN" value="100" />
+        <SqlCodeStyleSettings>
+          <option name="KEYWORD_CASE" value="1" />
+        </SqlCodeStyleSettings>
         <XML>
           <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
         </XML>

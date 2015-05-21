@@ -3,6 +3,7 @@ package org.jetbrains.jdba.sql;
 import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.List;
 
 
@@ -39,7 +40,7 @@ public class SqlScript {
     this(ImmutableList.copyOf(commands));
   }
 
-  public SqlScript(@NotNull final List<SqlCommand> commands) {
+  public SqlScript(@NotNull final Collection<SqlCommand> commands) {
     this(ImmutableList.copyOf(commands));
   }
 

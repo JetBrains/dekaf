@@ -198,6 +198,8 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
 
   @Override
   public R fetch() {
+    if (!myHasRows) return null; // no more rows
+
     if (!myOpened) throw new IllegalStateException("The cursor is not opened or is yet closed.");
 
     final R result;
