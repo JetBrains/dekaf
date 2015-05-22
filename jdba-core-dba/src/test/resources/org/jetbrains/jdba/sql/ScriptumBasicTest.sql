@@ -13,15 +13,34 @@ The Oracle Command
 The Command;
 
 
+---- TheCommand_semicolon_sameString_2 ----
+
+The Command; ;
+
+
 ---- TheCommand_semicolon_nextString ----
 
 The Command
+;
+
+---- TheCommand_semicolon_nextString_2 ----
+
+The Command
+;
+
 ;
 
 
 ---- TheCommand_slash_nextString ----
 
 The Command
+/
+
+---- TheCommand_slash_nextString_2 ----
+
+The Command
+/
+
 /
 
 

@@ -36,13 +36,28 @@ public class ScriptumBasicTest {
   }
 
   @Test
+  public void theCommand_semicolon_sameString_2() {
+    check_TheCommand("TheCommand_semicolon_sameString_2");
+  }
+
+  @Test
   public void theCommand_semicolon_nextString() {
     check_TheCommand("TheCommand_semicolon_nextString");
   }
 
   @Test
+  public void theCommand_semicolon_nextString_2() {
+    check_TheCommand("TheCommand_semicolon_nextString_2");
+  }
+
+  @Test
   public void theCommand_slash_nextString() {
     check_TheCommand("TheCommand_slash_nextString");
+  }
+
+  @Test
+  public void theCommand_slash_nextString_2() {
+    check_TheCommand("TheCommand_slash_nextString_2");
   }
 
   protected void check_TheCommand(final String queryName) {
