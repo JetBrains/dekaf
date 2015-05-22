@@ -7,7 +7,6 @@ import org.jetbrains.jdba.util.Strings;
 
 import java.io.*;
 import java.util.LinkedHashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,11 +28,15 @@ final class ScriptumResourceFromJava extends ScriptumResource {
   @NotNull
   private final String myResourcePath;
 
+  @NotNull
+  private final String myFileName;
+
 
   ScriptumResourceFromJava(@NotNull final ClassLoader classLoader,
                            @NotNull final String resourcePath) {
     myClassLoader = classLoader;
     myResourcePath = resourcePath;
+    myFileName = Strings.lastPart(resourcePath, '/');
   }
 
 
@@ -73,7 +76,7 @@ final class ScriptumResourceFromJava extends ScriptumResource {
 
 
   private void loadScripts(@NotNull final BufferedReader reader) throws IOException {
-    Map<String,TextFragment> map = new LinkedHashMap<String, TextFragment>();
+    Map<String,TextFileFragment> map = new LinkedHashMap<String, TextFileFragment>();
     StringBuilder buf = new StringBuilder();
     String currentName = "0";
     int row = 0;
@@ -107,17 +110,17 @@ final class ScriptumResourceFromJava extends ScriptumResource {
   @SuppressWarnings("ConstantConditions")
   @NotNull
   private String normalizeName(final Matcher m) {
-    return Strings.minimizeSpaces(m.group(1)).toUpperCase(Locale.GERMAN).replace(" + ", "+");
+    return Strings.minimizeSpaces(m.group(1)).replace(" + ", "+");
   }
 
-  private void putTheText(final Map<String, TextFragment> map,
+  private void putTheText(final Map<String, TextFileFragment> map,
                           final StringBuilder buf,
                           final int row,
-                          final String currentName) {
+                          final String name) {
     String text = Strings.rtrim(buf.toString());
-    if (!map.containsKey(currentName)) {
-      TextFragment fragment = new TextFragment(text, row, 1);
-      map.put(currentName, fragment);
+    if (!map.containsKey(name)) {
+      TextFileFragment fragment = new TextFileFragment(text, myFileName, row, 1, name);
+      map.put(name, fragment);
     }
   }
 

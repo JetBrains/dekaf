@@ -187,5 +187,24 @@ public abstract class Strings {
   private static final Pattern SEVERAL_SPACES =
           Pattern.compile("[ \\s\\t\\r\\n]{2,}");
 
+  /**
+   * Returns the last part of the string. Parts deleimited with the specificed <tt>delimiter</tt>.
+   * @param string     the string.
+   * @param delimiter  the parts delimiter.
+   * @return           the last part;
+   *                   or the whole string if the <tt>delimiter</tt> doesn't present in the string.
+   */
+  @Contract("!null,_->!null; null,_->null")
+  public static String lastPart(@Nullable final String string, final char delimiter) {
+    if (string == null) return null;
+
+    int pos = string.lastIndexOf(delimiter);
+    if (pos >= 0) {
+      return string.substring(pos+1);
+    }
+    else {
+      return string;
+    }
+  }
 
 }

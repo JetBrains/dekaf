@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Leonid Bushuev from JetBrains
  */
-public class SqlCommand extends SqlExecutable {
+public class SqlCommand extends SqlStatement {
 
   public SqlCommand(@NotNull final TextFragment sourceFragment) {
     super(sourceFragment);

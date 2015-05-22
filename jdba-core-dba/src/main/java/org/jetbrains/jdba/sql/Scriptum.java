@@ -95,8 +95,8 @@ public final class Scriptum {
    * @return      the found script, or <i>null</i> if not found.
    */
   @Nullable
-  public final TextFragment findText(@NotNull String name) {
-    TextFragment fragment;
+  public final TextFileFragment findText(@NotNull String name) {
+    TextFileFragment fragment;
     final String nameWithDialect = myDialect == null ? null : name + '+' + myDialect;
     for (int i = myResources.length-1; i >= 0; i--) {
       ScriptumResource r = myResources[i];
@@ -122,24 +122,47 @@ public final class Scriptum {
    * @throws ScriptNotFoundException if no such script.
    */
   @NotNull
-  public final TextFragment getText(@NotNull String name) throws ScriptNotFoundException{
-    TextFragment fragment = findText(name);
-    if (fragment == null) throw new ScriptNotFoundException("No such script: " + name);
-    return fragment;
+  public final TextFileFragment getText(@NotNull String name) throws ScriptNotFoundException{
+    TextFileFragment fragment = findText(name);
+    if (fragment != null) {
+      return fragment;
+    }
+    else {
+      // some useful diagnostics
+      StringBuilder b = new StringBuilder();
+      b.append("No such script with name: ").append(name).append('\n');
+      boolean was = false;
+      for (ScriptumResource r : myResources) {
+        for (String existentName : r.getExistentNames()) {
+          if (!was) {
+            b.append("There are scripts: ");
+            was = true;
+          }
+          else {
+            b.append(", ");
+          }
+          b.append(existentName);
+        }
+      }
+      if (!was) {
+        b.append("There are no scripts at all");
+      }
+      throw new ScriptNotFoundException(b.toString());
+    }
   }
 
 
   @NotNull
   public final <S> SqlQuery<S> query(@NotNull final String name,
                                      @NotNull final ResultLayout<S> layout) {
-    TextFragment fragment = getText(name);
+    TextFileFragment fragment = getText(name);
     fragment = stripSingleStatement(fragment);
     return new SqlQuery<S>(fragment, layout);
   }
 
   @NotNull
   public final SqlCommand command(@NotNull final String name) {
-    TextFragment fragment = getText(name);
+    TextFileFragment fragment = getText(name);
     fragment = stripSingleStatement(fragment);
     return new SqlCommand(fragment);
   }
@@ -157,12 +180,16 @@ public final class Scriptum {
       Pattern.compile("((\\;\\s*)+|(\\n\\/\\s*\\n?)+)$", Pattern.DOTALL);
 
   @NotNull
-  private TextFragment stripSingleStatement(@NotNull final TextFragment fragment) {
+  private TextFileFragment stripSingleStatement(@NotNull final TextFileFragment fragment) {
     Matcher m = STRIP_SINGLE_STATEMENT_PATTERN.matcher(fragment.text);
     if (m.find()) {
       int n = fragment.text.length();
       n -= m.group(1).length();
-      return new TextFragment(rtrim(fragment.text.substring(0, n)), fragment.row, fragment.pos);
+      final String text = rtrim(fragment.text.substring(0, n));
+      return new TextFileFragment(text,
+                                  fragment.getTextName(),
+                                  fragment.row, fragment.pos,
+                                  fragment.getFragmentName());
     }
     else {
       return fragment;

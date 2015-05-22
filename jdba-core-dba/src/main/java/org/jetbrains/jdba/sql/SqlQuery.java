@@ -11,7 +11,7 @@ import org.jetbrains.jdba.core.ResultLayout;
  * @param <S> type of the query result.
  * @author Leonid Bushuev from JetBrains
  */
-public class SqlQuery<S> extends SqlExecutable {
+public class SqlQuery<S> extends SqlStatement {
 
 
   @NotNull

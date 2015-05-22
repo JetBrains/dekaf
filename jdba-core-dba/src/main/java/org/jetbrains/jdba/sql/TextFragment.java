@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * @author Leonid Bushuev from JetBrains
  **/
-public final class TextFragment implements Comparable<TextFragment>, Serializable {
+public class TextFragment implements Comparable<TextFragment>, Serializable {
 
   @NotNull
   public final String text;
@@ -24,6 +24,7 @@ public final class TextFragment implements Comparable<TextFragment>, Serializabl
    */
   final int pos;
 
+
   /**
    * Instantiates a new TextFragment.
    * @param text  text fragment itself.
@@ -37,17 +38,25 @@ public final class TextFragment implements Comparable<TextFragment>, Serializabl
   }
 
 
+  @NotNull
+  protected String getTextName() {
+    return "SQL";
+  }
+
+
   @Override
   public int compareTo(@NotNull final TextFragment that) {
     if (this == that) return 0;
     //noinspection ConstantConditions
     if (that == null) throw new IllegalArgumentException("Comparison with null");
 
-    int z = this.row - that.row;
+    int z =         this.getTextName().compareTo(that.getTextName());
+    if (z == 0) z = this.row - that.row;
     if (z == 0) z = this.pos - that.pos;
     if (z == 0) z = this.text.compareTo(that.text);
     return z;
   }
+
 
   @Override
   public boolean equals(final Object o) {
@@ -65,4 +74,18 @@ public final class TextFragment implements Comparable<TextFragment>, Serializabl
   public int hashCode() {
     return text.hashCode();
   }
+
+
+  @NotNull
+  protected String getTextLocationHumanReadable() {
+    return "Fragment at " + row + ':' + pos;
+  }
+
+
+  @Override
+  public String toString() {
+    return getTextLocationHumanReadable() + '\n'
+        + text;
+  }
+
 }

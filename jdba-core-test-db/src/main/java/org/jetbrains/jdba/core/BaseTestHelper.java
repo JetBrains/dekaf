@@ -3,7 +3,7 @@ package org.jetbrains.jdba.core;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.sql.Scriptum;
 import org.jetbrains.jdba.sql.SqlQuery;
-import org.jetbrains.jdba.util.ArrayFunctions;
+import org.jetbrains.jdba.util.Collects;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +37,7 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
 
   @Override
   public void ensureNoTableOrView(final String... names) {
-    final String[][] namePacks = ArrayFunctions.splitArrayPer(names, 4);
+    final String[][] namePacks = Collects.splitArrayPer(names, 4);
     final List<String> commands = new ArrayList<String>(names.length);
 
     facade.inSession(new InSessionNoResult() {

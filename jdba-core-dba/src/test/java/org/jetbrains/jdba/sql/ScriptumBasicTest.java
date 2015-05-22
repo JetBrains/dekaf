@@ -83,6 +83,20 @@ public class ScriptumBasicTest {
             .endsWith("values (1,2,3)");
   }
 
+  @Test
+  public void basicCommand_descriptionContainsFileName() {
+    SqlCommand command = myScriptum.command("BasicCommand");
+    assertThat(command.getDescription()).contains(ScriptumBasicTest.class.getSimpleName());
+    assertThat(command.toString()).contains(ScriptumBasicTest.class.getSimpleName());
+  }
+
+  @Test
+  public void basicCommand_descriptionContainsFragmentName() {
+    SqlCommand command = myScriptum.command("BasicCommand");
+    assertThat(command.getDescription()).contains("BasicCommand");
+    assertThat(command.toString()).contains("BasicCommand");
+  }
+
 
 
 }

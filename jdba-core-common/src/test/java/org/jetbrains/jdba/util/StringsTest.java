@@ -1,6 +1,8 @@
 package org.jetbrains.jdba.util;
 
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.util.regex.Pattern;
 
@@ -12,6 +14,7 @@ import static org.jetbrains.jdba.util.Strings.*;
 /**
  * @author Leonid Bushuev from JetBrains
  */
+@FixMethodOrder(MethodSorters.JVM)
 @SuppressWarnings("SpellCheckingInspection")
 public class StringsTest {
 
@@ -128,6 +131,30 @@ public class StringsTest {
     assertThat(lower(null)).isNull();
 
     assertThat(lower("xxx")).isSameAs("xxx");
+  }
+
+
+  //// last part \\\\
+
+  @Test
+  public void lastPart_basic() {
+    assertThat(lastPart("aaa.bbb.ccc", '.')).isEqualTo("ccc");
+    assertThat(lastPart("dddd", '.')).isEqualTo("dddd");
+    assertThat(lastPart("", '.')).isEqualTo("");
+
+    assertThat(lastPart(null, '.')).isNull();
+  }
+
+  @Test
+  public void lastPart_same() {
+    final String s = "dddd";
+    assertThat(lastPart(s, '.')).isSameAs(s);
+  }
+
+  @Test
+  public void lastPart_delimiterAtTheEnd() {
+    final String s = "word/";
+    assertThat(lastPart(s, '/')).isEqualTo("");
   }
 
 }

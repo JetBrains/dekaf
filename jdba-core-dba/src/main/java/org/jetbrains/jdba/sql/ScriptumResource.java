@@ -3,8 +3,11 @@ package org.jetbrains.jdba.sql;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Locale;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
+
+import static org.jetbrains.jdba.util.Collects.collectionToString;
 
 
 
@@ -16,19 +19,47 @@ import java.util.Map;
 abstract class ScriptumResource {
 
   @Nullable
-  protected Map<String,TextFragment> myScripts = null;
+  protected Map<String,TextFileFragment> myScripts = null;
 
 
   protected abstract void load();
 
 
-  TextFragment find(@NotNull final String name) {
+  @NotNull
+  TextFileFragment get(@NotNull final String name) {
+    TextFileFragment fragment = find(name);
+
+    if (fragment == null) {
+      if (myScripts == null) {
+        throw new IllegalStateException("The scriptum resource is not loaded yet.");
+      }
+      else {
+        String msg = "No such fragment with name: " + name + '\n' +
+                     collectionToString(myScripts.keySet(), ", ", "There are fragments: ", ".", "This resource is empty");
+        throw new IllegalArgumentException(msg);
+      }
+    }
+
+    return fragment;
+  }
+
+
+  @Nullable
+  TextFileFragment find(@NotNull final String name) {
     if (myScripts == null) {
       load();
       assert myScripts != null;
     }
 
-    return myScripts.get(name.toUpperCase(Locale.GERMAN));
+    return myScripts.get(name);
+  }
+
+
+  @NotNull
+  Set<String> getExistentNames() {
+    return myScripts != null
+             ? Collections.unmodifiableSet(myScripts.keySet())
+             : Collections.<String>emptySet();
   }
 
 

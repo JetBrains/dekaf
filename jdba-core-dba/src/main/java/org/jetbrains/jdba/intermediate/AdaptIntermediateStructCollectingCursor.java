@@ -12,8 +12,8 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 import static java.lang.String.format;
-import static org.jetbrains.jdba.util.ArrayFunctions.arrayToString;
 import static org.jetbrains.jdba.util.Classes.defaultConstructorOf;
+import static org.jetbrains.jdba.util.Collects.arrayToString;
 
 
 

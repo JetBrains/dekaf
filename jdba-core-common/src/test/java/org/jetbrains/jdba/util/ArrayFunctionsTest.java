@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jetbrains.jdba.util.ArrayFunctions.splitArrayPer;
+import static org.jetbrains.jdba.util.Collects.splitArrayPer;
 
 
 
