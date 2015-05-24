@@ -3,9 +3,8 @@ package org.jetbrains.jdba.sql;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
+import java.util.TreeMap;
 
 import static org.jetbrains.jdba.util.Collects.collectionToString;
 
@@ -18,11 +17,50 @@ import static org.jetbrains.jdba.util.Collects.collectionToString;
  */
 abstract class ScriptumResource {
 
-  @Nullable
-  protected Map<String,TextFileFragment> myScripts = null;
+
+  //// STATE \\\\
+
+  /**
+   * All fragments.
+   *
+   * <p>
+   *   Null means not loaded yet.
+   * </p>
+   */
+  protected TextFileFragment[] myFragments = null;
+
+  /**
+   * Map of name to fragment.
+   *
+   * <p>
+   *   Null means not loaded yet.
+   * </p>
+   */
+  protected Map<String,TextFileFragment> myFragmentsMap = null;
 
 
-  protected abstract void load();
+
+  //// INITIALIZATION \\\\
+
+  @NotNull
+  protected abstract TextFileFragment[] loadFragments();
+
+
+  protected void loadIfNeeded() {
+    if (myFragments == null) {
+      myFragments = loadFragments();
+
+      myFragmentsMap = new TreeMap<String, TextFileFragment>(String.CASE_INSENSITIVE_ORDER);
+      for (TextFileFragment fragment : myFragments) {
+        if (fragment.getFragmentName() != null) {
+          myFragmentsMap.put(fragment.getFragmentName(), fragment);
+        }
+      }
+    }
+  }
+
+
+  //// IMPLEMENTATION \\\\
 
 
   @NotNull
@@ -30,12 +68,16 @@ abstract class ScriptumResource {
     TextFileFragment fragment = find(name);
 
     if (fragment == null) {
-      if (myScripts == null) {
+      if (myFragmentsMap == null) {
         throw new IllegalStateException("The scriptum resource is not loaded yet.");
       }
       else {
         String msg = "No such fragment with name: " + name + '\n' +
-                     collectionToString(myScripts.keySet(), ", ", "There are fragments: ", ".", "This resource is empty");
+                     collectionToString(myFragmentsMap.keySet(),
+                                        ", ",
+                                        "There are fragments: ",
+                                        ".",
+                                        "This resource is empty");
         throw new IllegalArgumentException(msg);
       }
     }
@@ -46,30 +88,24 @@ abstract class ScriptumResource {
 
   @Nullable
   TextFileFragment find(@NotNull final String name) {
-    if (myScripts == null) {
-      load();
-      assert myScripts != null;
-    }
-
-    return myScripts.get(name);
+    loadIfNeeded();
+    return myFragmentsMap.get(name);
   }
 
 
   @NotNull
-  Set<String> getExistentNames() {
-    return myScripts != null
-             ? Collections.unmodifiableSet(myScripts.keySet())
-             : Collections.<String>emptySet();
+  String[] getExistentNames() {
+    loadIfNeeded();
+    int n = myFragments.length;
+    String[] names = new String[n];
+    for (int i = 0; i < n; i++) names[i] = myFragments[i].getFragmentName();
+    return names;
   }
 
 
   int count() {
-    if (myScripts == null) {
-      load();
-      assert myScripts != null;
-    }
-
-    return myScripts.size();
+    loadIfNeeded();
+    return myFragments.length;
   }
 
 }

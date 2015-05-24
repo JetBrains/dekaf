@@ -1,13 +1,11 @@
 package org.jetbrains.jdba.sql;
 
 import com.google.common.base.Charsets;
-import com.google.common.collect.ImmutableMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.util.Strings;
 
 import java.io.*;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,8 +38,9 @@ final class ScriptumResourceFromJava extends ScriptumResource {
   }
 
 
+  @NotNull
   @Override
-  protected void load() {
+  protected TextFileFragment[] loadFragments() {
     try {
       final InputStream stream = openStream();
       try {
@@ -49,7 +48,7 @@ final class ScriptumResourceFromJava extends ScriptumResource {
         try {
           BufferedReader reader2 = new BufferedReader(reader1);
           try {
-            loadScripts(reader2);
+            return loadFragmentsFromReader(reader2);
           }
           finally {
             reader2.close();
@@ -75,8 +74,8 @@ final class ScriptumResourceFromJava extends ScriptumResource {
   }
 
 
-  private void loadScripts(@NotNull final BufferedReader reader) throws IOException {
-    Map<String,TextFileFragment> map = new LinkedHashMap<String, TextFileFragment>();
+  private TextFileFragment[] loadFragmentsFromReader(@NotNull final BufferedReader reader) throws IOException {
+    ArrayList<TextFileFragment> fragments = new ArrayList<TextFileFragment>();
     StringBuilder buf = new StringBuilder();
     String currentName = "0";
     int row = 0;
@@ -90,7 +89,7 @@ final class ScriptumResourceFromJava extends ScriptumResource {
       Matcher m = SECTION_HEADER_PATTERN.matcher(line);
       if (m.matches()) {
         // first save the previous text
-        putTheText(map, buf, fragmentRow, currentName);
+        putTheText(fragments, buf, fragmentRow, currentName);
         // now start the new text
         fragmentRow = row+1;
         buf.delete(0, buf.length());
@@ -103,8 +102,9 @@ final class ScriptumResourceFromJava extends ScriptumResource {
         buf.append(line).append('\n');
       }
     }
-    putTheText(map, buf, fragmentRow, currentName);
-    myScripts = ImmutableMap.copyOf(map);
+    putTheText(fragments, buf, fragmentRow, currentName);
+    int n = fragments.size();
+    return fragments.toArray(new TextFileFragment[n]);
   }
 
   @SuppressWarnings("ConstantConditions")
@@ -113,15 +113,13 @@ final class ScriptumResourceFromJava extends ScriptumResource {
     return Strings.minimizeSpaces(m.group(1)).replace(" + ", "+");
   }
 
-  private void putTheText(final Map<String, TextFileFragment> map,
+  private void putTheText(final ArrayList<TextFileFragment> fragments,
                           final StringBuilder buf,
                           final int row,
                           final String name) {
     String text = Strings.rtrim(buf.toString());
-    if (!map.containsKey(name)) {
-      TextFileFragment fragment = new TextFileFragment(text, myFileName, row, 1, name);
-      map.put(name, fragment);
-    }
+    TextFileFragment fragment = new TextFileFragment(text, myFileName, row, 1, name);
+    fragments.add(fragment);
   }
 
 }
