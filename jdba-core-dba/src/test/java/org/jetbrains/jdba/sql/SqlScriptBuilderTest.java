@@ -23,22 +23,11 @@ public class SqlScriptBuilderTest {
     String commandText = "select * from dual";
     final SqlScript script = build(commandText);
 
-    assertThat((Integer)script.myCount).isEqualTo((Integer)1);
-    assertThat(script.getStatements().get(0).getSourceText()).isEqualTo(commandText);
+    assertThat(script.getStatements()).hasSize(1);
+    SqlStatement statement = script.getStatements().get(0);
+    assertThat(statement.getSourceText()).isEqualTo(commandText);
+    assertThat(statement.getRow()).isEqualTo(1);
   }
-
-
-  /*
-  @Test
-  public void parse_2_in_one_line() {
-    String text = "create table X; drop table X";
-    final SQLScript script = build(text);
-
-    assertEquals(script.myCount, 2);
-    assertEquals(script.getCommands().get(0).getSourceText(), "create table X");
-    assertEquals(script.getCommands().get(1).getSourceText(), "drop table X");
-  }
-  */
 
 
   @Test
@@ -110,6 +99,51 @@ public class SqlScriptBuilderTest {
     final String queryText = script.getStatements().get(0).getSourceText();
     assertThat(queryText).contains("/*+index(i)*/");
   }
+
+
+  @Test
+  public void parse_OraclePackage() {
+    final SqlScript script = build(ORACLE_PKG1);
+
+    assertThat(script.getStatements()).hasSize(2);
+    assertThat(script.getStatements().get(0).getSourceText()).startsWith("create package pkg1")
+                                                             .endsWith("end pkg1;");
+    assertThat(script.getStatements().get(1).getSourceText()).startsWith("create package body")
+                                                             .endsWith("end;");
+  }
+
+  @Test
+  public void parse_OraclePackage_lines() {
+    final SqlScript script = build(ORACLE_PKG1);
+
+    assertThat(script.getStatements()).hasSize(2)
+                                      .extracting("row")
+                                      .containsSequence(1, 9);
+  }
+
+  private static final String ORACLE_PKG1 =
+          "create package pkg1 is            \n" +     //  line 1
+          "                                  \n" +     //
+          "  procedure pro1 (n natural);     \n" +     //
+          "  function fun1 return number;    \n" +     //
+          "                                  \n" +     //
+          "end pkg1;                         \n" +     //
+          "/                                 \n" +     //
+          "                                  \n" +     //
+          "create package body pkg1 is       \n" +     //  line 9
+          "                                  \n" +     //
+          "  procedure pro1(n natural) is    \n" +     //
+          "  begin                           \n" +     //
+          "    null;                         \n" +     //
+          "  end;                            \n" +     //
+          "                                  \n" +     //
+          "  function fun1 return number is  \n" +     //
+          "  begin                           \n" +     //
+          "    return 44 / 13;               \n" +     //
+          "  end;                            \n" +     //
+          "                                  \n" +     //
+          "end;                              \n" +     //
+          "/                                 \n";      //
 
 
   private SqlScript build(String text) {

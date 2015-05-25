@@ -68,7 +68,7 @@ public class ScriptumBasicTest {
   @Test
   public void theCommand_Oracle() {
     Scriptum scriptumForOracle =
-            Scriptum.of(myScriptum, "Oracle");
+            Scriptum.dialectOf(myScriptum, "Oracle");
 
     SqlCommand command = scriptumForOracle.command("TheCommand");
     assertThat(command.mySourceText).isEqualTo("The Oracle Command");

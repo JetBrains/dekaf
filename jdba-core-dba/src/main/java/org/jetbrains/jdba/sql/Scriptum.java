@@ -31,17 +31,37 @@ public final class Scriptum {
 
   //// CONSTRUCTORS \\\\
 
+  @NotNull
   public static Scriptum of(@NotNull final Class clazz) {
-    return of(clazz, null);
+    ClassLoader classLoader = clazz.getClassLoader();
+    String className = clazz.getName();
+    String path = className.replace('.', '/');
+    String resourceName = path + ".sql";
+
+    return of(classLoader, resourceName);
   }
 
-  public static Scriptum of(@NotNull final Class clazz, @Nullable final String dialect) {
+  @NotNull
+  public static Scriptum of(@NotNull final Class clazz, @NotNull final String name) {
     ClassLoader classLoader = clazz.getClassLoader();
-    String path = clazz.getName().replace('.', '/');
+    String packageName = clazz.getPackage().getName();
+    String path = packageName.replace('.', '/');
+    String fileName = name;
+    if (!fileName.contains(".")) fileName += ".sql";
+    String resourceName = path + '/' + fileName;
+
+    return of(classLoader, resourceName);
+  }
+
+  @NotNull
+  public static Scriptum dialectOf(@NotNull final Class clazz, @Nullable final String dialect) {
+    ClassLoader classLoader = clazz.getClassLoader();
+    String className = clazz.getName();
+    String path = className.replace('.', '/');
     ArrayList<ScriptumResource> sr = new ArrayList<ScriptumResource>(2);
 
     if (dialect != null) {
-      String name1 = path + '.' + dialect + ".sql";
+      String name1 = path + '+' + dialect + ".sql";
       boolean exist1 = classLoader.getResource(name1) != null;
       if (exist1) {
         ScriptumResourceFromJava r1 = new ScriptumResourceFromJava(classLoader, name1);
@@ -58,19 +78,39 @@ public final class Scriptum {
 
     if (sr.isEmpty())
       throw new IllegalArgumentException(String.format("Resources for class %s not found",
-                                                       clazz.getName()));
+                                                       className));
 
     ScriptumResource[] resources = sr.toArray(new ScriptumResource[sr.size()]);
     return new Scriptum(resources, dialect);
   }
 
-  public static Scriptum of(@NotNull final Scriptum parentScriptum, @Nullable final String dialect) {
+  @NotNull
+  public static Scriptum dialectOf(@NotNull final Scriptum parentScriptum,
+                                   @Nullable final String dialect) {
     if (eq(parentScriptum.myDialect, dialect)) {
       return parentScriptum;
     }
     else {
       return new Scriptum(parentScriptum.myResources, dialect);
     }
+  }
+
+
+  @NotNull
+  public static Scriptum of(final ClassLoader classLoader, final String resourceName) {
+    ArrayList<ScriptumResource> sr = new ArrayList<ScriptumResource>(2);
+    boolean exists = classLoader.getResource(resourceName) != null;
+    if (exists) {
+      ScriptumResourceFromJava r2 = new ScriptumResourceFromJava(classLoader, resourceName);
+      sr.add(r2);
+    }
+    else {
+      throw new IllegalArgumentException(String.format("Resources for class %s not found",
+                                                       resourceName));
+    }
+
+    ScriptumResource[] resources = sr.toArray(new ScriptumResource[sr.size()]);
+    return new Scriptum(resources, null);
   }
 
 
