@@ -14,6 +14,7 @@ import java.util.Arrays;
 public final class RowLayout<R> implements Serializable {
 
   public enum Kind {
+    EXISTENCE,
     ONE_VALUE,
     ARRAY,
     CLASS_BY_POSITIONS,
@@ -47,6 +48,7 @@ public final class RowLayout<R> implements Serializable {
 
     // portability
     switch (kind) {
+      case EXISTENCE:
       case ONE_VALUE:
       case ARRAY:
         portable = true;
@@ -118,6 +120,8 @@ public final class RowLayout<R> implements Serializable {
   @Override
   public String toString() {
     switch (kind) {
+      case EXISTENCE:
+        return "existence";
       case ONE_VALUE:
         return commonComponentClass.getSimpleName();
       case ARRAY:

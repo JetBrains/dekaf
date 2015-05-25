@@ -48,6 +48,10 @@ public abstract class Layouts {
 
   //// RESULT LAYOUTS \\\\
 
+  public static ResultLayout<Boolean> existence() {
+    return EXISTENCE;
+  }
+
   public static <V> ResultLayout<V> singleOf(@NotNull final Class<V> valueClass) {
     return new ResultLayout<V>(ResultLayout.Kind.SINGLE_ROW, false, oneOf(valueClass));
   }
@@ -84,5 +88,10 @@ public abstract class Layouts {
     return new ResultLayout<SortedMap<K,V>>(ResultLayout.Kind.MAP, true, Layouts.arrayOf(keyClass, valueClass));
   }
 
+
+  //// OTHER STUFF \\\\
+
+  private static final ResultLayout<Boolean> EXISTENCE =
+      new ResultLayout<Boolean>(ResultLayout.Kind.EXISTENCE, false, new RowLayout<Void>(RowLayout.Kind.EXISTENCE, Void.class, Void.class));
 
 }

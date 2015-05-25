@@ -16,28 +16,28 @@ import static org.jetbrains.jdba.util.Strings.rtrim;
  */
 public class SqlScriptBuilder {
 
-  private final ImmutableList.Builder<SqlCommand> myCommands =
-    new ImmutableList.Builder<SqlCommand>();
+  private final ImmutableList.Builder<SqlStatement> myStatements =
+    new ImmutableList.Builder<SqlStatement>();
 
 
 
   public void add(@NotNull String... commands) {
     for (String command : commands) {
       SqlCommand cmd = new SqlCommand(command);
-      myCommands.add(cmd);
+      myStatements.add(cmd);
     }
   }
 
   public void add(@NotNull SqlCommand... commands) {
     for (SqlCommand command : commands) {
-      myCommands.add(command);
+      myStatements.add(command);
     }
   }
 
   public void add(@NotNull SqlScript... scripts) {
     for (SqlScript script : scripts) {
-      for (SqlCommand command : script.myCommands) {
-        myCommands.add(command);
+      for (SqlStatement statement : script.myStatements) {
+        myStatements.add(statement);
       }
     }
   }
@@ -120,7 +120,7 @@ public class SqlScriptBuilder {
 
     String plText = rtrim(walker.getText().substring(begin.offset, rowOffset));
     SqlCommand command = new SqlCommand(plText, begin.row - 1);
-    myCommands.add(command);
+    myStatements.add(command);
   }
 
 
@@ -135,7 +135,7 @@ public class SqlScriptBuilder {
 
     final String sqlText = rtrim(walker.getText().substring(begin.offset, walker.getOffset()));
     SqlCommand command = new SqlCommand(sqlText, begin.row - 1);
-    myCommands.add(command);
+    myStatements.add(command);
 
     if (matcher != null) {
       walker.skipToOffset(matcher.end());
@@ -188,8 +188,8 @@ public class SqlScriptBuilder {
 
   @NotNull
   public SqlScript build() {
-    ImmutableList<SqlCommand> commands = myCommands.build();
-    return commands.size() > 0 ? new SqlScript(commands) : EMPTY_SCRIPT;
+    ImmutableList<SqlStatement> statements = myStatements.build();
+    return statements.size() > 0 ? new SqlScript(statements) : EMPTY_SCRIPT;
   }
 
 

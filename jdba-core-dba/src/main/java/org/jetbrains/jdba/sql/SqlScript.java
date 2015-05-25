@@ -16,60 +16,60 @@ import java.util.List;
 public class SqlScript {
 
   @NotNull
-  final ImmutableList<SqlCommand> myCommands;
+  final ImmutableList<? extends SqlStatement> myStatements;
 
   final int myCount;
 
 
 
-  public SqlScript(@NotNull final String... commands) {
-    this(makeCommandsFromStrings(commands));
+  public SqlScript(@NotNull final String... statements) {
+    this(makeStatementsFromStrings(statements));
   }
 
   @NotNull
-  private static ImmutableList<SqlCommand> makeCommandsFromStrings(final @NotNull String[] commands) {
-    ImmutableList.Builder<SqlCommand> builder = ImmutableList.builder();
-    for (String command : commands) {
+  private static ImmutableList<? extends SqlStatement> makeStatementsFromStrings(final @NotNull String[] statements) {
+    ImmutableList.Builder<? extends SqlStatement> builder = ImmutableList.builder();
+    for (String command : statements) {
       SqlCommand cmd = new SqlCommand(command);
       builder.add(cmd);
     }
     return builder.build();
   }
 
-  public SqlScript(@NotNull final SqlCommand... commands) {
-    this(ImmutableList.copyOf(commands));
+  public SqlScript(@NotNull final SqlStatement... statements) {
+    this(ImmutableList.copyOf(statements));
   }
 
-  public SqlScript(@NotNull final Collection<SqlCommand> commands) {
-    this(ImmutableList.copyOf(commands));
+  public SqlScript(@NotNull final Collection<? extends SqlStatement> statements) {
+    this(ImmutableList.copyOf(statements));
   }
 
   public SqlScript(@NotNull final SqlScript... scripts) {
-    this(joinCommands(scripts));
+    this(joinStatements(scripts));
   }
 
-  private static ImmutableList<SqlCommand> joinCommands(SqlScript[] scripts) {
-    ImmutableList.Builder<SqlCommand> b = ImmutableList.builder();
+  private static ImmutableList<? extends SqlStatement> joinStatements(SqlScript[] scripts) {
+    ImmutableList.Builder<SqlStatement> b = ImmutableList.builder();
     for (SqlScript script : scripts) {
-      b.addAll(script.getCommands());
+      b.addAll(script.getStatements());
     }
     return b.build();
   }
 
 
-  protected SqlScript(@NotNull final ImmutableList<SqlCommand> commands) {
-    this.myCommands = commands;
-    this.myCount = commands.size();
+  protected SqlScript(@NotNull final ImmutableList<? extends SqlStatement> statements) {
+    this.myStatements = statements;
+    this.myCount = statements.size();
   }
 
 
   @NotNull
-  public List<SqlCommand> getCommands() {
-    return myCommands;
+  public List<? extends SqlStatement> getStatements() {
+    return myStatements;
   }
 
 
-  public boolean hasCommands() {
+  public boolean hasStatements() {
     return myCount > 0;
   }
 
@@ -79,15 +79,15 @@ public class SqlScript {
   public String toString() {
     switch (myCount) {
       case 0: return "";
-      case 1: return myCommands.get(0).getSourceText();
+      case 1: return myStatements.get(0).getSourceText();
       default:
         final StringBuilder b = new StringBuilder();
         final String delimiterString = getScriptDelimiterString();
-        b.append(myCommands.get(0).getSourceText());
+        b.append(myStatements.get(0).getSourceText());
         for (int i = 1; i < myCount; i++) {
           if (b.charAt(b.length()-1) != '\n')  b.append('\n');
           b.append(delimiterString).append('\n');
-          b.append(myCommands.get(i).getSourceText());
+          b.append(myStatements.get(i).getSourceText());
         }
         return b.toString();
     }

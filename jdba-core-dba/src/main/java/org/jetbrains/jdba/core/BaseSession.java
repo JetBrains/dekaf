@@ -117,8 +117,7 @@ public class BaseSession implements DBSession, DBTransaction  {
   @NotNull
   @Override
   public synchronized DBScriptRunner script(@NotNull final SqlScript script) {
-    // TODO implement BaseSession.script
-    throw new RuntimeException("The BaseSession.script has not been implemented yet.");
+    return new BaseScriptRunner(this, script);
   }
 
 

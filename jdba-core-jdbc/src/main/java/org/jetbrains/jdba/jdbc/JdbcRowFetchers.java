@@ -14,6 +14,8 @@ import java.sql.SQLException;
 public class JdbcRowFetchers {
 
 
+
+
   public static <V> OneValueFetcher<V> createOneValueFetcher(final int position,
                                                              final JdbcValueGetter<V> getter) {
     return new OneValueFetcher<V>(position,getter);

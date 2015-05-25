@@ -15,6 +15,7 @@ public final class ResultLayout<T> implements Serializable {
   //// INNER DECLARATIONS \\\\
 
   public enum Kind {
+    EXISTENCE,
     SINGLE_ROW,
     ARRAY,
     ARRAY_OF_PRIMITIVES,
@@ -72,7 +73,12 @@ public final class ResultLayout<T> implements Serializable {
 
   @Override
   public String toString() {
-    return kind.name() + " of " + row.toString();
+    switch (kind) {
+      case EXISTENCE:
+        return "existence";
+      default:
+        return kind.name() + " of " + row.toString();
+    }
   }
 
 }

@@ -23,9 +23,9 @@ public class SqlScriptTest {
     SqlScript script1 = new SqlScript("command1"),
               script2 = new SqlScript("command2");
     SqlScript script = new SqlScript(script1, script2);
-    assertThat((Integer)script.getCommands().size()).isEqualTo((Integer)2);
-    assertThat(script.getCommands().get(0).getSourceText()).isEqualTo("command1");
-    assertThat(script.getCommands().get(1).getSourceText()).isEqualTo("command2");
+    assertThat((Integer)script.getStatements().size()).isEqualTo((Integer)2);
+    assertThat(script.getStatements().get(0).getSourceText()).isEqualTo("command1");
+    assertThat(script.getStatements().get(1).getSourceText()).isEqualTo("command2");
   }
 
   @Test

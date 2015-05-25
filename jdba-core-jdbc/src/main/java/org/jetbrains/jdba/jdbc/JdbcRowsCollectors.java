@@ -15,6 +15,10 @@ import java.util.*;
 public class JdbcRowsCollectors {
 
 
+  public static ExistenceCollector createExistenceCollector() {
+    return new ExistenceCollector();
+  }
+
   public static <R> SingleRowCollector<R> createSingleRowCollector(final JdbcRowFetcher<R> fetcher) {
     return new SingleRowCollector<R>(fetcher);
   }
@@ -48,6 +52,14 @@ public class JdbcRowsCollectors {
 
 
   //// COLLECTORS \\\\
+
+  protected static class ExistenceCollector extends JdbcRowsCollector<Boolean> {
+
+    @Override
+    protected Boolean collectRows(@NotNull final ResultSet rset, final int limit) {
+      return hasMoreRows;
+    }
+  }
 
   protected static class SingleRowCollector<R> extends JdbcRowsCollector<R> {
 

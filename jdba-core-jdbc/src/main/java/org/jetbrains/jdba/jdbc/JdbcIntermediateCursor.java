@@ -92,10 +92,11 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
                                                               final String statementText) throws SQLException{
     RowLayout<?> rowLayout = resultLayout.row;
 
-    ResultSetMetaData metaData = resultSet.getMetaData();
-
     int n;
     switch (rowLayout.kind) {
+      case EXISTENCE:
+        n = 0;
+        break;
       case ONE_VALUE:
         n = 1;
         break;
@@ -103,20 +104,27 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
         n = rowLayout.components.length;
     }
 
-    if (n < metaData.getColumnCount()) {
-      throw new DBPreparingException(format("Query returns too few columns: %d when expected %d.",
-                                            metaData.getColumnCount(),
-                                            n));
+    final JdbcValueGetter<?>[] getters = new JdbcValueGetter[n];
+    if (n > 0) {
+      ResultSetMetaData metaData = resultSet.getMetaData();
+
+      if (n > metaData.getColumnCount()) {
+        throw new DBPreparingException(format("Query returns too few columns: %d when expected %d.",
+                                              metaData.getColumnCount(),
+                                              n));
+      }
+
+      for (int i = 0; i < n; i++) {
+        int jdbcType = metaData.getColumnType(i + 1);
+        getters[i] = JdbcValueGetters.of(jdbcType, rowLayout.components[i].clazz);
+      }
     }
 
-    JdbcValueGetter<?>[] getters = new JdbcValueGetter[n];
-    for (int i = 0; i < n; i++) {
-      int jdbcType = metaData.getColumnType(i+1);
-      getters[i] = JdbcValueGetters.of(jdbcType, rowLayout.components[i].clazz);
-    }
-
-    JdbcRowFetcher<?> fetcher;
+    final JdbcRowFetcher<?> fetcher;
     switch (rowLayout.kind) {
+      case EXISTENCE:
+        fetcher = NOTHING_FETCHER;
+        break;
       case ONE_VALUE:
         fetcher = JdbcRowFetchers.createOneValueFetcher(1, getters[0]);
         break;
@@ -127,8 +135,11 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
         throw new DBPreparingException(format("Unknown how to handle the row layout %s", rowLayout.kind.toString()));
     }
 
-    JdbcRowsCollector<?> collector;
+    final JdbcRowsCollector<?> collector;
     switch (resultLayout.kind) {
+      case EXISTENCE:
+        collector = JdbcRowsCollectors.createExistenceCollector();
+        break;
       case SINGLE_ROW:
         collector = JdbcRowsCollectors.createSingleRowCollector(fetcher);
         break;
@@ -236,4 +247,13 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
       myOpened = false;
     }
   }
+
+
+  //// OTHER STUFF \\\\
+
+  private static final JdbcRowFetcher<Void> NOTHING_FETCHER = new JdbcRowFetcher<Void>() {
+    @Override
+    Void fetchRow(@NotNull final ResultSet rset) { return null; }
+  };
+
 }
