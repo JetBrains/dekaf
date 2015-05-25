@@ -98,5 +98,18 @@ public class ScriptumBasicTest {
   }
 
 
+  @Test
+  public void plBlock1() {
+    SqlCommand plb = myScriptum.command("PLBlock1");
+    assertThat(plb.getSourceText()).contains("end;")
+                                   .doesNotContain("/");
+  }
+
+  @Test
+  public void postgreProcedure1() {
+    SqlCommand plb = myScriptum.command("PostgreProcedure1");
+    assertThat(plb.getSourceText()).startsWith("create")
+                                   .endsWith("language plpgsql");
+  }
 
 }
