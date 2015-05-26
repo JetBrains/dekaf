@@ -14,9 +14,7 @@
   <modules>
     <module>fine-junit</module>
 
-    <module>jdba-core-common</module>
-    <module>jdba-core-dba</module>
-    <module>jdba-core-jdbc</module>
+    <module>jdba-core</module>
     <module>jdba-core-test-db</module>
 
     <module>jdba-postgre</module>
@@ -27,7 +25,6 @@
     <module>jdba-oracle-test-db</module>
     <module>jdba-oracle-tests</module>
 
-    <module>test-with-hsql</module>
     <module>test-pack</module>
   </modules>
 

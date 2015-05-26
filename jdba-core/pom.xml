@@ -10,51 +10,39 @@
     <version>2.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>jdba-postgre-test-db</artifactId>
-  <name>JDBA Postgre Test Database Helper</name>
-  <version>2.0.0-SNAPSHOT</version>
+  <artifactId>jdba-core</artifactId>
   <packaging>jar</packaging>
+  <name>JDBA Core</name>
+  <description>Java Database Access Layer Core</description>
 
   <dependencies>
 
-    <!-- MAIN DEPENDENCIES -->
-    <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-core</artifactId>
-      <version>2.0.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-core-test-db</artifactId>
-      <version>2.0.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-postgre</artifactId>
-      <version>2.0.0-SNAPSHOT</version>
-    </dependency>
-
+    <!-- production dependencies -->
     <dependency>
       <groupId>org.jetbrains</groupId>
       <artifactId>annotations</artifactId>
       <version>13.0</version>
     </dependency>
-
-    <!-- TEST DEPENDENCIES -->
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-core-test-db</artifactId>
-      <version>2.0.0-SNAPSHOT</version>
-      <type>test-jar</type>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>17.0</version>
+    </dependency>
+
+    <!-- test dependencies -->
+    <dependency>
+      <groupId>org.hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>2.3.2</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.jetbrains.jdba</groupId>
       <artifactId>fine-junit</artifactId>
       <version>2.0.0-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -67,6 +55,19 @@
       <version>1.6.0</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-guava</artifactId>
+      <version>1.2.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>2.0.7-beta</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
 </project>
