@@ -6,6 +6,7 @@ import org.jetbrains.jdba.exceptions.DBException;
 import org.jetbrains.jdba.exceptions.UnknownDBException;
 import org.jetbrains.jdba.intermediate.DBExceptionRecognizer;
 
+import java.lang.reflect.Constructor;
 import java.sql.SQLException;
 
 
@@ -63,4 +64,22 @@ public class BaseExceptionRecognizer implements DBExceptionRecognizer {
     // the inheritor should override this method
     return null;
   }
+
+
+  @Nullable
+  protected <E extends DBException> E instantiateDBException(
+                                             final @NotNull Class<? extends E> exceptionClass,
+                                             final @NotNull SQLException sqle,
+                                             final @Nullable String statementText) {
+    try {
+      final Constructor<? extends E> constructor =
+          exceptionClass.getConstructor(SQLException.class, String.class);
+      return constructor.newInstance(sqle, statementText);
+    }
+    catch (Exception e) {
+      // TODO log it somehow
+      return null;
+    }
+  }
+
 }
