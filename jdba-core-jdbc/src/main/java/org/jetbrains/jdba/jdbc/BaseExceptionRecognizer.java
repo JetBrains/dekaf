@@ -3,7 +3,7 @@ package org.jetbrains.jdba.jdbc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.exceptions.DBException;
-import org.jetbrains.jdba.exceptions.UnknownSqlException;
+import org.jetbrains.jdba.exceptions.UnknownDBException;
 import org.jetbrains.jdba.intermediate.DBExceptionRecognizer;
 
 import java.sql.SQLException;
@@ -23,7 +23,7 @@ public class BaseExceptionRecognizer implements DBExceptionRecognizer {
 
   /**
    * Analyzes the given RDBMS- JDBC-specific exception and converts it
-   * to a unified indepndent {@link DBException} based one.
+   * to a unified independent {@link DBException} based one.
    * @param sqle            exception to analyze.
    * @param statementText   operation that caused to this exception (optional).
    * @return                converted exception.
@@ -44,7 +44,7 @@ public class BaseExceptionRecognizer implements DBExceptionRecognizer {
 
     // not recognized
     if (exception == null) {
-      exception = new UnknownSqlException(e, statementText);
+      exception = new UnknownDBException(e, statementText);
     }
 
     return exception;
