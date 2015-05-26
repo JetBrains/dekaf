@@ -1,5 +1,6 @@
 package org.jetbrains.jdba.exceptions;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,12 +50,13 @@ public abstract class DBException extends RuntimeException {
                       @Nullable Throwable cause,
                       int vendorErrorCode,
                       @Nullable String statementText) {
-    super(makeErrorText(message, cause), cause);
+    super(makeErrorText(message, cause), stripException(cause));
     this.vendorErrorCode = vendorErrorCode;
     this.statementText = statementText;
   }
 
 
+  @NotNull
   private static String makeErrorText(@NotNull String message, @Nullable Throwable cause) {
     String causeMessage = cause != null
         ? cause.getMessage()
@@ -62,6 +64,35 @@ public abstract class DBException extends RuntimeException {
     return causeMessage != null && !message.endsWith(".") && !message.contains(causeMessage)
         ? message + " (" + causeMessage + ")"
         : message;
+  }
+
+
+  @Contract("null->null; !null->!null")
+  @SuppressWarnings({"ThrowableResultOfMethodCallIgnored", "ThrowableInstanceNeverThrown"})
+  private static Throwable stripException(final Throwable e) {
+    if (e == null) return null;
+
+    String className = e.getClass().getName();
+    boolean classOk = e instanceof DBException
+                   || className.startsWith("java.")
+                   || className.startsWith("javax.")
+                   || className.startsWith("sun.jdbc.odbc.");
+
+    Throwable originalCause = e.getCause();
+    Throwable strippedCause = stripException(originalCause);
+    boolean causeOk = originalCause == strippedCause;
+
+    if (classOk && causeOk) return e;
+
+    Throwable strippedException;
+    if (e instanceof SQLException) {
+      strippedException = new StrippedSQLException((SQLException) e, strippedCause);
+    }
+    else {
+      strippedException = new StrippedUnknownException(e, strippedCause);
+    }
+
+    return strippedException;
   }
 
 

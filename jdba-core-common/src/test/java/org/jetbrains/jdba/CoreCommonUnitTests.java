@@ -4,6 +4,7 @@ package org.jetbrains.jdba;
  * @author Leonid Bushuev from JetBrains
  */
 
+import org.jetbrains.jdba.exceptions.DBExceptionTest;
 import org.jetbrains.jdba.util.ArrayFunctionsTest;
 import org.jetbrains.jdba.util.NumbersTest;
 import org.jetbrains.jdba.util.StringsTest;
@@ -16,6 +17,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
                             NumbersTest.class,
                             StringsTest.class,
-                            ArrayFunctionsTest.class
+                            ArrayFunctionsTest.class,
+                            DBExceptionTest.class
 })
 public class CoreCommonUnitTests {}

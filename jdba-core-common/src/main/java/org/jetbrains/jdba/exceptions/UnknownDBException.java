@@ -19,9 +19,9 @@ public final class UnknownDBException extends DBException {
 
 
   public UnknownDBException(@NotNull final String message,
-                            @NotNull final SQLException sqlException,
+                            @NotNull final Exception exception,
                             @Nullable String statementText) {
-    super(message, sqlException, statementText);
+    super(message, exception, statementText);
   }
 
 
