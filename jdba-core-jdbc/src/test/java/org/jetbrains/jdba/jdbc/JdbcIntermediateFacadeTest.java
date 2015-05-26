@@ -1,6 +1,6 @@
 package org.jetbrains.jdba.jdbc;
 
-import org.jetbrains.jdba.intermediate.DBErrorRecognizer;
+import org.jetbrains.jdba.intermediate.DBExceptionRecognizer;
 import org.jetbrains.jdba.intermediate.PrimeIntermediateSession;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -27,13 +27,13 @@ public class JdbcIntermediateFacadeTest {
 
     DataSource mockDataSource = mock(DataSource.class);
     Connection mockConnection = mock(Connection.class);
-    DBErrorRecognizer mockErrorRecognizer = mock(DBErrorRecognizer.class);
+    DBExceptionRecognizer mockExceptionRecognizer = mock(DBExceptionRecognizer.class);
 
     when(mockDataSource.getConnection()).thenReturn(mockConnection);
 
     // testing
 
-    JdbcIntermediateFacade facade = new JdbcIntermediateFacade(mockDataSource, 1, mockErrorRecognizer);
+    JdbcIntermediateFacade facade = new JdbcIntermediateFacade(mockDataSource, 1, mockExceptionRecognizer);
 
     assertThat(facade.countOpenedConnections()).isZero();
     assertThat(facade.countOpenedSessions()).isZero();
@@ -67,13 +67,13 @@ public class JdbcIntermediateFacadeTest {
     // mocking
     DataSource mockDataSource = mock(DataSource.class);
     Connection mockConnection = mock(Connection.class);
-    DBErrorRecognizer mockErrorRecognizer = mock(DBErrorRecognizer.class);
+    DBExceptionRecognizer mockExceptionRecognizer = mock(DBExceptionRecognizer.class);
 
     when(mockDataSource.getConnection()).thenReturn(mockConnection);
     doNothing().doThrow(new IllegalStateException("Second attempt to close!")).when(mockConnection).close();
 
     // testing
-    JdbcIntermediateFacade facade = new JdbcIntermediateFacade(mockDataSource, 1, mockErrorRecognizer);
+    JdbcIntermediateFacade facade = new JdbcIntermediateFacade(mockDataSource, 1, mockExceptionRecognizer);
     facade.connect();
 
     final JdbcIntermediateSession session1 = facade.openSession();
@@ -98,14 +98,14 @@ public class JdbcIntermediateFacadeTest {
     DataSource mockDataSource = mock(DataSource.class);
     Connection mockConnection1 = mock(Connection.class);
     Connection mockConnection2 = mock(Connection.class);
-    DBErrorRecognizer mockErrorRecognizer = mock(DBErrorRecognizer.class);
+    DBExceptionRecognizer mockExceptionRecognizer = mock(DBExceptionRecognizer.class);
 
     when(mockDataSource.getConnection()).thenReturn(mockConnection1)
                                         .thenReturn(mockConnection2)
                                         .thenThrow(new RuntimeException("Too many connections"));
 
     // testing
-    JdbcIntermediateFacade facade = new JdbcIntermediateFacade(mockDataSource, 2, mockErrorRecognizer);
+    JdbcIntermediateFacade facade = new JdbcIntermediateFacade(mockDataSource, 2, mockExceptionRecognizer);
     facade.connect();
 
     final JdbcIntermediateSession session1 = facade.openSession();

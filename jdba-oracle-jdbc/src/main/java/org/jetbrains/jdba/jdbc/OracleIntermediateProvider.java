@@ -92,13 +92,13 @@ public class OracleIntermediateProvider extends JdbcIntermediateRdbmsProvider {
                             connectionProperties,
                             driver,
                             connectionsLimit,
-                            OracleErrorRecognizer.INSTANCE);
+                            OracleExceptionRecognizer.INSTANCE);
   }
 
   @NotNull
   @Override
-  public BaseErrorRecognizer getErrorRecognizer() {
-    return OracleErrorRecognizer.INSTANCE;
+  public BaseExceptionRecognizer getExceptionRecognizer() {
+    return OracleExceptionRecognizer.INSTANCE;
   }
 
 }

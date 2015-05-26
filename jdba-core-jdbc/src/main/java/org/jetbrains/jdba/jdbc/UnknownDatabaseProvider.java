@@ -43,7 +43,7 @@ public final class UnknownDatabaseProvider extends JdbcIntermediateRdbmsProvider
 
   @NotNull
   @Override
-  public BaseErrorRecognizer getErrorRecognizer() {
-    return UnknownDatabaseErrorRecognizer.INSTANCE;
+  public BaseExceptionRecognizer getExceptionRecognizer() {
+    return UnknownDatabaseExceptionRecognizer.INSTANCE;
   }
 }

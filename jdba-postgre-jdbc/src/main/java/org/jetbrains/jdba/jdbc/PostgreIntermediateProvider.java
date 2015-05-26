@@ -97,13 +97,13 @@ public class PostgreIntermediateProvider extends JdbcIntermediateRdbmsProvider {
                                          connectionProperties,
                                          driver,
                                          connectionsLimit,
-                                         PostgreErrorRecognizer.INSTANCE);
+                                         PostgreExceptionRecognizer.INSTANCE);
   }
 
   @NotNull
   @Override
-  public BaseErrorRecognizer getErrorRecognizer() {
-    return PostgreErrorRecognizer.INSTANCE;
+  public BaseExceptionRecognizer getExceptionRecognizer() {
+    return PostgreExceptionRecognizer.INSTANCE;
   }
 
 }

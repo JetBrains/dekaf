@@ -63,7 +63,7 @@ public interface PrimeIntermediateRdbmsProvider {
    * @return an instance of error recognizer (usually a singleton instance).
    */
   @NotNull
-  DBErrorRecognizer getErrorRecognizer();
+  DBExceptionRecognizer getExceptionRecognizer();
 
 
 

@@ -14,7 +14,7 @@
  * </p>
  *
  * <p>
- *   Also contains interface {@link org.jetbrains.jdba.intermediate.DBErrorRecognizer} for RDBMS-specific errors analysis.
+ *   Also contains interface {@link org.jetbrains.jdba.intermediate.DBExceptionRecognizer} for RDBMS-specific errors analysis.
  * </p>
  *
  *

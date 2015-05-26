@@ -52,9 +52,9 @@ public class AdaptIntermediateRdbmsProvider implements IntegralIntermediateRdbms
 
   @NotNull
   @Override
-  public DBErrorRecognizer getErrorRecognizer() {
+  public DBExceptionRecognizer getExceptionRecognizer() {
     // TODO don't use this service from the remote process, use a local one
-    return myRemoteProvider.getErrorRecognizer();
+    return myRemoteProvider.getExceptionRecognizer();
   }
 
 }

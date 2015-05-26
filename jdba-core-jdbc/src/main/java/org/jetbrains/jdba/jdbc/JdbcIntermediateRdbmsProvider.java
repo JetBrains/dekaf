@@ -41,8 +41,8 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
                                                      @Nullable final Properties connectionProperties,
                                                      final int connectionsLimit,
                                                      @NotNull final Driver driver) {
-    BaseErrorRecognizer errorRecognizer = getErrorRecognizer();
-    return new JdbcIntermediateFacade(connectionString, connectionProperties, driver, connectionsLimit, errorRecognizer);
+    BaseExceptionRecognizer exceptionRecognizer = getExceptionRecognizer();
+    return new JdbcIntermediateFacade(connectionString, connectionProperties, driver, connectionsLimit, exceptionRecognizer);
   }
 
 
@@ -51,7 +51,8 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
       return DriverManager.getDriver(connectionString);
     }
     catch (SQLException sqle) {
-      throw getErrorRecognizer().recognizeError(sqle, "DriverManager.getDriver for: " + connectionString);
+      throw getExceptionRecognizer().recognizeException(sqle,
+                                                    "DriverManager.getDriver for: " + connectionString);
     }
   }
 
@@ -107,6 +108,6 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
 
 
   @NotNull
-  public abstract BaseErrorRecognizer getErrorRecognizer();
+  public abstract BaseExceptionRecognizer getExceptionRecognizer();
 
 }

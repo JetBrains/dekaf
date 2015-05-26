@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.core.ParameterDef;
 import org.jetbrains.jdba.exceptions.DBException;
 import org.jetbrains.jdba.exceptions.DBSessionIsClosedException;
-import org.jetbrains.jdba.intermediate.DBErrorRecognizer;
+import org.jetbrains.jdba.intermediate.DBExceptionRecognizer;
 import org.jetbrains.jdba.intermediate.IntegralIntermediateSession;
 
 import java.sql.Connection;
@@ -24,7 +24,7 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
   private final JdbcIntermediateFacade myFacade;
 
   @NotNull
-  private final DBErrorRecognizer myErrorRecognizer;
+  private final DBExceptionRecognizer myExceptionRecognizer;
 
   @NotNull
   private final Connection myConnection;
@@ -41,11 +41,11 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
 
 
   protected JdbcIntermediateSession(@Nullable final JdbcIntermediateFacade facade,
-                                    @NotNull final DBErrorRecognizer errorRecognizer,
+                                    @NotNull final DBExceptionRecognizer exceptionRecognizer,
                                     @NotNull final Connection connection,
                                     final boolean ownConnection) {
     myFacade = facade;
-    myErrorRecognizer = errorRecognizer;
+    myExceptionRecognizer = exceptionRecognizer;
     myConnection = connection;
     myOwnConnection = ownConnection;
     myClosed = false;
@@ -80,7 +80,7 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
       }
       catch (SQLException sqle) {
         rollback();
-        throw myErrorRecognizer.recognizeError(sqle, "commit");
+        throw myExceptionRecognizer.recognizeException(sqle, "commit");
       }
     }
     else {
@@ -237,13 +237,13 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
 
   @NotNull
   protected DBException recognizeException(@NotNull final SQLException sqle) {
-    return myErrorRecognizer.recognizeError(sqle, null);
+    return myExceptionRecognizer.recognizeException(sqle, null);
   }
 
   @NotNull
   protected DBException recognizeException(@NotNull final SQLException sqle,
                                            @Nullable final String statementText) {
-    return myErrorRecognizer.recognizeError(sqle, statementText);
+    return myExceptionRecognizer.recognizeException(sqle, statementText);
   }
 
 

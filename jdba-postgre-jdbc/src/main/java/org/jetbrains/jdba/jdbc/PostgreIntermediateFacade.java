@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Postgre;
 import org.jetbrains.jdba.Rdbms;
-import org.jetbrains.jdba.intermediate.DBErrorRecognizer;
+import org.jetbrains.jdba.intermediate.DBExceptionRecognizer;
 
 import javax.sql.DataSource;
 import java.sql.Driver;
@@ -21,14 +21,14 @@ public class PostgreIntermediateFacade extends JdbcIntermediateFacade {
                                    @Nullable final Properties connectionProperties,
                                    @NotNull final Driver driver,
                                    final int connectionsLimit,
-                                   @NotNull final DBErrorRecognizer errorRecognizer) {
-    super(connectionString, connectionProperties, driver, connectionsLimit, errorRecognizer);
+                                   @NotNull final DBExceptionRecognizer exceptionRecognizer) {
+    super(connectionString, connectionProperties, driver, connectionsLimit, exceptionRecognizer);
   }
 
   public PostgreIntermediateFacade(@NotNull final DataSource dataSource,
                                    final int connectionsLimit,
-                                   @NotNull final DBErrorRecognizer errorRecognizer) {
-    super(dataSource, connectionsLimit, errorRecognizer);
+                                   @NotNull final DBExceptionRecognizer exceptionRecognizer) {
+    super(dataSource, connectionsLimit, exceptionRecognizer);
   }
 
   @NotNull

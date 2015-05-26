@@ -12,7 +12,8 @@ public class JdbcIntermediateSessionTest extends BaseIntermediateHyperSonicCase 
   @Test
   public void create_close() {
     Connection connection = obtainConnection();
-    JdbcIntermediateSession session = new JdbcIntermediateSession(null, ourErrorRecognizer, connection, true);
+    JdbcIntermediateSession session = new JdbcIntermediateSession(null,
+                                                                  ourExceptionRecognizer, connection, true);
     session.close();
   }
 

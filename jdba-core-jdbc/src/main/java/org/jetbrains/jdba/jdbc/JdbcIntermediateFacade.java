@@ -3,7 +3,7 @@ package org.jetbrains.jdba.jdbc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Rdbms;
-import org.jetbrains.jdba.intermediate.DBErrorRecognizer;
+import org.jetbrains.jdba.intermediate.DBExceptionRecognizer;
 import org.jetbrains.jdba.intermediate.IntegralIntermediateFacade;
 import org.jetbrains.jdba.jdbc.pooling.ConnectionPool;
 import org.jetbrains.jdba.jdbc.pooling.SimpleDataSource;
@@ -31,7 +31,7 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
   protected final ConnectionPool myPool;
 
   @NotNull
-  protected final DBErrorRecognizer myErrorRecognizer;
+  protected final DBExceptionRecognizer myExceptionRecognizer;
 
   private final LinkedBlockingQueue<JdbcIntermediateSession> mySessions =
           new LinkedBlockingQueue<JdbcIntermediateSession>();
@@ -43,16 +43,17 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
                                 @Nullable final Properties connectionProperties,
                                 @NotNull final Driver driver,
                                 int connectionsLimit,
-                                @NotNull final DBErrorRecognizer errorRecognizer) {
-    this(prepareDataSource(connectionString, connectionProperties, driver), connectionsLimit, errorRecognizer);
+                                @NotNull final DBExceptionRecognizer exceptionRecognizer) {
+    this(prepareDataSource(connectionString, connectionProperties, driver), connectionsLimit,
+         exceptionRecognizer);
   }
 
   public JdbcIntermediateFacade(@NotNull final DataSource dataSource,
                                 int connectionsLimit,
-                                @NotNull final DBErrorRecognizer errorRecognizer) {
+                                @NotNull final DBExceptionRecognizer exceptionRecognizer) {
     myPool = new ConnectionPool(dataSource);
     myPool.setConnectionsLimit(connectionsLimit);
-    myErrorRecognizer = errorRecognizer;
+    myExceptionRecognizer = exceptionRecognizer;
   }
 
   @NotNull
@@ -82,7 +83,7 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
       myPool.connect();
     }
     catch (SQLException sqle) {
-      throw  myErrorRecognizer.recognizeError(sqle, "connect");
+      throw  myExceptionRecognizer.recognizeException(sqle, "connect");
     }
   }
 
@@ -125,18 +126,18 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
       connection = myPool.borrow();
     }
     catch (SQLException sqle) {
-      throw  myErrorRecognizer.recognizeError(sqle, "borrow a connection from the pool");
+      throw  myExceptionRecognizer.recognizeException(sqle, "borrow a connection from the pool");
     }
 
     final JdbcIntermediateSession session =
-            new JdbcIntermediateSession(this, myErrorRecognizer, connection, false);
+            new JdbcIntermediateSession(this, myExceptionRecognizer, connection, false);
     mySessions.add(session);
     return session;
   }
 
   @NotNull
-  public DBErrorRecognizer getErrorRecognizer() {
-    return myErrorRecognizer;
+  public DBExceptionRecognizer getExceptionRecognizer() {
+    return myExceptionRecognizer;
   }
 
   void sessionIsClosed(@NotNull final JdbcIntermediateSession session, @NotNull final Connection connection) {

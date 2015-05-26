@@ -1,6 +1,6 @@
 package org.jetbrains.jdba.jdbc;
 
-import org.jetbrains.jdba.intermediate.DBErrorRecognizer;
+import org.jetbrains.jdba.intermediate.DBExceptionRecognizer;
 
 import java.sql.Connection;
 
@@ -11,12 +11,13 @@ import java.sql.Connection;
  */
 public abstract class BaseIntermediateHyperSonicCase extends BaseHyperSonicCase {
 
-  protected static DBErrorRecognizer ourErrorRecognizer = new BaseErrorRecognizer();
+  protected static DBExceptionRecognizer ourExceptionRecognizer = new BaseExceptionRecognizer();
 
 
   protected JdbcIntermediateSession openSession() {
     Connection connection = obtainConnection();
-    JdbcIntermediateSession session = new JdbcIntermediateSession(null, ourErrorRecognizer, connection, true);
+    JdbcIntermediateSession session =
+        new JdbcIntermediateSession(null, ourExceptionRecognizer, connection, true);
     return session;
   }
 

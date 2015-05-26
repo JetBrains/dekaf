@@ -11,9 +11,9 @@ import java.sql.SQLException;
 /**
  * Recognizes RDBMS-specific exceptions and wrap them into unified DB-wrappers.
  */
-public interface DBErrorRecognizer {
+public interface DBExceptionRecognizer {
 
   @NotNull
-  DBException recognizeError(@NotNull SQLException sqlException, @Nullable String statementText);
+  DBException recognizeException(@NotNull SQLException sqlException, @Nullable String statementText);
 
 }
