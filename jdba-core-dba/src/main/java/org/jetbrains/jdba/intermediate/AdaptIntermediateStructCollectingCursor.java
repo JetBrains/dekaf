@@ -63,7 +63,7 @@ public class AdaptIntermediateStructCollectingCursor<T> extends AdaptIntermediat
         || resultLayout.kind == ResultLayout.Kind.LIST
         || resultLayout.kind == ResultLayout.Kind.SET;
 
-    assert resultLayout.row.kind == RowLayout.Kind.CLASS_BY_NAMES;
+    assert resultLayout.row.kind == RowLayout.Kind.STRUCT;
 
     final String[] columnNames = remoteCursor.getColumnNames();
 

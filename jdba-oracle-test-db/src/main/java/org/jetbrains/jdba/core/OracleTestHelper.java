@@ -14,6 +14,10 @@ public class OracleTestHelper extends BaseTestHelper<DBFacade> {
     super(facade, Scriptum.of(OracleTestHelper.class));
   }
 
+  @Override
+  public void prepareX1() {
+    performCommand("create or replace view X1 as select 1 as X from dual");
+  }
 
   @Override
   public void prepareX1000() {

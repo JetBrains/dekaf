@@ -131,6 +131,9 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
       case ARRAY:
         fetcher = JdbcRowFetchers.createArrayFetcher(1, rowLayout.commonComponentClass, getters);
         break;
+      case STRUCT:
+        fetcher = JdbcRowFetchers.createStructFetcher(rowLayout.rowClass, rowLayout.components);
+        break;
       default:
         throw new DBPreparingException(format("Unknown how to handle the row layout %s", rowLayout.kind.toString()));
     }

@@ -13,13 +13,38 @@ import java.util.Arrays;
  */
 public final class RowLayout<R> implements Serializable {
 
+  /**
+   * TODO document
+   */
   public enum Kind {
+
+    /**
+     * Existence. The result is true if row exists.
+     */
     EXISTENCE,
+
+    /**
+     * The value of the first column.
+     */
     ONE_VALUE,
+
+    /**
+     * Array of values, each column for each value in array.
+     */
     ARRAY,
-    CLASS_BY_POSITIONS,
-    CLASS_BY_NAMES
+
+    /**
+     * Structure (java class) with names fields.
+     * Names of the class fields should match names of query result set columns.
+     */
+    STRUCT,
+
+    /**
+     * Not implemented yet.
+     */
+    CLASS_BY_POSITIONS
   }
+
 
   @NotNull
   public final Kind kind;
@@ -53,7 +78,7 @@ public final class RowLayout<R> implements Serializable {
       case ARRAY:
         portable = true;
         break;
-      case CLASS_BY_NAMES:
+      case STRUCT:
       case CLASS_BY_POSITIONS:
         String className = rowClass.getName();
         portable = className.startsWith("java.") || className.startsWith("javax.");
@@ -126,7 +151,7 @@ public final class RowLayout<R> implements Serializable {
         return commonComponentClass.getSimpleName();
       case ARRAY:
         return commonComponentClass.getSimpleName() + "[]";
-      case CLASS_BY_NAMES:
+      case STRUCT:
         return rowClass + "(fields names)";
       case CLASS_BY_POSITIONS:
         return rowClass + "(positions)";

@@ -16,6 +16,11 @@ public class PostgreTestHelper extends BaseTestHelper<DBFacade> {
 
 
   @Override
+  public void prepareX1() {
+    performCommand("create or replace view X1 as select 1");
+  }
+
+  @Override
   public void prepareX1000() {
     performCommand(scriptum, "X1000");
   }

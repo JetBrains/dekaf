@@ -42,7 +42,7 @@ public abstract class Layouts {
   @NotNull
   public static <C> RowLayout<C> structOf(@NotNull final Class<C> structClass) {
     final NameAndClass[] assignableFields = Classes.assignableFieldsOf(structClass);
-    return new RowLayout<C>(RowLayout.Kind.CLASS_BY_NAMES, structClass, Object.class, assignableFields);
+    return new RowLayout<C>(RowLayout.Kind.STRUCT, structClass, Object.class, assignableFields);
   }
 
 

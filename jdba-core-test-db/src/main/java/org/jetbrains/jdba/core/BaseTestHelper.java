@@ -40,6 +40,11 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
     performCommand(command);
   }
 
+  public void performCommand(@NotNull final String commandText) {
+    final SqlCommand command = new SqlCommand(commandText);
+    performCommand(command);
+  }
+
   public void performCommand(@NotNull final SqlCommand command) {
     facade.inSession(new InSessionNoResult() {
       @Override
