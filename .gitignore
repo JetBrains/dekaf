@@ -19,6 +19,7 @@ out
 .idea/modules.xml
 .idea/ant.xml
 .idea/compiler.xml
+.idea/dataSources.local.xml
 
 test-db.config
 test-db.properties
