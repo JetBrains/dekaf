@@ -11,7 +11,6 @@
   <name>JDBA</name>
   <description>Java Database Access Layer Framework</description>
 
-
   <modules>
     <module>fine-junit</module>
 
@@ -20,15 +19,11 @@
     <module>jdba-core-jdbc</module>
     <module>jdba-core-test-db</module>
 
-    <module>jdba-postgre-common</module>
-    <module>jdba-postgre-dba</module>
-    <module>jdba-postgre-jdbc</module>
+    <module>jdba-postgre</module>
     <module>jdba-postgre-test-db</module>
     <module>jdba-postgre-tests</module>
 
-    <module>jdba-oracle-common</module>
-    <module>jdba-oracle-dba</module>
-    <module>jdba-oracle-jdbc</module>
+    <module>jdba-oracle</module>
     <module>jdba-oracle-test-db</module>
     <module>jdba-oracle-tests</module>
 

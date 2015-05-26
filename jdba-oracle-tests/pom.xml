@@ -30,17 +30,7 @@
     </dependency>
     <dependency>
       <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-core-test-db</artifactId>
-      <version>2.0.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-oracle-common</artifactId>
-      <version>2.0.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-oracle-dba</artifactId>
+      <artifactId>jdba-oracle</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
@@ -53,14 +43,6 @@
       <groupId>org.jetbrains</groupId>
       <artifactId>annotations</artifactId>
       <version>13.0</version>
-    </dependency>
-
-    <!-- RUNTIME -->
-    <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-oracle-jdbc</artifactId>
-      <version>2.0.0-SNAPSHOT</version>
-      <scope>runtime</scope>
     </dependency>
 
     <!-- TEST DEPENDENCIES -->
@@ -84,6 +66,7 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- TEST STUFF -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -94,6 +77,20 @@
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <version>1.6.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- JDBC DRIVER -->
+    <dependency>
+      <groupId>oracle.jdbc</groupId>
+      <artifactId>ojdbc6</artifactId>
+      <version>12.1.0.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>oracle.jdbc</groupId>
+      <artifactId>orai18n</artifactId>
+      <version>12.1.0.2</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
