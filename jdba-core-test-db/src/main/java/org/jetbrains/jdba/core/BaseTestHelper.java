@@ -2,6 +2,7 @@ package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.sql.Scriptum;
+import org.jetbrains.jdba.sql.SqlCommand;
 import org.jetbrains.jdba.sql.SqlQuery;
 import org.jetbrains.jdba.util.Collects;
 
@@ -33,6 +34,20 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
     myGenDeleteTablesOrViews = scriptum.query("GenDeleteTablesOrViews", listOf(oneOf(String.class)));
   }
 
+
+  public void performCommand(@NotNull final Scriptum scriptum, @NotNull final String commandName) {
+    final SqlCommand command = scriptum.command(commandName);
+    performCommand(command);
+  }
+
+  public void performCommand(@NotNull final SqlCommand command) {
+    facade.inSession(new InSessionNoResult() {
+      @Override
+      public void run(@NotNull final DBSession session) {
+        session.command(command).run();
+      }
+    });
+  }
 
 
   @Override

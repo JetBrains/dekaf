@@ -6,6 +6,7 @@ package org.jetbrains.jdba;
 
 import org.jetbrains.jdba.core.OracleCommandRunnerTest;
 import org.jetbrains.jdba.core.OraclePrimaryTest;
+import org.jetbrains.jdba.core.OracleQueryRunnerTest;
 import org.jetbrains.jdba.jdbc.OracleExceptionRecognizingTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -16,6 +17,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
                             OraclePrimaryTest.class,
                             OracleCommandRunnerTest.class,
+                            OracleQueryRunnerTest.class,
                             OracleExceptionRecognizingTest.class
 })
 public class OracleIntegrationTests {}

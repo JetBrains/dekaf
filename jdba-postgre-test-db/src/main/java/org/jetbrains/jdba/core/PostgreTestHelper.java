@@ -14,4 +14,15 @@ public class PostgreTestHelper extends BaseTestHelper<DBFacade> {
     super(facade, Scriptum.of(PostgreTestHelper.class));
   }
 
+
+  @Override
+  public void prepareX1000() {
+    performCommand(scriptum, "X1000");
+  }
+
+  @Override
+  public void prepareX1000000() {
+    performCommand(scriptum, "X1000000");
+  }
+
 }

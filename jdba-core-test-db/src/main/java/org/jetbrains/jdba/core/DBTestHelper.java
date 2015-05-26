@@ -16,4 +16,19 @@ public interface DBTestHelper {
   void ensureNoTableOrView(String... names);
 
 
+  /**
+   * Prepares a table or view named <b><tt>X1000</tt></b> that contains
+   * 1000 rows. It has one column named <b><tt>X</tt></b> with numbers
+   * from 1 to 1000.
+   */
+  void prepareX1000();
+
+
+  /**
+   * Prepares a table or view named <b><tt>X1000000</tt></b> that contains
+   * 1000000 rows. It has one column named <b><tt>X</tt></b> with numbers
+   * from 1 to 1000000.
+   */
+  void prepareX1000000();
+
 }

@@ -14,4 +14,15 @@ public class OracleTestHelper extends BaseTestHelper<DBFacade> {
     super(facade, Scriptum.of(OracleTestHelper.class));
   }
 
+
+  @Override
+  public void prepareX1000() {
+    performCommand(scriptum, "X1000");
+  }
+
+  @Override
+  public void prepareX1000000() {
+    prepareX1000();
+    performCommand(scriptum, "X1000000");
+  }
 }
