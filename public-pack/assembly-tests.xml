@@ -18,6 +18,17 @@
 
     <fileSet>
       <outputDirectory>/</outputDirectory>
+      <directory>../fine-junit/target</directory>
+      <includes>
+        <include>*.jar</include>
+      </includes>
+      <excludes>
+        <exclude>*-sources.jar</exclude>
+      </excludes>
+    </fileSet>
+
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
       <directory>../jdba-core/target</directory>
       <includes>
         <include>*-tests.jar</include>
