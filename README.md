@@ -6,7 +6,7 @@ Java Database Access Layer Framework
 JDBA is Java framework for working with databases, primarily via JDBC. JDBA is NOT an ORM.
 
 
-NOW THIS FRAMEWORK IS UNDER DEVELOPMENT.
+THE VERSION 1 IS NOW OBSOLETED, USE VERSION 2.X.X.X.
 
 
 Motivation
