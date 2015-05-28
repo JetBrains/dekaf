@@ -6,12 +6,14 @@
 
 lib
 out
+dist
 .gradle
 
 .idea/workspace.xml
 .idea/uiDesigner.xml
 .idea/deployment.xml
 .idea/shelf
+.idea/dataSources.local.xml
 
 test-db.config
 test-db.properties

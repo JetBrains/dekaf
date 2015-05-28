@@ -8,6 +8,8 @@ JDBA is Java framework for working with databases, primarily via JDBC. JDBA is N
 
 NOW THIS FRAMEWORK IS UNDER DEVELOPMENT.
 
+The currently developed version: 2.0.0.X (where X is a build number).
+
 
 Motivation
 ----------
