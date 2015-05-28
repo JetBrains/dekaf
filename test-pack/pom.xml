@@ -97,6 +97,30 @@
       <type>test-jar</type>
     </dependency>
 
+    <!-- MySQL -->
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-mysql</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-mysql</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+      <type>test-jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-mysql-test-db</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-mysql-tests</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+      <type>test-jar</type>
+    </dependency>
+
 
     <!-- TESTING STUFF -->
 
@@ -137,6 +161,11 @@
       <groupId>oracle.jdbc</groupId>
       <artifactId>orai18n</artifactId>
       <version>12.1.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.35</version>
     </dependency>
 
   </dependencies>

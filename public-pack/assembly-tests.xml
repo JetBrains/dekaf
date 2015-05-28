@@ -86,6 +86,28 @@
       </includes>
     </fileSet>
 
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>../jdba-mysql/target</directory>
+      <includes>
+        <include>*-tests.jar</include>
+      </includes>
+    </fileSet>
+    <!--fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>../jdba-mysql-test-db/target</directory>
+      <includes>
+        <include>*-tests.jar</include>
+      </includes>
+    </fileSet-->
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>../jdba-mysql-tests/target</directory>
+      <includes>
+        <include>*-tests.jar</include>
+      </includes>
+    </fileSet>
+
   </fileSets>
 
 </assembly>

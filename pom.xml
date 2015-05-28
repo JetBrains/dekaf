@@ -25,6 +25,10 @@
     <module>jdba-oracle-test-db</module>
     <module>jdba-oracle-tests</module>
 
+    <module>jdba-mysql</module>
+    <module>jdba-mysql-test-db</module>
+    <module>jdba-mysql-tests</module>
+
     <module>public-pack</module>
     <module>test-pack</module>
   </modules>
