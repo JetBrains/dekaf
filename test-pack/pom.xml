@@ -13,7 +13,7 @@
   <artifactId>test-pack</artifactId>
   <name>Test Pack</name>
   <version>2.0.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
 
   <dependencies>
 
