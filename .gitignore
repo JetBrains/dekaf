@@ -4,17 +4,25 @@
 *.ear
 *.zip
 
+*.iml
+
 lib
 out
 dist
+*/target
 .gradle
 
 .idea/workspace.xml
 .idea/uiDesigner.xml
 .idea/deployment.xml
+.idea/libraries
 .idea/shelf
+.idea/modules.xml
+.idea/ant.xml
+.idea/compiler.xml
 .idea/dataSources.local.xml
 
 test-db.config
 test-db.properties
+pom.xml.versionsBackup
 

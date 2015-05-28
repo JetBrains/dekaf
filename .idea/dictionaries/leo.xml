@@ -2,11 +2,13 @@
   <dictionary name="leo">
     <words>
       <w>callables</w>
+      <w>claß</w>
       <w>jdba</w>
       <w>klass</w>
       <w>klazz</w>
       <w>mssql</w>
       <w>passivate</w>
+      <w>plpgsql</w>
       <w>postgre</w>
       <w>postgresql</w>
       <w>sqle</w>

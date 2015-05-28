@@ -47,13 +47,15 @@ Key features to address the problems mentioned above
 * retrieve data as commonly used Java structures (arrays, lists, sets)
 * unified exceptions hierarchy
 
-
-Planned supported RDBMS:
+Supported RDBMS:
 
 * PostgreSQL
 * Oracle
-* Microsoft SQL Server
 * MySQL
+
+Planned supported RDBMS:
+
+* Microsoft SQL Server
 * SQLite
 * HSQL
 

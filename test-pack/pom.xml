@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.jetbrains.jdba</groupId>
+    <artifactId>jdba</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>test-pack</artifactId>
+  <name>Test Pack</name>
+  <version>2.0.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <dependencies>
+
+    <!-- COMMON PRODUCTION MODULES -->
+
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-core</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+      <!--type>test-jar</type-->
+    </dependency>
+
+
+    <!-- COMMON TEST STUFF -->
+
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-core-test-db</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-core-test-db</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+      <type>test-jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>fine-junit</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+    </dependency>
+
+
+    <!-- RDBMS -->
+
+    <!-- PostgreSQL -->
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-postgre</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-postgre</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+      <type>test-jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-postgre-test-db</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-postgre-tests</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+      <type>test-jar</type>
+    </dependency>
+
+    <!-- Oracle -->
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-oracle</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-oracle</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+      <type>test-jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-oracle-test-db</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-oracle-tests</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+      <type>test-jar</type>
+    </dependency>
+
+    <!-- MySQL -->
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-mysql</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-mysql</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+      <type>test-jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-mysql-test-db</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-mysql-tests</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+      <type>test-jar</type>
+    </dependency>
+
+
+    <!-- TESTING STUFF -->
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>1.6.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-guava</artifactId>
+      <version>1.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>2.0.7-beta</version>
+    </dependency>
+
+    <!-- JDBC DRIVERS -->
+
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>9.4-1201-jdbc4</version>
+    </dependency>
+    <dependency>
+      <groupId>oracle.jdbc</groupId>
+      <artifactId>ojdbc6</artifactId>
+      <version>12.1.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>oracle.jdbc</groupId>
+      <artifactId>orai18n</artifactId>
+      <version>12.1.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.35</version>
+    </dependency>
+
+  </dependencies>
+
+
+  <build>
+
+    <finalName>integration</finalName>
+
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.10</version>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>false</overWriteSnapshots>
+              <overWriteIfNewer>true</overWriteIfNewer>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+            </manifest>
+            <manifestEntries>
+              <Main-Class>RunIntegrationTests</Main-Class>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+
+</project>
