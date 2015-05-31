@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<project name="JDBA Post-Build Operations" default="info">
+
+  <property name="ver">2.0.0-SNAPSHOT</property>
+
+  <target name="info">
+    <echo>Hello World - Welcome to Apache Ant!</echo>
+  </target>
+
+
+  <target name="unpack-packs">
+    <mkdir dir="temp/jars"/>
+    <unzip src="dist/jdba-fw.zip" dest="temp/jars" overwrite="false"/>
+    <unzip src="dist/jdba-single-templates.zip" dest="temp/jars" overwrite="false"/>
+  </target>
+
+
+  <target name="combine-jars" depends="unpack-packs"
+          description="Combine Core and RDBMS-specific jars into single jars">
+    <mkdir dir="temp/combined-jars"/>
+
+    <antcall target="combine-jar">
+      <param name="nr" value="1"/>
+      <param name="infix" value=""/>
+      <param name="suffix" value=""/>
+    </antcall>
+    <antcall target="combine-jar">
+      <param name="nr" value="2"/>
+      <param name="infix" value=""/>
+      <param name="suffix" value="-sources"/>
+    </antcall>
+    <antcall target="combine-jar">
+      <param name="nr" value="3"/>
+      <param name="infix" value="test-db-"/>
+      <param name="suffix" value=""/>
+    </antcall>
+    <antcall target="combine-jar">
+      <param name="nr" value="4"/>
+      <param name="infix" value="test-db-"/>
+      <param name="suffix" value="-sources"/>
+    </antcall>
+
+    <zip basedir="temp/combined-jars" destfile="dist/jdba-single.zip" compress="false"/>
+  </target>
+
+
+  <target name="combine-jar">
+    <delete dir="temp/content-${nr}"/>
+    <mkdir dir="temp/content-${nr}"/>
+
+    <unjar src="temp/jars/jdba-single-${infix}${ver}${suffix}.jar" dest="temp/content-${nr}"/>
+
+    <unjar dest="temp/content-${nr}" overwrite="false">
+      <fileset dir="temp/jars">
+        <include name="jdba-*-${infix}${ver}${suffix}.jar"/>
+        <exclude name="jdba-single*"/>
+      </fileset>
+      <patternset>
+        <exclude name="META-INF/services/*"/>
+      </patternset>
+    </unjar>
+
+    <jar basedir="temp/content-${nr}" destfile="temp/combined-jars/jdba-single-${infix}${ver}${suffix}.jar"/>
+  </target>
+
+
+  <target name="clean-temp"
+          description="Cleans the temporary directory">
+    <delete dir="temp"/>
+  </target>
+
+
+</project>
