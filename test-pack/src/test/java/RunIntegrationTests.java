@@ -1,8 +1,13 @@
 import com.google.common.collect.ImmutableMap;
 import org.jetbrains.jdba.*;
+import org.jetbrains.jdba.intermediate.IntegralIntermediateRdbmsProvider;
+import org.jetbrains.jdba.jdbc.MysqlJdbcIntegrationTests;
 import org.jetbrains.jdba.jdbc.OracleJdbcIntegrationTests;
 import org.jetbrains.jdba.jdbc.PostgreJdbcIntegrationTests;
 import org.jetbrains.jdba.junitft.TestSuiteExecutor;
+import org.jetbrains.jdba.util.Providers;
+
+import java.util.Collection;
 
 
 
@@ -16,12 +21,14 @@ public class RunIntegrationTests {
           ImmutableMap.<String,Class>builder()
                             .put(Postgre.RDBMS.code, PostgreJdbcIntegrationTests.class)
                             .put(Oracle.RDBMS.code, OracleJdbcIntegrationTests.class)
+                            .put(Mysql.RDBMS.code, MysqlJdbcIntegrationTests.class)
                             .build();
 
   private static final ImmutableMap<String,Class> ourCoreSuites =
           ImmutableMap.<String,Class>builder()
                             .put(Postgre.RDBMS.code, PostgreIntegrationTests.class)
                             .put(Oracle.RDBMS.code, OracleIntegrationTests.class)
+                            .put(Mysql.RDBMS.code, MysqlIntegrationTests.class)
                             .build();
 
 
@@ -33,20 +40,29 @@ public class RunIntegrationTests {
 
   public static void main(String[] args) {
 
-    final Rdbms rdbms;
-
     String connectionString = TestEnvironment.obtainConnectionString();
-    if (connectionString.startsWith("jdbc:postgresql:")) {
-      rdbms = Postgre.RDBMS;
+
+    final Collection<IntegralIntermediateRdbmsProvider> providers =
+        Providers.loadAllProviders(IntegralIntermediateRdbmsProvider.class);
+
+    byte specificity = Byte.MAX_VALUE;
+    IntegralIntermediateRdbmsProvider provider = null;
+    for (IntegralIntermediateRdbmsProvider p : providers) {
+      if (p.connectionStringPattern().matcher(connectionString).matches()) {
+        if (p.specificity() < specificity) {
+          specificity = p.specificity();
+          provider = p;
+        }
+      }
     }
-    else if (connectionString.startsWith("jdbc:oracle:")) {
-      rdbms = Oracle.RDBMS;
-    }
-    else {
+
+    if (provider == null) {
       System.err.println("Unknown which RDBMS supports this connections string: \n\t" + connectionString);
-      System.exit(128);
+      System.exit(-128);
       return;
     }
+
+    final Rdbms rdbms = provider.rdbms();
 
     printBanner(
         "RDBMS: " + rdbms.toString(),
@@ -56,6 +72,12 @@ public class RunIntegrationTests {
 
     Class suite1 = ourJdbcSuites.get(rdbms.code);
     Class suite2 = ourCoreSuites.get(rdbms.code);
+
+    if (suite1 == null || suite2 == null) {
+      if (suite1 == null) System.err.println("No JDBC tests for " + rdbms.code);
+      if (suite2 == null) System.err.println("No integration tests for " + rdbms.code);
+      System.exit(-127);
+    }
 
     TestSuiteExecutor.run(suite1);
 
