@@ -17,7 +17,6 @@ dist
 .idea/deployment.xml
 .idea/libraries
 .idea/shelf
-.idea/modules.xml
 .idea/ant.xml
 .idea/compiler.xml
 .idea/dataSources.local.xml

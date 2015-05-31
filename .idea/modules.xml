@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/fine-junit/fine-junit.iml" filepath="$PROJECT_DIR$/fine-junit/fine-junit.iml" group="00 Core" />
+      <module fileurl="file://$PROJECT_DIR$/jdba.iml" filepath="$PROJECT_DIR$/jdba.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jdba-core/jdba-core.iml" filepath="$PROJECT_DIR$/jdba-core/jdba-core.iml" group="00 Core" />
+      <module fileurl="file://$PROJECT_DIR$/jdba-core-test-db/jdba-core-test-db.iml" filepath="$PROJECT_DIR$/jdba-core-test-db/jdba-core-test-db.iml" group="00 Core" />
+      <module fileurl="file://$PROJECT_DIR$/jdba-mysql/jdba-mysql.iml" filepath="$PROJECT_DIR$/jdba-mysql/jdba-mysql.iml" group="04 MySQL" />
+      <module fileurl="file://$PROJECT_DIR$/jdba-mysql-test-db/jdba-mysql-test-db.iml" filepath="$PROJECT_DIR$/jdba-mysql-test-db/jdba-mysql-test-db.iml" group="04 MySQL" />
+      <module fileurl="file://$PROJECT_DIR$/jdba-mysql-tests/jdba-mysql-tests.iml" filepath="$PROJECT_DIR$/jdba-mysql-tests/jdba-mysql-tests.iml" group="04 MySQL" />
+      <module fileurl="file://$PROJECT_DIR$/jdba-oracle/jdba-oracle.iml" filepath="$PROJECT_DIR$/jdba-oracle/jdba-oracle.iml" group="02 Oracle" />
+      <module fileurl="file://$PROJECT_DIR$/jdba-oracle-test-db/jdba-oracle-test-db.iml" filepath="$PROJECT_DIR$/jdba-oracle-test-db/jdba-oracle-test-db.iml" group="02 Oracle" />
+      <module fileurl="file://$PROJECT_DIR$/jdba-oracle-tests/jdba-oracle-tests.iml" filepath="$PROJECT_DIR$/jdba-oracle-tests/jdba-oracle-tests.iml" group="02 Oracle" />
+      <module fileurl="file://$PROJECT_DIR$/jdba-postgre/jdba-postgre.iml" filepath="$PROJECT_DIR$/jdba-postgre/jdba-postgre.iml" group="01 Postgre" />
+      <module fileurl="file://$PROJECT_DIR$/jdba-postgre-test-db/jdba-postgre-test-db.iml" filepath="$PROJECT_DIR$/jdba-postgre-test-db/jdba-postgre-test-db.iml" group="01 Postgre" />
+      <module fileurl="file://$PROJECT_DIR$/jdba-postgre-tests/jdba-postgre-tests.iml" filepath="$PROJECT_DIR$/jdba-postgre-tests/jdba-postgre-tests.iml" group="01 Postgre" />
+      <module fileurl="file://$PROJECT_DIR$/public-pack/public-pack.iml" filepath="$PROJECT_DIR$/public-pack/public-pack.iml" group="90 Zipped Packs" />
+      <module fileurl="file://$PROJECT_DIR$/test-pack/test-pack.iml" filepath="$PROJECT_DIR$/test-pack/test-pack.iml" group="90 Zipped Packs" />
+    </modules>
+  </component>
+</project>
