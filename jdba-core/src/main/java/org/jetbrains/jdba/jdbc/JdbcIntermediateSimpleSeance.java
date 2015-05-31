@@ -21,7 +21,7 @@ public class JdbcIntermediateSimpleSeance extends JdbcIntermediateSeance {
     super(session, statementText);
 
     try {
-      myStatement = session.getConnection().prepareCall(statementText);
+      myStatement = session.prepareSimpleStatement(statementText);
     }
     catch (SQLException sqle) {
       throw session.recognizeException(sqle, statementText);

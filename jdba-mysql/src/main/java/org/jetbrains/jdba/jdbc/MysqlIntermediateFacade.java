@@ -7,6 +7,7 @@ import org.jetbrains.jdba.Rdbms;
 import org.jetbrains.jdba.intermediate.DBExceptionRecognizer;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.Driver;
 import java.util.Properties;
 
@@ -37,4 +38,10 @@ public class MysqlIntermediateFacade extends JdbcIntermediateFacade {
     return Mysql.RDBMS;
   }
 
+  @NotNull
+  @Override
+  protected MysqlIntermediateSession instantiateSession(@NotNull final Connection connection,
+                                                        final boolean ownConnection) {
+    return new MysqlIntermediateSession(this, myExceptionRecognizer, connection, ownConnection);
+  }
 }

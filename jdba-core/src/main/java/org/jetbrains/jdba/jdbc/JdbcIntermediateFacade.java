@@ -129,10 +129,15 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
       throw  myExceptionRecognizer.recognizeException(sqle, "borrow a connection from the pool");
     }
 
-    final JdbcIntermediateSession session =
-            new JdbcIntermediateSession(this, myExceptionRecognizer, connection, false);
+    final JdbcIntermediateSession session = instantiateSession(connection, false);
     mySessions.add(session);
     return session;
+  }
+
+  @NotNull
+  protected JdbcIntermediateSession instantiateSession(@NotNull final Connection connection,
+                                                       final boolean ownConnection) {
+    return new JdbcIntermediateSession(this, myExceptionRecognizer, connection, ownConnection);
   }
 
   @NotNull

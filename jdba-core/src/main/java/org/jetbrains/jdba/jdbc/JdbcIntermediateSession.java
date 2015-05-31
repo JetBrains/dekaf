@@ -8,8 +8,7 @@ import org.jetbrains.jdba.exceptions.DBSessionIsClosedException;
 import org.jetbrains.jdba.intermediate.DBExceptionRecognizer;
 import org.jetbrains.jdba.intermediate.IntegralIntermediateSession;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -202,6 +201,42 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
       seanceToClose.close();
     }
   }
+
+
+  //// INTERNAL METHODS TO WORK WITH JDBC \\\\
+
+  static final int DEFAULT_FETCH_SIZE = 1000;
+
+
+  @NotNull
+  PreparedStatement prepareSimpleStatement(@NotNull final String statementText)
+      throws SQLException
+  {
+    PreparedStatement statement = myConnection.prepareStatement(statementText,
+                                                                ResultSet.TYPE_FORWARD_ONLY,
+                                                                ResultSet.CONCUR_READ_ONLY);
+    statement.setFetchSize(DEFAULT_FETCH_SIZE);
+    return statement;
+  }
+
+  @NotNull
+  CallableStatement prepareCallableStatement(@NotNull final String statementText)
+      throws SQLException
+  {
+    return myConnection.prepareCall(statementText);
+  }
+
+  @NotNull
+  ResultSet getDefaultResultSet(@NotNull final Statement statement) throws SQLException {
+    return statement.getResultSet();
+  }
+
+  void tuneResultSet(@NotNull final ResultSet rset) throws SQLException {
+    rset.setFetchDirection(ResultSet.FETCH_FORWARD);
+    rset.setFetchSize(DEFAULT_FETCH_SIZE);
+  }
+
+
 
 
   //// DIAGNOSTIC METHODS \\\\

@@ -29,7 +29,7 @@ public class JdbcIntermediateCallableSeance extends JdbcIntermediateSeance {
     this.myOutParameterDefs = outParameterDefs;
 
     try {
-      CallableStatement stmt = session.getConnection().prepareCall(statementText);
+      CallableStatement stmt = session.prepareCallableStatement(statementText);
       for (int i = 0, n = outParameterDefs.length; i < n; i++) {
         ParameterDef d = outParameterDefs[i];
         if (d == null) continue;
