@@ -1,11 +1,7 @@
 <?xml version="1.0"?>
-<project name="JDBA Post-Build Operations" default="info">
+<project name="JDBA Post-Build Operations">
 
   <property name="ver">2.0.0-SNAPSHOT</property>
-
-  <target name="info">
-    <echo>Hello World - Welcome to Apache Ant!</echo>
-  </target>
 
 
   <target name="unpack-packs">

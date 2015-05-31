@@ -175,51 +175,6 @@
         </executions>
       </plugin>
 
-      <!--
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.10</version>
-        <executions>
-          <execution>
-            <id>copy</id>
-            <phase>package</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.jetbrains.jdba</groupId>
-                  <artifactId>jdba-core</artifactId>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                  &lt;!&ndash;outputDirectory>${project.build.directory}/dir1</outputDirectory&ndash;&gt;
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.jetbrains.jdba</groupId>
-                  <artifactId>jdba-postgre</artifactId>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                  &lt;!&ndash;outputDirectory>${project.build.directory}/dir1</outputDirectory&ndash;&gt;
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.jetbrains.jdba</groupId>
-                  <artifactId>jdba-oracle</artifactId>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                  &lt;!&ndash;outputDirectory>${project.build.directory}/dir1</outputDirectory&ndash;&gt;
-                </artifactItem>
-              </artifactItems>
-              <outputDirectory>${project.build.directory}/dir2</outputDirectory>
-              <overWriteReleases>false</overWriteReleases>
-              <overWriteSnapshots>true</overWriteSnapshots>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      -->
-
     </plugins>
   </build>
 
