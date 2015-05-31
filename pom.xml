@@ -29,6 +29,9 @@
     <module>jdba-mysql-test-db</module>
     <module>jdba-mysql-tests</module>
 
+    <module>jdba-single</module>
+    <module>jdba-single-test-db</module>
+
     <module>public-pack</module>
     <module>test-pack</module>
   </modules>

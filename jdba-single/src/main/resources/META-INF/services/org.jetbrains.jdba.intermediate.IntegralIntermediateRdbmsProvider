@@ -1,0 +1,4 @@
+org.jetbrains.jdba.jdbc.PostgreIntermediateProvider
+org.jetbrains.jdba.jdbc.OracleIntermediateProvider
+org.jetbrains.jdba.jdbc.MysqlIntermediateProvider
+org.jetbrains.jdba.jdbc.UnknownDatabaseProvider

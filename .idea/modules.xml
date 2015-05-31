@@ -15,6 +15,8 @@
       <module fileurl="file://$PROJECT_DIR$/jdba-postgre/jdba-postgre.iml" filepath="$PROJECT_DIR$/jdba-postgre/jdba-postgre.iml" group="01 Postgre" />
       <module fileurl="file://$PROJECT_DIR$/jdba-postgre-test-db/jdba-postgre-test-db.iml" filepath="$PROJECT_DIR$/jdba-postgre-test-db/jdba-postgre-test-db.iml" group="01 Postgre" />
       <module fileurl="file://$PROJECT_DIR$/jdba-postgre-tests/jdba-postgre-tests.iml" filepath="$PROJECT_DIR$/jdba-postgre-tests/jdba-postgre-tests.iml" group="01 Postgre" />
+      <module fileurl="file://$PROJECT_DIR$/jdba-single/jdba-single.iml" filepath="$PROJECT_DIR$/jdba-single/jdba-single.iml" group="70 All-containing JARs" />
+      <module fileurl="file://$PROJECT_DIR$/jdba-single-test-db/jdba-single-test-db.iml" filepath="$PROJECT_DIR$/jdba-single-test-db/jdba-single-test-db.iml" />
       <module fileurl="file://$PROJECT_DIR$/public-pack/public-pack.iml" filepath="$PROJECT_DIR$/public-pack/public-pack.iml" group="90 Zipped Packs" />
       <module fileurl="file://$PROJECT_DIR$/test-pack/test-pack.iml" filepath="$PROJECT_DIR$/test-pack/test-pack.iml" group="90 Zipped Packs" />
     </modules>
