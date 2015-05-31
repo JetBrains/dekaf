@@ -28,7 +28,7 @@ public class SqlScript {
 
   @NotNull
   private static ImmutableList<? extends SqlStatement> makeStatementsFromStrings(final @NotNull String[] statements) {
-    ImmutableList.Builder<? extends SqlStatement> builder = ImmutableList.builder();
+    ImmutableList.Builder<SqlCommand> builder = ImmutableList.builder();
     for (String command : statements) {
       SqlCommand cmd = new SqlCommand(command);
       builder.add(cmd);
