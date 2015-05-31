@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -14,7 +14,7 @@
   <artifactId>jdba-single-test-db</artifactId>
   <packaging>jar</packaging>
   <name>JDBA single-jar Test-DB stuff</name>
-  <description>Java Database Access Layer Test-DB stuff — one jar for all supported RDBMS</description>
+  <description>Java Database Access Layer Test-DB stuff -- one jar for all supported RDBMS</description>
 
 
   <dependencies>
