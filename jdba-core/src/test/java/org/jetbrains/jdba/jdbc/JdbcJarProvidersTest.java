@@ -40,7 +40,6 @@ public class JdbcJarProvidersTest {
 
     assertThat(svc).isInstanceOf(IntegralIntermediateRdbmsProvider.class);
     assertThat(svc).isInstanceOf(JdbcIntermediateRdbmsProvider.class);
-    assertThat(svc).isInstanceOf(UnknownDatabaseProvider.class);
   }
 
 }

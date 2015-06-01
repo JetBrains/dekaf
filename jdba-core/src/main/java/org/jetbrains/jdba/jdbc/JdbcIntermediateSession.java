@@ -36,7 +36,7 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
 
   @NotNull
   private final Queue<JdbcIntermediateSeance> mySeances =
-                new LinkedBlockingQueue<JdbcIntermediateSeance>(4);
+                new LinkedBlockingQueue<JdbcIntermediateSeance>();
 
 
   protected JdbcIntermediateSession(@Nullable final JdbcIntermediateFacade facade,

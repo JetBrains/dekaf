@@ -16,7 +16,7 @@ public class BaseFacade implements DBFacade {
   @NotNull
   private final IntegralIntermediateFacade myInterFacade;
 
-  BaseFacade(@NotNull final IntegralIntermediateFacade interFacade) {
+  public BaseFacade(@NotNull final IntegralIntermediateFacade interFacade) {
     myInterFacade = interFacade;
   }
 
