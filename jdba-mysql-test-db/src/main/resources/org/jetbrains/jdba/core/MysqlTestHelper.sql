@@ -1,18 +1,3 @@
----- GenDeleteTablesOrViews ----
-select concat('drop ', object_type, ' ', table_name)
-from (
-  select 'table' as object_type, table_name
-  from information_schema.tables
-  where table_schema = schema()
-  union
-  select 'view' as object_type, table_name
-  from information_schema.views
-  where table_schema = schema()
-  ) objects_to_drop
-where lower(table_name) in (lower(?),lower(?),lower(?),lower(?))
-;
-
-
 ---- X10 ----
 create or replace view X10 as
 select 1 as X
@@ -53,3 +38,33 @@ from X1000 P,
      X1000 Q
 ;
 
+
+---- EnsureNoTableOrViewMetaQuery ----
+select concat('drop ', object_type, ' if exists ', table_name, ' cascade') as cmd
+     from (
+       select 'table' as object_type, table_name
+       from information_schema.tables
+       where table_schema = schema()
+         and table_type like '%TABLE'
+       union
+       select 'view' as object_type, table_name
+       from information_schema.views
+       where table_schema = schema()
+       ) objects_to_drop
+where lower(table_name) in (lower(?),lower(?),lower(?),lower(?))
+;
+
+
+---- ZapSchemaMetaQuery ----
+select concat('drop ', object_type, ' if exists ', table_name, ' cascade') as cmd
+from (
+  select 'table' as object_type, table_name
+  from information_schema.tables
+  where table_schema = schema()
+    and table_type like '%TABLE'
+  union
+  select 'view' as object_type, table_name
+  from information_schema.views
+  where table_schema = schema()
+  ) objects_to_drop
+;

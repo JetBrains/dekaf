@@ -70,4 +70,42 @@ public abstract class CommonPrimaryTest extends CommonIntegrationCase {
     return "";
   }
 
+
+  @Test
+  public void zapSchema_basic() {
+    DB.connect();
+    TH.ensureNoTableOrView("T1", "V1");
+
+    // create a table and a view
+    TH.performScript(
+        "create table T1 (F1 char(1))",
+        "create view V1 as select * from T1"
+    );
+
+    // zap schema
+    TH.zapSchema();
+
+    // TODO verify that no tables and views
+  }
+
+  @Test
+  public void zapSchema_foreignKeys() {
+    DB.connect();
+    TH.ensureNoTableOrView("T1", "T2", "T3");
+
+    // create a table and a view
+    TH.performScript(
+        "create table T1 (X char(1) primary key)",
+        "create table T2 (Y char(1))",
+        "create table T3 (Z char(1) primary key)",
+        "alter table T2 add foreign key (Y) references T1",
+        "alter table T2 add foreign key (Y) references T3"
+    );
+
+    // zap schema
+    TH.zapSchema();
+
+    // TODO verify that no tables
+  }
+
 }

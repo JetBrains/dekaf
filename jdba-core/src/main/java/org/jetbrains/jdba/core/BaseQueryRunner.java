@@ -42,7 +42,10 @@ public class BaseQueryRunner<S> implements DBQueryRunner<S>, BaseSeanceRunner {
     if (myCursor != null)
       throw new IllegalStateException("Cursor is open. Close (or completely fetch) it before run the query again.");
 
-    myInterSeance.setInParameters(params);
+    if (params != null && params.length > 0) {
+      myInterSeance.setInParameters(params);
+    }
+
     return this;
   }
 

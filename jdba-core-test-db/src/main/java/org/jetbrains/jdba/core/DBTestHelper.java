@@ -1,20 +1,76 @@
 package org.jetbrains.jdba.core;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jdba.sql.Scriptum;
+import org.jetbrains.jdba.sql.SqlCommand;
+import org.jetbrains.jdba.sql.SqlScript;
+
+
+
 /**
  * @author Leonid Bushuev from JetBrains
  **/
 public interface DBTestHelper {
 
+  /**
+   * Performs a command from the scriptum.
+   * @param scriptum        scriptum with the command to perform.
+   * @param commandName     name of the command to perform.
+   */
+  void performCommand(@NotNull Scriptum scriptum, @NotNull String commandName);
 
   /**
-   * Ensures that there are no tables or view that can conflict
-   * with the given names.
-   * If they exist, drops them.
-   *
-   * @param names script names of tables or views to drop (if they exist).
+   * Performs the specified command.
+   * @param commandText     command text.
    */
-  void ensureNoTableOrView(String... names);
+  void performCommand(@NotNull String commandText);
 
+  /**
+   * Performs the specified command.
+   * @param command     command to perform.
+   */
+  void performCommand(@NotNull SqlCommand command);
+
+  /**
+   * Performs the given script.
+   * @param script  the script to perform.
+   */
+  void performScript(@NotNull SqlScript script);
+
+  /**
+   * Performs the given commands.
+   * @param commands  the script to perform.
+   */
+  void performScript(String... commands);
+
+
+  /**
+   * Performs a command or a meta query (and the produced commands).
+   *
+   * <p>
+   * Looks for the command with name <tt>operationName</tt> + "Command".
+   * If such command exists, performs it.
+   * If no such command, looks for the query with name <tt>operationName</tt> + "MetaQuery".
+   * If such query exists, performs it using {@link #performMetaQueryCommands}.
+   * If neither command nor query found, raises exception.
+   * </p>
+   *
+   * @param scriptum       scriptum with a command or a meta query.
+   * @param operationName  root part of the command or meta query.
+   */
+  void performCommandOrMetaQueryCommands(@NotNull Scriptum scriptum,
+                                         @NotNull String operationName);
+
+  /**
+   * Performs a specified query from scriptum. The query should
+   * produce a list of commands. These commands are to perform.
+   * @param scriptum           scriptum with meta query.
+   * @param metaQueryName      name of the meta query.
+   * @param params             parameters for meta query (not for commands).
+   */
+  void performMetaQueryCommands(@NotNull Scriptum scriptum,
+                                @NotNull String metaQueryName,
+                                Object... params);
 
   /**
    * Prepares a table or view named <b><tt>X1</tt></b> that contains
@@ -37,5 +93,21 @@ public interface DBTestHelper {
    * from 1 to 1000000.
    */
   void prepareX1000000();
+
+
+  /**
+   * Ensures that there are no tables or view that can conflict
+   * with the given names.
+   * If they exist, drops them.
+   *
+   * @param names script names of tables or views to drop (if they exist).
+   */
+  void ensureNoTableOrView(String... names);
+
+
+  /**
+   * Drops all objects in the current schema.
+   */
+  void zapSchema();
 
 }
