@@ -2,6 +2,7 @@ package org.jetbrains.jdba.jdbc.pooling;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jdba.core.ImplementationAccessibleService;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -12,6 +13,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 
+import static org.jetbrains.jdba.util.Objects.castTo;
+
 
 
 /**
@@ -19,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Leonid Bushuev from JetBrains
  */
-public class ConnectionPool {
+public class ConnectionPool implements ImplementationAccessibleService {
 
   @NotNull
   private final DataSource myOriginalSource;
@@ -198,6 +201,27 @@ public class ConnectionPool {
     }
     catch (Exception e) {
       panic("Close connection", e);
+    }
+  }
+
+  @Nullable
+  @Override
+  public <I> I getSpecificService(@NotNull final Class<I> serviceClass,
+                                  @NotNull final String serviceName) throws ClassCastException {
+    if (serviceName.toUpperCase().startsWith("JDBC")) {
+      if (myOriginalSource instanceof ImplementationAccessibleService) {
+        return ((ImplementationAccessibleService) myOriginalSource).getSpecificService(serviceClass,
+                                                                                       serviceName);
+      }
+      else {
+        return null;
+      }
+    }
+    else if (serviceName.equalsIgnoreCase(Names.CONNECTION_POOL)) {
+      return castTo(serviceClass, this);
+    }
+    else {
+      return null;
     }
   }
 

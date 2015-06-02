@@ -83,7 +83,10 @@ public class BaseRdbmsProvider implements DBRdbmsProvider {
   }
 
 
-  //// AUXILIARY AND DIAGNOSTIC FUNCTIONS \\\\
-
-
+  @Nullable
+  @Override
+  public <I> I getSpecificService(@NotNull final Class<I> serviceClass,
+                                  @NotNull final String serviceName) throws ClassCastException {
+    return myIntermediateProvider.getSpecificService(serviceClass, serviceName);
+  }
 }

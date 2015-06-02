@@ -7,6 +7,7 @@ import org.jetbrains.jdba.intermediate.IntegralIntermediateSession;
 import org.jetbrains.jdba.sql.SqlCommand;
 import org.jetbrains.jdba.sql.SqlQuery;
 import org.jetbrains.jdba.sql.SqlScript;
+import org.jetbrains.jdba.util.Objects;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -129,20 +130,17 @@ public class BaseSession implements DBSession, DBTransaction  {
   }
 
 
+  @SuppressWarnings("unchecked")
   @Nullable
-  public synchronized  <I> I getSpecificService(@NotNull final Class<I> serviceInterface,
-                                                @NotNull final String name) {
-    if (name.equalsIgnoreCase("inter-session")) {
-      if (serviceInterface.isAssignableFrom(myInterSession.getClass())) {
-        //noinspection unchecked
-        return (I) myInterSession;
-      }
-      else {
-        return myInterSession.getSpecificService(serviceInterface, name);
-      }
+  public synchronized  <I> I getSpecificService(@NotNull final Class<I> serviceClass,
+                                                @NotNull final String serviceName)
+      throws ClassCastException
+  {
+    if (serviceName.equalsIgnoreCase(Names.INTERMEDIATE_SERVICE)) {
+      return Objects.castTo(serviceClass, myInterSession);
     }
     else {
-      return myInterSession.getSpecificService(serviceInterface, name);
+      return myInterSession.getSpecificService(serviceClass, serviceName);
     }
   }
 

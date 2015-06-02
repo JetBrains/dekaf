@@ -57,4 +57,11 @@ public class AdaptIntermediateRdbmsProvider implements IntegralIntermediateRdbms
     return myRemoteProvider.getExceptionRecognizer();
   }
 
+
+  @Nullable
+  @Override
+  public <I> I getSpecificService(@NotNull final Class<I> serviceClass,
+                                  @NotNull final String serviceName) throws ClassCastException {
+    return myRemoteProvider.getSpecificService(serviceClass, serviceName);
+  }
 }

@@ -1,8 +1,7 @@
 package org.jetbrains.jdba.core;
 
-import org.jetbrains.jdba.intermediate.PrimeIntermediateRdbmsProvider;
+import org.jetbrains.jdba.intermediate.IntegralIntermediateRdbmsProvider;
 import org.jetbrains.jdba.jdbc.BaseHyperSonicCase;
-import org.jetbrains.jdba.jdbc.JdbcIntermediateRdbmsProvider;
 import org.jetbrains.jdba.jdbc.UnknownDatabaseProvider;
 import org.junit.Test;
 
@@ -21,10 +20,8 @@ public class BaseRdbmsProviderTest extends BaseHyperSonicCase {
 
   @Test
   public void connect_directly() {
-    final JdbcIntermediateRdbmsProvider jdbcRdbmsProvider = ourUnknownDatabaseProvider;
-
     final BaseRdbmsProvider provider =
-            new BaseRdbmsProvider(jdbcRdbmsProvider);
+            new BaseRdbmsProvider(ourUnknownDatabaseProvider);
 
     final BaseFacade facade =
             provider.openFacade(HSQL_CONNECTION_STRING, null, 1, true);
@@ -39,10 +36,8 @@ public class BaseRdbmsProviderTest extends BaseHyperSonicCase {
 
   @Test
   public void connect_remotely() {
-    final PrimeIntermediateRdbmsProvider pseudoRemoteProvider = ourUnknownDatabaseProvider;
-
     final BaseRdbmsProvider provider =
-            new BaseRdbmsProvider(pseudoRemoteProvider);
+            new BaseRdbmsProvider(ourUnknownDatabaseProvider);
 
     final BaseFacade facade =
             provider.openFacade(HSQL_CONNECTION_STRING, null, 1, true);
@@ -54,5 +49,16 @@ public class BaseRdbmsProviderTest extends BaseHyperSonicCase {
     assertThat(facade.isConnected()).isFalse();
   }
 
+
+  @Test
+  public void get_intermediate_service() {
+    final BaseRdbmsProvider provider =
+            new BaseRdbmsProvider(ourUnknownDatabaseProvider);
+    final IntegralIntermediateRdbmsProvider intermediateRdbmsProvider =
+        provider.getSpecificService(
+            IntegralIntermediateRdbmsProvider.class,
+            ImplementationAccessibleService.Names.INTERMEDIATE_SERVICE);
+    assertThat(intermediateRdbmsProvider).isSameAs(ourUnknownDatabaseProvider);
+  }
 
 }

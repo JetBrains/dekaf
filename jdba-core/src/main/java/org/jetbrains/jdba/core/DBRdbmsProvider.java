@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public interface DBRdbmsProvider {
+public interface DBRdbmsProvider extends ImplementationAccessibleService {
 
   /**
    * The RDBMS this provider is for.

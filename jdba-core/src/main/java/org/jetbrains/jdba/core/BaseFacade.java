@@ -1,6 +1,7 @@
 package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Rdbms;
 import org.jetbrains.jdba.exceptions.DBIsNotConnected;
 import org.jetbrains.jdba.intermediate.IntegralIntermediateFacade;
@@ -15,6 +16,7 @@ public class BaseFacade implements DBFacade {
 
   @NotNull
   private final IntegralIntermediateFacade myInterFacade;
+
 
   public BaseFacade(@NotNull final IntegralIntermediateFacade interFacade) {
     myInterFacade = interFacade;
@@ -111,5 +113,13 @@ public class BaseFacade implements DBFacade {
   }
 
 
+  @Nullable
+  @Override
+  public <I> I getSpecificService(@NotNull final Class<I> serviceClass,
+                                  @NotNull final String serviceName)
+      throws ClassCastException
+  {
+    return myInterFacade.getSpecificService(serviceClass, serviceName);
+  }
 
 }

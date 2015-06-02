@@ -1,6 +1,7 @@
 package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jdba.intermediate.IntegralIntermediateSession;
 import org.jetbrains.jdba.jdbc.JdbcIntermediateSession;
 import org.jetbrains.jdba.sql.SqlQuery;
 import org.junit.FixMethodOrder;
@@ -115,7 +116,8 @@ public class BaseSessionTest extends BaseHyperSonicFacadeTest {
         });
 
         JdbcIntermediateSession intermediateSession =
-                session.getSpecificService(JdbcIntermediateSession.class, "inter-session");
+            session.getSpecificService(JdbcIntermediateSession.class,
+                                       ImplementationAccessibleService.Names.INTERMEDIATE_SERVICE);
         assert intermediateSession != null;
         assertThat(intermediateSession.countOpenedSeances()).isZero();
         assertThat(intermediateSession.countOpenedCursors()).isZero();
@@ -126,12 +128,30 @@ public class BaseSessionTest extends BaseHyperSonicFacadeTest {
 
 
   @Test
-  public void getting_jdbc_connection() {
+  public void get_intermediate_service() {
     myFacade.inSession(new InSessionNoResult() {
       @Override
       public void run(@NotNull final DBSession session) {
 
-        Object connection = session.getSpecificService(java.sql.Connection.class, "jdbc-connection");
+        final IntegralIntermediateSession intermediateSession =
+            session.getSpecificService(
+                IntegralIntermediateSession.class,
+                ImplementationAccessibleService.Names.INTERMEDIATE_SERVICE);
+        assertThat(intermediateSession).isInstanceOf(JdbcIntermediateSession.class);
+
+      }
+    });
+  }
+
+  @Test
+  public void get_jdbc_connection() {
+    myFacade.inSession(new InSessionNoResult() {
+      @Override
+      public void run(@NotNull final DBSession session) {
+
+        java.sql.Connection connection =
+            session.getSpecificService(java.sql.Connection.class,
+                                       ImplementationAccessibleService.Names.JDBC_CONNECTION);
         assertThat(connection).isNotNull()
                               .isInstanceOf(java.sql.Connection.class);
 

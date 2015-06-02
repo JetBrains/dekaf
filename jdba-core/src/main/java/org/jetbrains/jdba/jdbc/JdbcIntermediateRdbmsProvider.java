@@ -10,6 +10,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import static org.jetbrains.jdba.util.Objects.castTo;
+
 
 
 /**
@@ -110,4 +112,16 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
   @NotNull
   public abstract BaseExceptionRecognizer getExceptionRecognizer();
 
+
+  @Nullable
+  @Override
+  public <I> I getSpecificService(@NotNull final Class<I> serviceClass,
+                                  @NotNull final String serviceName) {
+    if (serviceName.equalsIgnoreCase(Names.INTERMEDIATE_SERVICE)) {
+      return castTo(serviceClass, this);
+    }
+    else {
+      return null;
+    }
+  }
 }

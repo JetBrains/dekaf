@@ -18,6 +18,8 @@ import java.util.Collection;
 import java.util.Properties;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static org.jetbrains.jdba.util.Objects.castTo;
+
 
 
 /**
@@ -148,6 +150,18 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
   void sessionIsClosed(@NotNull final JdbcIntermediateSession session, @NotNull final Connection connection) {
     mySessions.remove(session);
     myPool.release(connection);
+  }
+
+  @Nullable
+  @Override
+  public <I> I getSpecificService(@NotNull final Class<I> serviceClass,
+                                  @NotNull final String serviceName) throws ClassCastException {
+    if (serviceName.equalsIgnoreCase(Names.INTERMEDIATE_SERVICE)) {
+      return castTo(serviceClass, this);
+    }
+    else {
+      return myPool.getSpecificService(serviceClass, serviceName);
+    }
   }
 
 

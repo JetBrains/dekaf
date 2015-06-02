@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.core.ParameterDef;
 
+import static org.jetbrains.jdba.util.Objects.castTo;
+
 
 
 /**
@@ -40,9 +42,14 @@ public class AdaptIntermediateSession implements IntegralIntermediateSession {
 
   @Override
   @Nullable
-  public <I> I getSpecificService(@NotNull final Class<I> serviceInterface,
-                                  @NotNull final String name) {
-    return myRemoteSession.getSpecificService(serviceInterface,  name);
+  public <I> I getSpecificService(@NotNull final Class<I> serviceClass,
+                                  @NotNull final String serviceName) {
+    if (serviceName.equalsIgnoreCase(Names.INTERMEDIATE_SERVICE)) {
+      return castTo(serviceClass, myRemoteSession);
+    }
+    else {
+      return myRemoteSession.getSpecificService(serviceClass, serviceName);
+    }
   }
 
   @Override

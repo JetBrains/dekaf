@@ -3,6 +3,7 @@ package org.jetbrains.jdba.intermediate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Rdbms;
+import org.jetbrains.jdba.core.ImplementationAccessibleService;
 
 import java.util.Properties;
 import java.util.regex.Pattern;
@@ -14,7 +15,7 @@ import java.util.regex.Pattern;
  *
  * @author Leonid Bushuev from JetBrains
  */
-public interface PrimeIntermediateRdbmsProvider {
+public interface PrimeIntermediateRdbmsProvider extends ImplementationAccessibleService {
 
   //// API \\\\
 

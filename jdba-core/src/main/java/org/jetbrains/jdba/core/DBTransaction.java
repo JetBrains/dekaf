@@ -1,7 +1,6 @@
 package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.sql.SqlCommand;
 import org.jetbrains.jdba.sql.SqlQuery;
 import org.jetbrains.jdba.sql.SqlScript;
@@ -28,10 +27,5 @@ public interface DBTransaction {
 
   @NotNull
   DBScriptRunner script(@NotNull final SqlScript script);
-
-
-  @Nullable
-  <I> I getSpecificService(@NotNull final Class<I> serviceInterface,
-                           @NotNull final String name);
 
 }

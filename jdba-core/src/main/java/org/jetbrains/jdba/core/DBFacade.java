@@ -10,7 +10,7 @@ import org.jetbrains.jdba.Rdbms;
  *
  * @author Leonid Bushuev from JetBrains
  */
-public interface DBFacade {
+public interface DBFacade extends ImplementationAccessibleService {
 
 
   /**

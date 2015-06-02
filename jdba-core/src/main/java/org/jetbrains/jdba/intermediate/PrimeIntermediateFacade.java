@@ -2,6 +2,7 @@ package org.jetbrains.jdba.intermediate;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.Rdbms;
+import org.jetbrains.jdba.core.ImplementationAccessibleService;
 
 
 
@@ -10,7 +11,7 @@ import org.jetbrains.jdba.Rdbms;
  *
  * @author Leonid Bushuev from JetBrains
  */
-public interface PrimeIntermediateFacade {
+public interface PrimeIntermediateFacade extends ImplementationAccessibleService {
 
 
   //// DATABASE PROPERTIES FUNCTIONS \\\\

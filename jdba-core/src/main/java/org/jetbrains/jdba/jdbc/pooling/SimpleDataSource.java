@@ -2,6 +2,8 @@ package org.jetbrains.jdba.jdbc.pooling;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jdba.core.ImplementationAccessibleService;
+import org.jetbrains.jdba.util.Objects;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;
@@ -19,7 +21,7 @@ import static java.lang.String.format;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public class SimpleDataSource implements DataSource {
+public class SimpleDataSource implements DataSource, ImplementationAccessibleService {
 
 
   //// STATE \\\\
@@ -105,6 +107,18 @@ public class SimpleDataSource implements DataSource {
   @Override
   public boolean isWrapperFor(@SuppressWarnings("SpellCheckingInspection") final Class<?> iface) throws SQLException {
     return iface.isAssignableFrom(SimpleDataSource.class);
+  }
+
+  @Nullable
+  @Override
+  public <I> I getSpecificService(@NotNull final Class<I> serviceClass,
+                                  @NotNull final String serviceName) throws ClassCastException {
+    if (serviceName.equalsIgnoreCase(Names.JDBC_DRIVER)) {
+      return Objects.castTo(serviceClass, myDriver);
+    }
+    else {
+      return null;
+    }
   }
 
 

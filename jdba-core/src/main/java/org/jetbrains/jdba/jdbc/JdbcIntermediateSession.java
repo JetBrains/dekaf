@@ -12,6 +12,8 @@ import java.sql.*;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static org.jetbrains.jdba.util.Objects.castTo;
+
 
 
 /**
@@ -136,36 +138,16 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
 
 
   @Override
-  public <I> I getSpecificService(@NotNull final Class<I> serviceInterface,
-                                  @NotNull final String name) {
-    if (name.equalsIgnoreCase("jdbc-connection")) {
-      try {
-        if (serviceInterface.isAssignableFrom(myConnection.getClass())) {
-          //noinspection unchecked
-          return (I) myConnection;
-        }
-        else if (myConnection.isWrapperFor(serviceInterface)) {
-          return myConnection.unwrap(serviceInterface);
-        }
-        else {
-          return null;
-        }
-      }
-      catch (SQLException sqle) {
-        throw recognizeException(sqle, "getting specific service "+name);
-      }
+  public <I> I getSpecificService(@NotNull final Class<I> serviceClass,
+                                  @NotNull final String serviceName) {
+    if (serviceName.equalsIgnoreCase(Names.INTERMEDIATE_SERVICE)) {
+      return castTo(serviceClass, this);
     }
-    else if (name.equals("inter-session")) {
-      if (serviceInterface.isAssignableFrom(this.getClass())) {
-        //noinspection unchecked
-        return (I) this;
-      }
-      else {
-        return null;
-      }
+    else if (serviceName.equalsIgnoreCase(Names.JDBC_CONNECTION)) {
+      return castTo(serviceClass, myConnection);
     }
     else {
-      throw new IllegalArgumentException("Unknown specific service: " + name);
+      return null;
     }
   }
 

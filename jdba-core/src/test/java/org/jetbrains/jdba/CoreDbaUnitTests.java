@@ -30,6 +30,7 @@ import org.junit.runners.Suite;
                             BaseSessionTest.class,
                             BaseQueryRunnerDirectTest.class,
                             BaseQueryRunnerPseudoRemoteTest.class,
+                            BaseFacadeTest.class,
                             BaseRdbmsProviderTest.class,
                             BaseFederatedProviderTest.class
 })

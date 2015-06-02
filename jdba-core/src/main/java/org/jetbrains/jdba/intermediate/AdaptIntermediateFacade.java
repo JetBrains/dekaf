@@ -1,6 +1,7 @@
 package org.jetbrains.jdba.intermediate;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Rdbms;
 
 
@@ -46,5 +47,13 @@ public class AdaptIntermediateFacade implements IntegralIntermediateFacade {
   public IntegralIntermediateSession openSession() {
     final PrimeIntermediateSession remoteSession = myRemoteFacade.openSession();
     return new AdaptIntermediateSession(remoteSession);
+  }
+
+
+  @Nullable
+  @Override
+  public <I> I getSpecificService(@NotNull final Class<I> serviceClass,
+                                  @NotNull final String serviceName) throws ClassCastException {
+    return myRemoteFacade.getSpecificService(serviceClass, serviceName);
   }
 }
