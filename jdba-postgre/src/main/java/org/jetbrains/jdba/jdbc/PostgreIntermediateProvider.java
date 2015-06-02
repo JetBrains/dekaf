@@ -37,10 +37,13 @@ public class PostgreIntermediateProvider extends JdbcIntermediateRdbmsProvider {
 
   //// INITIALIZATION \\\\
 
-  public PostgreIntermediateProvider() {
-    loadAndRegisterDriverIfNeeded(POSTGRE_CONNECTION_STRING_EXAMPLE);
-  }
 
+
+  @NotNull
+  @Override
+  protected String getConnectionStringExample() {
+    return POSTGRE_CONNECTION_STRING_EXAMPLE;
+  }
 
   @Override
   protected Driver loadDriver() {

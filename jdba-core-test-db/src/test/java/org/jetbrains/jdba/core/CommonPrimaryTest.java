@@ -6,6 +6,8 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import java.sql.Driver;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -106,6 +108,13 @@ public abstract class CommonPrimaryTest extends CommonIntegrationCase {
     TH.zapSchema();
 
     // TODO verify that no tables
+  }
+
+  @Test
+  public void get_driver() {
+    Driver driver =
+        DB.getSpecificService(Driver.class, ImplementationAccessibleService.Names.JDBC_DRIVER);
+    assertThat(driver).isNotNull();
   }
 
 }

@@ -49,6 +49,7 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
 
 
   protected Driver getDriver(@NotNull final String connectionString) {
+    tryToLoadDriverIfNeeded();
     try {
       return DriverManager.getDriver(connectionString);
     }
@@ -58,19 +59,23 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
     }
   }
 
-
-  protected void loadAndRegisterDriverIfNeeded(final String connectionStringExample) {
-    if (!whetherApplicableDriverAlreadyRegistered(connectionStringExample)) {
-      Driver driver = loadDriver();
-      if (driver != null) {
-        registerDriver(driver);
+  protected void tryToLoadDriverIfNeeded() {
+    String connectionStringExample = getConnectionStringExample();
+    if (connectionStringExample != null) {
+      if (!whetherApplicableDriverAlreadyRegistered(connectionStringExample)) {
+        Driver driver = loadDriver();
+        if (driver != null) {
+          registerDriver(driver);
+        }
       }
     }
   }
 
+  @Nullable
+  protected abstract String getConnectionStringExample();
 
   @Nullable
-  abstract Driver loadDriver();
+  protected abstract Driver loadDriver();
 
 
   protected boolean whetherApplicableDriverAlreadyRegistered(@NotNull final String connectionString) {

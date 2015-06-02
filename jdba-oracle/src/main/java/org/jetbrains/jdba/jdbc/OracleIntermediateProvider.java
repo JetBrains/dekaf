@@ -33,10 +33,12 @@ public class OracleIntermediateProvider extends JdbcIntermediateRdbmsProvider {
 
   //// INITIALIZATION \\\\
 
-  public OracleIntermediateProvider() {
-    loadAndRegisterDriverIfNeeded(ORACLE_CONNECTION_STRING_EXAMPLE);
-  }
 
+  @NotNull
+  @Override
+  protected String getConnectionStringExample() {
+    return ORACLE_CONNECTION_STRING_EXAMPLE;
+  }
 
   @Override
   protected Driver loadDriver() {

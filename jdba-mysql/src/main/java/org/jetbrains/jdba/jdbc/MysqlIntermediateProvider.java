@@ -48,10 +48,13 @@ public class MysqlIntermediateProvider extends JdbcIntermediateRdbmsProvider {
 
   //// INITIALIZATION \\\\
 
-  public MysqlIntermediateProvider() {
-    loadAndRegisterDriverIfNeeded(MYSQL_CONNECTION_STRING_EXAMPLE);
-  }
 
+
+  @NotNull
+  @Override
+  protected String getConnectionStringExample() {
+    return MYSQL_CONNECTION_STRING_EXAMPLE;
+  }
 
   @Override
   protected Driver loadDriver() {
@@ -73,7 +76,6 @@ public class MysqlIntermediateProvider extends JdbcIntermediateRdbmsProvider {
 
     return driver;
   }
-
 
 
   //// IMPLEMENTATION \\\\
