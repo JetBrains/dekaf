@@ -32,7 +32,7 @@ public class MysqlIntermediateSession extends JdbcIntermediateSession {
     PreparedStatement stmt = getConnection().prepareStatement(statementText,
                                                               ResultSet.TYPE_FORWARD_ONLY,
                                                               ResultSet.CONCUR_READ_ONLY);
-    stmt.setFetchSize(Integer.MIN_VALUE);
+    // stmt.setFetchSize(Integer.MIN_VALUE); // it looks like this slows down fetching operations
     return stmt;
   }
 
