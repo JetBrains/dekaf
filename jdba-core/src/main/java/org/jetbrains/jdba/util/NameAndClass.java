@@ -2,12 +2,14 @@ package org.jetbrains.jdba.util;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
+
 
 
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public final class NameAndClass
+public final class NameAndClass implements Serializable
 {
   @NotNull
   public final String name;
