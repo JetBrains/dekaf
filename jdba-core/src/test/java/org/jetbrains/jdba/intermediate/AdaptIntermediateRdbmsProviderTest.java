@@ -5,6 +5,8 @@ import org.jetbrains.jdba.jdbc.BaseHyperSonicCase;
 import org.jetbrains.jdba.jdbc.UnknownDatabaseProvider;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 
 /**
@@ -41,6 +43,14 @@ public class AdaptIntermediateRdbmsProviderTest extends BaseHyperSonicCase {
     seance.close();
     session.close();
     facade.disconnect();
+  }
+
+  @Test
+  public void getExceptionRecognizer_same() {
+    AdaptIntermediateRdbmsProvider adaptProvider =
+        new AdaptIntermediateRdbmsProvider(ourUnknownDatabaseProvider);
+
+    assertThat(adaptProvider.getExceptionRecognizer()).isSameAs(ourUnknownDatabaseProvider.getExceptionRecognizer());
   }
 
 }

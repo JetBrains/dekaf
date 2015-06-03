@@ -58,14 +58,12 @@ public interface PrimeIntermediateRdbmsProvider extends ImplementationAccessible
                                      @Nullable Properties connectionProperties,
                                      int connectionsLimit);
 
-
   /**
-   * Provides with the error recognizer that applicable to this RDBMS.
-   * @return an instance of error recognizer (usually a singleton instance).
+   * Don't use this method, use {@link IntegralIntermediateRdbmsProvider#getExceptionRecognizer} instead.
+   * @return  an exception recognizer class.
    */
   @NotNull
-  DBExceptionRecognizer getExceptionRecognizer();
-
+  Class<? extends DBExceptionRecognizer> getExceptionRecognizerClass();
 
 
   //// CONSTANTS \\\\

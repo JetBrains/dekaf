@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Rdbms;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
@@ -52,9 +54,29 @@ public class AdaptIntermediateRdbmsProvider implements IntegralIntermediateRdbms
 
   @NotNull
   @Override
+  public Class<? extends DBExceptionRecognizer> getExceptionRecognizerClass() {
+    return myRemoteProvider.getExceptionRecognizerClass();
+  }
+
+  @NotNull
+  @Override
   public DBExceptionRecognizer getExceptionRecognizer() {
-    // TODO don't use this service from the remote process, use a local one
-    return myRemoteProvider.getExceptionRecognizer();
+    Class<? extends DBExceptionRecognizer> erClass = myRemoteProvider.getExceptionRecognizerClass();
+
+    try {
+      // try to use it's instance
+      Field instanceField = erClass.getDeclaredField("INSTANCE");
+      if (instanceField != null && Modifier.isStatic(instanceField.getModifiers())) {
+        return (DBExceptionRecognizer) instanceField.get(null);
+      }
+      // try to instantiate
+      return erClass.newInstance();
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    throw new IllegalStateException("Unknown how to get an instance of class "+erClass.getName());
   }
 
 

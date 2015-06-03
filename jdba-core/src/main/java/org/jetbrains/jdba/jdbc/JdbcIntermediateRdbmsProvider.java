@@ -3,6 +3,7 @@ package org.jetbrains.jdba.jdbc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.exceptions.DBPreparingException;
+import org.jetbrains.jdba.intermediate.DBExceptionRecognizer;
 import org.jetbrains.jdba.intermediate.IntegralIntermediateRdbmsProvider;
 
 import java.sql.Driver;
@@ -117,6 +118,12 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
   @NotNull
   public abstract BaseExceptionRecognizer getExceptionRecognizer();
 
+  @NotNull
+  @Override
+  public Class<? extends DBExceptionRecognizer> getExceptionRecognizerClass() {
+    DBExceptionRecognizer er = getExceptionRecognizer();
+    return er.getClass();
+  }
 
   @Nullable
   @Override

@@ -18,4 +18,11 @@ public interface IntegralIntermediateRdbmsProvider extends PrimeIntermediateRdbm
                                         @Nullable Properties connectionProperties,
                                         int connectionsLimit);
 
+  /**
+   * Provides with the error recognizer that applicable to this RDBMS.
+   * @return an instance of error recognizer (usually a singleton instance).
+   */
+  @NotNull
+  DBExceptionRecognizer getExceptionRecognizer();
+
 }
