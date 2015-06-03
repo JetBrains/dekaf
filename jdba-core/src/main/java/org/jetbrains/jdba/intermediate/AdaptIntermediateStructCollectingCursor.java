@@ -41,6 +41,7 @@ public class AdaptIntermediateStructCollectingCursor<T> extends AdaptIntermediat
 
   private transient Collection myContainer;
 
+  private boolean myHasRows;
 
 
   private static final class FieldAndIndex {
@@ -65,12 +66,18 @@ public class AdaptIntermediateStructCollectingCursor<T> extends AdaptIntermediat
 
     assert resultLayout.row.kind == RowLayout.Kind.STRUCT;
 
-    final String[] columnNames = remoteCursor.getColumnNames();
-
     final Class<?> rowClass = resultLayout.row.rowClass;
     myResultLayout = resultLayout;
     myRowConstructor = defaultConstructorOf(rowClass);
     myRowConstructor.setAccessible(true);
+
+    myHasRows = remoteCursor.hasRows();
+    if (!hasRows()) {
+      myRowClassFields = new FieldAndIndex[0];
+      return;
+    }
+
+    final String[] columnNames = remoteCursor.getColumnNames();
 
     final NameAndClass[] components = myResultLayout.row.components;
     final int n = components.length;
@@ -114,8 +121,16 @@ public class AdaptIntermediateStructCollectingCursor<T> extends AdaptIntermediat
 
   @Override
   public synchronized T fetch() {
-    List<Object[]> data = myRemoteCursor.fetch();
-    int n = data.size();
+    List<Object[]> data;
+    int n;
+    if (hasRows()) {
+      data = myRemoteCursor.fetch();
+      n = data.size();
+    }
+    else {
+      data = Collections.emptyList();
+      n = 0;
+    }
 
     prepareContainer(n);
     for (int i = 0; i < n; i++) {
