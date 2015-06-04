@@ -106,7 +106,7 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
     }
 
     final JdbcValueGetter<?>[] getters;
-    if (n > 0 && rowLayout.kind != RowLayout.Kind.STRUCT) {
+    if (n > 0 && rowLayout.kind != RowLayout.Kind.TUPLE && rowLayout.kind != RowLayout.Kind.STRUCT) {
       getters = new JdbcValueGetter[n];
       ResultSetMetaData metaData = resultSet.getMetaData();
 
@@ -137,6 +137,9 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
         break;
       case ARRAY:
         fetcher = JdbcRowFetchers.createArrayFetcher(1, rowLayout.commonComponentClass, getters);
+        break;
+      case TUPLE:
+        fetcher = JdbcRowFetchers.createTupleFetcher(rowLayout.components);
         break;
       case STRUCT:
         fetcher = JdbcRowFetchers.createStructFetcher(rowLayout.rowClass, rowLayout.components);

@@ -39,6 +39,13 @@ public abstract class Layouts {
     return new RowLayout<Object[]>(RowLayout.Kind.ARRAY, Object[].class, Object.class, componentClasses);
   }
 
+  /*
+  @NotNull
+  public static RowLayout<Object[]> tupleOf(@NotNull final NameAndClass[] components) {
+    return new RowLayout<Object[]>(RowLayout.Kind.TUPLE, Object[].class, Object.class, components);
+  }
+  */
+
   @NotNull
   public static <C> RowLayout<C> structOf(@NotNull final Class<C> structClass) {
     final NameAndClass[] assignableFields = Classes.assignableFieldsOf(structClass);

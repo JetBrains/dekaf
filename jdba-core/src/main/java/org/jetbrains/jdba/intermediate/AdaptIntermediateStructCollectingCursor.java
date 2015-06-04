@@ -37,23 +37,11 @@ public class AdaptIntermediateStructCollectingCursor<T> extends AdaptIntermediat
   private final Constructor myRowConstructor;
 
   @NotNull
-  private FieldAndIndex[] myRowClassFields;
+  private final Field[] myRowClassFields;
 
   private transient Collection myContainer;
 
   private boolean myHasRows;
-
-
-  private static final class FieldAndIndex {
-    final Field field;
-    final int index;
-
-    private FieldAndIndex(final Field field, final int index) {
-      this.field = field;
-      this.index = index;
-    }
-  }
-
 
 
   public AdaptIntermediateStructCollectingCursor(@NotNull final PrimeIntermediateCursor<List<Object[]>> remoteCursor,
@@ -71,51 +59,37 @@ public class AdaptIntermediateStructCollectingCursor<T> extends AdaptIntermediat
     myRowConstructor = defaultConstructorOf(rowClass);
     myRowConstructor.setAccessible(true);
 
+    final NameAndClass[] components = myResultLayout.row.components;
+    final int n = components.length;
+    myRowClassFields = new Field[n];
+
     myHasRows = remoteCursor.hasRows();
     if (!hasRows()) {
-      myRowClassFields = new FieldAndIndex[0];
       return;
     }
 
-    final String[] columnNames = remoteCursor.getColumnNames();
+    boolean somethingMatched = false;
 
-    final NameAndClass[] components = myResultLayout.row.components;
-    final int n = components.length;
-
-    ArrayList<FieldAndIndex> fields = new ArrayList<FieldAndIndex>(n);
     for (int i = 0; i < n; i++) {
       final String name = components[i].name;
-      final int columnIndex = indexOfStringInArray(name, columnNames);
-      if (columnIndex < 0) continue;
 
       final Field field;
       try {
         field = rowClass.getDeclaredField(name);
         field.setAccessible(true);
+        myRowClassFields[i] = field;
+        somethingMatched = true;
       }
       catch (NoSuchFieldException e) {
-        continue;
+        // it's strange
       }
-
-      fields.add(new FieldAndIndex(field, columnIndex));
     }
 
-    if (fields.isEmpty()) {
-      String msg = format("The query result and the class %s have no common fields. Fields of the query result: [%s], fields of the class: [%s].",
-                          rowClass.getName(), arrayToString(columnNames, ", "), arrayToString(components, ", "));
+    if (!somethingMatched) {
+      String msg = format("The query result and the class %s have no common fields. Fields of the class: [%s].",
+                          rowClass.getName(), arrayToString(components, ", "));
       throw new IllegalStateException(msg);
     }
-
-    myRowClassFields = fields.toArray(new FieldAndIndex[fields.size()]);
-  }
-
-
-  private static int indexOfStringInArray(@NotNull final String stringToSearch, @NotNull final String[] strings) {
-    for (int i = 0, n = strings.length; i < n; i++) {
-      String string = strings[i];
-      if (stringToSearch.equalsIgnoreCase(string)) return i;
-    }
-    return Integer.MIN_VALUE;
   }
 
 
@@ -178,18 +152,18 @@ public class AdaptIntermediateStructCollectingCursor<T> extends AdaptIntermediat
                                     e, null);
     }
 
-    for (FieldAndIndex f : myRowClassFields) {
-      final Object value = f.index < componentValues.length
-                         ? componentValues[f.index]
-                         : null;
+    for (int i = 0, n = myRowClassFields.length; i < n; i++) {
+      final Field f = myRowClassFields[i];
+      final Object value = componentValues[i];
 
       if (value == null) continue;
+
       try {
-        f.field.set(row, value);
+        f.set(row, value);
       }
         catch (IllegalAccessException e) {
           throw new DBFetchingException(format("Failed to assign field %s of class %s with a value of class %s: error %s: %s. The value: \"%s\"",
-                                               f.field.getName(), row.getClass().getName(), value.getClass().getSimpleName(),
+                                               f.getName(), row.getClass().getName(), value.getClass().getSimpleName(),
                                                e.getClass().getSimpleName(), e.getMessage(),
                                                value.toString()),
                                         e, null);
@@ -226,8 +200,6 @@ public class AdaptIntermediateStructCollectingCursor<T> extends AdaptIntermediat
 
     return result;
   }
-
-
 
 
 }

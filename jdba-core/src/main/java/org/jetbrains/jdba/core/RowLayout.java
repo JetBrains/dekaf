@@ -34,6 +34,11 @@ public final class RowLayout<R> implements Serializable {
     ARRAY,
 
     /**
+     * Array of values, but each component is named.
+     */
+    TUPLE,
+
+    /**
      * Structure (java class) with names fields.
      * Names of the class fields should match names of query result set columns.
      */
@@ -76,6 +81,7 @@ public final class RowLayout<R> implements Serializable {
       case EXISTENCE:
       case ONE_VALUE:
       case ARRAY:
+      case TUPLE:
         portable = true;
         break;
       case STRUCT:
@@ -111,7 +117,7 @@ public final class RowLayout<R> implements Serializable {
 
 
   public RowLayout<Object[]> makeIntermediateLayout() {
-    return new RowLayout<Object[]>(Kind.ARRAY, Object[].class, commonComponentClass, components);
+    return new RowLayout<Object[]>(Kind.TUPLE, Object[].class, commonComponentClass, components);
   }
 
 
@@ -151,12 +157,30 @@ public final class RowLayout<R> implements Serializable {
         return commonComponentClass.getSimpleName();
       case ARRAY:
         return commonComponentClass.getSimpleName() + "[]";
+      case TUPLE:
+        return "TUPLE" + representComponents();
       case STRUCT:
-        return rowClass + "(fields names)";
+        return rowClass + representComponents();
       case CLASS_BY_POSITIONS:
         return rowClass + "(positions)";
       default:
         return "???";
     }
   }
+
+  @NotNull
+  private String representComponents() {
+    final int n = components.length;
+    if (n == 0) return "(no components)";
+
+    StringBuilder b = new StringBuilder();
+    for (int i = 0; i < n; i++) {
+      b.append(i == 0 ? " (" : ", ");
+      NameAndClass component = components[i];
+      b.append(component.name).append(':').append(component.clazz.getSimpleName());
+    }
+    b.append(')');
+    return b.toString();
+  }
+
 }
