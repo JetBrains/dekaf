@@ -2,7 +2,6 @@ package org.jetbrains.jdba;
 
 import org.jetbrains.jdba.core.*;
 import org.jetbrains.jdba.intermediate.AdaptIntermediateRdbmsProviderTest;
-import org.jetbrains.jdba.intermediate.AdaptIntermediateStructCollectingCursorTest;
 import org.jetbrains.jdba.sql.ScriptumBasicTest;
 import org.jetbrains.jdba.sql.ScriptumResourceFromJavaTest;
 import org.jetbrains.jdba.sql.SqlScriptBuilderTest;
@@ -27,7 +26,6 @@ import org.junit.runners.Suite;
                             SqlScriptTest.class,
                             // Intermediate Layer
                             AdaptIntermediateRdbmsProviderTest.class,
-                            AdaptIntermediateStructCollectingCursorTest.class,
                             // Base client functionality
                             BaseSessionTest.class,
                             BaseQueryRunnerDirectTest.class,

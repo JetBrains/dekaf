@@ -120,6 +120,12 @@ public class AdaptIntermediateStructCollectingCursor<T> extends AdaptIntermediat
 
 
   @Override
+  public boolean hasRows() {
+    return myHasRows && super.hasRows();
+  }
+
+
+  @Override
   public synchronized T fetch() {
     List<Object[]> data;
     int n;

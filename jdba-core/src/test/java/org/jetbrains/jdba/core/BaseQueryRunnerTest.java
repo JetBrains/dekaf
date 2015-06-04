@@ -1,6 +1,7 @@
 package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.sql.SqlQuery;
 import org.junit.Test;
 
@@ -19,7 +20,7 @@ public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeTest {
 
 
 
-  private static final class BasicStruct {
+  private static final class IntAndString {
     int the_int_value;
     String the_string_value;
 
@@ -28,7 +29,7 @@ public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeTest {
       if (this == o) return true;
       if (o == null || getClass() != o.getClass()) return false;
 
-      BasicStruct that = (BasicStruct) o;
+      IntAndString that = (IntAndString) o;
 
       return this.the_int_value == that.the_int_value &&
                      (this.the_string_value == null
@@ -43,42 +44,6 @@ public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeTest {
   }
 
 
-  private static final class IntStruct {
-    int A, B, C;
-
-    IntStruct() {
-    }
-
-    IntStruct(final int a, final int b, final int c) {
-      A = a;
-      B = b;
-      C = c;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
-
-      IntStruct that = (IntStruct) o;
-
-      return this.A == that.A && this.B == that.B && this.C == that.C;
-    }
-
-    @Override
-    public int hashCode() {
-      return A ^ B ^ C;
-    }
-
-    @Override
-    public String toString() {
-      return A + "," + B + "," + C;
-    }
-  }
-
-
-
-
   @Test
   public void return_one_basic_struct() {
     final String queryText =
@@ -86,14 +51,14 @@ public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeTest {
             "       'million' as the_string_value  \n" +
             "from information_schema.schemata      \n" +
             "limit 1                               \n";
-    final SqlQuery<BasicStruct> query =
-            new SqlQuery<BasicStruct>(queryText, rowOf(structOf(BasicStruct.class)));
+    final SqlQuery<IntAndString> query =
+            new SqlQuery<IntAndString>(queryText, rowOf(structOf(IntAndString.class)));
 
     myFacade.inTransaction(new InTransactionNoResult() {
       @Override
       public void run(@NotNull final DBTransaction tran) {
 
-        BasicStruct bs = tran.query(query).run();
+        IntAndString bs = tran.query(query).run();
 
         assertThat(bs).isNotNull();
         assertThat(bs.the_int_value).isEqualTo(44);
@@ -116,15 +81,15 @@ public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeTest {
 
   @Test
   public void return_array_of_basic_struct() {
-    final SqlQuery<BasicStruct[]> query =
-            new SqlQuery<BasicStruct[]>(QUERY_RETURNS_TWO_BASIC_STRUCT_ROWS,
-                                        arrayOf(structOf(BasicStruct.class)));
+    final SqlQuery<IntAndString[]> query =
+            new SqlQuery<IntAndString[]>(QUERY_RETURNS_TWO_BASIC_STRUCT_ROWS,
+                                        arrayOf(structOf(IntAndString.class)));
 
     myFacade.inTransaction(new InTransactionNoResult() {
       @Override
       public void run(@NotNull final DBTransaction tran) {
 
-        BasicStruct[] bs = tran.query(query).run();
+        IntAndString[] bs = tran.query(query).run();
 
         assertThat(bs).isNotNull()
                       .hasSize(2);
@@ -139,15 +104,15 @@ public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeTest {
 
   @Test
   public void return_list_of_basic_struct() {
-    final SqlQuery<List<BasicStruct>> query =
-            new SqlQuery<List<BasicStruct>>(QUERY_RETURNS_TWO_BASIC_STRUCT_ROWS,
-                                            listOf(structOf(BasicStruct.class)));
+    final SqlQuery<List<IntAndString>> query =
+            new SqlQuery<List<IntAndString>>(QUERY_RETURNS_TWO_BASIC_STRUCT_ROWS,
+                                            listOf(structOf(IntAndString.class)));
 
     myFacade.inTransaction(new InTransactionNoResult() {
       @Override
       public void run(@NotNull final DBTransaction tran) {
 
-        List<BasicStruct> bs = tran.query(query).run();
+        List<IntAndString> bs = tran.query(query).run();
 
         assertThat(bs).isNotNull()
                       .hasSize(2);
@@ -161,25 +126,120 @@ public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeTest {
   }
 
 
+
+
   @Test
-  public void match_names() {
-    String queryText = "select 33 as C, 11 as A, 22 as B " +
-                       "from information_schema.schemata limit 1";
+  public void empty_cursor() {
+    final SqlQuery<List<Tetra>> query =
+        new SqlQuery<List<Tetra>>(
+            "select 11,22,33,44 from information_schema.schemata where 1 is null",
+            listOf(structOf(Tetra.class)));
 
-    final SqlQuery<IntStruct> query =
-            new SqlQuery<IntStruct>(queryText, rowOf(structOf(IntStruct.class)));
+    myFacade.inSession(new InSessionNoResult() {
+      @Override
+      public void run(@NotNull final DBSession session) {
+        List<Tetra> result = session.query(query).run();
+        assertThat(result).isEmpty();
+      }
+    });
+  }
 
-    IntStruct s =
-            myFacade.inTransaction(new InTransaction<IntStruct>() {
-              @Override
-              public IntStruct run(@NotNull final DBTransaction tran) {
+  @Test
+  public void struct_basic() {
+    Tetra struct =
+        queryForStruct("select 11 as A, 22 as B, 33 as C, 44 as D from information_schema.schemata",
+                       Tetra.class);
+    assertThat(struct).isEqualTo(new Tetra(11,22,33,44));
+  }
 
-                return tran.query(query).run();
+  @Test
+  public void struct_fields_disordered() {
+    Tetra struct =
+        queryForStruct("select 33 as C, 11 as A, 44 as D, 22 as B from information_schema.schemata",
+                       Tetra.class);
+    assertThat(struct).isEqualTo(new Tetra(11,22,33,44));
+  }
 
-              }
-            });
+  @Test
+  public void struct_has_more_fields_than_query() {
+    Tetra struct =
+        queryForStruct("select 22 as B, 44 as D from information_schema.schemata", Tetra.class);
+    assertThat(struct).isEqualTo(new Tetra(0,22,0,44));
+  }
 
-    assertThat(s).isEqualTo(new IntStruct(11,22,33));
+  @Test
+  public void struct_has_less_fields_than_query() {
+    Tetra struct =
+        queryForStruct(
+            "select 11 as A, 22 as B, 99 as X, 33 as C, 88 as Y, 44 as D from information_schema.schemata",
+            Tetra.class);
+    assertThat(struct).isEqualTo(new Tetra(11,22,33,44));
+  }
+
+
+  @Test
+  public void char_single_1() {
+    myFacade.inTransaction(new InTransactionNoResult() {
+      @Override
+      public void run(@NotNull final DBTransaction tran) {
+
+        char c =
+            tran.query("select 'M' from information_schema.schemata", singleOf(Character.class)).run();
+
+        assertThat(c).isEqualTo('M');
+
+      }
+    });
+  }
+
+  @Test
+  public void char_single_2() {
+    myFacade.inTransaction(new InTransactionNoResult() {
+      @Override
+      public void run(@NotNull final DBTransaction tran) {
+
+        Character c =
+            tran.query("select 'MN' from information_schema.schemata", singleOf(Character.class)).run();
+
+        assertThat(c).isEqualTo('M');
+
+      }
+    });
+  }
+
+  static class CharStruct {
+    char c;
+    Character h;
+  }
+
+  @Test
+  public void char_in_struct() {
+    CharStruct s = queryForStruct("select 'X' as c, 'Y' as h from information_schema.schemata", CharStruct.class);
+    assert s != null;
+    assertThat(s.c).isEqualTo('X');
+    assertThat(s.h).isEqualTo('Y');
+  }
+
+  @Test
+  public void char_in_struct_nulls() {
+    CharStruct s = queryForStruct("select null as c, null as h from information_schema.schemata", CharStruct.class);
+    assert s != null;
+    assertThat(s.c).isEqualTo('\0');
+    assertThat(s.h).isNull();
+  }
+
+
+  @Nullable
+  private <S> S queryForStruct(final String queryText, final Class<S> structClass) {
+    final SqlQuery<S> query = new SqlQuery<S>(queryText, rowOf(structOf(structClass)));
+    return myFacade.inTransaction(new InTransaction<S>() {
+      @Override
+      public S run(@NotNull final DBTransaction tran) {
+
+        return tran.query(query).run();
+
+      }
+    });
   }
 
 }
