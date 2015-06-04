@@ -15,7 +15,7 @@ import static org.jetbrains.jdba.core.Layouts.*;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeTest {
+public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeCase {
 
 
 

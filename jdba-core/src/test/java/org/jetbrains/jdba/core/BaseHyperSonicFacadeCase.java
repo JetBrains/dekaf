@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public class BaseHyperSonicFacadeTest extends BaseHyperSonicCase {
+public class BaseHyperSonicFacadeCase extends BaseHyperSonicCase {
 
 
   protected static UnknownDatabaseProvider ourUnknownDatabaseProvider =

@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Leonid Bushuev from JetBrains
  **/
-public class BaseFacadeTest extends BaseHyperSonicFacadeTest {
+public class BaseFacadeTest extends BaseHyperSonicFacadeCase {
 
   @Test
   public void get_intermediate_service() {

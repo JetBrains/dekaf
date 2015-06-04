@@ -9,7 +9,7 @@ import org.junit.Test;
 
 
 
-public class BaseScriptRunnerTest extends BaseHyperSonicFacadeTest {
+public class BaseScriptRunnerTest extends BaseHyperSonicFacadeCase {
 
   @Test
   public void basic_2() {
