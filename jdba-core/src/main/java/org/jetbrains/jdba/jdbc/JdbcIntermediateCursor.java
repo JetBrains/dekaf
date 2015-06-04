@@ -109,9 +109,9 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
       ResultSetMetaData metaData = resultSet.getMetaData();
 
       if (n > metaData.getColumnCount()) {
-        throw new DBPreparingException(format("Query returns too few columns: %d when expected %d.",
-                                              metaData.getColumnCount(),
-                                              n));
+        throw new DBPreparingException(format("Query returns too few columns: %d when expected %d (row type is %s).",
+                                              metaData.getColumnCount(), n, resultLayout.row.rowClass),
+                                       statementText);
       }
 
       for (int i = 0; i < n; i++) {
@@ -135,7 +135,8 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
         fetcher = JdbcRowFetchers.createStructFetcher(rowLayout.rowClass, rowLayout.components);
         break;
       default:
-        throw new DBPreparingException(format("Unknown how to handle the row layout %s", rowLayout.kind.toString()));
+        throw new DBPreparingException(format("Unknown how to handle the row layout %s", rowLayout.kind.toString()),
+                                       statementText);
     }
 
     final JdbcRowsCollector<?> collector;
@@ -158,7 +159,8 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
           collector = JdbcRowsCollectors.createArrayOfLongsCollector(resultLayout.initialCapacity);
         }
         else {
-          throw new DBPreparingException("Primitive array of "+componentClass.getName()+" is not supported");
+          throw new DBPreparingException("Primitive array of "+componentClass.getName()+" is not supported",
+                                         statementText);
         }
         break;
       case LIST:
@@ -174,7 +176,8 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
         }
         break;
       default:
-        throw new DBPreparingException(format("Unknown how to handle the result layout %s", resultLayout.kind.toString()));
+        throw new DBPreparingException(format("Unknown how to handle the result layout %s", resultLayout.kind.toString()),
+                                       statementText);
     }
 
     //noinspection unchecked

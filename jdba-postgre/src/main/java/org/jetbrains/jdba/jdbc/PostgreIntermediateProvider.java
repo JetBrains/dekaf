@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Postgre;
 import org.jetbrains.jdba.Rdbms;
+import org.jetbrains.jdba.exceptions.DBInitializationException;
 import org.jetbrains.jdba.exceptions.DBPreparingException;
 
 import java.sql.Driver;
@@ -52,7 +53,7 @@ public class PostgreIntermediateProvider extends JdbcIntermediateRdbmsProvider {
       // TODO try to load from jars
     }
     if (driverClass == null) {
-      throw new DBPreparingException("Driver class not found");
+      throw new DBInitializationException("PostgreSQL Driver class not found");
     }
 
     final Driver driver;

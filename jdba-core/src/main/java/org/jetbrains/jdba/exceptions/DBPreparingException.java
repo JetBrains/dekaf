@@ -31,7 +31,8 @@ public class DBPreparingException extends DBException {
   }
 
 
-  public DBPreparingException(@NotNull final String message) {
-    super(message, null);
+  public DBPreparingException(@NotNull final String message, @Nullable String statementText) {
+    super(message, statementText);
   }
+
 }

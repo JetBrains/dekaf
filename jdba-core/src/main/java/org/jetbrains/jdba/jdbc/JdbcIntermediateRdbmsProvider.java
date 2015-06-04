@@ -2,7 +2,7 @@ package org.jetbrains.jdba.jdbc;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jdba.exceptions.DBPreparingException;
+import org.jetbrains.jdba.exceptions.DBInitializationException;
 import org.jetbrains.jdba.intermediate.DBExceptionRecognizer;
 import org.jetbrains.jdba.intermediate.IntegralIntermediateRdbmsProvider;
 
@@ -98,7 +98,7 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
       DriverManager.registerDriver(driver);
     }
     catch (SQLException sqle) {
-      throw new DBPreparingException("Failed to register JDBC Driver: " + sqle.getMessage());
+      throw new DBInitializationException("Failed to register JDBC Driver", sqle);
     }
   }
 

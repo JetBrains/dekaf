@@ -17,7 +17,8 @@ public abstract class DBException extends RuntimeException {
   public final String statementText;
 
 
-  protected DBException(@NotNull final SQLException sqlException, @Nullable String statementText) {
+  protected DBException(@NotNull final SQLException sqlException,
+                        @Nullable final String statementText) {
     this(sqlException.getMessage(), sqlException, sqlException.getErrorCode(), statementText);
   }
 
@@ -36,20 +37,23 @@ public abstract class DBException extends RuntimeException {
   }
 
 
-  protected DBException(@NotNull final String message, @Nullable String statementText) {
+  protected DBException(@NotNull final String message,
+                        @Nullable final String statementText) {
     this(message, null, 0, statementText);
   }
 
 
-  public DBException(String message, Throwable cause, @Nullable String statementText) {
+  public DBException(@NotNull final String message,
+                     @Nullable final Throwable cause,
+                     @Nullable final String statementText) {
     this(message, cause, 0, statementText);
   }
 
 
-  private DBException(@NotNull String message,
-                      @Nullable Throwable cause,
-                      int vendorErrorCode,
-                      @Nullable String statementText) {
+  private DBException(@NotNull final String message,
+                      @Nullable final Throwable cause,
+                      final int vendorErrorCode,
+                      @Nullable final String statementText) {
     super(makeErrorText(message, cause), stripException(cause));
     this.vendorErrorCode = vendorErrorCode;
     this.statementText = statementText;
@@ -57,7 +61,8 @@ public abstract class DBException extends RuntimeException {
 
 
   @NotNull
-  private static String makeErrorText(@NotNull String message, @Nullable Throwable cause) {
+  private static String makeErrorText(@NotNull final String message,
+                                      @Nullable final Throwable cause) {
     String causeMessage = cause != null
         ? cause.getMessage()
         : null;

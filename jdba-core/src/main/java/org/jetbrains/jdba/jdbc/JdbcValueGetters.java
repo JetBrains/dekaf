@@ -128,7 +128,7 @@ public final class JdbcValueGetters {
   @SuppressWarnings("unchecked")
   static <W> JdbcValueGetter<W> of(final int jdbcType, @NotNull final Class<W> clazz) {
     JdbcValueGetter<W> getter = find(jdbcType, clazz);
-    if (getter == null) throw new DBPreparingException("Unknown how to get a value of class "+clazz.getSimpleName());
+    if (getter == null) throw new DBPreparingException("Unknown how to get a value of class "+clazz.getSimpleName(), (String)null);
     return getter;
   }
 

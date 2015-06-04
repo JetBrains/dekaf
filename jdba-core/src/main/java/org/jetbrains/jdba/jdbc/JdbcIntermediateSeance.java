@@ -177,8 +177,9 @@ public abstract class JdbcIntermediateSeance implements IntegralIntermediateSean
     }
 
     if (myDefaultCursor == null) {
-      JdbcIntermediateCursor<R> cursor = new JdbcIntermediateCursor<R>(this, myDefaultResultSet, layout,
-                                                         true, myDefaultResultSetHasRows ? Boolean.TRUE : Boolean.FALSE);
+      JdbcIntermediateCursor<R> cursor =
+          new JdbcIntermediateCursor<R>(this, myDefaultResultSet, layout,
+                                              true, myDefaultResultSetHasRows ? Boolean.TRUE : Boolean.FALSE);
       myDefaultCursor = cursor;
       return cursor;
     }
