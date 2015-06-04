@@ -229,12 +229,27 @@ public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeCase {
   }
 
 
+  @Test
+  public void array_row_basic() {
+    SqlQuery<Integer[]> query =
+        new SqlQuery<Integer[]>("select 11, 22, 33 from information_schema.schemata",
+                                rowOf(arrayOf(3, Integer.class)));
+    Integer[] array = query(query);
+    assertThat(array).isEqualTo(new Integer[] {11, 22, 33});
+  }
+
+
   @Nullable
   private <S> S queryForStruct(final String queryText, final Class<S> structClass) {
     final SqlQuery<S> query = new SqlQuery<S>(queryText, rowOf(structOf(structClass)));
-    return myFacade.inTransaction(new InTransaction<S>() {
+    return query(query);
+  }
+
+
+  private <X> X query(final SqlQuery<X> query) {
+    return myFacade.inTransaction(new InTransaction<X>() {
       @Override
-      public S run(@NotNull final DBTransaction tran) {
+      public X run(@NotNull final DBTransaction tran) {
 
         return tran.query(query).run();
 

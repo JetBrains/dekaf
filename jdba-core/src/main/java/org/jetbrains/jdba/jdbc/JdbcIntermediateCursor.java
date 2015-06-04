@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+import static java.lang.Math.min;
 import static java.lang.String.format;
 
 
@@ -104,20 +105,25 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
         n = rowLayout.components.length;
     }
 
-    final JdbcValueGetter<?>[] getters = new JdbcValueGetter[n];
-    if (n > 0) {
+    final JdbcValueGetter<?>[] getters;
+    if (n > 0 && rowLayout.kind != RowLayout.Kind.STRUCT) {
+      getters = new JdbcValueGetter[n];
       ResultSetMetaData metaData = resultSet.getMetaData();
 
-      if (n > metaData.getColumnCount()) {
+      int m = metaData.getColumnCount();
+      if (n > m && rowLayout.kind == RowLayout.Kind.ARRAY) {
         throw new DBPreparingException(format("Query returns too few columns: %d when expected %d (row type is %s).",
-                                              metaData.getColumnCount(), n, resultLayout.row.rowClass),
+                                              m, n, resultLayout.row.rowClass),
                                        statementText);
       }
 
-      for (int i = 0; i < n; i++) {
+      for (int i = 0; i < min(m,n); i++) {
         int jdbcType = metaData.getColumnType(i + 1);
         getters[i] = JdbcValueGetters.of(jdbcType, rowLayout.components[i].clazz);
       }
+    }
+    else {
+      getters = null;
     }
 
     final JdbcRowFetcher<?> fetcher;
@@ -126,6 +132,7 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
         fetcher = NOTHING_FETCHER;
         break;
       case ONE_VALUE:
+        assert getters != null && getters.length > 0;
         fetcher = JdbcRowFetchers.createOneValueFetcher(1, getters[0]);
         break;
       case ARRAY:
