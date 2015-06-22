@@ -79,7 +79,7 @@ public abstract class TestEnvironment {
     File dir = getCurrentDirectory();
     while (dir != null && dir.isDirectory()) {
       File file = new File(dir, CONNECTION_STRINGS_FILE);
-      if (file.exists()) {
+      if (file.exists() && !file.isDirectory()) {
         readLocalPropertiesFromFile(p, file);
         break;
       }
