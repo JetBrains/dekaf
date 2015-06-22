@@ -32,7 +32,12 @@ public abstract class TestEnvironment {
   public static String obtainConnectionString() {
     String connectionString = getPossibleConnectionString(getVar(CONNECTION_STRING_VAR, null));
     if (connectionString == null) {
-      System.err.print("Failed to obtain Test DB connection string\n");
+      System.err.println(
+          "Failed to obtain Test DB connection string.\n" +
+              "The connection string is searched in the following locations:\n" +
+              "1) '" + CONNECTION_STRING_VAR + "' property in ./" + CONNECTION_STRINGS_FILE + ";\n" +
+              "2) '" + CONNECTION_STRING_VAR + "' environment variable;\n" +
+              "3) '" + CONNECTION_STRING_VAR + "' system property.");
       System.exit(-128);
     }
     return connectionString;
@@ -108,7 +113,7 @@ public abstract class TestEnvironment {
       }
     }
     catch (IOException io) {
-      System.err.println("Failed to read file " + CONNECTION_STRINGS_FILE + ": " + io.getMessage());
+      System.err.println("Failed to read file " + localPropertiesFile.getPath() + ": " + io.getMessage());
     }
   }
 
