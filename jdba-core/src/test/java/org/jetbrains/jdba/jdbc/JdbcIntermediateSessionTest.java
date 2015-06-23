@@ -6,7 +6,7 @@ import java.sql.Connection;
 
 
 
-public class JdbcIntermediateSessionTest extends BaseIntermediateHyperSonicCase {
+public class JdbcIntermediateSessionTest extends BaseIntermediateInMemoryDBCase {
 
 
   @Test

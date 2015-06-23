@@ -1,7 +1,7 @@
 package org.jetbrains.jdba.intermediate;
 
 import org.jetbrains.jdba.core.Layouts;
-import org.jetbrains.jdba.jdbc.BaseHyperSonicCase;
+import org.jetbrains.jdba.jdbc.BaseInMemoryDBCase;
 import org.jetbrains.jdba.jdbc.UnknownDatabaseProvider;
 import org.junit.Test;
 
@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public class AdaptIntermediateRdbmsProviderTest extends BaseHyperSonicCase {
+public class AdaptIntermediateRdbmsProviderTest extends BaseInMemoryDBCase {
 
   protected static UnknownDatabaseProvider ourUnknownDatabaseProvider =
           new UnknownDatabaseProvider();
@@ -29,12 +29,12 @@ public class AdaptIntermediateRdbmsProviderTest extends BaseHyperSonicCase {
 
     // try a basic scenario
     IntegralIntermediateFacade facade =
-            provider.openFacade(BaseHyperSonicCase.HSQL_CONNECTION_STRING, null, 1);
+            provider.openFacade(BaseInMemoryDBCase.H2_CONNECTION_STRING, null, 1);
     facade.connect();
     IntegralIntermediateSession session =
             facade.openSession();
     IntegralIntermediateSeance seance =
-            session.openSeance("select 44 from information_schema.schemata limit 1", null);
+            session.openSeance("select 44", null);
     seance.execute();
     IntegralIntermediateCursor<Integer> cursor =
             seance.openCursor(0, Layouts.singleOf(Integer.class));

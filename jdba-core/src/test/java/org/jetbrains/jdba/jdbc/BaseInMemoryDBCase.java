@@ -14,11 +14,12 @@ import java.util.Properties;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public class BaseHyperSonicCase {
+public class BaseInMemoryDBCase {
 
-  protected static final String HSQL_CONNECTION_STRING = "jdbc:hsqldb:mem:mymemdb?user=SA";
+  protected static final String H2_CONNECTION_STRING = "jdbc:h2:mem:test";
+  protected static final String H2_JDBC_DRIVER_CLASS_NAME = "org.h2.Driver";
 
-  protected static Driver ourHSDriver;
+  protected static Driver ourH2Driver;
 
 
   @BeforeClass
@@ -27,9 +28,9 @@ public class BaseHyperSonicCase {
 
     try {
       //noinspection unchecked
-      Class<Driver> driverClass = (Class<Driver>) Class.forName("org.hsqldb.jdbc.JDBCDriver");
-      ourHSDriver = driverClass.newInstance();
-      DriverManager.registerDriver(ourHSDriver);
+      Class<Driver> driverClass = (Class<Driver>) Class.forName(H2_JDBC_DRIVER_CLASS_NAME);
+      ourH2Driver = driverClass.newInstance();
+      DriverManager.registerDriver(ourH2Driver);
     }
     catch (Exception e) {
       throw new RuntimeException(e);
@@ -38,16 +39,16 @@ public class BaseHyperSonicCase {
 
   @AfterClass
   public static void deregisterDriver() throws SQLException {
-    assert ourHSDriver != null;
-    DriverManager.deregisterDriver(ourHSDriver);
+    assert ourH2Driver != null;
+    DriverManager.deregisterDriver(ourH2Driver);
   }
 
 
   protected static Connection obtainConnection() {
-    assert ourHSDriver != null;
+    assert ourH2Driver != null;
     final Connection connection;
     try {
-      connection = ourHSDriver.connect(HSQL_CONNECTION_STRING, new Properties());
+      connection = ourH2Driver.connect(H2_CONNECTION_STRING, new Properties());
       connection.setAutoCommit(true);
     }
     catch (SQLException e) {

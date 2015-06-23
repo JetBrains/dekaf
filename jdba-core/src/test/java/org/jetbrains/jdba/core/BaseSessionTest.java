@@ -18,7 +18,7 @@ import static org.jetbrains.jdba.core.Layouts.singleOf;
  * @author Leonid Bushuev from JetBrains
  */
 @FixMethodOrder(MethodSorters.JVM)
-public class BaseSessionTest extends BaseHyperSonicFacadeCase {
+public class BaseSessionTest extends BaseInMemoryDBFacadeCase {
 
 
   @Test

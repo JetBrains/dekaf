@@ -9,7 +9,7 @@ import java.sql.Connection;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public abstract class BaseIntermediateHyperSonicCase extends BaseHyperSonicCase {
+public abstract class BaseIntermediateInMemoryDBCase extends BaseInMemoryDBCase {
 
   protected static DBExceptionRecognizer ourExceptionRecognizer = new BaseExceptionRecognizer();
 

@@ -12,9 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public class UnknownDatabaseProviderTest extends BaseHyperSonicCase {
-
-  public static final String HSQL_MEM_CONNECTION_STRING = "jdbc:hsqldb:mem:mymemdb?user=SA";
+public class UnknownDatabaseProviderTest extends BaseInMemoryDBCase {
 
   private UnknownDatabaseProvider myProvider;
 
@@ -26,15 +24,15 @@ public class UnknownDatabaseProviderTest extends BaseHyperSonicCase {
 
 
   @Test
-  public void accepts_connectionString_HSQL() {
-    PatternAssert.assertThat(myProvider.connectionStringPattern()).fits(HSQL_MEM_CONNECTION_STRING);
+  public void accepts_connectionString_H2() {
+    PatternAssert.assertThat(myProvider.connectionStringPattern()).fits(H2_CONNECTION_STRING);
   }
 
 
   @Test
   public void openFacade_for_HSQL() {
     final PrimeIntermediateFacade facade =
-            myProvider.openFacade(HSQL_MEM_CONNECTION_STRING, null, 1);
+            myProvider.openFacade(H2_CONNECTION_STRING, null, 1);
             // we expect no exceptions here
 
     facade.connect();

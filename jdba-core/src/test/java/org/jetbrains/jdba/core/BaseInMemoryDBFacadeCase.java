@@ -1,7 +1,7 @@
 package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jdba.jdbc.BaseHyperSonicCase;
+import org.jetbrains.jdba.jdbc.BaseInMemoryDBCase;
 import org.jetbrains.jdba.jdbc.JdbcIntermediateFacade;
 import org.jetbrains.jdba.jdbc.UnknownDatabaseProvider;
 import org.junit.After;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public class BaseHyperSonicFacadeCase extends BaseHyperSonicCase {
+public class BaseInMemoryDBFacadeCase extends BaseInMemoryDBCase {
 
 
   protected static UnknownDatabaseProvider ourUnknownDatabaseProvider =
@@ -32,7 +32,7 @@ public class BaseHyperSonicFacadeCase extends BaseHyperSonicCase {
 
   @Before
   public void connect() {
-    myJdbcFacade = ourUnknownDatabaseProvider.openFacade(HSQL_CONNECTION_STRING, null, 1);
+    myJdbcFacade = ourUnknownDatabaseProvider.openFacade(H2_CONNECTION_STRING, null, 1);
     myFacade = prepareBaseFacade(myJdbcFacade);
     myFacade.connect();
   }

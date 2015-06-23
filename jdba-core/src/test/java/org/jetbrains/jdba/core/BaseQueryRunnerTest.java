@@ -15,7 +15,7 @@ import static org.jetbrains.jdba.core.Layouts.*;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeCase {
+public abstract class BaseQueryRunnerTest extends BaseInMemoryDBFacadeCase {
 
 
 
@@ -48,9 +48,7 @@ public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeCase {
   public void return_one_basic_struct() {
     final String queryText =
             "select 44 as the_int_value,           \n" +
-            "       'million' as the_string_value  \n" +
-            "from information_schema.schemata      \n" +
-            "limit 1                               \n";
+            "       'million' as the_string_value  \n";
     final SqlQuery<IntAndString> query =
             new SqlQuery<IntAndString>(queryText, rowOf(structOf(IntAndString.class)));
 
@@ -71,11 +69,9 @@ public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeCase {
   static final String QUERY_RETURNS_TWO_BASIC_STRUCT_ROWS =
           "select distinct 11 as the_int_value,      \n" +
           "                'one' as the_string_value \n" +
-          "from information_schema.schemata          \n" +
           "union                                     \n" +
           "select distinct 22 as the_int_value,      \n" +
           "                'two' as the_string_value \n" +
-          "from information_schema.schemata          \n" +
           "order by 1                                \n";
 
 
@@ -147,7 +143,7 @@ public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeCase {
   @Test
   public void struct_basic() {
     Tetra struct =
-        queryForStruct("select 11 as A, 22 as B, 33 as C, 44 as D from information_schema.schemata",
+        queryForStruct("select 11 as A, 22 as B, 33 as C, 44 as D",
                        Tetra.class);
     assertThat(struct).isEqualTo(new Tetra(11,22,33,44));
   }
@@ -155,7 +151,7 @@ public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeCase {
   @Test
   public void struct_fields_disordered() {
     Tetra struct =
-        queryForStruct("select 33 as C, 11 as A, 44 as D, 22 as B from information_schema.schemata",
+        queryForStruct("select 33 as C, 11 as A, 44 as D, 22 as B",
                        Tetra.class);
     assertThat(struct).isEqualTo(new Tetra(11,22,33,44));
   }
@@ -163,7 +159,7 @@ public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeCase {
   @Test
   public void struct_has_more_fields_than_query() {
     Tetra struct =
-        queryForStruct("select 22 as B, 44 as D from information_schema.schemata", Tetra.class);
+        queryForStruct("select 22 as B, 44 as D", Tetra.class);
     assertThat(struct).isEqualTo(new Tetra(0,22,0,44));
   }
 
@@ -171,7 +167,7 @@ public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeCase {
   public void struct_has_less_fields_than_query() {
     Tetra struct =
         queryForStruct(
-            "select 11 as A, 22 as B, 99 as X, 33 as C, 88 as Y, 44 as D from information_schema.schemata",
+            "select 11 as A, 22 as B, 99 as X, 33 as C, 88 as Y, 44 as D",
             Tetra.class);
     assertThat(struct).isEqualTo(new Tetra(11,22,33,44));
   }
@@ -184,7 +180,7 @@ public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeCase {
       public void run(@NotNull final DBTransaction tran) {
 
         char c =
-            tran.query("select 'M' from information_schema.schemata", singleOf(Character.class)).run();
+            tran.query("select 'M'", singleOf(Character.class)).run();
 
         assertThat(c).isEqualTo('M');
 
@@ -199,7 +195,7 @@ public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeCase {
       public void run(@NotNull final DBTransaction tran) {
 
         Character c =
-            tran.query("select 'MN' from information_schema.schemata", singleOf(Character.class)).run();
+            tran.query("select 'MN'", singleOf(Character.class)).run();
 
         assertThat(c).isEqualTo('M');
 
@@ -214,7 +210,7 @@ public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeCase {
 
   @Test
   public void char_in_struct() {
-    CharStruct s = queryForStruct("select 'X' as c, 'Y' as h from information_schema.schemata", CharStruct.class);
+    CharStruct s = queryForStruct("select 'X' as c, 'Y' as h", CharStruct.class);
     assert s != null;
     assertThat(s.c).isEqualTo('X');
     assertThat(s.h).isEqualTo('Y');
@@ -222,7 +218,7 @@ public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeCase {
 
   @Test
   public void char_in_struct_nulls() {
-    CharStruct s = queryForStruct("select null as c, null as h from information_schema.schemata", CharStruct.class);
+    CharStruct s = queryForStruct("select null as c, null as h", CharStruct.class);
     assert s != null;
     assertThat(s.c).isEqualTo('\0');
     assertThat(s.h).isNull();
@@ -232,7 +228,7 @@ public abstract class BaseQueryRunnerTest extends BaseHyperSonicFacadeCase {
   @Test
   public void array_row_basic() {
     SqlQuery<Integer[]> query =
-        new SqlQuery<Integer[]>("select 11, 22, 33 from information_schema.schemata",
+        new SqlQuery<Integer[]>("select 11, 22, 33",
                                 rowOf(arrayOf(3, Integer.class)));
     Integer[] array = query(query);
     assertThat(array).isEqualTo(new Integer[] {11, 22, 33});

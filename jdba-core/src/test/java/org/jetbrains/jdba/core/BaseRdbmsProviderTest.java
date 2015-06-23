@@ -1,7 +1,7 @@
 package org.jetbrains.jdba.core;
 
 import org.jetbrains.jdba.intermediate.IntegralIntermediateRdbmsProvider;
-import org.jetbrains.jdba.jdbc.BaseHyperSonicCase;
+import org.jetbrains.jdba.jdbc.BaseInMemoryDBCase;
 import org.jetbrains.jdba.jdbc.UnknownDatabaseProvider;
 import org.junit.Test;
 
@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public class BaseRdbmsProviderTest extends BaseHyperSonicCase {
+public class BaseRdbmsProviderTest extends BaseInMemoryDBCase {
 
   protected static UnknownDatabaseProvider ourUnknownDatabaseProvider =
           new UnknownDatabaseProvider();
@@ -24,7 +24,7 @@ public class BaseRdbmsProviderTest extends BaseHyperSonicCase {
             new BaseRdbmsProvider(ourUnknownDatabaseProvider);
 
     final BaseFacade facade =
-            provider.openFacade(HSQL_CONNECTION_STRING, null, 1, true);
+            provider.openFacade(H2_CONNECTION_STRING, null, 1, true);
 
     assertThat(facade.isConnected()).isTrue();
 
@@ -40,7 +40,7 @@ public class BaseRdbmsProviderTest extends BaseHyperSonicCase {
             new BaseRdbmsProvider(ourUnknownDatabaseProvider);
 
     final BaseFacade facade =
-            provider.openFacade(HSQL_CONNECTION_STRING, null, 1, true);
+            provider.openFacade(H2_CONNECTION_STRING, null, 1, true);
 
     assertThat(facade.isConnected()).isTrue();
 

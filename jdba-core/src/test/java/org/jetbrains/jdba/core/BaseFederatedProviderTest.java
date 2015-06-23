@@ -3,7 +3,7 @@ package org.jetbrains.jdba.core;
 
 
 import org.jetbrains.jdba.intermediate.PrimeIntermediateFederatedProvider;
-import org.jetbrains.jdba.jdbc.BaseHyperSonicCase;
+import org.jetbrains.jdba.jdbc.BaseInMemoryDBCase;
 import org.jetbrains.jdba.jdbc.JdbcIntermediateFederatedProvider;
 import org.jetbrains.jdba.jdbc.UnknownDatabase;
 import org.junit.FixMethodOrder;
@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Leonid Bushuev from JetBrains
  */
 @FixMethodOrder(MethodSorters.JVM)
-public class BaseFederatedProviderTest extends BaseHyperSonicCase {
+public class BaseFederatedProviderTest extends BaseInMemoryDBCase {
 
   @Test
   public void intiLocally_supports_unknownDatabase() {
@@ -32,7 +32,7 @@ public class BaseFederatedProviderTest extends BaseHyperSonicCase {
     BaseFederatedProvider provider = new BaseFederatedProvider();
     provider.initLocally();
 
-    DBFacade facade = provider.openFacade(HSQL_CONNECTION_STRING, null, 1, true);
+    DBFacade facade = provider.openFacade(H2_CONNECTION_STRING, null, 1, true);
     assertThat(facade.isConnected()).isTrue();
     facade.disconnect();
   }
@@ -55,7 +55,7 @@ public class BaseFederatedProviderTest extends BaseHyperSonicCase {
     BaseFederatedProvider provider = new BaseFederatedProvider();
     provider.initRemotely(remoteProvider);
 
-    DBFacade facade = provider.openFacade(HSQL_CONNECTION_STRING, null, 1, true);
+    DBFacade facade = provider.openFacade(H2_CONNECTION_STRING, null, 1, true);
     assertThat(facade.isConnected()).isTrue();
     facade.disconnect();
   }

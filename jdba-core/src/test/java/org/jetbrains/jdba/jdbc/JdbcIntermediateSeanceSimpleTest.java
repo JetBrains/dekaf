@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @FixMethodOrder(MethodSorters.JVM)
-public class JdbcIntermediateSeanceSimpleTest extends BaseIntermediateHyperSonicCase {
+public class JdbcIntermediateSeanceSimpleTest extends BaseIntermediateInMemoryDBCase {
 
   @Test
   public void simple_DDL_command() {

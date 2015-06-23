@@ -31,7 +31,7 @@ public class JdbcIntermediateFederatedProviderTest {
 
   @Test
   public void the_UnknownDatabaseServiceProvider_is_accepted_by_connectionString() {
-    myFederatedProvider.openFacade(UnknownDatabaseProviderTest.HSQL_MEM_CONNECTION_STRING, null, 1);
+    myFederatedProvider.openFacade(UnknownDatabaseProviderTest.H2_CONNECTION_STRING, null, 1);
     // expect no exceptions here
   }
 
