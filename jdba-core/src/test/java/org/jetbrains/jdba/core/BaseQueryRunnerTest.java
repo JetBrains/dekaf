@@ -235,6 +235,29 @@ public abstract class BaseQueryRunnerTest extends BaseInMemoryDBFacadeCase {
   }
 
 
+  @Test
+  public void million_of_ints() {
+    SqlQuery<int[]> query =
+        new SqlQuery<int[]>("select cast(X as int) from system_range(1,1000000)", columnOfInts(1000));
+
+    int[] array = query(query);
+    assertThat(array).hasSize(1000000);
+    assertThat(array[0]).isEqualTo(1);
+    assertThat(array[999999]).isEqualTo(1000000);
+  }
+
+  @Test
+  public void million_of_longs() {
+    SqlQuery<long[]> query =
+        new SqlQuery<long[]>("select cast(X as bigint) from system_range(1,1000000)", columnOfLongs(1000));
+
+    long[] array = query(query);
+    assertThat(array).hasSize(1000000);
+    assertThat(array[0]).isEqualTo(1L);
+    assertThat(array[999999]).isEqualTo(1000000L);
+  }
+
+
   @Nullable
   private <S> S queryForStruct(final String queryText, final Class<S> structClass) {
     final SqlQuery<S> query = new SqlQuery<S>(queryText, rowOf(structOf(structClass)));
