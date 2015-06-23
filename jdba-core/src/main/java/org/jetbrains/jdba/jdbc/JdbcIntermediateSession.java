@@ -214,7 +214,10 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
   }
 
   void tuneResultSet(@NotNull final ResultSet rset) throws SQLException {
-    rset.setFetchDirection(ResultSet.FETCH_FORWARD);
+    if (rset.getFetchDirection() != ResultSet.FETCH_FORWARD) {
+      rset.setFetchDirection(ResultSet.FETCH_FORWARD);
+    }
+
     rset.setFetchSize(DEFAULT_FETCH_SIZE);
   }
 

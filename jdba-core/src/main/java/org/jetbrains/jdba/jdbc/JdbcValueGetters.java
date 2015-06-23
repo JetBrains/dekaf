@@ -12,6 +12,8 @@ import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.lang.String.format;
+
 
 
 /**
@@ -117,7 +119,8 @@ public final class JdbcValueGetters {
     SPECIFIC_GETTERS.put(new SpecificKey(Types.INTEGER, Boolean.class), IntBoolGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.INTEGER, Number.class), IntGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BIGINT, Number.class), LongGetter.INSTANCE);
-    SPECIFIC_GETTERS.put(new SpecificKey(Types.FLOAT, Number.class), FloatGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.REAL, Number.class), FloatGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.FLOAT, Number.class), DoubleGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.DOUBLE, Number.class), DoubleGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.DECIMAL, Number.class), BigDecimalGetter.INSTANCE);
   }
@@ -128,8 +131,14 @@ public final class JdbcValueGetters {
   @SuppressWarnings("unchecked")
   static <W> JdbcValueGetter<W> of(final int jdbcType, @NotNull final Class<W> clazz) {
     JdbcValueGetter<W> getter = find(jdbcType, clazz);
-    if (getter == null) throw new DBPreparingException("Unknown how to get a value of class "+clazz.getSimpleName(), (String)null);
-    return getter;
+    if (getter != null) {
+      return getter;
+    }
+    else {
+      String message = format("Unknown how to get a value of class %s for jdbc type %d",
+                              clazz.getSimpleName(), jdbcType);
+      throw new DBPreparingException(message, (String) null);
+    }
   }
 
 
