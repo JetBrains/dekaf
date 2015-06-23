@@ -33,4 +33,65 @@ public class PostgreQueryRunnerTest extends CommonQueryRunnerTest {
     assertThat(b).isTrue();
   }
 
+
+  @Test
+  public void query_array_of_bytes_as_bytes() {
+    String queryText = "select '{1,2,3,4}'::smallint[]";
+    SqlQuery<byte[]> q = new SqlQuery<byte[]>(queryText, singleOf(byte[].class));
+    byte[] bytes = query(q);
+    assertThat(bytes).containsExactly((byte)1,(byte)2,(byte)3,(byte)4);
+  }
+
+  @Test
+  public void query_array_of_shorts_as_shorts() {
+    String queryText = "select '{1,2,3,4}'::smallint[]";
+    SqlQuery<short[]> q = new SqlQuery<short[]>(queryText, singleOf(short[].class));
+    short[] shorts = query(q);
+    assertThat(shorts).containsExactly((short)1,(short)2,(short)3,(short)4);
+  }
+
+  @Test
+  public void query_array_of_ints_as_ints() {
+    String queryText = "select '{1,2,3,4,5}'::int[]";
+    SqlQuery<int[]> q = new SqlQuery<int[]>(queryText, singleOf(int[].class));
+    int[] ints = query(q);
+    assertThat(ints).containsExactly(1,2,3,4,5);
+  }
+
+  @Test
+  public void query_array_of_ints_as_string() {
+    String queryText = "select '{1,2,3,4,5}'::int[]";
+    SqlQuery<String> q = new SqlQuery<String>(queryText, singleOf(String.class));
+    String string = query(q);
+    assertThat(string).isEqualTo("{1,2,3,4,5}");
+  }
+
+  @Test
+  public void query_array_of_ints_as_NumberArray() {
+    String queryText = "select '{1,2,3,4,5}'::int[]";
+    SqlQuery<Number[]> q = new SqlQuery<Number[]>(queryText, singleOf(Number[].class));
+    Number[] array = query(q);
+    assertThat(array).hasSize(5)
+                     .extractingResultOf("intValue").containsExactly(1,2,3,4,5);
+  }
+
+
+  @Test
+  public void query_array_of_longs_as_longs() {
+    String queryText = "select '{1,2,3,4,5,6,7}'::bigint[]";
+    SqlQuery<long[]> q = new SqlQuery<long[]>(queryText, singleOf(long[].class));
+    long[] longs = query(q);
+    assertThat(longs).containsExactly(1L,2L,3L,4L,5L,6L,7L);
+  }
+
+
+  @Test
+  public void query_array_of_strings() {
+    String queryText = "select '{-Subaru-,-BMW-,-Volga-,-Lada-}'::varchar(6)[]".replace('-', '"');
+    SqlQuery<String[]> q = new SqlQuery<String[]>(queryText, singleOf(String[].class));
+    String[] strings = query(q);
+    assertThat(strings).containsExactly("Subaru","BMW","Volga","Lada");
+  }
+
+
 }

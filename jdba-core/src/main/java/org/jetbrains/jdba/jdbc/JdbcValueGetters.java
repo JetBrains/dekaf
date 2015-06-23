@@ -2,13 +2,11 @@ package org.jetbrains.jdba.jdbc;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jdba.exceptions.DBFetchingException;
 import org.jetbrains.jdba.exceptions.DBPreparingException;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.sql.Types;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,6 +87,12 @@ public final class JdbcValueGetters {
     NORMAL_GETTERS.put(Timestamp.class, TimestampGetter.INSTANCE);
     NORMAL_GETTERS.put(java.sql.Time.class, TimeGetter.INSTANCE);
     NORMAL_GETTERS.put(Object.class, ObjectGetter.INSTANCE);
+    NORMAL_GETTERS.put(byte[].class, ArrayOfByteGetter.INSTANCE);
+    NORMAL_GETTERS.put(short[].class, ArrayOfShortGetter.INSTANCE);
+    NORMAL_GETTERS.put(int[].class, ArrayOfIntGetter.INSTANCE);
+    NORMAL_GETTERS.put(long[].class, ArrayOfLongGetter.INSTANCE);
+    NORMAL_GETTERS.put(Number[].class, ArrayOfNumberGetter.INSTANCE);
+    NORMAL_GETTERS.put(String[].class, ArrayOfStringGetter.INSTANCE);
 
     SPECIFIC_GETTERS = new HashMap<SpecificKey, JdbcValueGetter<?>>(30);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, boolean.class), BoolBoolGetter.INSTANCE);
@@ -414,6 +418,178 @@ public final class JdbcValueGetters {
 
 
     static final ObjectGetter INSTANCE = new ObjectGetter();
+  }
+
+
+  static abstract class AbstractArrayGetter<A> extends JdbcValueGetter<A> {
+    @Nullable
+    @Override
+    A getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
+      Array array = rset.getArray(index);
+      if (array == null) return null;
+      try {
+        if (rset.wasNull()) return null;
+        return convertArray(array);
+      }
+      finally {
+        array.free();
+      }
+    }
+
+    protected abstract A convertArray(final Array array)
+      throws SQLException;
+  }
+
+
+  static final class ArrayOfByteGetter extends AbstractArrayGetter<byte[]> {
+
+    @Override
+    protected byte[] convertArray(final Array array) throws SQLException {
+      Object arr = array.getArray();
+      if (arr instanceof byte[]) {
+        return (byte[]) arr;
+      }
+      else if (arr instanceof Number[]) {
+        Number[] arrN = (Number[]) arr;
+        int n = arrN.length;
+        byte[] result = new byte[n];
+        for (int i = 0; i < n; i++) {
+          Number v = arrN[i];
+          result[i] = v != null ? v.byteValue() : 0;
+        }
+        return result;
+      }
+      else {
+        throw new DBFetchingException("Unknown how to convert "+arr.getClass().getSimpleName()+" to byte[]", null);
+      }
+    }
+
+    static final ArrayOfByteGetter INSTANCE = new ArrayOfByteGetter();
+  }
+
+
+  static final class ArrayOfShortGetter extends AbstractArrayGetter<short[]> {
+
+    @Override
+    protected short[] convertArray(final Array array) throws SQLException {
+      Object arr = array.getArray();
+      if (arr instanceof short[]) {
+        return (short[]) arr;
+      }
+      else if (arr instanceof Number[]) {
+        Number[] arrN = (Number[]) arr;
+        int n = arrN.length;
+        short[] result = new short[n];
+        for (int i = 0; i < n; i++) {
+          Number v = arrN[i];
+          result[i] = v != null ? v.shortValue() : 0;
+        }
+        return result;
+      }
+      else {
+        throw new DBFetchingException("Unknown how to convert "+arr.getClass().getSimpleName()+" to short[]", null);
+      }
+    }
+
+    static final ArrayOfShortGetter INSTANCE = new ArrayOfShortGetter();
+  }
+
+
+  static final class ArrayOfIntGetter extends AbstractArrayGetter<int[]> {
+
+    @Override
+    protected int[] convertArray(final Array array) throws SQLException {
+      Object arr = array.getArray();
+      if (arr instanceof int[]) {
+        return (int[]) arr;
+      }
+      else if (arr instanceof Number[]) {
+        Number[] arrN = (Number[]) arr;
+        int n = arrN.length;
+        int[] result = new int[n];
+        for (int i = 0; i < n; i++) {
+          Number v = arrN[i];
+          result[i] = v != null ? v.intValue() : 0;
+        }
+        return result;
+      }
+      else {
+        throw new DBFetchingException("Unknown how to convert "+arr.getClass().getSimpleName()+" to int[]", null);
+      }
+    }
+
+    static final ArrayOfIntGetter INSTANCE = new ArrayOfIntGetter();
+  }
+
+
+  static final class ArrayOfLongGetter extends AbstractArrayGetter<long[]> {
+
+    @Override
+    protected long[] convertArray(final Array array) throws SQLException {
+      Object arr = array.getArray();
+      if (arr instanceof long[]) {
+        return (long[]) arr;
+      }
+      else if (arr instanceof Number[]) {
+        Number[] arrN = (Number[]) arr;
+        int n = arrN.length;
+        long[] result = new long[n];
+        for (int i = 0; i < n; i++) {
+          Number v = arrN[i];
+          result[i] = v != null ? v.longValue() : 0;
+        }
+        return result;
+      }
+      else {
+        throw new DBFetchingException("Unknown how to convert "+arr.getClass().getSimpleName()+" to long[]", null);
+      }
+    }
+
+    static final ArrayOfLongGetter INSTANCE = new ArrayOfLongGetter();
+  }
+
+
+  static final class ArrayOfNumberGetter extends AbstractArrayGetter<Number[]> {
+
+    @Override
+    protected Number[] convertArray(final Array array) throws SQLException {
+      Object arr = array.getArray();
+      if (arr instanceof Number[]) {
+        return (Number[]) arr;
+      }
+      else {
+        throw new DBFetchingException("Unknown how to convert "+arr.getClass().getSimpleName()+" to Number[]", null);
+      }
+    }
+
+    static final ArrayOfNumberGetter INSTANCE = new ArrayOfNumberGetter();
+  }
+
+
+  static final class ArrayOfStringGetter extends AbstractArrayGetter<String[]> {
+
+    @Override
+    protected String[] convertArray(final Array array) throws SQLException {
+      Object arr = array.getArray();
+      if (arr instanceof String[]) {
+        return (String[]) arr;
+      }
+      else if (arr instanceof Object[]) {
+        Object[] objects = (Object[]) arr;
+        int n = objects.length;
+        String[] result = new String[n];
+        for (int i = 0; i < n; i++) {
+          Object object = objects[i];
+          result[i] = object != null ? object.toString() : null;
+        }
+        return result;
+      }
+      else {
+        throw new DBFetchingException("Unknown how to convert "+arr.getClass().getSimpleName()+" to String[]", null);
+      }
+    }
+
+    static final ArrayOfStringGetter INSTANCE = new ArrayOfStringGetter();
   }
 
 
