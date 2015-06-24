@@ -79,7 +79,7 @@ public class BaseFacade implements DBFacade {
     if (!isConnected()) throw new DBIsNotConnected("Facade is not connected.");
 
     final R result;
-    final IntegralIntermediateSession interSession = instantiateSession();
+    final IntegralIntermediateSession interSession = instantiateIntermediateSession();
     try {
       final BaseSession session = new BaseSession(interSession);
       result = operation.run(session);
@@ -96,7 +96,7 @@ public class BaseFacade implements DBFacade {
     if (operation == null) return;
     if (!isConnected()) throw new DBIsNotConnected("Facade is not connected.");
 
-    final IntegralIntermediateSession interSession = instantiateSession();
+    final IntegralIntermediateSession interSession = instantiateIntermediateSession();
     try {
       final BaseSession session = new BaseSession(interSession);
       operation.run(session);
@@ -107,8 +107,17 @@ public class BaseFacade implements DBFacade {
     }
   }
 
+
+  @Override
+  public DBLeasedSession leaseSession() {
+    final IntegralIntermediateSession interSession = instantiateIntermediateSession();
+    final BaseSession baseSession = new BaseSession(interSession);
+    return new DBLeasedSessionWrapper(baseSession);
+  }
+
+
   @NotNull
-  protected IntegralIntermediateSession instantiateSession() {
+  protected IntegralIntermediateSession instantiateIntermediateSession() {
     return myInterFacade.openSession();
   }
 

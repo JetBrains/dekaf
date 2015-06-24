@@ -7,6 +7,7 @@ import org.jetbrains.jdba.Rdbms;
 import org.jetbrains.jdba.intermediate.DBExceptionRecognizer;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.Driver;
 import java.util.Properties;
 
@@ -35,6 +36,14 @@ public class OracleIntermediateFacade extends JdbcIntermediateFacade {
   @Override
   public Rdbms rdbms() {
     return Oracle.RDBMS;
+  }
+
+
+  @NotNull
+  @Override
+  protected JdbcIntermediateSession instantiateSession(@NotNull final Connection connection,
+                                                       final boolean ownConnection) {
+    return new OracleIntermediateSession(this, myExceptionRecognizer, connection, ownConnection);
   }
 
 }

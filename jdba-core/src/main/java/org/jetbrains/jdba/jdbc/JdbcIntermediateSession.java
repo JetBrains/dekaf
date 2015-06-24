@@ -151,6 +151,44 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
     }
   }
 
+
+  @Override
+  public long ping() {
+    if (myClosed) throw new DBSessionIsClosedException("The session is closed.");
+
+    long time1 = System.currentTimeMillis();
+
+    boolean ok = false;
+    try {
+      if (myConnection.isClosed()) throw new DBSessionIsClosedException("The JDBC connection is closed.");
+
+      final Statement statement = myConnection.createStatement();
+      try {
+        performPing(statement);
+        ok = true;
+      }
+      finally {
+        statement.close();
+      }
+    }
+    catch (SQLException sqle) {
+      throw myExceptionRecognizer.recognizeException(sqle, "ping");
+    }
+    finally {
+      if (!ok) close();
+    }
+
+    long duration = System.currentTimeMillis() - time1;
+    if (duration == 0L) duration = 1L;
+    return duration;
+  }
+
+  protected void performPing(final Statement statement) throws SQLException {
+    final String pingQuery = "select 1";
+    statement.execute(pingQuery);
+  }
+
+
   @Override
   public synchronized void close() {
     if (myClosed) return;
@@ -182,6 +220,11 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
       JdbcIntermediateSeance seanceToClose = mySeances.poll();
       seanceToClose.close();
     }
+  }
+
+  @Override
+  public boolean isClosed() {
+    return myClosed;
   }
 
 

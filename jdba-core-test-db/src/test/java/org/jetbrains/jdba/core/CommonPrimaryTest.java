@@ -29,6 +29,21 @@ public abstract class CommonPrimaryTest extends CommonIntegrationCase {
     assertThat(DB.isConnected()).isFalse();
   }
 
+
+  @Test
+  public void ping() {
+    assert DB != null;
+
+    DB.connect();
+
+    final DBLeasedSession session = DB.leaseSession();
+    session.ping();
+    session.close();
+
+    DB.disconnect();
+  }
+
+
   @Test
   public void select_1_in_session() {
     assert DB != null;

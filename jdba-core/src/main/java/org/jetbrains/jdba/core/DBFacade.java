@@ -57,23 +57,51 @@ public interface DBFacade extends ImplementationAccessibleService {
    * @param operation operation to perform.
    * @param <R>       type of result.
    * @return the result.
-   * @see DBFacade#inTransaction
+   *
+   * @see #inTransaction(InTransactionNoResult)
+   * @see #inSession(InSession)
    */
   <R> R inTransaction(InTransaction<R> operation);
 
   /**
-   * Performs the given operation in transaction and returns the result.
+   * Performs the given operation in transaction.
    *
-   * @param operation operation to perform.
-   * @see DBFacade#inTransaction
+   * @param operation   operation to perform.
+   *
+   * @see #inTransaction(InTransaction)
+   * @see #inSession(InSessionNoResult)
    */
   void inTransaction(InTransactionNoResult operation);
 
 
+  /**
+   * Performs the given operation in a session and returns the result.
+   * @param operation  operation to perform.
+   * @param <R>        type of result.
+   * @return           the result.
+   *
+   * @see #inSession(InSessionNoResult)
+   * @see #inTransaction(InTransaction)
+   */
   <R> R inSession(InSession<R> operation);
 
-
+  /**
+   * Performs the given operation in a session.
+   * @param operation   operation to perform.
+   *
+   * @see #inSession(InSession)
+   * @see #inTransaction(InTransactionNoResult)
+   */
   void inSession(InSessionNoResult operation);
 
+
+  /**
+   * Lease a session.
+   *
+   * When the session is not needed more, the {@link DBLeasedSession#close()} must be called.
+   *
+   * @return a leased session.
+   */
+  DBLeasedSession leaseSession();
 
 }

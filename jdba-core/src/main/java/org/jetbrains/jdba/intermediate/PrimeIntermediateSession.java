@@ -33,9 +33,45 @@ public interface PrimeIntermediateSession extends ImplementationAccessibleServic
 
 
 
-  //// CLOSE \\\\
+  //// ACTIVITY AND CLOSING \\\\
 
+  /**
+   * Checks whether the session is really alive.
+   *
+   * <p>
+   *   If the check is successful, just returns the ping duration.
+   * </p>
+   * <p>
+   *   If the check failed, closes the session and throws an exception.
+   * </p>
+   *
+   * @return ping duration (in milliseconds).
+   *
+   * @see #isClosed()
+   * @see org.jetbrains.jdba.core.DBLeasedSession#ping()
+   */
+  long ping();
+
+  /**
+   * Closes the session.
+   *
+   * @see #isClosed()
+   */
   void close();
 
+  /**
+   * Returns whether the session is marked as closed.
+   *
+   * <p>
+   *   This function doesn't perform communications with the real server,
+   *   just returns the inner flag.
+   * </p>
+   *
+   * @return <i>true</i> when session is closed.
+   *
+   * @see #ping()
+   * @see #close()
+   */
+  boolean isClosed();
 
 }

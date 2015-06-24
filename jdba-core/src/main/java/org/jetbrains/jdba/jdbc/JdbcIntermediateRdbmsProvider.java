@@ -3,9 +3,11 @@ package org.jetbrains.jdba.jdbc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.exceptions.DBInitializationException;
+import org.jetbrains.jdba.exceptions.DBSessionIsClosedException;
 import org.jetbrains.jdba.intermediate.DBExceptionRecognizer;
 import org.jetbrains.jdba.intermediate.IntegralIntermediateRdbmsProvider;
 
+import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -38,6 +40,20 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
                              connectionsLimit,
                              driver);
   }
+
+
+  @NotNull
+  public JdbcIntermediateSession wrapConnection(@NotNull final Connection connection, final boolean takeOwnership) {
+    BaseExceptionRecognizer exceptionRecognizer = getExceptionRecognizer();
+    try {
+      if (connection.isClosed()) throw new DBSessionIsClosedException("The given connection is closed.");
+      return new JdbcIntermediateSession(null, exceptionRecognizer, connection, takeOwnership);
+    }
+    catch (SQLException sqle) {
+      throw exceptionRecognizer.recognizeException(sqle, "JdbcIntermediateRdbmsProvider.wrapConnection()");
+    }
+  }
+
 
   @NotNull
   protected JdbcIntermediateFacade instantiateFacade(@NotNull final String connectionString,

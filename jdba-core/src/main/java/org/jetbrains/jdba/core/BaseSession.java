@@ -17,7 +17,7 @@ import java.util.Queue;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public class BaseSession implements DBSession, DBTransaction  {
+public class BaseSession implements DBSession, DBLeasedSession, DBTransaction  {
 
   @NotNull
   private final IntegralIntermediateSession myInterSession;
@@ -144,12 +144,18 @@ public class BaseSession implements DBSession, DBTransaction  {
     }
   }
 
+  @Override
+  public long ping() {
+    return myInterSession.ping();
+  }
 
-  /*
-  protected synchronized void close() {
+  public synchronized boolean isClosed() {
+    return myInterSession.isClosed();
+  }
+
+  public synchronized void close() {
     closeRunners();
     myInterSession.close();
   }
-  */
 
 }

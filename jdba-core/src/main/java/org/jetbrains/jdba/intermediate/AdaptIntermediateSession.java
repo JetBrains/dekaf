@@ -3,6 +3,7 @@ package org.jetbrains.jdba.intermediate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.core.ParameterDef;
+import org.jetbrains.jdba.exceptions.DBSessionIsClosedException;
 
 import static org.jetbrains.jdba.util.Objects.castTo;
 
@@ -52,6 +53,19 @@ public class AdaptIntermediateSession implements IntegralIntermediateSession {
     }
   }
 
+
+  @Override
+  public long ping() {
+    if (myRemoteSession.isClosed())
+      throw new DBSessionIsClosedException("The intermediate session is closed.");
+
+    return myRemoteSession.ping();
+  }
+
   @Override
   public void close() {myRemoteSession.close();}
+
+  @Override
+  public boolean isClosed() {return myRemoteSession.isClosed();}
+
 }

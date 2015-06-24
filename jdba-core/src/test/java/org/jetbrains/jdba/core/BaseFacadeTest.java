@@ -13,6 +13,21 @@ import static org.assertj.core.api.Assertions.assertThat;
  **/
 public class BaseFacadeTest extends BaseInMemoryDBFacadeCase {
 
+
+  @Test
+  public void leaseSession_basic() {
+    final DBLeasedSession session = myFacade.leaseSession();
+
+    assertThat(session.isClosed()).isFalse();
+
+    session.ping();
+
+    session.close();
+
+    assertThat(session.isClosed()).isTrue();
+  }
+
+
   @Test
   public void get_intermediate_service() {
 

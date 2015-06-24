@@ -15,6 +15,7 @@ import testing.categories.UnitTest;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
                             JdbcJarProvidersTest.class,
+                            JdbcSessionsTest.class,
                             ConnectionPoolTest.class,
                             JdbcIntermediateFacadeTest.class,
                             JdbcIntermediateSessionTest.class,

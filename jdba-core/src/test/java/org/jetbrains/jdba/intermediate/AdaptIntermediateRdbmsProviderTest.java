@@ -18,6 +18,31 @@ public class AdaptIntermediateRdbmsProviderTest extends BaseInMemoryDBCase {
           new UnknownDatabaseProvider();
 
   @Test
+  public void remote_ping() throws Exception {
+
+    // the vendor-code side
+    // the driver is already registered in BaseHyperSonicCase
+    UnknownDatabaseProvider remoteProvider = ourUnknownDatabaseProvider;
+
+    // the client side
+    AdaptIntermediateRdbmsProvider provider = new AdaptIntermediateRdbmsProvider(remoteProvider);
+
+    // try a basic scenario
+    IntegralIntermediateFacade facade =
+            provider.openFacade(BaseInMemoryDBCase.H2_CONNECTION_STRING, null, 1);
+    facade.connect();
+    IntegralIntermediateSession session =
+            facade.openSession();
+
+    long duration = session.ping();
+
+    assertThat(duration).isGreaterThan(0);
+
+    session.close();
+    facade.disconnect();
+  }
+
+  @Test
   public void remote_scenario() throws Exception {
 
     // the vendor-code side
