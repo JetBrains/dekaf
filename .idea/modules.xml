@@ -6,8 +6,11 @@
       <module fileurl="file://$PROJECT_DIR$/jdba.iml" filepath="$PROJECT_DIR$/jdba.iml" />
       <module fileurl="file://$PROJECT_DIR$/jdba-core/jdba-core.iml" filepath="$PROJECT_DIR$/jdba-core/jdba-core.iml" group="00 Core" />
       <module fileurl="file://$PROJECT_DIR$/jdba-core-test-db/jdba-core-test-db.iml" filepath="$PROJECT_DIR$/jdba-core-test-db/jdba-core-test-db.iml" group="00 Core" />
+      <module fileurl="file://$PROJECT_DIR$/jdba-h2db/jdba-h2db.iml" filepath="$PROJECT_DIR$/jdba-h2db/jdba-h2db.iml" />
       <module fileurl="file://$PROJECT_DIR$/jdba-h2db/jdba-h2db.iml" filepath="$PROJECT_DIR$/jdba-h2db/jdba-h2db.iml" group="11 H2" />
+      <module fileurl="file://$PROJECT_DIR$/jdba-h2db-test-db/jdba-h2db-test-db.iml" filepath="$PROJECT_DIR$/jdba-h2db-test-db/jdba-h2db-test-db.iml" />
       <module fileurl="file://$PROJECT_DIR$/jdba-h2db-test-db/jdba-h2db-test-db.iml" filepath="$PROJECT_DIR$/jdba-h2db-test-db/jdba-h2db-test-db.iml" group="11 H2" />
+      <module fileurl="file://$PROJECT_DIR$/jdba-h2db-tests/jdba-h2db-tests.iml" filepath="$PROJECT_DIR$/jdba-h2db-tests/jdba-h2db-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/jdba-h2db-tests/jdba-h2db-tests.iml" filepath="$PROJECT_DIR$/jdba-h2db-tests/jdba-h2db-tests.iml" group="11 H2" />
       <module fileurl="file://$PROJECT_DIR$/jdba-mysql/jdba-mysql.iml" filepath="$PROJECT_DIR$/jdba-mysql/jdba-mysql.iml" group="04 MySQL" />
       <module fileurl="file://$PROJECT_DIR$/jdba-mysql-test-db/jdba-mysql-test-db.iml" filepath="$PROJECT_DIR$/jdba-mysql-test-db/jdba-mysql-test-db.iml" group="04 MySQL" />

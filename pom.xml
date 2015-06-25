@@ -36,8 +36,8 @@
     <module>jdba-single</module>
     <module>jdba-single-test-db</module>
 
-    <module>public-pack</module>
     <module>test-pack</module>
+    <module>public-pack</module>
   </modules>
 
   <properties>

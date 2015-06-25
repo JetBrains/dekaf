@@ -2,16 +2,40 @@
 <project name="JDBA Post-Build Operations">
 
   <property name="ver">2.0.0-SNAPSHOT</property>
+  <property name="test-db">h2</property>
 
 
-  <target name="unpack-packs">
-    <mkdir dir="temp/jars"/>
-    <unzip src="dist/jdba-fw.zip" dest="temp/jars" overwrite="false"/>
-    <unzip src="dist/jdba-single-templates.zip" dest="temp/jars" overwrite="false"/>
+  <target name="unpack-fw-pack">
+    <mkdir dir="bin"/>
+    <unzip src="dist/jdba-fw.zip" dest="bin" overwrite="true"/>
+  </target>
+
+  <target name="unpack-single-pack">
+    <mkdir dir="bin"/>
+    <unzip src="dist/jdba-single-templates.zip" dest="bin" overwrite="false"/>
+  </target>
+
+  <target name="unpack-test-pack">
+    <mkdir dir="bin"/>
+    <unzip src="dist/jdba-tests.zip" dest="bin" overwrite="false"/>
   </target>
 
 
-  <target name="combine-jars" depends="unpack-packs"
+  <target name='integration-test' depends="unpack-fw-pack,unpack-test-pack"
+          description="Run DB-integration tests">
+    <java jar='bin/integration-tests.jar' fork='true' failonerror='true'>
+      <syspropertyset>
+        <propertyref prefix="test-db-"/>
+      </syspropertyset>
+      <jvmarg value='-ea'/>
+      <jvmarg value='-Dtest-db=${test-db}'/>
+    </java>
+  </target>
+
+
+
+
+  <target name="combine-jars" depends="unpack-fw-pack,unpack-single-pack"
           description="Combine Core and RDBMS-specific jars into single jars">
     <mkdir dir="temp/combined-jars"/>
 
@@ -44,10 +68,10 @@
     <delete dir="temp/content-${nr}"/>
     <mkdir dir="temp/content-${nr}"/>
 
-    <unjar src="temp/jars/jdba-single-${infix}${ver}${suffix}.jar" dest="temp/content-${nr}"/>
+    <unjar src="bin/jdba-single-${infix}${ver}${suffix}.jar" dest="temp/content-${nr}"/>
 
     <unjar dest="temp/content-${nr}" overwrite="false">
-      <fileset dir="temp/jars">
+      <fileset dir="bin">
         <include name="jdba-*-${infix}${ver}${suffix}.jar"/>
         <exclude name="jdba-single*"/>
       </fileset>
@@ -63,6 +87,12 @@
   <target name="clean-temp"
           description="Cleans the temporary directory">
     <delete dir="temp"/>
+  </target>
+
+
+  <target name="clean" depends="clean-temp"
+          description="Cleans unpacked jars and temporary files">
+    <delete dir="bin"/>
   </target>
 
 

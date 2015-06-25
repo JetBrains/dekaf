@@ -130,6 +130,19 @@
       </includes>
     </fileSet>
 
+    <!-- 3rd party stuff -->
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>../test-pack/target</directory>
+      <includes>
+        <include>*.jar</include>
+      </includes>
+      <excludes>
+        <exclude>jdba*</exclude>
+        <exclude>fine-junit*</exclude>
+      </excludes>
+    </fileSet>
+
   </fileSets>
 
 </assembly>
