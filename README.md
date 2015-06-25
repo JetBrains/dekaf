@@ -52,11 +52,11 @@ Supported RDBMS:
 * PostgreSQL
 * Oracle
 * MySQL
+* H2
 
 Planned supported RDBMS:
 
 * Microsoft SQL Server
 * SQLite
-* HSQL
 
 

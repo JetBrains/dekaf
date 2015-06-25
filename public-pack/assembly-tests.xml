@@ -108,6 +108,28 @@
       </includes>
     </fileSet>
 
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>../jdba-h2db/target</directory>
+      <includes>
+        <include>*-tests.jar</include>
+      </includes>
+    </fileSet>
+    <!--fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>../jdba-h2db-test-db/target</directory>
+      <includes>
+        <include>*-tests.jar</include>
+      </includes>
+    </fileSet-->
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>../jdba-h2db-tests/target</directory>
+      <includes>
+        <include>*-tests.jar</include>
+      </includes>
+    </fileSet>
+
   </fileSets>
 
 </assembly>

@@ -29,6 +29,10 @@
     <module>jdba-mysql-test-db</module>
     <module>jdba-mysql-tests</module>
 
+    <module>jdba-h2db</module>
+    <module>jdba-h2db-test-db</module>
+    <module>jdba-h2db-tests</module>
+
     <module>jdba-single</module>
     <module>jdba-single-test-db</module>
 
