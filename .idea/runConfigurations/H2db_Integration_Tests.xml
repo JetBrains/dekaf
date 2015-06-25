@@ -8,7 +8,7 @@
     <option name="MAIN_CLASS_NAME" value="org.jetbrains.jdba.H2dbIntegrationTests" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="class" />
-    <option name="VM_PARAMETERS" value="-ea -Dtest-db=h2db -Dtest-db-h2db=jdbc:h2:mem:test -Djava.awt.headless=true -Duser.language=en" />
+    <option name="VM_PARAMETERS" value="-ea -Dtest-db=h2 -Dtest-db-h2=jdbc:h2:mem:test -Djava.awt.headless=true -Duser.language=en" />
     <option name="PARAMETERS" value="" />
     <option name="WORKING_DIRECTORY" value="" />
     <option name="ENV_VARIABLES" />
