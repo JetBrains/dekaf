@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<project name="JDBA Post-Coverage Operations" xmlns:jacoco="antlib:org.jacoco.ant">
+
+  <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+    <classpath path="tools/jacoco/lib/jacocoant.jar"/>
+  </taskdef>
+
+  <target name="process-coverage" depends="merge-it,report-it"
+          description="Merge coverage and generate report"/>
+
+  <target name="merge-it">
+    <jacoco:merge destfile="coverage/total.dat">
+      <fileset dir="coverage" includes="jacoco-*.dat"/>
+    </jacoco:merge>
+  </target>
+
+  <target name="report-it">
+    <jacoco:report>
+
+      <executiondata>
+        <file file="coverage/total.dat"/>
+      </executiondata>
+
+      <structure name="JDBA">
+        <classfiles>
+          <fileset dir="bin">
+            <include name="jdba-*.jar"/>
+          </fileset>
+        </classfiles>
+        <!--sourcefiles encoding="UTF-8">
+          <fileset dir="src"/>
+        </sourcefiles-->
+      </structure>
+
+      <html destdir="coverage/report"/>
+
+    </jacoco:report>
+  </target>
+
+
+  <target name="ask-teamcity" description="Ask TeamCity for Coverage">
+    <echo>##teamcity[jacocoReport dataPath='coverage/jacoco*.dat' classpath='+:bin/jdba*.jar' includes='org.jetbrains.jdba.*' excludes='*Test *Error *Exception']</echo>
+  </target>
+
+  <!--
+
+  print("##teamcity[jacocoReport dataPath='coverage/*.dat' classpath='+:bin/jdba*.jar' includes='org.jetbrains.jdba.*' excludes='*Test *Error *Exception']\n")
+
+  -->
+
+</project>

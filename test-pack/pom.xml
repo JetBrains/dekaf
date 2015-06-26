@@ -169,6 +169,7 @@
       <version>2.0.7-beta</version>
     </dependency>
 
+
     <!-- JDBC DRIVERS -->
 
     <dependency>
@@ -222,6 +223,26 @@
               <overWriteReleases>false</overWriteReleases>
               <overWriteSnapshots>false</overWriteSnapshots>
               <overWriteIfNewer>true</overWriteIfNewer>
+            </configuration>
+          </execution>
+          <execution>
+            <id>get-jacoco-agent</id>
+            <phase>package</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.jacoco</groupId>
+                  <artifactId>jacoco</artifactId>
+                  <version>0.7.5.201505241946</version>
+                  <type>zip</type>
+                  <outputDirectory>../tools/jacoco</outputDirectory>
+                  <includes>lib/jacoco*.jar</includes>
+                </artifactItem>
+              </artifactItems>
+              <!-- other configurations here -->
             </configuration>
           </execution>
         </executions>

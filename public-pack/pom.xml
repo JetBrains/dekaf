@@ -198,6 +198,7 @@
                 <descriptor>assembly-fw.xml</descriptor>
                 <descriptor>assembly-single-templates.xml</descriptor>
                 <descriptor>assembly-tests.xml</descriptor>
+                <descriptor>assembly-tools.xml</descriptor>
               </descriptors>
             </configuration>
           </execution>

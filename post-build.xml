@@ -5,28 +5,35 @@
   <property name="test-db">h2</property>
 
 
-  <target name="unpack-fw-pack">
+  <target name="unpack-fw">
     <mkdir dir="bin"/>
     <unzip src="dist/jdba-fw.zip" dest="bin" overwrite="true"/>
   </target>
 
-  <target name="unpack-single-pack">
+  <target name="unpack-single">
     <mkdir dir="bin"/>
     <unzip src="dist/jdba-single-templates.zip" dest="bin" overwrite="false"/>
   </target>
 
-  <target name="unpack-test-pack">
+  <target name="unpack-tests">
     <mkdir dir="bin"/>
     <unzip src="dist/jdba-tests.zip" dest="bin" overwrite="false"/>
   </target>
 
+  <target name="unpack-tools">
+    <mkdir dir="tools"/>
+    <unzip src="dist/jdba-tools.zip" dest="tools" overwrite="false"/>
+  </target>
 
-  <target name='integration-test' depends="unpack-fw-pack,unpack-test-pack"
+
+  <target name='integration-test' depends="unpack-fw,unpack-tests"
           description="Run DB-integration tests">
+    <mkdir dir="coverage"/>
     <java jar='bin/integration-tests.jar' fork='true' failonerror='true'>
       <syspropertyset>
         <propertyref prefix="test-db-"/>
       </syspropertyset>
+      <jvmarg value="-javaagent:${basedir}/tools/jacoco/lib/jacocoagent.jar=destfile=coverage/jacoco-${test-db}.dat,includes=org.jetbrains.jdba.*,excludes=*Test"/>
       <jvmarg value='-ea'/>
       <jvmarg value='-Dtest-db=${test-db}'/>
     </java>
@@ -35,7 +42,8 @@
 
 
 
-  <target name="combine-jars" depends="unpack-fw-pack,unpack-single-pack"
+
+  <target name="combine-jars" depends="unpack-fw,unpack-single"
           description="Combine Core and RDBMS-specific jars into single jars">
     <mkdir dir="temp/combined-jars"/>
 
@@ -93,6 +101,7 @@
   <target name="clean" depends="clean-temp"
           description="Cleans unpacked jars and temporary files">
     <delete dir="bin"/>
+    <delete dir="coverage"/>
   </target>
 
 
