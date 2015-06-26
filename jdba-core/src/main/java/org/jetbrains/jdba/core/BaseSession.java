@@ -19,14 +19,39 @@ import java.util.Queue;
  */
 public class BaseSession implements DBSession, DBLeasedSession, DBTransaction  {
 
+
+
   @NotNull
   private final IntegralIntermediateSession myInterSession;
 
   private final Queue<BaseSeanceRunner> myRunners = new LinkedList<BaseSeanceRunner>();
 
 
+
+
   protected BaseSession(@NotNull final IntegralIntermediateSession interSession) {
     myInterSession = interSession;
+  }
+
+
+  @Override
+  public void beginTransaction() {
+    myInterSession.beginTransaction();
+  }
+
+  @Override
+  public boolean isInTransaction() {
+    return myInterSession.isInTransaction();
+  }
+
+  @Override
+  public void commit() {
+    myInterSession.commit();
+  }
+
+  @Override
+  public void rollback() {
+    myInterSession.rollback();
   }
 
 
@@ -36,16 +61,16 @@ public class BaseSession implements DBSession, DBLeasedSession, DBTransaction  {
 
     final R result;
     boolean ok = false;
-    myInterSession.beginTransaction();
+    beginTransaction();
     try {
       result = operation.run(this);
-      myInterSession.commit();
+      commit();
       ok = true;
     }
     finally {
       closeRunners();
       if (!ok) {
-        myInterSession.rollback();
+        rollback();
       }
     }
 
@@ -58,16 +83,16 @@ public class BaseSession implements DBSession, DBLeasedSession, DBTransaction  {
     closeRunners();
 
     boolean ok = false;
-    myInterSession.beginTransaction();
+    beginTransaction();
     try {
       operation.run(this);
-      myInterSession.commit();
+      commit();
       ok = true;
     }
     finally {
       closeRunners();
       if (!ok) {
-        myInterSession.rollback();
+        rollback();
       }
     }
   }

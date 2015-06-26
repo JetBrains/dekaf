@@ -7,6 +7,7 @@ package org.jetbrains.jdba;
 import org.jetbrains.jdba.core.MysqlCommandRunnerTest;
 import org.jetbrains.jdba.core.MysqlPrimaryTest;
 import org.jetbrains.jdba.core.MysqlQueryRunnerTest;
+import org.jetbrains.jdba.core.MysqlSessionTest;
 import org.jetbrains.jdba.jdbc.MysqlExceptionRecognizerTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -16,6 +17,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
                             MysqlPrimaryTest.class,
+                            MysqlSessionTest.class,
                             MysqlCommandRunnerTest.class,
                             MysqlQueryRunnerTest.class,
                             MysqlExceptionRecognizerTest.class

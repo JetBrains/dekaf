@@ -27,6 +27,9 @@ public class AdaptIntermediateSession implements IntegralIntermediateSession {
   public void beginTransaction() {myRemoteSession.beginTransaction();}
 
   @Override
+  public boolean isInTransaction() {return myRemoteSession.isInTransaction();}
+
+  @Override
   public void commit() {myRemoteSession.commit();}
 
   @Override

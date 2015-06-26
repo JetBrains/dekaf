@@ -73,6 +73,11 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
   }
 
   @Override
+  public boolean isInTransaction() {
+    return myInTransaction;
+  }
+
+  @Override
   public synchronized void commit() {
     if (myInTransaction) {
       myInTransaction = false;

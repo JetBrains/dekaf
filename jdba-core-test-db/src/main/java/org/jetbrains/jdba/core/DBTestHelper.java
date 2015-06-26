@@ -32,6 +32,28 @@ public interface DBTestHelper {
   void performCommand(@NotNull SqlCommand command);
 
   /**
+   * Performs a command from the scriptum.
+   * @param scriptum        scriptum with the command to perform.
+   * @param commandName     name of the command to perform.
+   */
+  void performCommand(@NotNull DBTransaction transaction,
+                      @NotNull Scriptum scriptum, @NotNull String commandName);
+
+  /**
+   * Performs the specified command.
+   * @param commandText     command text.
+   */
+  void performCommand(@NotNull DBTransaction transaction,
+                      @NotNull String commandText);
+
+  /**
+   * Performs the specified command.
+   * @param command     command to perform.
+   */
+  void performCommand(@NotNull DBTransaction transaction,
+                      @NotNull SqlCommand command);
+
+  /**
    * Performs the given script.
    * @param script  the script to perform.
    */
@@ -71,6 +93,25 @@ public interface DBTestHelper {
   void performMetaQueryCommands(@NotNull Scriptum scriptum,
                                 @NotNull String metaQueryName,
                                 Object... params);
+
+  /**
+   * Counts rows in a table or view.
+   * If no such table or view, returns {@link Integer#MIN_VALUE}.
+   *
+   * @param tableName  table name (name case/quoting like in a script).
+   * @return           count of rows.
+   */
+  int countTableRows(@NotNull final String tableName);
+
+  /**
+   * Counts rows in a table or view in the given transaction.
+   * If no such table or view, returns {@link Integer#MIN_VALUE}.
+   *
+   * @param transaction the transaction that to use for counting.
+   * @param tableName   table name (name case/quoting like in a script).
+   * @return            count of rows.
+   */
+  int countTableRows(@NotNull final DBTransaction transaction, @NotNull final String tableName);
 
   /**
    * Prepares a table or view named <b><tt>X1</tt></b> that contains

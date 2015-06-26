@@ -21,13 +21,18 @@ class DBLeasedSessionWrapper implements DBLeasedSession {
    * Original session. Not null if open and active,
    * or null if closed.
    */
-  private DBSession myOriginalSession;
+  private DBLeasedSession myOriginalSession;
 
 
   //// CONSTRUCTOR \\\\
 
-  DBLeasedSessionWrapper(@NotNull final DBSession originalSession) {
+  DBLeasedSessionWrapper(@NotNull final DBLeasedSession originalSession) {
     myOriginalSession = originalSession;
+  }
+
+
+  private void checkIsNotClosed() {
+    if (myOriginalSession == null) throw new DBSessionIsClosedException("The session is already closed or returned back.");
   }
 
 
@@ -35,74 +40,95 @@ class DBLeasedSessionWrapper implements DBLeasedSession {
 
   @Override
   public synchronized boolean isClosed() {
-    return myOriginalSession == null
-        || myOriginalSession instanceof DBLeasedSession && ((DBLeasedSession) myOriginalSession).isClosed();
+    return myOriginalSession == null || myOriginalSession.isClosed();
   }
 
   @Override
   public synchronized void close() {
-    final DBSession theSessionToClose = myOriginalSession;
+    final DBLeasedSession theSessionToClose = myOriginalSession;
     myOriginalSession = null;
-    if (theSessionToClose instanceof DBLeasedSession) {
-      ((DBLeasedSession) theSessionToClose).close();
-    }
+    if (theSessionToClose != null) theSessionToClose.close();
   }
 
   @Override
   public long ping() {
-    if (isClosed()) throw new DBSessionIsClosedException("The session is closed or returned back.");
-
-    if (myOriginalSession instanceof DBLeasedSession) {
-      return ((DBLeasedSession) myOriginalSession).ping();
-    }
-    else {
-      // not supported yet
-      return Long.MIN_VALUE;
-    }
+    checkIsNotClosed();
+    return myOriginalSession.ping();
   }
+
 
 
   //// DELEGATE METHODS \\\\
 
 
   @Override
+  public void beginTransaction() {
+    checkIsNotClosed();
+    myOriginalSession.beginTransaction();
+  }
+
+  @Override
+  public boolean isInTransaction() {
+    return myOriginalSession != null && myOriginalSession.isInTransaction();
+  }
+
+  @Override
+  public void commit() {
+    checkIsNotClosed();
+    myOriginalSession.commit();
+  }
+
+  @Override
+  public void rollback() {
+    if (myOriginalSession == null) return;
+    myOriginalSession.rollback();
+  }
+
+  @Override
   public synchronized <R> R inTransaction(final InTransaction<R> operation) {
+    checkIsNotClosed();
     return myOriginalSession.inTransaction(operation);
   }
 
   @Override
   public synchronized void inTransaction(final InTransactionNoResult operation) {
+    checkIsNotClosed();
     myOriginalSession.inTransaction(operation);
   }
 
   @Override
   @NotNull
   public synchronized DBCommandRunner command(@NotNull final SqlCommand command) {
+    checkIsNotClosed();
     return myOriginalSession.command(command);
   }
 
   @Override
   @NotNull
   public synchronized DBCommandRunner command(@NotNull final String commandText) {
+    checkIsNotClosed();
     return myOriginalSession.command(commandText);
   }
 
   @Override
   @NotNull
   public synchronized <S> DBQueryRunner<S> query(@NotNull final SqlQuery<S> query) {
+    checkIsNotClosed();
     return myOriginalSession.query(query);
   }
 
   @Override
   @NotNull
   public synchronized <S> DBQueryRunner<S> query(@NotNull final String queryText,
-                                    @NotNull final ResultLayout<S> layout) {
+                                                 @NotNull final ResultLayout<S> layout) {
+    checkIsNotClosed();
     return myOriginalSession.query(queryText, layout);
   }
 
   @Override
   @NotNull
   public synchronized DBScriptRunner script(@NotNull final SqlScript script) {
+    checkIsNotClosed();
     return myOriginalSession.script(script);
   }
 
@@ -112,6 +138,7 @@ class DBLeasedSessionWrapper implements DBLeasedSession {
                                                @NotNull @MagicConstant(valuesFromClass = Names.class) final String serviceName)
       throws ClassCastException
   {
+    checkIsNotClosed();
     return myOriginalSession.getSpecificService(serviceClass, serviceName);
   }
 

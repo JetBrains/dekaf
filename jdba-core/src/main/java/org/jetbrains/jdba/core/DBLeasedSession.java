@@ -5,7 +5,7 @@ package org.jetbrains.jdba.core;
  *
  * @author Leonid Bushuev from JetBrains
  */
-public interface DBLeasedSession extends DBSession  {
+public interface DBLeasedSession extends DBSession, DBTransactionControl  {
 
   /**
    * Checks whether the session is really alive.

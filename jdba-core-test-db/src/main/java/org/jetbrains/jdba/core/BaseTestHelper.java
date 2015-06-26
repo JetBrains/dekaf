@@ -1,6 +1,7 @@
 package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jdba.exceptions.NoTableOrViewException;
 import org.jetbrains.jdba.sql.*;
 import org.jetbrains.jdba.util.Collects;
 
@@ -8,8 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static java.lang.String.format;
-import static org.jetbrains.jdba.core.Layouts.listOf;
-import static org.jetbrains.jdba.core.Layouts.oneOf;
+import static org.jetbrains.jdba.core.Layouts.*;
 
 
 
@@ -51,6 +51,26 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
         session.command(command).run();
       }
     });
+  }
+
+  @Override
+  public void performCommand(@NotNull final DBTransaction transaction,
+                             @NotNull final Scriptum scriptum, @NotNull final String commandName) {
+    final SqlCommand command = scriptum.command(commandName);
+    performCommand(transaction, command);
+  }
+
+  @Override
+  public void performCommand(@NotNull final DBTransaction transaction,
+                             @NotNull final String commandText) {
+    final SqlCommand command = new SqlCommand(commandText);
+    performCommand(transaction, command);
+  }
+
+  @Override
+  public void performCommand(@NotNull final DBTransaction transaction,
+                             @NotNull final SqlCommand command) {
+    transaction.command(command).run();
   }
 
   @Override
@@ -116,6 +136,30 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
     });
   }
 
+
+  @Override
+  public int countTableRows(@NotNull final String tableName) {
+    return facade.inSession(new InSession<Integer>() {
+      @Override
+      public Integer run(@NotNull final DBSession session) {
+
+        return countTableRows(session, tableName);
+
+      }
+    });
+  }
+
+  @Override
+  public int countTableRows(@NotNull final DBTransaction transaction, @NotNull final String tableName) {
+    final String queryText = "select count(*) from " + tableName;
+
+    try {
+      return transaction.query(queryText, singleOf(Integer.class)).run();
+    }
+    catch (NoTableOrViewException ntv) {
+      return Integer.MIN_VALUE;
+    }
+  }
 
 
   @Override

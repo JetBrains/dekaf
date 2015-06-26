@@ -96,6 +96,45 @@ public class BaseSessionTest extends BaseInMemoryDBFacadeCase {
 
 
   @Test
+  public void isInTransaction_begin_commit() {
+    final DBLeasedSession session = myFacade.leaseSession();
+    try {
+      assertThat(session.isInTransaction()).isFalse();
+
+      session.beginTransaction();
+
+      assertThat(session.isInTransaction()).isTrue();
+
+      session.commit();
+
+      assertThat(session.isInTransaction()).isFalse();
+    }
+    finally {
+      session.close();
+    }
+  }
+
+  @Test
+  public void isInTransaction_begin_rollback() {
+    final DBLeasedSession session = myFacade.leaseSession();
+    try {
+      assertThat(session.isInTransaction()).isFalse();
+
+      session.beginTransaction();
+
+      assertThat(session.isInTransaction()).isTrue();
+
+      session.rollback();
+
+      assertThat(session.isInTransaction()).isFalse();
+    }
+    finally {
+      session.close();
+    }
+  }
+
+
+  @Test
   public void transaction_should_close_seances() {
     myFacade.inSession(new InSessionNoResult() {
       @Override

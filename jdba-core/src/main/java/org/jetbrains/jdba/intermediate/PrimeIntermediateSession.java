@@ -2,6 +2,7 @@ package org.jetbrains.jdba.intermediate;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jdba.core.DBTransactionControl;
 import org.jetbrains.jdba.core.ImplementationAccessibleService;
 import org.jetbrains.jdba.core.ParameterDef;
 
@@ -12,7 +13,7 @@ import org.jetbrains.jdba.core.ParameterDef;
  *
  * @author Leonid Bushuev from JetBrains
  */
-public interface PrimeIntermediateSession extends ImplementationAccessibleService {
+public interface PrimeIntermediateSession extends ImplementationAccessibleService, DBTransactionControl {
 
 
   //// TRANSACTION CONTROL \\\\
