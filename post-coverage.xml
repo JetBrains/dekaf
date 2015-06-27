@@ -41,7 +41,9 @@
           </fileset>
         </classfiles>
         <sourcefiles encoding="UTF-8">
-          <fileset dir="${basedir}/sources"/>
+          <fileset dir="${basedir}/sources">
+            <exclude name="**/*Test"/>
+          </fileset>
         </sourcefiles>
       </structure>
 

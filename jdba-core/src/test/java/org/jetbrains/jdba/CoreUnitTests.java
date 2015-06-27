@@ -1,11 +1,15 @@
 package org.jetbrains.jdba;
 
 import org.jetbrains.jdba.core.*;
+import org.jetbrains.jdba.exceptions.DBExceptionTest;
 import org.jetbrains.jdba.intermediate.AdaptIntermediateRdbmsProviderTest;
 import org.jetbrains.jdba.sql.ScriptumBasicTest;
 import org.jetbrains.jdba.sql.ScriptumResourceFromJavaTest;
 import org.jetbrains.jdba.sql.SqlScriptBuilderTest;
 import org.jetbrains.jdba.sql.SqlScriptTest;
+import org.jetbrains.jdba.util.ArrayFunctionsTest;
+import org.jetbrains.jdba.util.NumbersTest;
+import org.jetbrains.jdba.util.StringsTest;
 import org.jetbrains.jdba.util.VersionTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -18,6 +22,10 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
                             // UTILS
+                            NumbersTest.class,
+                            StringsTest.class,
+                            ArrayFunctionsTest.class,
+                            DBExceptionTest.class,
                             VersionTest.class,
                             // SQL
                             ScriptumResourceFromJavaTest.class,
@@ -34,4 +42,4 @@ import org.junit.runners.Suite;
                             BaseRdbmsProviderTest.class,
                             BaseFederatedProviderTest.class
 })
-public class CoreDbaUnitTests {}
+public class CoreUnitTests {}

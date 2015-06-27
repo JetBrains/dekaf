@@ -42,7 +42,26 @@ public class RunIntegrationTests {
 
 
   public static void main(String[] args) {
+    String arg1 = args.length >= 1 ? args[0] : "\0";
+    if (arg1.equalsIgnoreCase("unit")) {
+      runUnitTests();
+    }
+    else {
+      runIntegrationTests();
+    }
+  }
 
+  private static void runUnitTests() {
+    printBanner(
+        "Unit Tests",
+        "Java version: " + System.getProperty("java.version"),
+        "JUnit version: " + junit.runner.Version.id()
+    );
+
+    TestSuiteExecutor.run(AllUnitTestSuites.class);
+  }
+
+  private static void runIntegrationTests() {
     String connectionString = TestEnvironment.obtainConnectionString();
 
     final Collection<IntegralIntermediateRdbmsProvider> providers =

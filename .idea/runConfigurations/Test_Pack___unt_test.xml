@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Test Pack" type="Application" factoryName="Application" singleton="true">
+  <configuration default="false" name="Test Pack - unt test" type="Application" factoryName="Application" singleton="false">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <option name="MAIN_CLASS_NAME" value="RunIntegrationTests" />
     <option name="VM_PARAMETERS" value="" />

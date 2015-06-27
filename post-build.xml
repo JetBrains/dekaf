@@ -26,7 +26,18 @@
   </target>
 
 
-  <target name='integration-test' depends="unpack-fw,unpack-tests"
+  <target name='unit-test' depends="unpack-fw,unpack-tests,unpack-tools"
+          description="Run unit tests">
+    <mkdir dir="coverage"/>
+    <java jar='bin/integration-tests.jar' fork='true' failonerror='true'>
+      <jvmarg value="-javaagent:${basedir}/tools/jacoco/lib/jacocoagent.jar=destfile=coverage/jacoco-unit.dat,includes=org.jetbrains.jdba.*,excludes=*Test"/>
+      <jvmarg value='-ea'/>
+      <arg value="unit"/>
+    </java>
+  </target>
+
+
+  <target name='integration-test' depends="unpack-fw,unpack-tests,unpack-tools"
           description="Run DB-integration tests">
     <mkdir dir="coverage"/>
     <java jar='bin/integration-tests.jar' fork='true' failonerror='true'>
@@ -102,6 +113,7 @@
           description="Cleans unpacked jars and temporary files">
     <delete dir="bin"/>
     <delete dir="coverage"/>
+    <delete dir="sources"/>
   </target>
 
 
