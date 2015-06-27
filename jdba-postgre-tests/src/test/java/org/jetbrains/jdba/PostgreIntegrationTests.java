@@ -4,10 +4,7 @@ package org.jetbrains.jdba;
  * @author Leonid Bushuev from JetBrains
  **/
 
-import org.jetbrains.jdba.core.PostgreCommandRunnerTest;
-import org.jetbrains.jdba.core.PostgrePrimaryTest;
-import org.jetbrains.jdba.core.PostgreQueryRunnerTest;
-import org.jetbrains.jdba.core.PostgreSessionTest;
+import org.jetbrains.jdba.core.*;
 import org.jetbrains.jdba.jdbc.PostgreExceptionRecognizerTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -20,6 +17,7 @@ import org.junit.runners.Suite;
                             PostgreSessionTest.class,
                             PostgreCommandRunnerTest.class,
                             PostgreQueryRunnerTest.class,
-                            PostgreExceptionRecognizerTest.class
+                            PostgreExceptionRecognizerTest.class,
+                            SudokuTest.class
 })
 public class PostgreIntegrationTests {}

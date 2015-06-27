@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.exceptions.DBFetchingException;
 import org.jetbrains.jdba.exceptions.DBPreparingException;
+import org.jetbrains.jdba.util.Numbers;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -152,9 +153,21 @@ public final class JdbcValueGetters {
     JdbcValueGetter<?> getter = null;
     if (jdbcType != Types.OTHER) getter = SPECIFIC_GETTERS.get(new SpecificKey(jdbcType, clazz));
     if (getter == null) getter = NORMAL_GETTERS.get(clazz);
+    if (getter == null && clazz.isArray()) getter = lookForArrayGetter(clazz);
     return (JdbcValueGetter<W>) getter;
   }
 
+  @Nullable
+  protected static <W> JdbcValueGetter<W> lookForArrayGetter(@NotNull final Class<W> clazz) {
+    return new ArrayGetter<W>(clazz);
+  }
+
+  @NotNull
+  private static Class<?> getArrayComponentClass(@NotNull final Class<?> arrayClass) {
+    Class<?> c = arrayClass;
+    while (c.isArray()) c = c.getComponentType();
+    return c;
+  }
 
 
   //// GETTERS \\\\
@@ -440,6 +453,77 @@ public final class JdbcValueGetters {
       throws SQLException;
   }
 
+  static final class ArrayGetter<A> extends AbstractArrayGetter<A> {
+
+    private final Class<A> arrayClass;
+
+    ArrayGetter(final Class<A> arrayClass) {
+      this.arrayClass = arrayClass;
+    }
+
+    @Override
+    protected A convertArray(final Array array) throws SQLException {
+      Object gotArray = array.getArray();
+      final Object result;
+      try {
+        if (arrayClass.isAssignableFrom(gotArray.getClass())) {
+          result = gotArray;
+        }
+        else {
+          result = copySlice(arrayClass, gotArray);
+        }
+      }
+      catch (Exception e) {
+        String msg =
+            String.format("Failed to fetch an array value. " +
+                          "Required type: %s, actual type: %s. " +
+                          "Encountered exception class %s with message %s.",
+                          arrayClass.getCanonicalName(), gotArray.getClass().getCanonicalName(),
+                          e.getClass().getSimpleName(), e.getMessage());
+        throw new DBFetchingException(msg, e, null);
+      }
+
+      //noinspection unchecked
+      return (A) result;
+    }
+
+    private static Object copySlice(Class<?> sliceClass, Object sliceSource) {
+      Class<?> componentType = sliceClass.getComponentType();
+      int n = java.lang.reflect.Array.getLength(sliceSource);
+      Object result = java.lang.reflect.Array.newInstance(sliceClass.getComponentType(), n);
+      if (n == 0) return result;
+
+      for (int i = 0; i < n; i++) {
+        final Object x = java.lang.reflect.Array.get(sliceSource, i);
+        if (x == null) continue;;
+
+        final Class<?> xClass =  x.getClass();
+        final Object component;
+        if (componentType.isAssignableFrom(xClass)) {
+          component = x;
+        }
+        else if (componentType == String.class) {
+          component = x.toString();
+        }
+        else if (componentType.isArray()) {
+          component = copySlice(componentType, x);
+        }
+        else if ((componentType.isPrimitive() || Number.class.isAssignableFrom(componentType)) &&
+                                                            Number.class.isAssignableFrom(xClass)) {
+          //noinspection unchecked
+          component = Numbers.convertNumber((Class<Number>) componentType, (Number) x);
+        }
+        else {
+          String message =
+              String.format("Array value fetching problem: unknown how to convert value (%s) of type %s to %s.",
+                            x.toString(), xClass.getCanonicalName(), componentType.getCanonicalName());
+          throw new IllegalStateException(message);
+        }
+        java.lang.reflect.Array.set(result, i, component);
+      }
+      return result;
+    }
+  }
 
   static final class ArrayOfByteGetter extends AbstractArrayGetter<byte[]> {
 
