@@ -1,13 +1,13 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="All Unit Tests" type="JUnit" factoryName="JUnit">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-    <module name="" />
+    <module name="test-pack" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" value="" />
-    <option name="PACKAGE_NAME" />
-    <option name="MAIN_CLASS_NAME" value="" />
+    <option name="PACKAGE_NAME" value="" />
+    <option name="MAIN_CLASS_NAME" value="UnitTests" />
     <option name="METHOD_NAME" value="" />
-    <option name="TEST_OBJECT" value="pattern" />
+    <option name="TEST_OBJECT" value="class" />
     <option name="VM_PARAMETERS" value="-ea -Djava.awt.headless=true -Duser.language=en" />
     <option name="PARAMETERS" value="" />
     <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />

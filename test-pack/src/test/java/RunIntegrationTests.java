@@ -58,7 +58,7 @@ public class RunIntegrationTests {
         "JUnit version: " + junit.runner.Version.id()
     );
 
-    TestSuiteExecutor.run(AllUnitTestSuites.class);
+    TestSuiteExecutor.run(UnitTests.class);
   }
 
   private static void runIntegrationTests() {
