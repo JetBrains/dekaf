@@ -5,34 +5,47 @@
     <classpath path="tools/jacoco/lib/jacocoant.jar"/>
   </taskdef>
 
-  <target name="process-coverage" depends="merge-it,report-it"
+  <target name="process-coverage" depends="merge-it,unpack-sources,report-it"
           description="Merge coverage and generate report"/>
 
+  <property name="coverage-total-file" value="${basedir}/coverage/total.dat"/>
+
   <target name="merge-it">
-    <jacoco:merge destfile="coverage/total.dat">
-      <fileset dir="coverage" includes="jacoco-*.dat"/>
+    <jacoco:merge destfile="${coverage-total-file}">
+      <fileset dir="${basedir}/coverage" includes="jacoco-*.dat"/>
     </jacoco:merge>
   </target>
+
+
+  <target name="unpack-sources">
+    <unzip dest="${basedir}/sources">
+      <fileset dir="${basedir}/bin">
+        <include name="jdba-*-sources.jar"/>
+      </fileset>
+    </unzip>
+  </target>
+
 
   <target name="report-it">
     <jacoco:report>
 
       <executiondata>
-        <file file="coverage/total.dat"/>
+        <file file="${coverage-total-file}"/>
       </executiondata>
 
       <structure name="JDBA">
         <classfiles>
-          <fileset dir="bin">
+          <fileset dir="${basedir}/bin">
             <include name="jdba-*.jar"/>
+            <exclude name="*-sources.jar"/>
           </fileset>
         </classfiles>
-        <!--sourcefiles encoding="UTF-8">
-          <fileset dir="src"/>
-        </sourcefiles-->
+        <sourcefiles encoding="UTF-8">
+          <fileset dir="${basedir}/sources"/>
+        </sourcefiles>
       </structure>
 
-      <html destdir="coverage/report"/>
+      <html destdir="${basedir}/coverage/report"/>
 
     </jacoco:report>
   </target>
@@ -41,11 +54,5 @@
   <target name="ask-teamcity" description="Ask TeamCity for Coverage">
     <echo>##teamcity[jacocoReport dataPath='coverage/total.dat' classpath='+:bin/jdba*.jar' includes='org.jetbrains.jdba.*' excludes='*Test *Error *Exception']</echo>
   </target>
-
-  <!--
-
-  print("##teamcity[jacocoReport dataPath='coverage/*.dat' classpath='+:bin/jdba*.jar' includes='org.jetbrains.jdba.*' excludes='*Test *Error *Exception']\n")
-
-  -->
 
 </project>
