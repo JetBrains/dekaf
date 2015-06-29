@@ -36,8 +36,9 @@ public class MysqlIntermediateSession extends JdbcIntermediateSession {
     return stmt;
   }
 
+
   @Override
-  void tuneResultSet(@NotNull final ResultSet rset) throws SQLException {
+  void tuneResultSetWithFetchSize(@NotNull final ResultSet rset, final int fetchLimit) {
     // nothing to do
   }
 }
