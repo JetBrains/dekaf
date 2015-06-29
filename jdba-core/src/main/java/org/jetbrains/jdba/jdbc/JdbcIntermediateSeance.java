@@ -152,7 +152,7 @@ public abstract class JdbcIntermediateSeance implements IntegralIntermediateSean
         mySession.tuneResultSet(myDefaultResultSet);
         myDefaultResultSetHasRows = myDefaultResultSet.next();  // download first rows
         if (!myDefaultResultSetHasRows)  {
-          myDefaultResultSet.close(); // close it if it has no rows
+          JdbcUtil.close(myDefaultResultSet); // close it if it has no rows
         }
       }
       else {
@@ -204,12 +204,7 @@ public abstract class JdbcIntermediateSeance implements IntegralIntermediateSean
 
     if (myDefaultResultSet != null) {
       try {
-        if (!myDefaultResultSet.isClosed()) {
-          myDefaultResultSet.close();
-        }
-      }
-      catch (SQLException sqle) {
-        // TODO log somehow
+        JdbcUtil.close(myDefaultResultSet);
       }
       finally {
         myDefaultResultSet = null;
@@ -218,12 +213,7 @@ public abstract class JdbcIntermediateSeance implements IntegralIntermediateSean
 
     if (myStatement != null) {
       try {
-        if (!myStatement.isClosed()) {
-          myStatement.close();
-        }
-      }
-      catch (SQLException sqle) {
-        // TODO log somehow
+        JdbcUtil.close(myStatement);
       }
       finally {
         myStatement = null;
@@ -237,10 +227,10 @@ public abstract class JdbcIntermediateSeance implements IntegralIntermediateSean
   public boolean isStatementOpened() {
     try {
       return myStatement != null
-          && !myStatement.isClosed();
+          && JdbcUtil.isClosed(myStatement);
     }
     catch (SQLException sqle) {
-      // TODO log somehow
+      JdbcUtil.printCloseException(sqle, myStatement.getClass());
       return false;
     }
   }

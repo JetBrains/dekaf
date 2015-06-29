@@ -54,7 +54,7 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
     myIsDefault = isDefault;
 
     try {
-      myOpened = !myResultSet.isClosed();
+      myOpened = !JdbcUtil.isClosed(myResultSet);
     }
     catch (SQLException sqle) {
       throw seance.mySession.recognizeException(sqle, seance.myStatementText);
@@ -251,12 +251,7 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
   @Override
   public synchronized void close() {
     try {
-      if (!myResultSet.isClosed()) {
-        myResultSet.close();
-      }
-    }
-    catch (SQLException e) {
-      // TODO log somehow
+      JdbcUtil.close(myResultSet);
     }
     finally {
       myHasRows = false;

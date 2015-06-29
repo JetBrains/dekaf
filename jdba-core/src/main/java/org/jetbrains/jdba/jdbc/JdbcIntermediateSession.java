@@ -107,7 +107,7 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
       myConnection.setAutoCommit(true);
     }
     catch (SQLException sqle) {
-      // TODO log it somehow
+      JdbcUtil.printOperationException(sqle, "rollback");
       close(); // this connection is broken
     }
   }
@@ -211,12 +211,7 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
     }
 
     if (myOwnConnection) {
-      try {
-        myConnection.close();
-      }
-      catch (SQLException sqle) {
-        // TODO log it somehow
-      }
+      JdbcUtil.close(myConnection);
     }
   }
 
