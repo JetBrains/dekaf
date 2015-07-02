@@ -46,7 +46,8 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
                                 @NotNull final Driver driver,
                                 int connectionsLimit,
                                 @NotNull final DBExceptionRecognizer exceptionRecognizer) {
-    this(prepareDataSource(connectionString, connectionProperties, driver), connectionsLimit,
+    this(prepareDataSource(connectionString, connectionProperties, driver),
+         connectionsLimit,
          exceptionRecognizer);
   }
 

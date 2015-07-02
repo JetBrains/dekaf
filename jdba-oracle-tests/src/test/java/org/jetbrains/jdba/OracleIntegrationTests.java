@@ -9,6 +9,7 @@ import org.jetbrains.jdba.core.OraclePrimaryTest;
 import org.jetbrains.jdba.core.OracleQueryRunnerTest;
 import org.jetbrains.jdba.core.OracleSessionTest;
 import org.jetbrains.jdba.jdbc.OracleExceptionRecognizingTest;
+import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -22,4 +23,13 @@ import org.junit.runners.Suite;
                             OracleQueryRunnerTest.class,
                             OracleExceptionRecognizingTest.class
 })
-public class OracleIntegrationTests {}
+public class OracleIntegrationTests {
+
+  @BeforeClass
+  public static void setupEnvironment() {
+    System.setProperty("user.awt.headless", "true");
+    System.setProperty("user.language", "en");
+    System.setProperty("user.country", "US");
+  }
+
+}

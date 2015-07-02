@@ -35,11 +35,11 @@ from X1000 P,
 
 
 ---- EnsureNoTableOrViewMetaQuery ----
-select cmd
+select substr(cmd,1,90) as cmd
 from (
   with O as ( select object_name as name, object_id
               from sys.user_objects
-              where upper(object_name) in (upper(?), upper(?), upper(?), upper(?)) )
+              where upper(object_name) in (upper(to_char(?)), upper(to_char(?)), upper(to_char(?)), upper(to_char(?))) )
   select 'drop view '||V.view_name as cmd, O.object_id
   from O join sys.user_views V on O.name = V.view_name
   union all

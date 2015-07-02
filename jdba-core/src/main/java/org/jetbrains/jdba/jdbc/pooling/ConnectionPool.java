@@ -25,7 +25,7 @@ import static org.jetbrains.jdba.util.Objects.castTo;
 public class ConnectionPool implements ImplementationAccessibleService {
 
   @NotNull
-  private final DataSource myOriginalSource;
+  private final DataSource myOriginalDataSource;
 
   private final CopyOnWriteArrayList<Connection> myAllConnections = new CopyOnWriteArrayList<Connection>();
 
@@ -43,9 +43,15 @@ public class ConnectionPool implements ImplementationAccessibleService {
 
 
 
-  public ConnectionPool(@NotNull DataSource originalSource) {
-    myOriginalSource = originalSource;
+  public ConnectionPool(@NotNull DataSource originalDataSource) {
+    myOriginalDataSource = originalDataSource;
   }
+
+  @NotNull
+  public DataSource getOriginalDataSource() {
+    return myOriginalDataSource;
+  }
+
 
 
   //// MAIN ACTIVITY: CONNECT, BORROW, RELEASE, DISCONNECT \\\\
@@ -71,8 +77,9 @@ public class ConnectionPool implements ImplementationAccessibleService {
     }
 
     // obtain from the source
-    Connection connection = myOriginalSource.getConnection();
-    if (connection == null) throw new UnexpectedDataSourceException("DataSource " + myOriginalSource.getClass().getName() + " returned null.", "<DataSource.getConnection()>");
+    Connection connection = myOriginalDataSource.getConnection();
+    if (connection == null) throw new UnexpectedDataSourceException("DataSource " + myOriginalDataSource
+        .getClass().getName() + " returned null.", "<DataSource.getConnection()>");
 
     // prepare this connection
     try {
@@ -209,8 +216,8 @@ public class ConnectionPool implements ImplementationAccessibleService {
   public <I> I getSpecificService(@NotNull final Class<I> serviceClass,
                                   @NotNull final String serviceName) throws ClassCastException {
     if (serviceName.toUpperCase().startsWith("JDBC")) {
-      if (myOriginalSource instanceof ImplementationAccessibleService) {
-        return ((ImplementationAccessibleService) myOriginalSource).getSpecificService(serviceClass,
+      if (myOriginalDataSource instanceof ImplementationAccessibleService) {
+        return ((ImplementationAccessibleService) myOriginalDataSource).getSpecificService(serviceClass,
                                                                                        serviceName);
       }
       else {

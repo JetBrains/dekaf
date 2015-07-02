@@ -49,6 +49,17 @@ public class SimpleDataSource implements DataSource, ImplementationAccessibleSer
     myDriver = driver;
   }
 
+
+  public void setConnectionProperty(@NotNull final String name, @Nullable final String value) {
+    if (value != null) {
+      myConnectionProperties.setProperty(name, value);
+    }
+    else {
+      myConnectionProperties.remove(name);
+    }
+  }
+
+
   @NotNull
   private static Properties cloneProperties(final @Nullable Properties properties) {
     Properties p = new Properties();

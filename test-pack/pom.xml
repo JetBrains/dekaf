@@ -185,12 +185,12 @@
     <dependency>
       <groupId>oracle.jdbc</groupId>
       <artifactId>ojdbc6</artifactId>
-      <version>12.1.0.2</version>
+      <version>11.2.0.1</version>
     </dependency>
     <dependency>
       <groupId>oracle.jdbc</groupId>
       <artifactId>orai18n</artifactId>
-      <version>12.1.0.2</version>
+      <version>11.2.0.1</version>
     </dependency>
     <dependency>
       <groupId>mysql</groupId>
