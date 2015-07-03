@@ -105,12 +105,14 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
         n = rowLayout.components.length;
     }
 
+    final ResultSetMetaData metaData = resultSet.getMetaData();
+    final int m = metaData.getColumnCount();
+
     final JdbcValueGetter<?>[] getters;
     if (n > 0 && rowLayout.kind != RowLayout.Kind.TUPLE && rowLayout.kind != RowLayout.Kind.STRUCT) {
+      // array with specified components
       getters = new JdbcValueGetter[n];
-      ResultSetMetaData metaData = resultSet.getMetaData();
 
-      int m = metaData.getColumnCount();
       if (n > m && rowLayout.kind == RowLayout.Kind.ARRAY) {
         throw new DBPreparingException(format("Query returns too few columns: %d when expected %d (row type is %s).",
                                               m, n, resultLayout.row.rowClass),
@@ -122,7 +124,16 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
         getters[i] = JdbcValueGetters.of(jdbcType, rowLayout.components[i].clazz);
       }
     }
+    else if (n == 0 && rowLayout.commonComponentClass == Object.class) {
+      // raw array
+      getters = new JdbcValueGetter[m];
+      for (int i = 0; i < m; i++) {
+        int jdbcType = metaData.getColumnType(i + 1);
+        getters[i] = JdbcValueGetters.of(jdbcType, Object.class);
+      }
+    }
     else {
+      // TODO log somehow?
       getters = null;
     }
 

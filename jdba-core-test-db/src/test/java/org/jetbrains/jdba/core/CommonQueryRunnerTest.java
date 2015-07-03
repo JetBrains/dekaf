@@ -88,6 +88,43 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
   }
 
 
+  @Test
+  public void query_raw_numbers() {
+    final String queryText =
+        "select 127 as B, 32767 as S, 2147483647 as I, 9223372036854775807 as L from X1";
+    final SqlQuery<Object[]> query =
+        new SqlQuery<Object[]>(queryText, rowOf(rawArray()));
+    final Object[] numbers = query(query);
+
+    assertThat(numbers).hasSize(4);
+    assertThat(numbers[0]).isInstanceOf(Number.class);
+    assertThat(numbers[1]).isInstanceOf(Number.class);
+    assertThat(numbers[2]).isInstanceOf(Number.class);
+    assertThat(numbers[3]).isInstanceOf(Number.class);
+    assertThat(((Number)numbers[0]).intValue()).isEqualTo(127);
+    assertThat(((Number)numbers[1]).intValue()).isEqualTo(32767);
+    assertThat(((Number)numbers[2]).intValue()).isEqualTo(2147483647);
+    assertThat(((Number)numbers[3]).longValue()).isEqualTo(9223372036854775807L);
+  }
+
+  @Test
+  public void query_raw_strings() {
+    final String queryText =
+        "select 'C', 'String' from X1";
+    final SqlQuery<Object[]> query =
+        new SqlQuery<Object[]>(queryText, rowOf(rawArray()));
+    final Object[] strings = query(query);
+
+    assertThat(strings).hasSize(2);
+
+    assertThat(strings[0]).isInstanceOf(String.class);
+    assertThat(strings[1]).isInstanceOf(String.class);
+
+    assertThat(strings[0]).isEqualTo("C");
+    assertThat(strings[1]).isEqualTo("String");
+  }
+
+
 
   @Test
   public void query_1000_values() {

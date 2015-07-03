@@ -98,6 +98,7 @@ public final class JdbcValueGetters {
     SPECIFIC_GETTERS = new HashMap<SpecificKey, JdbcValueGetter<?>>(30);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, boolean.class), BoolBoolGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, Boolean.class), BoolBoolGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, Object.class), BoolBoolGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, byte.class), BoolByteGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, Byte.class), BoolByteGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, short.class), BoolShortGetter.INSTANCE);
@@ -114,20 +115,28 @@ public final class JdbcValueGetters {
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BIT, int.class), BoolIntGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BIT, Integer.class), BoolIntGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BIT, Number.class), BoolByteGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BIT, Object.class), BoolByteGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.TINYINT, boolean.class), IntBoolGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.TINYINT, Boolean.class), IntBoolGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.TINYINT, Number.class), ByteGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.TINYINT, Object.class), ByteGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.SMALLINT, boolean.class), IntBoolGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.SMALLINT, Boolean.class), IntBoolGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.SMALLINT, Number.class), ShortGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.SMALLINT, Object.class), ShortGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.INTEGER, boolean.class), IntBoolGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.INTEGER, Boolean.class), IntBoolGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.INTEGER, Number.class), IntGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BIGINT, Number.class), LongGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BIGINT, Object.class), LongGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.REAL, Number.class), FloatGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.REAL, Object.class), FloatGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.FLOAT, Number.class), DoubleGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.FLOAT, Object.class), DoubleGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.DOUBLE, Number.class), DoubleGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.DOUBLE, Object.class), DoubleGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.DECIMAL, Number.class), BigDecimalGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.DECIMAL, Object.class), BigDecimalGetter.INSTANCE);
   }
 
 
