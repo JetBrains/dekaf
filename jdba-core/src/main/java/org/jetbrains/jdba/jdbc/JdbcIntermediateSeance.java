@@ -3,10 +3,11 @@ package org.jetbrains.jdba.jdbc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.core.ResultLayout;
-import org.jetbrains.jdba.exceptions.UnhandledTypeException;
 import org.jetbrains.jdba.intermediate.IntegralIntermediateSeance;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 
@@ -71,76 +72,10 @@ public abstract class JdbcIntermediateSeance implements IntegralIntermediateSean
     }
     for (int i = 0; i < params.length; i++) {
       Object param = params[i];
-      assignParameter(stmt, i + 1, param);
+      JdbcParametersHandler.assignParameter(stmt, i + 1, param);
     }
   }
 
-
-  protected void assignParameter(@NotNull final PreparedStatement stmt,
-                                 final int index,
-                                 @Nullable final Object object)
-          throws SQLException
-  {
-    if (object == null) {
-      stmt.setNull(index, Types.BIT);
-    }
-    else if (object instanceof Boolean) {
-      stmt.setBoolean(index, (Boolean)object);
-    }
-    else if (object instanceof Byte) {
-      stmt.setByte(index, (Byte)object);
-    }
-    else if (object instanceof Short) {
-      stmt.setShort(index, (Short)object);
-    }
-    else if (object instanceof Integer) {
-      stmt.setInt(index, (Integer)object);
-    }
-    else if (object instanceof Float) {
-      stmt.setFloat(index, (Float)object);
-    }
-    else if (object instanceof Double) {
-      stmt.setDouble(index, (Double)object);
-    }
-    else if (object instanceof Long) {
-      stmt.setLong(index, (Long)object);
-    }
-    else if (object instanceof Character) {
-      stmt.setString(index, object.toString());
-    }
-    else if (object instanceof String) {
-      stmt.setString(index, (String)object);
-    }
-    else if (object instanceof java.sql.Date) {
-      stmt.setDate(index, (java.sql.Date)object);
-    }
-    else if (object instanceof java.sql.Timestamp) {
-      stmt.setTimestamp(index, (java.sql.Timestamp)object);
-    }
-    else if (object instanceof java.sql.Time) {
-      stmt.setTime(index, (java.sql.Time)object);
-    }
-    else if (object instanceof java.util.Date) {
-      stmt.setTimestamp(index, new Timestamp(((java.util.Date)object).getTime()));
-    }
-    else if (object instanceof byte[]) {
-      stmt.setBytes(index, (byte[])object);
-    }
-    else {
-      boolean assigned = assignSpecificParameter(stmt, index, object);
-      if (!assigned) {
-        throw new UnhandledTypeException("I don't know how to pass an instance of class " +
-                                                 object.getClass().getSimpleName() + " as the " +
-                                                 index + "th parameter into a SQL statement.", null);
-      }
-    }
-  }
-
-  protected boolean assignSpecificParameter(@NotNull final PreparedStatement stmt,
-                                            final int index,
-                                            @NotNull final Object object) throws SQLException {
-    return false;
-  }
 
 
   @Override
