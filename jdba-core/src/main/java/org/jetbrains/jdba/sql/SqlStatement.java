@@ -1,6 +1,7 @@
 package org.jetbrains.jdba.sql;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 
@@ -22,11 +23,19 @@ public abstract class SqlStatement {
   final String mySourceText;
 
   /**
+   * The natural name of the statement.
+   * Used, for example, when the statement was got from the {@link Scriptum}.
+   */
+  @Nullable
+  final String myName;
+
+  /**
    * A short (one line) description of this SQL statement.
-   * It contains a file, position and optional name of this SQL statement.
+   * It may contain a file, position and optional name of this SQL statement.
    */
   @NotNull
   final String myDescription;
+
 
 
 
@@ -38,6 +47,7 @@ public abstract class SqlStatement {
     if (sourceFragment instanceof TextFileFragment) {
       TextFileFragment f = (TextFileFragment) sourceFragment;
       String name = f.getFragmentName();
+      myName = name;
       if (name == null) name = "SQL fragment";
       mainDescriptionPart = name + " from " + f.getTextName() + ':' + f.row + ':' + f.pos;
     }
@@ -45,6 +55,7 @@ public abstract class SqlStatement {
       //noinspection UnnecessaryLocalVariable
       TextFragment f = sourceFragment;
       mainDescriptionPart = "SQL statement from " + f.getTextName() + ':' + f.row + ':' + f.pos;
+      myName = null;
     }
 
     // TODO add some additional info to the mainDescriptionPart
@@ -55,6 +66,7 @@ public abstract class SqlStatement {
   protected SqlStatement(@NotNull String sourceText) {
     mySourceText = sourceText;
     myRow = 1;
+    myName = null;
     myDescription = "SQL statement";
   }
 
@@ -63,6 +75,7 @@ public abstract class SqlStatement {
   protected SqlStatement(@NotNull final String sourceText, final int row) {
     this.mySourceText = sourceText;
     this.myRow = row;
+    this.myName = '@' + Integer.toString(row);
     this.myDescription = "SQL statement at row " + row;
   }
 
@@ -75,6 +88,11 @@ public abstract class SqlStatement {
     return mySourceText;
   }
 
+  @Nullable
+  protected String getName() {
+    return myName;
+  }
+
   @NotNull
   protected String getDescription() {
     return myDescription;
@@ -83,6 +101,10 @@ public abstract class SqlStatement {
 
   @Override
   public String toString() {
-    return myDescription + ":\n" + mySourceText;
+    StringBuilder b = new StringBuilder();
+    if (myName != null) b.append(myName).append(": ");
+    b.append(myDescription).append(":\n");
+    b.append(mySourceText);
+    return b.toString();
   }
 }

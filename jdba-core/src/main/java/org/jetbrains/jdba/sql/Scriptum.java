@@ -197,14 +197,17 @@ public final class Scriptum {
                                      @NotNull final ResultLayout<S> layout) {
     TextFileFragment fragment = getText(name);
     fragment = stripSingleStatement(fragment);
-    return new SqlQuery<S>(fragment, layout);
+    final SqlQuery<S> query = new SqlQuery<S>(fragment, layout);
+    query.setDisplayName(fragment.getFragmentName());
+    return query;
   }
 
   @NotNull
   public final SqlCommand command(@NotNull final String name) {
     TextFileFragment fragment = getText(name);
     fragment = stripSingleStatement(fragment);
-    return new SqlCommand(fragment);
+    final SqlCommand command = new SqlCommand(fragment);
+    return command;
   }
 
   @NotNull

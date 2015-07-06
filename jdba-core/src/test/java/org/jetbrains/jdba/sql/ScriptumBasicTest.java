@@ -112,4 +112,17 @@ public class ScriptumBasicTest {
                                    .endsWith("language plpgsql");
   }
 
+
+  @Test
+  public void name_basic() {
+    SqlCommand command = myScriptum.command("TheCommand");
+    assertThat(command.getName()).isEqualTo("TheCommand");
+  }
+
+  @Test
+  public void name_adjustCase() {
+    SqlCommand command = myScriptum.command("THECOMMAND");
+    assertThat(command.getName()).isEqualTo("TheCommand");
+  }
+
 }
