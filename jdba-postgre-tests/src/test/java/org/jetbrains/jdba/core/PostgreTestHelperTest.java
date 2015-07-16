@@ -63,6 +63,24 @@ public class PostgreTestHelperTest extends CommonIntegrationCase {
   }
 
   @Test
+  public void zap_table_with_inheritance() {
+    TH.zapSchema();
+    TH.performScript("create table my_face (id int primary key)",
+                     "create table my_org (name varchar(60)) inherits (my_face)",
+                     "create table my_person (name1 varchar(25), name2 varchar(25)) inherits (my_face)");
+
+    assertThat(objectExists("my_face", Kind.CLASS)).isTrue();
+    assertThat(objectExists("my_org", Kind.CLASS)).isTrue();
+    assertThat(objectExists("my_person", Kind.CLASS)).isTrue();
+
+    TH.zapSchema();
+
+    assertThat(objectExists("my_face", Kind.CLASS)).isFalse();
+    assertThat(objectExists("my_org", Kind.CLASS)).isFalse();
+    assertThat(objectExists("my_person", Kind.CLASS)).isFalse();
+  }
+
+  @Test
   public void zap_view() {
     test_zap_object("my_view", Kind.CLASS, "create view my_view as select 01");
   }
