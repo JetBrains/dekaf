@@ -3,6 +3,7 @@ package org.jetbrains.jdba.util;
 import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,7 +29,7 @@ import java.util.List;
  * @author Leonid Bushuev from JetBrains
  * @since 8.1.3.
  */
-public final class Version implements Comparable<Version> {
+public final class Version implements Comparable<Version>, Serializable {
 
   @NotNull
   private final List<Integer> elements;
@@ -36,8 +37,8 @@ public final class Version implements Comparable<Version> {
 
   /**
    * Parse the version string.
-   * @param string
-   * @return
+   * @param string version string like "1.2.3-4"
+   * @return   the parsed version.
    */
   public static Version of(@NotNull final String string) {
     ImmutableList.Builder<Integer> b = ImmutableList.builder();

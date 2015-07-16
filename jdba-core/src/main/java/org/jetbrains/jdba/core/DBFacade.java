@@ -50,6 +50,12 @@ public interface DBFacade extends ImplementationAccessibleService {
    */
   boolean isConnected();
 
+  /**
+   * Provides a brief connection info.
+   * @return a brief connection info.
+   */
+  ConnectionInfo getConnectionInfo();
+
 
   /**
    * Performs the given operation in transaction and returns the result.

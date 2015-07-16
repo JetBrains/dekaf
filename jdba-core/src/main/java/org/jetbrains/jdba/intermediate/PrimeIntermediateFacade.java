@@ -2,6 +2,7 @@ package org.jetbrains.jdba.intermediate;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.Rdbms;
+import org.jetbrains.jdba.core.ConnectionInfo;
 import org.jetbrains.jdba.core.ImplementationAccessibleService;
 
 
@@ -61,6 +62,12 @@ public interface PrimeIntermediateFacade extends ImplementationAccessibleService
    */
   boolean isConnected();
 
+  /**
+   * Provides a brief connection info.
+   * @return a brief connection info.
+   * @throws IllegalStateException the facade is not connected.
+   */
+  ConnectionInfo getConnectionInfo();
 
 
   //// SESSIONS CONTROL \\\\

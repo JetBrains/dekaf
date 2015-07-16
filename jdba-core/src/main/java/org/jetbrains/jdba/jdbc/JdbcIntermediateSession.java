@@ -12,6 +12,8 @@ import java.sql.*;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static org.jetbrains.jdba.core.Layouts.arrayOf;
+import static org.jetbrains.jdba.core.Layouts.rowOf;
 import static org.jetbrains.jdba.util.Objects.castTo;
 
 
@@ -266,6 +268,38 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
     }
 
     rset.setFetchSize(fetchLimit);
+  }
+
+
+  /**
+   * A simple internal function that performs a simple query without parameters
+   * and returns the first row as an array.
+   * @param queryText   the query text.
+   * @param columnCount count of columns.
+   * @param columnClass class of columns.
+   * @param <V>         type of columns.
+   * @return            the first row, or null if no rows.
+   */
+  @Nullable
+  public <V> V[] queryOneRow(@NotNull final String queryText,
+                             final int columnCount,
+                             @NotNull final Class<V> columnClass) {
+    JdbcIntermediateSeance seance1 = this.openSeance(queryText, null);
+    try {
+      seance1.execute();
+      JdbcIntermediateCursor<V[]> cursor1 =
+          seance1.openDefaultCursor(rowOf(arrayOf(columnCount, columnClass)));
+      try {
+        if (cursor1.hasRows()) return cursor1.fetch();
+        else                   return null;
+      }
+      finally {
+        cursor1.close();
+      }
+    }
+    finally {
+      seance1.close();
+    }
   }
 
 

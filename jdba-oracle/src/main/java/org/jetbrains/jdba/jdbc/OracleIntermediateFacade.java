@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Oracle;
 import org.jetbrains.jdba.Rdbms;
+import org.jetbrains.jdba.core.ConnectionInfo;
 import org.jetbrains.jdba.exceptions.OracleTimezoneRegionNotFoundException;
 import org.jetbrains.jdba.intermediate.DBExceptionRecognizer;
 import org.jetbrains.jdba.jdbc.pooling.SimpleDataSource;
@@ -78,5 +79,20 @@ public class OracleIntermediateFacade extends JdbcIntermediateFacade {
                                                        final boolean ownConnection) {
     return new OracleIntermediateSession(this, myExceptionRecognizer, connection, ownConnection);
   }
+
+  @Override
+  public ConnectionInfo getConnectionInfo() {
+    return getConnectionInfoSmartly(CONNECTION_INFO_QUERY,
+                                    SIMPLE_VERSION_PATTERN, 1,
+                                    SIMPLE_VERSION_PATTERN, 1);
+  }
+
+  @SuppressWarnings("SpellCheckingInspection")
+  public static final String CONNECTION_INFO_QUERY =
+      "select sys_context('userenv', 'db_name') as database_name,      \n" +
+      "       sys_context('userenv', 'current_schema') as schema_name, \n" +
+      "       user as user_name                                        \n" +
+      "from dual                                                       \n";
+
 
 }

@@ -3,20 +3,25 @@ package org.jetbrains.jdba.jdbc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Rdbms;
+import org.jetbrains.jdba.core.ConnectionInfo;
 import org.jetbrains.jdba.intermediate.DBExceptionRecognizer;
 import org.jetbrains.jdba.intermediate.IntegralIntermediateFacade;
 import org.jetbrains.jdba.jdbc.pooling.ConnectionPool;
 import org.jetbrains.jdba.jdbc.pooling.SimpleDataSource;
+import org.jetbrains.jdba.util.Version;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.jetbrains.jdba.util.Objects.castTo;
 
@@ -121,6 +126,26 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
     return myPool.isReady();
   }
 
+  @Override
+  public ConnectionInfo getConnectionInfo() {
+    try {
+      Connection connection = myPool.borrow();
+      try {
+        DatabaseMetaData md = connection.getMetaData();
+        String userName = md.getUserName();
+        Version serverVersion = Version.of(md.getDatabaseMajorVersion(), md.getDatabaseMinorVersion());
+        Version driverVersion = Version.of(md.getDriverMajorVersion(), md.getDriverMinorVersion());
+        return new ConnectionInfo(null, null, userName, serverVersion, driverVersion);
+      }
+      finally {
+        myPool.release(connection);
+      }
+    }
+    catch (SQLException sqle) {
+      throw  myExceptionRecognizer.recognizeException(sqle, "getting brief connection info using JDBC connection metadata");
+    }
+  }
+
   @NotNull
   @Override
   public JdbcIntermediateSession openSession() {
@@ -163,6 +188,62 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
     else {
       return myPool.getSpecificService(serviceClass, serviceName);
     }
+  }
+
+
+
+  @NotNull
+  protected ConnectionInfo getConnectionInfoSmartly(final String envQuery,
+                                                    final Pattern serverVersionPattern,
+                                                    final int serverVersionGroupIndex,
+                                                    final Pattern driverVersionPattern,
+                                                    final int driverVersionGroupIndex) {
+    String[] env;
+    Version serverVersion, driverVersion;
+
+    final JdbcIntermediateSession session = openSession();
+    try {
+      // environment
+      env = session.queryOneRow(envQuery, 3, String.class);
+
+      if (env == null) env = new String[] {null,null,null};
+      assert env.length == 3 : "Session info should contain 3 components";
+
+      // versions
+      String serverVersionStr, driverVersionStr;
+      try {
+        DatabaseMetaData md = session.getConnection().getMetaData();
+        serverVersionStr = md.getDatabaseProductVersion();
+        driverVersionStr = md.getDriverVersion();
+      }
+      catch (SQLException sqle) {
+        throw getExceptionRecognizer().recognizeException(sqle, "getting versions using JDBC metadata");
+      }
+
+      serverVersion =
+          extractVersion(serverVersionStr, serverVersionPattern, serverVersionGroupIndex);
+      driverVersion =
+          extractVersion(driverVersionStr, driverVersionPattern, driverVersionGroupIndex);
+
+      // ok
+      return new ConnectionInfo(env[0], env[1], env[2], serverVersion, driverVersion);
+    }
+    finally {
+      session.close();
+    }
+  }
+
+  protected static final Pattern SIMPLE_VERSION_PATTERN =
+      Pattern.compile("(\\d{1,2}(\\.\\d{1,3}){1,5})");
+
+  @NotNull
+  protected static Version extractVersion(@Nullable final String serverVersionStr,
+                                          @NotNull final Pattern versionPattern,
+                                          final int groupIndex) {
+    if (serverVersionStr == null || serverVersionStr.isEmpty()) return Version.ZERO;
+    Matcher m = versionPattern.matcher(serverVersionStr);
+    if (m.find()) return Version.of(m.group(groupIndex));
+    else return Version.ZERO;
   }
 
 

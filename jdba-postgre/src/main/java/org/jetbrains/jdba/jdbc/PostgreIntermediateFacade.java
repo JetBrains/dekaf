@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Postgre;
 import org.jetbrains.jdba.Rdbms;
+import org.jetbrains.jdba.core.ConnectionInfo;
 import org.jetbrains.jdba.intermediate.DBExceptionRecognizer;
 
 import javax.sql.DataSource;
@@ -36,5 +37,17 @@ public class PostgreIntermediateFacade extends JdbcIntermediateFacade {
   public Rdbms rdbms() {
     return Postgre.RDBMS;
   }
+
+
+  @Override
+  public ConnectionInfo getConnectionInfo() {
+    return getConnectionInfoSmartly(CONNECTION_INFO_QUERY,
+                                    SIMPLE_VERSION_PATTERN, 1,
+                                    SIMPLE_VERSION_PATTERN, 1);
+  }
+
+  @SuppressWarnings("SpellCheckingInspection")
+  public static final String CONNECTION_INFO_QUERY =
+      "select current_database(), current_schema(), current_user";
 
 }

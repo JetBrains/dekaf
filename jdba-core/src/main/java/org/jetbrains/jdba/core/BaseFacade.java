@@ -17,6 +17,9 @@ public class BaseFacade implements DBFacade {
   @NotNull
   private final IntegralIntermediateFacade myInterFacade;
 
+  @Nullable
+  private ConnectionInfo myConnectionInfo;
+
 
   public BaseFacade(@NotNull final IntegralIntermediateFacade interFacade) {
     myInterFacade = interFacade;
@@ -30,24 +33,44 @@ public class BaseFacade implements DBFacade {
   }
 
   @Override
-  public void connect() {
+  public synchronized void connect() {
     myInterFacade.connect();
+    myConnectionInfo = null;
   }
 
   @Override
-  public void reconnect() {
+  public synchronized void reconnect() {
     myInterFacade.reconnect();
+    myConnectionInfo = null;
   }
 
   @Override
-  public void disconnect() {
+  public synchronized void disconnect() {
     myInterFacade.disconnect();
+    myConnectionInfo = null;
   }
 
   @Override
   public boolean isConnected() {
     return myInterFacade.isConnected();
   }
+
+  @Override
+  public ConnectionInfo getConnectionInfo() {
+    ConnectionInfo ci = myConnectionInfo;
+    if (ci == null) {
+      synchronized (this) {
+        ci = myConnectionInfo;
+        if (ci == null) {
+          ci = myInterFacade.getConnectionInfo();
+          myConnectionInfo = ci;
+        }
+      }
+    }
+    return ci;
+  }
+
+
 
   @Override
   public <R> R inTransaction(final InTransaction<R> operation) {
@@ -109,7 +132,7 @@ public class BaseFacade implements DBFacade {
 
 
   @Override
-  public DBLeasedSession leaseSession() {
+  public synchronized DBLeasedSession leaseSession() {
     final IntegralIntermediateSession interSession = instantiateIntermediateSession();
     final BaseSession baseSession = new BaseSession(interSession);
     return new DBLeasedSessionWrapper(baseSession);
@@ -117,7 +140,7 @@ public class BaseFacade implements DBFacade {
 
 
   @NotNull
-  protected IntegralIntermediateSession instantiateIntermediateSession() {
+  protected synchronized IntegralIntermediateSession instantiateIntermediateSession() {
     return myInterFacade.openSession();
   }
 

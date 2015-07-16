@@ -3,6 +3,7 @@ package org.jetbrains.jdba.intermediate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.Rdbms;
+import org.jetbrains.jdba.core.ConnectionInfo;
 
 
 
@@ -41,6 +42,9 @@ public class AdaptIntermediateFacade implements IntegralIntermediateFacade {
 
   @Override
   public boolean isConnected() {return myRemoteFacade.isConnected();}
+
+  @Override
+  public ConnectionInfo getConnectionInfo() {return myRemoteFacade.getConnectionInfo();}
 
   @Override
   @NotNull

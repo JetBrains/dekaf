@@ -89,6 +89,14 @@ public abstract class CommonPrimaryTest extends CommonIntegrationCase {
 
 
   @Test
+  public void getConnectionInfo_versions() {
+    ConnectionInfo info = DB.getConnectionInfo();
+    assertThat(info.serverVersion.isOrGreater(1));
+    assertThat(info.driverVersion.isOrGreater(1));
+  }
+
+
+  @Test
   public void zapSchema_basic() {
     DB.connect();
     TH.ensureNoTableOrView("T1", "V1");
