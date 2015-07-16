@@ -32,12 +32,15 @@ where sequence_catalog = current_database()
 --
 union all
 --
-select concat('drop type if exists ', user_defined_type_name) as cmd,
+select concat('drop type if exists ', T.typname, ' cascade') as cmd,
        2 as priority
-from information_schema.user_defined_types
-where user_defined_type_catalog = current_database()
-  and user_defined_type_schema = current_schema()
---
+from pg_catalog.pg_type T,
+     pg_catalog.pg_namespace N,
+     pg_catalog.pg_class C
+where T.typnamespace = N.oid
+  and N.nspname = current_schema()
+  and T.typrelid = C.oid
+  and C.relkind = 'c'::"char"
 union all
 --
 select concat('drop domain if exists ', domain_name) as cmd,
