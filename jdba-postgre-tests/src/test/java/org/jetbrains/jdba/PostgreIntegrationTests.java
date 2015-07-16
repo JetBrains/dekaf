@@ -18,6 +18,7 @@ import org.junit.runners.Suite;
                             PostgreCommandRunnerTest.class,
                             PostgreQueryRunnerTest.class,
                             PostgreExceptionRecognizerTest.class,
-                            SudokuTest.class
+                            SudokuTest.class,
+                            PostgreTestHelperTest.class
 })
 public class PostgreIntegrationTests {}

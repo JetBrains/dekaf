@@ -24,15 +24,36 @@ where table_catalog = current_database()
 
 
 ---- ZapSchemaMetaQuery ----
-select concat('drop view if exists ', table_name) as cmd
+select concat('drop sequence if exists ', sequence_name) as cmd,
+       1 as priority
+from information_schema.sequences
+where sequence_catalog = current_database()
+  and sequence_schema = current_schema()
+union all
+select concat('drop type if exists ', user_defined_type_name) as cmd,
+       2 as priority
+from information_schema.user_defined_types
+where user_defined_type_catalog = current_database()
+  and user_defined_type_schema = current_schema()
+union all
+select concat('drop domain if exists ', domain_name) as cmd,
+       3 as priority
+from information_schema.domains
+where domain_catalog = current_database()
+  and domain_schema = current_schema()
+union all
+select concat('drop view if exists ', table_name) as cmd,
+       4 as priority
 from information_schema.views
 where table_catalog = current_database()
   and table_schema = current_schema()
 union all
-select concat('drop table if exists ', table_name, ' cascade') as cmd
+select concat('drop table if exists ', table_name, ' cascade') as cmd,
+       5 as priority
 from information_schema.tables
 where table_catalog = current_database()
   and table_schema = current_schema()
   and table_type ilike '%TABLE%'
+order by priority desc
 ;
 
