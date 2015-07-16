@@ -86,6 +86,11 @@ begin
            5 as ord, object_id as rnum
        from user_objects
        where object_type in ('FUNCTION','PROCEDURE','PACKAGE')
+    union all
+    select 'drop synonym '||object_name as cmd,
+           9 as ord, object_id as rnum
+       from user_objects
+       where object_type = 'SYNONYM'
     )
   order by ord desc, rnum desc;
   --

@@ -4,10 +4,7 @@ package org.jetbrains.jdba;
  * @author Leonid Bushuev from JetBrains
  **/
 
-import org.jetbrains.jdba.core.OracleCommandRunnerTest;
-import org.jetbrains.jdba.core.OraclePrimaryTest;
-import org.jetbrains.jdba.core.OracleQueryRunnerTest;
-import org.jetbrains.jdba.core.OracleSessionTest;
+import org.jetbrains.jdba.core.*;
 import org.jetbrains.jdba.jdbc.OracleExceptionRecognizingTest;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -21,7 +18,8 @@ import org.junit.runners.Suite;
                             OracleSessionTest.class,
                             OracleCommandRunnerTest.class,
                             OracleQueryRunnerTest.class,
-                            OracleExceptionRecognizingTest.class
+                            OracleExceptionRecognizingTest.class,
+                            OracleTestHelperTest.class
 })
 public class OracleIntegrationTests {
 
