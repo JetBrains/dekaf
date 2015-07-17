@@ -89,12 +89,12 @@ public abstract class SqlStatement {
   }
 
   @Nullable
-  protected String getName() {
+  public String getName() {
     return myName;
   }
 
   @NotNull
-  protected String getDescription() {
+  public String getDescription() {
     return myDescription;
   }
 
