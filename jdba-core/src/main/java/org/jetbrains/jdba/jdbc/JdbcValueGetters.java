@@ -7,6 +7,7 @@ import org.jetbrains.jdba.exceptions.DBPreparingException;
 import org.jetbrains.jdba.util.Numbers;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -79,6 +80,7 @@ public final class JdbcValueGetters {
     NORMAL_GETTERS.put(Float.class, FloatGetter.INSTANCE);
     NORMAL_GETTERS.put(double.class, DoubleGetter.INSTANCE);
     NORMAL_GETTERS.put(Double.class, DoubleGetter.INSTANCE);
+    NORMAL_GETTERS.put(BigInteger.class, BigIntegerGetter.INSTANCE);
     NORMAL_GETTERS.put(BigDecimal.class, BigDecimalGetter.INSTANCE);
     NORMAL_GETTERS.put(String.class, StringGetter.INSTANCE);
     NORMAL_GETTERS.put(char.class, CharGetter.INSTANCE);
@@ -336,6 +338,20 @@ public final class JdbcValueGetters {
     final static DoubleGetter INSTANCE = new DoubleGetter();
   }
 
+
+
+  static final class BigIntegerGetter extends JdbcValueGetter<BigInteger> {
+    @Override
+    @Nullable
+    BigInteger getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
+      BigDecimal bd = rset.getBigDecimal(index);
+      if (rset.wasNull()) return null;
+      return bd.toBigInteger();
+    }
+
+
+    final static BigDecimalGetter INSTANCE = new BigDecimalGetter();
+  }
 
 
   static final class BigDecimalGetter extends JdbcValueGetter<BigDecimal> {

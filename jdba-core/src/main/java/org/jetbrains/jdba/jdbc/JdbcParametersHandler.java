@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jdba.exceptions.DBParameterSettingException;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -60,6 +62,15 @@ abstract class JdbcParametersHandler {
         setter = "setDouble";
         stmt.setDouble(index, (Double) object);
       }
+      else if (object instanceof BigInteger) {
+        setter = "setBigDecimal";
+        BigDecimal bigDecimal = new BigDecimal(object.toString());
+        stmt.setBigDecimal(index, bigDecimal);
+      }
+      else if (object instanceof BigDecimal) {
+        setter = "setBigDecimal";
+        stmt.setBigDecimal(index, (BigDecimal) object);
+      }
       else if (object instanceof Long) {
         setter = "setLong";
         stmt.setLong(index, (Long) object);
@@ -70,7 +81,7 @@ abstract class JdbcParametersHandler {
       }
       else if (object instanceof String) {
         setter = "setString";
-        stmt.setString(index, (String)object);
+        stmt.setString(index, (String) object);
       }
       else if (object instanceof java.sql.Date) {
         setter = "setDate";
