@@ -31,7 +31,7 @@ public class ParamTestMethod extends TestMethod {
       for (int i = 0, n = realParams.length; i < n; i++) {
         if (i > 0) b.append(", ");
         Object v = realParams[i];
-        String s = v == null ? "null" : v.toString();
+        String s = valueDescription(v);
         s = s.replace('\r', ' ').replace('\n', ' ');
         b.append(s);
       }
@@ -41,6 +41,15 @@ public class ParamTestMethod extends TestMethod {
     }
     b.append(']');
     return Description.createTestDescription(javaClass, b.toString());
+  }
+
+  private String valueDescription(final Object v) {
+    if (v == null) return "null";
+    if (v instanceof Class) {
+      final Class clazz = (Class) v;
+      return clazz.getCanonicalName();
+    }
+    return v.toString();
   }
 
 
