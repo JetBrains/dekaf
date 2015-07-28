@@ -53,6 +53,11 @@ public class PostgreTestHelperTest extends CommonIntegrationCase {
   }
 
   @Test
+  public void zap_enum() {
+    test_zap_object("mood", Kind.TYPE, "create type mood as enum ('sad', 'ok', 'happy')");
+  }
+
+  @Test
   public void zap_domain() {
     test_zap_object("my_domain", Kind.TYPE, "create domain my_domain as char(2)");
   }

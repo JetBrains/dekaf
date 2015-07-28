@@ -32,8 +32,15 @@ where sequence_catalog = current_database()
 --
 union all
 --
-select concat('drop type if exists ', T.typname, ' cascade') as cmd,
+select concat('drop type if exists ', typname, ' cascade') as cmd,
        2 as priority
+from pg_catalog.pg_type
+where typtype = 'e'::"char"
+--
+union all
+--
+select concat('drop type if exists ', T.typname, ' cascade') as cmd,
+       3 as priority
 from pg_catalog.pg_type T,
      pg_catalog.pg_namespace N,
      pg_catalog.pg_class C
@@ -44,7 +51,7 @@ where T.typnamespace = N.oid
 union all
 --
 select concat('drop domain if exists ', domain_name) as cmd,
-       3 as priority
+       4 as priority
 from information_schema.domains
 where domain_catalog = current_database()
   and domain_schema = current_schema()
@@ -52,7 +59,7 @@ where domain_catalog = current_database()
 union all
 --
 select concat('drop table if exists ', table_name, ' cascade') as cmd,
-       4 as priority
+       5 as priority
 from information_schema.tables
 where table_catalog = current_database()
   and table_schema = current_schema()
@@ -61,7 +68,7 @@ where table_catalog = current_database()
 union all
 --
 select concat('drop view if exists ', table_name) as cmd,
-       5 as priority
+       6 as priority
 from information_schema.views
 where table_catalog = current_database()
   and table_schema = current_schema()
@@ -69,7 +76,7 @@ where table_catalog = current_database()
 union all
 --
 select concat('drop function if exists ', P.proname, '(', oidvectortypes(P.proargtypes), ')') as cmd,
-       6 as priority
+       7 as priority
 from pg_catalog.pg_proc P,
      pg_catalog.pg_namespace N
 where P.pronamespace = N.oid
