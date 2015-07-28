@@ -1,12 +1,15 @@
 package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jdba.exceptions.DBProtectionException;
 import org.jetbrains.jdba.exceptions.NoTableOrViewException;
 import org.jetbrains.jdba.sql.*;
 import org.jetbrains.jdba.util.Collects;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static java.lang.String.format;
 import static org.jetbrains.jdba.core.Layouts.*;
@@ -19,15 +22,22 @@ import static org.jetbrains.jdba.core.Layouts.*;
 public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper {
 
   @NotNull
-  protected final F facade;
+  protected final F db;
 
   @NotNull
   protected final Scriptum scriptum;
 
+  @NotNull
+  protected final Set<String> schemasNotToZap =
+      new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 
-  protected BaseTestHelper(@NotNull final F facade, final @NotNull Scriptum scriptum) {
-    this.facade = facade;
+
+
+  protected BaseTestHelper(@NotNull final F db, final @NotNull Scriptum scriptum) {
+    this.db = db;
     this.scriptum = scriptum;
+
+    schemasNotToZap.add("information_schema");
   }
 
 
@@ -45,7 +55,7 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
 
   @Override
   public void performCommand(@NotNull final SqlCommand command) {
-    facade.inSession(new InSessionNoResult() {
+    db.inSession(new InSessionNoResult() {
       @Override
       public void run(@NotNull final DBSession session) {
         session.command(command).run();
@@ -75,7 +85,7 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
 
   @Override
   public void performScript(@NotNull final SqlScript script) {
-    facade.inSession(new InSessionNoResult() {
+    db.inSession(new InSessionNoResult() {
       @Override
       public void run(@NotNull final DBSession session) {
         session.script(script).run();
@@ -117,7 +127,7 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
     final SqlQuery<List<String>> metaQuery =
         scriptum.query(metaQueryName, listOf(oneOf(String.class)));
 
-    facade.inSession(new InSessionNoResult() {
+    db.inSession(new InSessionNoResult() {
       @Override
       public void run(@NotNull final DBSession session) {
 
@@ -139,7 +149,7 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
 
   @Override
   public int countTableRows(@NotNull final String tableName) {
-    return facade.inSession(new InSession<Integer>() {
+    return db.inSession(new InSession<Integer>() {
       @Override
       public Integer run(@NotNull final DBSession session) {
 
@@ -183,6 +193,11 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
 
   @Override
   public void zapSchema() {
+    final ConnectionInfo connectionInfo = db.getConnectionInfo();
+    final String schemaName = connectionInfo.schemaName;
+    if (schemaName != null && schemasNotToZap.contains(schemaName))
+      throw new DBProtectionException(format("The schema %s must not be zapped", schemaName), "zapSchema");
+
     performCommandOrMetaQueryCommands(scriptum, "ZapSchema");
   }
 

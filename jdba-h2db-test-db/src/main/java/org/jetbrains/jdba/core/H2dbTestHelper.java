@@ -10,8 +10,8 @@ import org.jetbrains.jdba.sql.Scriptum;
  **/
 public class H2dbTestHelper extends BaseTestHelper<DBFacade> {
 
-  public H2dbTestHelper(@NotNull final DBFacade facade) {
-    super(facade, Scriptum.of(H2dbTestHelper.class));
+  public H2dbTestHelper(@NotNull final DBFacade db) {
+    super(db, Scriptum.of(H2dbTestHelper.class));
   }
 
   @Override

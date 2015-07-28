@@ -12,6 +12,7 @@ import org.jetbrains.jdba.util.Version;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
@@ -132,10 +133,12 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
       Connection connection = myPool.borrow();
       try {
         DatabaseMetaData md = connection.getMetaData();
+        String databaseName = connection.getCatalog();
+        String schemaName = getSchema(connection);
         String userName = md.getUserName();
         Version serverVersion = Version.of(md.getDatabaseMajorVersion(), md.getDatabaseMinorVersion());
         Version driverVersion = Version.of(md.getDriverMajorVersion(), md.getDriverMinorVersion());
-        return new ConnectionInfo(null, null, userName, serverVersion, driverVersion);
+        return new ConnectionInfo(databaseName, schemaName, userName, serverVersion, driverVersion);
       }
       finally {
         myPool.release(connection);
@@ -144,6 +147,31 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
     catch (SQLException sqle) {
       throw  myExceptionRecognizer.recognizeException(sqle, "getting brief connection info using JDBC connection metadata");
     }
+  }
+
+  /**
+   * Try to call the "Connection#getSchema()" function
+   * that appears in JRE 1.7.
+   *
+   * Some JDBC vendor can also ignore this method or throw exceptions.
+   */
+  @Nullable
+  private static String getSchema(final Connection connection) {
+    String schemaName = null;
+    try {
+      final Class<? extends Connection> connectionClass = connection.getClass();
+      final Method getSchemaMethod = connectionClass.getMethod("getSchema");
+      if (getSchemaMethod != null) {
+        schemaName = (String) getSchemaMethod.invoke(connection);
+      }
+    }
+    catch (NoSuchMethodException nsm) {
+      // no such method. sad
+    }
+    catch (Exception e) {
+      // TODO log this somehow?
+    }
+    return schemaName;
   }
 
   @NotNull

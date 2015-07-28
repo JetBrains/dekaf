@@ -10,8 +10,9 @@ import org.jetbrains.jdba.sql.Scriptum;
  **/
 public class PostgreTestHelper extends BaseTestHelper<DBFacade> {
 
-  public PostgreTestHelper(@NotNull final DBFacade facade) {
-    super(facade, Scriptum.of(PostgreTestHelper.class));
+  public PostgreTestHelper(@NotNull final DBFacade db) {
+    super(db, Scriptum.of(PostgreTestHelper.class));
+    schemasNotToZap.add("pg_catalog");
   }
 
 

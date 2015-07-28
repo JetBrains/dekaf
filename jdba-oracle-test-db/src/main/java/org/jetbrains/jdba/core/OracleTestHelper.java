@@ -3,6 +3,8 @@ package org.jetbrains.jdba.core;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.sql.Scriptum;
 
+import java.util.Arrays;
+
 
 
 /**
@@ -10,8 +12,13 @@ import org.jetbrains.jdba.sql.Scriptum;
  **/
 public class OracleTestHelper extends BaseTestHelper<DBFacade> {
 
-  public OracleTestHelper(@NotNull final DBFacade facade) {
-    super(facade, Scriptum.of(OracleTestHelper.class));
+  public OracleTestHelper(@NotNull final DBFacade db) {
+    super(db, Scriptum.of(OracleTestHelper.class));
+    schemasNotToZap.clear();
+    //noinspection SpellCheckingInspection
+    schemasNotToZap.addAll(Arrays.asList("SYS", "SYSTEM", "SYSMAN", "PUBLIC", "CTXSYS", "DBSNMP",
+                                         "APPQOSSYS", "EXFSYS", "ORACLE_OCM", "OUTLN", "WMSYS",
+                                         "XDB", "BENCHMARK"));
   }
 
   @Override

@@ -10,8 +10,10 @@ import org.jetbrains.jdba.sql.Scriptum;
  **/
 public class MysqlTestHelper extends BaseTestHelper<DBFacade> {
 
-  public MysqlTestHelper(@NotNull final DBFacade facade) {
-    super(facade, Scriptum.of(MysqlTestHelper.class));
+  public MysqlTestHelper(@NotNull final DBFacade db) {
+    super(db, Scriptum.of(MysqlTestHelper.class));
+    schemasNotToZap.add("performance_schema");
+    schemasNotToZap.add("mysql");
   }
 
 
