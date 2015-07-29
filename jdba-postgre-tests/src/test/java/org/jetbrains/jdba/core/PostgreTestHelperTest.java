@@ -5,7 +5,9 @@ import org.jetbrains.jdba.CommonIntegrationCase;
 import org.jetbrains.jdba.sql.Scriptum;
 import org.jetbrains.jdba.sql.SqlQuery;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.util.Locale;
 
@@ -16,13 +18,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Leonid Bushuev from JetBrains
  **/
+@FixMethodOrder(MethodSorters.JVM)
+@SuppressWarnings("SpellCheckingInspection")
 public class PostgreTestHelperTest extends CommonIntegrationCase {
 
 
   enum Kind {
     TYPE,
     CLASS,
-    PROC;
+    PROC
   }
 
 
@@ -59,7 +63,15 @@ public class PostgreTestHelperTest extends CommonIntegrationCase {
 
   @Test
   public void zap_domain() {
-    test_zap_object("my_domain", Kind.TYPE, "create domain my_domain as char(2)");
+    test_zap_object("iso2", Kind.TYPE, "create domain iso2 as char(2)");
+  }
+
+  @Test
+  public void zap_dependent_domain() {
+    test_zap_objects("my_domain_1,my_domain_2,my_domain_0", Kind.TYPE,
+                     "create domain my_domain_1 as char(3)",
+                     "create domain my_domain_2 as my_domain_1 not null",
+                     "create domain my_domain_0 as my_domain_2 check (value like '%0%')");
   }
 
   @Test
@@ -68,26 +80,32 @@ public class PostgreTestHelperTest extends CommonIntegrationCase {
   }
 
   @Test
+  public void zap_dependent_table() {
+    test_zap_objects("master,detail,xdetail", Kind.CLASS,
+                     "create table master (id int primary key)",
+                     "create table detail (master_id int references master, flag char(1))",
+                     "create table xdetail (master_id int references master, xflag char(1))");
+  }
+
+  @Test
   public void zap_table_with_inheritance() {
-    TH.zapSchema();
-    TH.performScript("create table my_face (id int primary key)",
+    test_zap_objects("my_face,my_org,my_person", Kind.CLASS,
+                     "create table my_face (id int primary key)",
                      "create table my_org (name varchar(60)) inherits (my_face)",
                      "create table my_person (name1 varchar(25), name2 varchar(25)) inherits (my_face)");
-
-    assertThat(objectExists("my_face", Kind.CLASS)).isTrue();
-    assertThat(objectExists("my_org", Kind.CLASS)).isTrue();
-    assertThat(objectExists("my_person", Kind.CLASS)).isTrue();
-
-    TH.zapSchema();
-
-    assertThat(objectExists("my_face", Kind.CLASS)).isFalse();
-    assertThat(objectExists("my_org", Kind.CLASS)).isFalse();
-    assertThat(objectExists("my_person", Kind.CLASS)).isFalse();
   }
 
   @Test
   public void zap_view() {
     test_zap_object("my_view", Kind.CLASS, "create view my_view as select 01");
+  }
+
+  @Test
+  public void zap_dependent_view() {
+    test_zap_objects("view1,view2,view0", Kind.CLASS,
+                     "create view view1 as select 1 as x",
+                     "create view view2 as select x as y from view1",
+                     "create view view0 as select x * y from view1 cross join view2");
   }
 
   @Test
@@ -124,6 +142,33 @@ public class PostgreTestHelperTest extends CommonIntegrationCase {
 
     // ensure that the object is dropped
     assertThat(objectExists(name, kind)).isFalse();
+  }
+
+  private void test_zap_objects(final String objectNames,
+                                final Kind objectKind,
+                                final String... commands) {
+    // create objects
+    TH.performScript(commands);
+
+    // ensure that we can detect this kind of objects existence
+    final String[] names = objectNames.split(",");
+    for (String name : names) {
+      final String name1 = name.trim();
+      assertThat(objectExists(name1, objectKind))
+          .describedAs("Object %s %s should exist", objectKind.name().toLowerCase(), name1)
+          .isTrue();
+    }
+
+    // zap it
+    TH.zapSchema();
+
+    // ensure that all the objects are dropped
+    for (String name : names) {
+      final String name1 = name.trim();
+      assertThat(objectExists(name1, objectKind))
+          .describedAs("Object %s %s should be dropped!", objectKind.name().toLowerCase(), name1)
+          .isFalse();
+    }
   }
 
 
