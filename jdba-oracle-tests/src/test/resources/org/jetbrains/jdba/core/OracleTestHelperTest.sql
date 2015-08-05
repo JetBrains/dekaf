@@ -29,7 +29,7 @@ create materialized view log on X_Order
 /
 
 create materialized view X_Order_Stat
-  build immediate refresh fast enable query rewrite
+  build immediate refresh fast
   as
   select City_Id, count(*)
     from X_Order

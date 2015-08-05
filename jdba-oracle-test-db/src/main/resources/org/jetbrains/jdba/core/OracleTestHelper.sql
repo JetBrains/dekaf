@@ -75,6 +75,7 @@ begin
       from sys.user_objects
       where object_type = 'TABLE'
         and object_name not like 'BIN$%$_'
+        and object_name not like 'MLOG$\_%' escape '\'
         and object_name not in (select mview_name from sys.user_mviews)
     union all
     select 'drop materialized view "'||mview_name||'"' as cmd,

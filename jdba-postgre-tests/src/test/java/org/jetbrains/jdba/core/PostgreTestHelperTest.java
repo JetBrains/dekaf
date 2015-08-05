@@ -30,7 +30,7 @@ public class PostgreTestHelperTest extends CommonIntegrationCase {
   }
 
 
-  private static Scriptum ourScriptum = Scriptum.of(PostgreTestHelperTest.class);
+  private static final Scriptum ourScriptum = Scriptum.of(PostgreTestHelperTest.class);
 
 
   @BeforeClass
@@ -120,6 +120,15 @@ public class PostgreTestHelperTest extends CommonIntegrationCase {
 
   @Test
   public void zap_overriden_functions() {
+    test_zap_object("over_plus",
+                    Kind.PROC,
+                    "create or replace function over_plus(x int, y int) returns int as 'select $1 + $2' language SQL",
+                    "create or replace function over_plus(z float, t float) returns float as 'select $1 + $2' language SQL");
+  }
+
+
+  @Test
+  public void zap_operator() {
     test_zap_object("over_plus",
                     Kind.PROC,
                     "create or replace function over_plus(x int, y int) returns int as 'select $1 + $2' language SQL",
