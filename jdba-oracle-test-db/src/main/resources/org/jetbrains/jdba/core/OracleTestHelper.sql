@@ -85,7 +85,7 @@ begin
     select 'drop '||object_type||' '||object_name as cmd,
            5 as ord, object_id as rnum
        from user_objects
-       where object_type in ('FUNCTION','PROCEDURE','PACKAGE')
+       where object_type in ('FUNCTION','PROCEDURE','PACKAGE','OPERATOR')
     union all
     select 'drop synonym '||object_name as cmd,
            9 as ord, object_id as rnum
