@@ -54,6 +54,13 @@ public interface DBTestHelper {
                       @NotNull SqlCommand command);
 
   /**
+   * Performs a script from the scriptum.
+   * @param scriptum        scriptum with the script to perform.
+   * @param scriptName     name of the script to perform.
+   */
+  void performScript(@NotNull Scriptum scriptum, @NotNull String scriptName);
+
+  /**
    * Performs the given script.
    * @param script  the script to perform.
    */

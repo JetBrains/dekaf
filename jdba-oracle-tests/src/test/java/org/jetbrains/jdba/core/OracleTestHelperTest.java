@@ -2,6 +2,7 @@ package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.CommonIntegrationCase;
+import org.jetbrains.jdba.sql.Scriptum;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -13,6 +14,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Leonid Bushuev from JetBrains
  **/
 public class OracleTestHelperTest extends CommonIntegrationCase {
+
+  private static final Scriptum ourScriptum =
+      Scriptum.of(OracleTestHelperTest.class);
+
+
 
   //// ZAP \\\\
 
@@ -58,13 +64,7 @@ public class OracleTestHelperTest extends CommonIntegrationCase {
   @Test
   public void zap_operator() {
     // create function and operator
-    TH.performScript("create function EQ_F(a varchar, b varchar) return number as \n" +
-                     "begin                                                       \n" +
-                     "   if a = b then return 1;                                  \n" +
-                     "   else return 0;                                           \n" +
-                     "   end if;                                                  \n" +
-                     "end;                                                        \n",
-                     "create operator EQ_OP binding (varchar, varchar) return number using EQ_F");
+    TH.performScript(ourScriptum, "CreateOperator");
 
     // ensure that we can detect them
     assertThat(objectExists("EQ_F")).isTrue();

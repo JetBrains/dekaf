@@ -84,6 +84,12 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
   }
 
   @Override
+  public void performScript(@NotNull final Scriptum scriptum, @NotNull final String scriptName) {
+    final SqlScript script = scriptum.script(scriptName);
+    performScript(script);
+  }
+
+  @Override
   public void performScript(@NotNull final SqlScript script) {
     db.inSession(new InSessionNoResult() {
       @Override
