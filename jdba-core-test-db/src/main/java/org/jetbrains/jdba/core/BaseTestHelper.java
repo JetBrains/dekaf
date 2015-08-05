@@ -204,9 +204,12 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
     if (schemaName != null && schemasNotToZap.contains(schemaName))
       throw new DBProtectionException(format("The schema %s must not be zapped", schemaName), "zapSchema");
 
-    performCommandOrMetaQueryCommands(scriptum, "ZapSchema");
+    zapSchemaInternally(connectionInfo);
   }
 
+  protected void zapSchemaInternally(final ConnectionInfo connectionInfo) {
+    performCommandOrMetaQueryCommands(scriptum, "ZapSchema");
+  }
 
 
 }

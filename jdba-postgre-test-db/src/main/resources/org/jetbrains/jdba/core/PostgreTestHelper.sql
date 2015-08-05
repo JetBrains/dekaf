@@ -52,7 +52,11 @@ select concat('drop ', what, ' if exists ', relname, ' cascade') as cmd,
        C.oid::varchar::bigint as ord
 from pg_catalog.pg_class C
      natural join
-     (values ('S'::"char", 'sequence'),('r'::"char", 'table'),('v'::"char", 'view')) as CX(relkind, what)
+     (values ('S'::"char", 'sequence'),
+             ('r'::"char", 'table'),
+             ('v'::"char", 'view'),
+             ('m'::"char", 'materialized view')
+      ) as CX(relkind, what)
 where relnamespace = (select n_id from N)
 --
 union all
