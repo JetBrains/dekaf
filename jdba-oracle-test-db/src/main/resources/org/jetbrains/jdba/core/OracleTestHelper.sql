@@ -64,39 +64,39 @@ begin
     (
     select 'drop sequence "'||sequence_name||'"' as cmd,
            1 as ord, 0 as rnum
-    from user_sequences
+    from sys.user_sequences
     union all
     select 'drop type "'||type_name||'" force' as cmd,
            2 as ord, 0 as rnum
-      from user_types
+      from sys.user_types
     union all
     select 'drop table "'||object_name||'" cascade constraints' as cmd,
            3 as ord, object_id as rnum
-      from user_objects
+      from sys.user_objects
       where object_type = 'TABLE'
         and object_name not like 'BIN$%$_'
-        and object_name not in (select mview_name from user_mviews)
+        and object_name not in (select mview_name from sys.user_mviews)
     union all
     select 'drop materialized view "'||mview_name||'"' as cmd,
            4 as ord, rnum
-      from user_mviews
+      from sys.user_mviews
         natural join
-        (select object_name as view_name, object_id as rnum from user_objects where object_type = 'MATERIALIZED VIEW')
+        (select object_name as view_name, object_id as rnum from sys.user_objects where object_type = 'MATERIALIZED VIEW')
     union all
     select 'drop view "'||view_name||'"' as cmd,
            5 as ord, rnum
-      from user_views
+      from sys.user_views
         natural join
-        (select object_name as view_name, object_id as rnum from user_objects where object_type = 'VIEW')
+        (select object_name as view_name, object_id as rnum from sys.user_objects where object_type = 'VIEW')
     union all
     select 'drop '||object_type||' '||object_name as cmd,
            6 as ord, object_id as rnum
-       from user_objects
+       from sys.user_objects
        where object_type in ('FUNCTION','PROCEDURE','PACKAGE','OPERATOR')
     union all
     select 'drop synonym '||object_name as cmd,
            9 as ord, object_id as rnum
-       from user_objects
+       from sys.user_objects
        where object_type = 'SYNONYM'
     )
   order by ord desc, rnum desc;
