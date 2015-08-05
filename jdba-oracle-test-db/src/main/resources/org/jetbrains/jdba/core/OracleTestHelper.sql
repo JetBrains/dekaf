@@ -75,15 +75,22 @@ begin
       from user_objects
       where object_type = 'TABLE'
         and object_name not like 'BIN$%$_'
+        and object_name not in (select mview_name from user_mviews)
+    union all
+    select 'drop materialized view "'||mview_name||'"' as cmd,
+           4 as ord, rnum
+      from user_mviews
+        natural join
+        (select object_name as view_name, object_id as rnum from user_objects where object_type = 'MATERIALIZED VIEW')
     union all
     select 'drop view "'||view_name||'"' as cmd,
-           4 as ord, rnum
+           5 as ord, rnum
       from user_views
         natural join
         (select object_name as view_name, object_id as rnum from user_objects where object_type = 'VIEW')
     union all
     select 'drop '||object_type||' '||object_name as cmd,
-           5 as ord, object_id as rnum
+           6 as ord, object_id as rnum
        from user_objects
        where object_type in ('FUNCTION','PROCEDURE','PACKAGE','OPERATOR')
     union all

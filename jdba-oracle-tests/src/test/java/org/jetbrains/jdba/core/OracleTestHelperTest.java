@@ -79,6 +79,22 @@ public class OracleTestHelperTest extends CommonIntegrationCase {
   }
 
 
+  @Test
+  public void zap_mater_view() {
+    // create function and operator
+    TH.performScript(ourScriptum, "CreateMaterView");
+
+    // ensure that we can detect a materialized view
+    assertThat(objectExists("X_ORDER_STAT")).isTrue();
+
+    // zap it
+    TH.zapSchema();
+
+    // verify
+    assertThat(objectExists("X_ORDER_STAT")).isFalse();
+  }
+
+
   private static boolean objectExists(@NotNull final String sequenceName) {
     assert DB != null;
 
