@@ -25,3 +25,12 @@ where P.pronamespace = N.oid
   and P.proname = ?
 ;
 
+---- existence_of_operator ----
+select 1
+from pg_catalog.pg_operator O,
+     pg_catalog.pg_namespace N
+where O.oprnamespace = N.oid
+  and N.nspname = current_schema()
+  and O.oprname = ?
+;
+

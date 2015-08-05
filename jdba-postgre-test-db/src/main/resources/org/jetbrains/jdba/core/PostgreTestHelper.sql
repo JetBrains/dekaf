@@ -62,6 +62,15 @@ select concat('drop function if exists ', proname, '(', oidvectortypes(proargtyp
 from pg_catalog.pg_proc
 where pronamespace = (select n_id from N)
 --
+union all
+--
+select concat('drop operator if exists ', oprname, '(',
+              coalesce(format_type(nullif(oprleft,0),null),'none'), ',',
+              coalesce(format_type(nullif(oprright,0),null),'none'), ') cascade') as cmd,
+       oid::varchar::bigint as ord
+from pg_catalog.pg_operator
+where oprnamespace = (select n_id from N)
+--
 order by ord desc
 ;
 

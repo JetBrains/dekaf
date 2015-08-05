@@ -26,7 +26,8 @@ public class PostgreTestHelperTest extends CommonIntegrationCase {
   enum Kind {
     TYPE,
     CLASS,
-    PROC
+    PROC,
+    OPERATOR,
   }
 
 
@@ -119,7 +120,7 @@ public class PostgreTestHelperTest extends CommonIntegrationCase {
   }
 
   @Test
-  public void zap_overriden_functions() {
+  public void zap_overloaden_functions() {
     test_zap_object("over_plus",
                     Kind.PROC,
                     "create or replace function over_plus(x int, y int) returns int as 'select $1 + $2' language SQL",
@@ -128,13 +129,33 @@ public class PostgreTestHelperTest extends CommonIntegrationCase {
 
 
   @Test
-  public void zap_operator() {
-    test_zap_object("over_plus",
-                    Kind.PROC,
-                    "create or replace function over_plus(x int, y int) returns int as 'select $1 + $2' language SQL",
-                    "create or replace function over_plus(z float, t float) returns float as 'select $1 + $2' language SQL");
+  public void zap_operator_infix() {
+    test_zap_object("^^^^",
+                    Kind.OPERATOR,
+                    "create operator ^^^^ (procedure=power, leftarg=numeric, rightarg=numeric)");
   }
 
+  @Test
+  public void zap_operator_prefix() {
+    test_zap_object("<|",
+                    Kind.OPERATOR,
+                    "create operator <| (procedure=trunc, rightarg=numeric)");
+  }
+
+  @Test
+  public void zap_operator_suffix() {
+    test_zap_object("|>",
+                    Kind.OPERATOR,
+                    "create operator |> (procedure=ceiling, leftarg=numeric)");
+  }
+
+  @Test
+  public void zap_operator_and_function() {
+    test_zap_object("+|+",
+                    Kind.OPERATOR,
+                    "create or replace function at_plus(x int, y int) returns int as 'select $1 + $2' language SQL",
+                    "create operator +|+ (procedure=at_plus, leftarg=int, rightarg=int)");
+  }
 
 
   private void test_zap_object(@NotNull final String name,
