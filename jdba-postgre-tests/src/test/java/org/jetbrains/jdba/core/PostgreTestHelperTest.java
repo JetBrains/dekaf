@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.CommonIntegrationCase;
 import org.jetbrains.jdba.sql.Scriptum;
 import org.jetbrains.jdba.sql.SqlQuery;
+import org.jetbrains.jdba.util.Version;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -12,6 +13,7 @@ import org.junit.runners.MethodSorters;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assume.assumeTrue;
 
 
 
@@ -33,11 +35,14 @@ public class PostgreTestHelperTest extends CommonIntegrationCase {
 
   private static final Scriptum ourScriptum = Scriptum.of(PostgreTestHelperTest.class);
 
+  private static Version ver;
+
 
   @BeforeClass
   public static void connect() {
     DB.connect();
     TH.zapSchema();
+    ver = DB.getConnectionInfo().serverVersion;
   }
 
 
@@ -157,6 +162,12 @@ public class PostgreTestHelperTest extends CommonIntegrationCase {
                     "create operator +|+ (procedure=at_plus, leftarg=int, rightarg=int)");
   }
 
+  @Test
+  public void zap_mater_view() {
+    assumeTrue(ver.isOrGreater(9,3));
+    test_zap_objects("x_order,x_order_stat", Kind.CLASS, ourScriptum, "create_mater_view");
+  }
+
 
   private void test_zap_object(@NotNull final String name,
                                @NotNull final Kind kind,
@@ -180,6 +191,22 @@ public class PostgreTestHelperTest extends CommonIntegrationCase {
     // create objects
     TH.performScript(commands);
 
+    // test it
+    test_zap_it(objectKind, objectNames);
+  }
+
+  private void test_zap_objects(final String objectNames,
+                                final Kind objectKind,
+                                final Scriptum scriptum,
+                                final String scriptName) {
+    // create objects
+    TH.performScript(ourScriptum, scriptName);
+
+    // test it
+    test_zap_it(objectKind, objectNames);
+  }
+
+  private void test_zap_it(final Kind objectKind, final String objectNames) {
     // ensure that we can detect this kind of objects existence
     final String[] names = objectNames.split(",");
     for (String name : names) {

@@ -34,3 +34,20 @@ where O.oprnamespace = N.oid
   and O.oprname = ?
 ;
 
+
+
+---- create_mater_view ----
+create table x_order
+(
+    id int not null,
+    city_id int not null,
+    note varchar(1000)
+)
+;
+
+create materialized view x_order_stat
+as
+select city_id, count(*) as frequency
+from x_order
+group by city_id
+;
