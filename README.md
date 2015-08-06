@@ -49,8 +49,8 @@ Key features to address the problems mentioned above
 
 Supported RDBMS:
 
-* PostgreSQL
-* Oracle
+* PostgreSQL 9.0+
+* Oracle     9+
 * MySQL
 * H2
 
