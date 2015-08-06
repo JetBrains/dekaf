@@ -13,8 +13,8 @@ from generate_series(1,1000000)
 
 
 ---- EnsureNoTableOrViewMetaQuery ----
-select case when table_type like 'VIEW' then concat('drop view if exists ', table_name)
-            when table_type like '%TABLE' then concat('drop table if exists ', table_name, ' cascade')
+select case when table_type like 'VIEW' then 'drop view if exists ' || table_name
+            when table_type like '%TABLE' then 'drop table if exists ' || table_name || ' cascade'
             else null end as cmd
 from information_schema.tables
 where table_catalog = current_database()
@@ -29,7 +29,7 @@ with N as ( select min(oid) as n_id
             where nspname = current_schema
             limit 1 )
 --
-select concat('drop ', what, ' if exists ', typname, ' cascade') as cmd,
+select 'drop ' || what || ' if exists ' || typname || ' cascade' as cmd,
        T.oid::varchar::bigint as ord
 from pg_catalog.pg_type T
      natural join
@@ -38,7 +38,7 @@ where typnamespace = (select n_id from N)
 --
 union all
 --
-select concat('drop type if exists ', ST.typname, ' cascade') as cmd,
+select 'drop type if exists ' || ST.typname || ' cascade' as cmd,
        ST.oid::varchar::bigint as ord
 from pg_catalog.pg_type ST,
      pg_catalog.pg_class SC
@@ -48,7 +48,7 @@ where ST.typnamespace = (select n_id from N)
 --
 union all
 --
-select concat('drop ', what, ' if exists ', relname, ' cascade') as cmd,
+select 'drop ' || what || ' if exists ' || relname || ' cascade' as cmd,
        C.oid::varchar::bigint as ord
 from pg_catalog.pg_class C
      natural join
@@ -61,16 +61,16 @@ where relnamespace = (select n_id from N)
 --
 union all
 --
-select concat('drop function if exists ', proname, '(', oidvectortypes(proargtypes), ') cascade') as cmd,
+select 'drop function if exists ' || proname || '(' || oidvectortypes(proargtypes)::varchar || ') cascade' as cmd,
        oid::varchar::bigint as ord
 from pg_catalog.pg_proc
 where pronamespace = (select n_id from N)
 --
 union all
 --
-select concat('drop operator if exists ', oprname, '(',
-              coalesce(format_type(nullif(oprleft,0),null),'none'), ',',
-              coalesce(format_type(nullif(oprright,0),null),'none'), ') cascade') as cmd,
+select 'drop operator if exists ' || oprname || '('
+              || coalesce(format_type(nullif(oprleft,0),null),'none') || ','
+              || coalesce(format_type(nullif(oprright,0),null),'none') || ') cascade' as cmd,
        oid::varchar::bigint as ord
 from pg_catalog.pg_operator
 where oprnamespace = (select n_id from N)
