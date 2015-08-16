@@ -102,6 +102,19 @@
       <type>test-jar</type>
     </dependency>
 
+    <!-- MS SQL -->
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-mssql</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.jdba</groupId>
+      <artifactId>jdba-mssql</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+      <type>test-jar</type>
+    </dependency>
+
     <!-- MySQL -->
     <dependency>
       <groupId>org.jetbrains.jdba</groupId>
@@ -201,6 +214,12 @@
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <version>1.4.187</version>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.sqlserver</groupId>
+      <artifactId>sqljdbc</artifactId>
+      <version>4.0.2206.100</version>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>
