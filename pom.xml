@@ -27,6 +27,7 @@
 
     <module>jdba-mssql</module>
     <module>jdba-mssql-test-db</module>
+    <module>jdba-mssql-tests</module>
 
     <module>jdba-mysql</module>
     <module>jdba-mysql-test-db</module>

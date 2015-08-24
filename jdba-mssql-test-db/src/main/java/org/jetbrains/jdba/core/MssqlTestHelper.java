@@ -12,12 +12,13 @@ public class MssqlTestHelper extends BaseTestHelper<DBFacade> {
 
   public MssqlTestHelper(@NotNull final DBFacade db) {
     super(db, Scriptum.of(MssqlTestHelper.class));
+    schemasNotToZap.add("sys");
   }
 
 
   @Override
   public void prepareX1() {
-    performCommand("create or replace view X1 as select 1");
+    performCommand("create view X1 as select 1");
   }
 
   @Override

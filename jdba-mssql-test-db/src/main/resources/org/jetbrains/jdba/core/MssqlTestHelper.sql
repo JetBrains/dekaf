@@ -40,31 +40,20 @@ from X1000 P,
 
 
 ---- EnsureNoTableOrViewMetaQuery ----
-select concat('drop ', object_type, ' if exists ', table_name, ' cascade') as cmd
-     from (
-       select 'table' as object_type, table_name
-       from information_schema.tables
-       where table_schema = schema()
-         and table_type like '%TABLE'
-       union
-       select 'view' as object_type, table_name
-       from information_schema.views
-       where table_schema = schema()
-       ) objects_to_drop
-where lower(table_name) in (lower(?),lower(?),lower(?),lower(?))
+select 'drop ' + replace(replace(xtype,'U','table'),'V','view') + ' ' + name as cmd
+from sysobjects
+where xtype in ('U','V')
+  and lower(name) in (lower(?),lower(?),lower(?),lower(?))
+  and parent_obj = 0
+order by id desc
 ;
 
 
 ---- ZapSchemaMetaQuery ----
-select concat('drop ', object_type, ' if exists ', table_name, ' cascade') as cmd
-from (
-  select 'table' as object_type, table_name
-  from information_schema.tables
-  where table_schema = schema()
-    and table_type like '%TABLE'
-  union
-  select 'view' as object_type, table_name
-  from information_schema.views
-  where table_schema = schema()
-  ) objects_to_drop
+select 'drop ' + replace(replace(xtype,'U','table'),'V','view') + ' ' + name as cmd
+from sysobjects
+where xtype in ('U','V')
+  and parent_obj = 0
+order by id desc
 ;
+
