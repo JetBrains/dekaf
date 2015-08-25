@@ -230,7 +230,6 @@
       <groupId>com.microsoft.sqlserver</groupId>
       <artifactId>sqljdbc</artifactId>
       <version>4.0.2206.100</version>
-      <scope>test</scope>
     </dependency>
 
   </dependencies>
