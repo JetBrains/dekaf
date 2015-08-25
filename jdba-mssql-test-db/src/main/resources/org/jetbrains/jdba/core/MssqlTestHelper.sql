@@ -64,16 +64,18 @@ from sys.tables T,
 where F.parent_object_id = T.object_id
   and F.schema_id = schema_id()
   and lower(T.name) in (lower(?),lower(?),lower(?),lower(?))
-order by T.object_id desc
+  and not T.is_ms_shipped = 1
+order by T.create_date desc
 ;
 
 ---- EnsureNoTableOrViewMetaQuery ----
-select 'drop ' + replace(replace(xtype,'U','table'),'V','view') + ' ' + name as cmd
-from sysobjects
-where xtype in ('U','V')
+select 'drop ' + replace(replace(type collate database_default,'U','table'),'V','view') + ' ' + name as cmd
+from sys.objects
+where type collate database_default in ('U','V')
   and lower(name) in (lower(?),lower(?),lower(?),lower(?))
-  and parent_obj = 0
-order by id desc
+  and parent_object_id = 0
+  and not is_ms_shipped = 1
+order by create_date desc
 ;
 
 
@@ -83,15 +85,17 @@ from sys.tables T,
      sys.foreign_keys F
 where F.parent_object_id = T.object_id
   and F.schema_id = schema_id()
-order by T.object_id desc
+  and not T.is_ms_shipped = 1
+order by T.create_date desc
 ;
 
 ---- ZapSchemaMetaQuery ----
-with Objects as ( select type collate database_default as type, name, object_id
+with Objects as ( select type collate database_default as type, name, create_date
                   from sys.objects
                   where schema_id = schema_id()
                     and type collate database_default in ('U','V','P','FN','SN')
-                    and parent_object_id = 0 ),
+                    and parent_object_id = 0
+                    and not is_ms_shipped = 1),
      Types as ( select 'U' as type, 'table' as word
                 union all
                 select 'V' as type, 'view' as word
@@ -103,6 +107,6 @@ with Objects as ( select type collate database_default as type, name, object_id
                 select 'SN' as type, 'synonym' as word )
 select 'drop ' + word + ' ' + name as cmd
 from Objects join Types on Objects.type = Types.type
-order by object_id desc
+order by create_date desc
 ;
 
