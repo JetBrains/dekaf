@@ -2,6 +2,11 @@ package org.jetbrains.jdba.core;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.sql.Scriptum;
+import org.jetbrains.jdba.sql.TextFileFragment;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 
 
@@ -16,10 +21,38 @@ public class MssqlTestHelper extends BaseTestHelper<DBFacade> {
   }
 
 
+  /*
   @Override
   public void prepareX1() {
-    performCommand("create view X1 as select 1");
+    performCommand(scriptum, "X1");
   }
+  */
+
+  @Override
+  public void prepareX1() {
+    final TextFileFragment x1 = scriptum.getText("X1");
+    db.inSession(new InSessionNoResult() {
+      @Override
+      public void run(@NotNull final DBSession session) {
+        Connection conn =
+          session.getSpecificService(Connection.class,
+                                     ImplementationAccessibleService.Names.JDBC_CONNECTION);
+        assert conn != null;
+        try {
+          conn.setAutoCommit(true);
+          Statement stmt = conn.createStatement();
+          stmt.execute(x1.text);
+          stmt.close();
+        }
+        catch (SQLException e) {
+          throw new RuntimeException(e);
+        }
+      }
+    });
+  }
+
+
+
 
   @Override
   public void prepareX1000() {
@@ -33,4 +66,12 @@ public class MssqlTestHelper extends BaseTestHelper<DBFacade> {
     performCommand(scriptum, "X1000000");
   }
 
+
+  @Override
+  protected void zapSchemaInternally(final ConnectionInfo connectionInfo) {
+    // Unfortunately, MS SQL provides no way to easy drop tables.
+    // We have to drop foreign keys first.
+    performMetaQueryCommands(scriptum, "ZapForeignKeysMetaQuery");
+    performMetaQueryCommands(scriptum, "ZapSchemaMetaQuery");
+  }
 }

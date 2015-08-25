@@ -17,16 +17,21 @@ import static org.jetbrains.jdba.core.Layouts.singleOf;
 @FixMethodOrder(MethodSorters.JVM)
 public class MssqlQueryRunnerTest extends CommonQueryRunnerTest {
 
+  private static final String SELECT_1_BIT =
+      "declare @b bit \n" +
+      "set @b = 1     \n" +
+      "select @b      \n";
+
   @Test
-  public void query_boolean_as_boolean() {
-    SqlQuery<Boolean> q = new SqlQuery<Boolean>("select true",singleOf(Boolean.class));
+  public void query_bit_as_boolean() {
+    SqlQuery<Boolean> q = new SqlQuery<Boolean>(SELECT_1_BIT, singleOf(Boolean.class));
     final Boolean b = query(q);
     assertThat(b).isTrue();
   }
 
   @Test
-  public void query_boolean_as_int() {
-    SqlQuery<Byte> q = new SqlQuery<Byte>("select true",singleOf(Byte.class));
+  public void query_bit_as_int() {
+    SqlQuery<Byte> q = new SqlQuery<Byte>(SELECT_1_BIT, singleOf(Byte.class));
     final Byte b = query(q);
     assertThat(b).isEqualTo((byte)1);
   }

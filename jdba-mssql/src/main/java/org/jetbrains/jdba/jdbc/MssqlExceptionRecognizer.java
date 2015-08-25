@@ -27,7 +27,7 @@ public class MssqlExceptionRecognizer extends BaseExceptionRecognizer {
       new HashMap<Integer, Class<? extends DBException>>();
 
   static {
-    simpleExceptionMap.put(99999, NoTableOrViewException.class);
+    simpleExceptionMap.put(208, NoTableOrViewException.class);
   }
 
 
