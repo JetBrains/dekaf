@@ -192,8 +192,12 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
         Arrays.fill(params, namePack.length, 4, "");
       }
 
-      performMetaQueryCommands(scriptum, "EnsureNoTableOrViewMetaQuery", params);
+      ensureNoTableOrView4(params);
     }
+  }
+
+  protected void ensureNoTableOrView4(final Object[] params) {
+    performMetaQueryCommands(scriptum, "EnsureNoTableOrViewMetaQuery", params);
   }
 
 

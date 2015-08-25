@@ -32,11 +32,32 @@ public class MssqlTestHelperTest extends CommonIntegrationCase {
   }
 
   @Test
+  public void ensure_no_table_fk() {
+    TH.performScript("create table T1(Id int primary key)",
+                     "create table T2(Id int primary key references T1)",
+                     "alter table T1 add foreign key (Id) references T2");
+    assertThat(objectExists("T1")).isTrue();
+    assertThat(objectExists("T2")).isTrue();
+    TH.ensureNoTableOrView("T1","T2");
+    assertThat(objectExists("T1")).isFalse();
+    assertThat(objectExists("T2")).isFalse();
+  }
+
+  @Test
   public void zap_table() {
     TH.performCommand("create table Tab1(Col1 int)");
     assertThat(objectExists("Tab1")).isTrue();
     TH.zapSchema();
     assertThat(objectExists("Tab1")).isFalse();
+  }
+
+  @Test
+  public void zap_synonym() {
+    TH.performScript("create table Tab1(Col1 int)",
+                     "create synonym Syn1 for Tab1");
+    assertThat(objectExists("Syn1")).isTrue();
+    TH.zapSchema();
+    assertThat(objectExists("Syn1")).isFalse();
   }
 
 
