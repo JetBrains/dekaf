@@ -90,11 +90,15 @@ order by T.object_id desc
 with Objects as ( select type collate database_default as type, name, object_id
                   from sys.objects
                   where schema_id = schema_id()
-                    and type collate database_default in ('U','V','SN')
+                    and type collate database_default in ('U','V','P','FN','SN')
                     and parent_object_id = 0 ),
      Types as ( select 'U' as type, 'table' as word
                 union all
                 select 'V' as type, 'view' as word
+                union all
+                select 'P' as type, 'procedure' as word
+                union all
+                select 'FN' as type, 'function' as word
                 union all
                 select 'SN' as type, 'synonym' as word )
 select 'drop ' + word + ' ' + name as cmd

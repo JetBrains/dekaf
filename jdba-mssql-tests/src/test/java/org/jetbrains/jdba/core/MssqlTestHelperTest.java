@@ -52,6 +52,22 @@ public class MssqlTestHelperTest extends CommonIntegrationCase {
   }
 
   @Test
+  public void zap_procedure() {
+    TH.performCommand("create procedure SimplePro1 as select 1984");
+    assertThat(objectExists("SimplePro1")).isTrue();
+    TH.zapSchema();
+    assertThat(objectExists("SimplePro1")).isFalse();
+  }
+
+  @Test
+  public void zap_function() {
+    TH.performCommand("create function SimpleFun1() returns int begin return 1984; end");
+    assertThat(objectExists("SimpleFun1")).isTrue();
+    TH.zapSchema();
+    assertThat(objectExists("SimpleFun1")).isFalse();
+  }
+
+  @Test
   public void zap_synonym() {
     TH.performScript("create table Tab1(Col1 int)",
                      "create synonym Syn1 for Tab1");
