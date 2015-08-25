@@ -81,6 +81,27 @@
 
     <fileSet>
       <outputDirectory>/</outputDirectory>
+      <directory>../jdba-mssql/target</directory>
+      <includes>
+        <include>jdba-*.jar</include>
+      </includes>
+      <excludes>
+        <exclude>*-tests.jar</exclude>
+      </excludes>
+    </fileSet>
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>../jdba-mssql-test-db/target</directory>
+      <includes>
+        <include>jdba-*.jar</include>
+      </includes>
+      <excludes>
+        <exclude>*-tests.jar</exclude>
+      </excludes>
+    </fileSet>
+
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
       <directory>../jdba-mysql/target</directory>
       <includes>
         <include>jdba-*.jar</include>
