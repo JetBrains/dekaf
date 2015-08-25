@@ -1,10 +1,7 @@
 import com.google.common.collect.ImmutableMap;
 import org.jetbrains.jdba.*;
 import org.jetbrains.jdba.intermediate.IntegralIntermediateRdbmsProvider;
-import org.jetbrains.jdba.jdbc.H2dbJdbcIntegrationTests;
-import org.jetbrains.jdba.jdbc.MysqlJdbcIntegrationTests;
-import org.jetbrains.jdba.jdbc.OracleJdbcIntegrationTests;
-import org.jetbrains.jdba.jdbc.PostgreJdbcIntegrationTests;
+import org.jetbrains.jdba.jdbc.*;
 import org.jetbrains.jdba.junitft.TestSuiteExecutor;
 import org.jetbrains.jdba.util.Providers;
 
@@ -22,6 +19,7 @@ public class RunIntegrationTests {
           ImmutableMap.<String,Class>builder()
                             .put(Postgre.RDBMS.code, PostgreJdbcIntegrationTests.class)
                             .put(Oracle.RDBMS.code, OracleJdbcIntegrationTests.class)
+                            .put(Mssql.RDBMS.code, MssqlJdbcIntegrationTests.class)
                             .put(Mysql.RDBMS.code, MysqlJdbcIntegrationTests.class)
                             .put(H2db.RDBMS.code, H2dbJdbcIntegrationTests.class)
                             .build();
@@ -30,6 +28,7 @@ public class RunIntegrationTests {
           ImmutableMap.<String,Class>builder()
                             .put(Postgre.RDBMS.code, PostgreIntegrationTests.class)
                             .put(Oracle.RDBMS.code, OracleIntegrationTests.class)
+                            .put(Mssql.RDBMS.code, MssqlIntegrationTests.class)
                             .put(Mysql.RDBMS.code, MysqlIntegrationTests.class)
                             .put(H2db.RDBMS.code, H2dbIntegrationTests.class)
                             .build();
