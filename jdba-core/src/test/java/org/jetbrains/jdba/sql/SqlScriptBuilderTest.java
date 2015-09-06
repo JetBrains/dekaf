@@ -23,6 +23,7 @@ public class SqlScriptBuilderTest {
     String commandText = "select * from dual";
     final SqlScript script = build(commandText);
 
+    assertThat(script.hasStatements()).isTrue();
     assertThat(script.getStatements()).hasSize(1);
     SqlStatement statement = script.getStatements().get(0);
     assertThat(statement.getSourceText()).isEqualTo(commandText);
@@ -35,7 +36,7 @@ public class SqlScriptBuilderTest {
     String text = "create table X;\n drop table X";
     final SqlScript script = build(text);
 
-    assertThat((Integer)script.myCount).isEqualTo((Integer)2);
+    assertThat(script.count()).isEqualTo(2);
     assertThat(script.getStatements().get(0).getSourceText()).isEqualTo("create table X");
     assertThat(script.getStatements().get(1).getSourceText()).isEqualTo("drop table X");
   }
@@ -47,7 +48,7 @@ public class SqlScriptBuilderTest {
                   "do something";
     final SqlScript script = build(text);
 
-    assertThat((Integer)script.myCount).isEqualTo((Integer)1);
+    assertThat(script.count()).isEqualTo(1);
     assertThat(script.getStatements().get(0).getSourceText()).isEqualTo("do something");
   }
 
@@ -59,7 +60,8 @@ public class SqlScriptBuilderTest {
                   "from my_table      \n";
     final SqlScript script = build(text);
 
-    assertThat((Integer)script.myCount).isEqualTo((Integer)1);
+    assertThat(script.hasStatements()).isTrue();
+    assertThat(script.count()).isEqualTo(1);
     final String queryText = script.getStatements().get(0).getSourceText();
     assertThat(queryText).contains("--+index(i)");
   }
@@ -71,7 +73,7 @@ public class SqlScriptBuilderTest {
                   "do something";
     final SqlScript script = build(text);
 
-    assertThat((Integer)script.myCount).isEqualTo((Integer)1);
+    assertThat(script.count()).isEqualTo(1);
     assertThat(script.getStatements().get(0).getSourceText()).isEqualTo("do something");
   }
 
@@ -84,7 +86,7 @@ public class SqlScriptBuilderTest {
                   "do something            \n";
     final SqlScript script = build(text);
 
-    assertThat((Integer)script.myCount).isEqualTo((Integer)1);
+    assertThat(script.count()).isEqualTo(1);
     assertThat(script.getStatements().get(0).getSourceText()).isEqualTo("do something");
   }
 
@@ -95,7 +97,7 @@ public class SqlScriptBuilderTest {
                   "from table             \n";
     final SqlScript script = build(text);
 
-    assertThat((Integer)script.myCount).isEqualTo((Integer)1);
+    assertThat(script.count()).isEqualTo(1);
     final String queryText = script.getStatements().get(0).getSourceText();
     assertThat(queryText).contains("/*+index(i)*/");
   }

@@ -1,8 +1,9 @@
 package org.jetbrains.jdba.sql;
 
-import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,8 +17,8 @@ import static org.jetbrains.jdba.util.Strings.rtrim;
  */
 public class SqlScriptBuilder {
 
-  private final ImmutableList.Builder<SqlStatement> myStatements =
-    new ImmutableList.Builder<SqlStatement>();
+  private final ArrayList<SqlStatement> myStatements =
+    new ArrayList<SqlStatement>();
 
 
 
@@ -29,15 +30,15 @@ public class SqlScriptBuilder {
   }
 
   public void add(@NotNull SqlCommand... commands) {
-    for (SqlCommand command : commands) {
-      myStatements.add(command);
-    }
+    Collections.addAll(myStatements, commands);
   }
 
   public void add(@NotNull SqlScript... scripts) {
     for (SqlScript script : scripts) {
-      for (SqlStatement statement : script.myStatements) {
-        myStatements.add(statement);
+      if (script.hasStatements()) {
+        for (SqlStatement statement : script.getStatements()) {
+          myStatements.add(statement);
+        }
       }
     }
   }
@@ -188,12 +189,11 @@ public class SqlScriptBuilder {
 
   @NotNull
   public SqlScript build() {
-    ImmutableList<SqlStatement> statements = myStatements.build();
-    return statements.size() > 0 ? new SqlScript(statements) : EMPTY_SCRIPT;
+    return new SqlScript(myStatements);
   }
 
 
 
-  static final SqlScript EMPTY_SCRIPT = new SqlScript(ImmutableList.<SqlCommand>of());
+  static final SqlScript EMPTY_SCRIPT = new SqlScript(new SqlCommand[0]);
 
 }

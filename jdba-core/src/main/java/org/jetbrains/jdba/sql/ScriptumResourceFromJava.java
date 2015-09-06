@@ -1,10 +1,10 @@
 package org.jetbrains.jdba.sql;
 
-import com.google.common.base.Charsets;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.util.Strings;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,6 +19,8 @@ final class ScriptumResourceFromJava extends ScriptumResource {
   private static final Pattern SECTION_HEADER_PATTERN =
           Pattern.compile("^\\s*-{4,}\\s*(([\\p{L}\\p{javaJavaIdentifierPart}$-]+)(\\s*\\+\\s*([\\p{L}\\p{javaJavaIdentifierPart}$-]+))?)\\s*-{4,}\\s*$",
                           Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+
+  private static final Charset UTF_8 = Charset.forName("UTF-8");
 
   @NotNull
   private final ClassLoader myClassLoader;
@@ -44,7 +46,7 @@ final class ScriptumResourceFromJava extends ScriptumResource {
     try {
       final InputStream stream = openStream();
       try {
-        Reader reader1 = new InputStreamReader(stream, Charsets.UTF_8);
+        Reader reader1 = new InputStreamReader(stream, UTF_8);
         try {
           BufferedReader reader2 = new BufferedReader(reader1);
           try {

@@ -4,8 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.*;
 
 
 
@@ -14,6 +13,27 @@ import java.util.Iterator;
  **/
 public abstract class Collects {
 
+  /**
+   * Return an immutable (shallow) copy of the given collection.
+   * @param collection   the collection to copy.
+   * @param <T>          the type of elements.
+   * @return             just created copy.
+   */
+  @NotNull
+  public static <T> List<T> listCopy(final Collection<T> collection) {
+    if (collection == null || collection.isEmpty()) {
+      return Collections.emptyList();
+    }
+    else {
+      int n = collection.size();
+      if (n == 1) {
+        return Collections.singletonList(collection.iterator().next());
+      }
+      else {
+        return Collections.unmodifiableList(new ArrayList<T>(collection));
+      }
+    }
+  }
 
 
   @NotNull
