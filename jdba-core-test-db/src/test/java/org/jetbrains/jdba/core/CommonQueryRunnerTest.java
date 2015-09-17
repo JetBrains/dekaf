@@ -21,6 +21,10 @@ import static org.jetbrains.jdba.core.Layouts.*;
 @FixMethodOrder(MethodSorters.JVM)
 public class CommonQueryRunnerTest extends CommonIntegrationCase {
 
+  protected static boolean isOracle =
+      DB.rdbms().code.equalsIgnoreCase("ORACLE");
+
+
   @Before
   public void setUp() throws Exception {
     DB.connect();
@@ -44,6 +48,24 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
     Long    L;
   }
 
+
+  @Test
+  public void query_existence_0 () {
+    String queryText = "select 1 from "+(isOracle ? "dual" : "X1")+" where 1 is null";
+    SqlQuery<Boolean> q = new SqlQuery<Boolean>(queryText, existence());
+    final Boolean b = query(q);
+    assertThat(b).isNotNull()
+                 .isFalse();
+  }
+
+  @Test
+  public void query_existence_1() {
+    String queryText = "select 1 "+(isOracle ? "from dual" : "");
+    SqlQuery<Boolean> q = new SqlQuery<Boolean>(queryText, existence());
+    final Boolean b = query(q);
+    assertThat(b).isNotNull()
+                 .isTrue();
+  }
 
   @Test
   public void query_primitive_numbers_positive() {
