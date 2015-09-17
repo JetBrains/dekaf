@@ -1,6 +1,5 @@
 package org.jetbrains.jdba.junitft;
 
-import com.google.common.collect.ImmutableList;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.Description;
@@ -55,7 +54,7 @@ public class FineRunner extends BlockJUnit4ClassRunner {
 
       }
     }
-    return ImmutableList.<FrameworkMethod>copyOf(myTestMethods);
+    return new ArrayList<FrameworkMethod>(myTestMethods);
   }
 
 

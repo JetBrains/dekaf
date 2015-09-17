@@ -1,11 +1,11 @@
 package org.jetbrains.jdba.util;
 
-import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 
 /**
@@ -32,16 +32,17 @@ import java.util.List;
 public final class Version implements Comparable<Version>, Serializable {
 
   @NotNull
-  private final List<Integer> elements;
+  private final int[] elements;
 
 
   /**
    * Parse the version string.
    * @param string version string like "1.2.3-4"
    * @return   the parsed version.
+   * @see #of(int...)
    */
   public static Version of(@NotNull final String string) {
-    ImmutableList.Builder<Integer> b = ImmutableList.builder();
+    ArrayList<Integer> b = new ArrayList<Integer>(5);
     final String[] substrings = string.split("[\\.\\,\\-_ ]");
     for (String ss : substrings) {
       String ss2 = ss.trim();
@@ -54,11 +55,10 @@ public final class Version implements Comparable<Version>, Serializable {
         break;
       }
     }
-    ImmutableList<Integer> elements = b.build();
-    if (elements.isEmpty()) throw new IllegalArgumentException("Failed to parse version \""+string+"\"");
-    if (elements.size() == 1 && elements.get(0) == 0) return ZERO;
+    if (b.isEmpty()) throw new IllegalArgumentException("Failed to parse version \""+string+"\"");
+    if (b.size() == 1 && b.get(0) == 0) return ZERO;
 
-    return new Version(elements);
+    return of(b.toArray(new Integer[b.size()]));
   }
 
   /**
@@ -66,16 +66,33 @@ public final class Version implements Comparable<Version>, Serializable {
    * @param elements elements, must contain at least one element.
    * @return         the version.
    */
-  public static Version of(@NotNull final Integer... elements) {
-    if (elements.length == 1 && elements[0] == 0) return ZERO;
-    return new Version(ImmutableList.copyOf(elements));
+  public static Version of(@NotNull final int... elements) {
+    int n = elements.length;
+    while (n > 0 && elements[n-1] == 0) n--;
+    if (n == 0) return ZERO;
+    int[] ownElements = new int[n];
+    System.arraycopy(elements, 0, ownElements, 0, n);
+    return new Version(ownElements);
+  }
+
+  /**
+   * Trivial constructor - makes the version by it elements.
+   * @param elements elements, must contain at least one element.
+   * @return         the version.
+   * @see #of(int...)
+   */
+  public static Version of(@NotNull final Integer[] elements) {
+    int n = elements.length;
+    while (n > 0 && elements[n-1] == 0) n--;
+    if (n == 0) return ZERO;
+    int[] ownElements = new int[n];
+    for (int i = 0; i < n; i++) ownElements[i] = elements[i];
+    return new Version(ownElements);
   }
 
 
-  private Version(@NotNull final List<Integer> elements) {
-    int n = elements.size();
-    while (n > 0 && elements.get(n-1) == 0) n--;
-    this.elements = ImmutableList.copyOf(elements.subList(0,n));
+  private Version(@NotNull final int[] elements) {
+    this.elements = elements; // already copied
   }
 
 
@@ -95,12 +112,12 @@ public final class Version implements Comparable<Version>, Serializable {
    * @return the i-th element.
    */
   public int get(int index) {
-    return index < elements.size() ? elements.get(index) : 0;
+    return index < elements.length ? elements[index] : 0;
   }
 
 
   public int size() {
-    return elements.size();
+    return elements.length;
   }
 
 
@@ -160,12 +177,12 @@ public final class Version implements Comparable<Version>, Serializable {
 
     final Version that = (Version)o;
 
-    return this.elements.equals(that.elements);
+    return Arrays.equals(this.elements, that.elements);
   }
 
   @Override
   public int hashCode() {
-    return elements.hashCode();
+    return Arrays.hashCode(elements);
   }
 
   /**
@@ -186,7 +203,7 @@ public final class Version implements Comparable<Version>, Serializable {
    */
   @NotNull
   public String toString(int minimumElements, int maximumElements) {
-    int n = Math.min(Math.max(elements.size(), minimumElements), maximumElements);
+    int n = Math.min(Math.max(elements.length, minimumElements), maximumElements);
     StringBuilder b = new StringBuilder();
     for (int i = 0; i < n; i++) {
       if (i > 0) b.append('.');
@@ -196,5 +213,5 @@ public final class Version implements Comparable<Version>, Serializable {
   }
 
 
-  public static final Version ZERO = new Version(Collections.singletonList(0));
+  public static final Version ZERO = new Version(new int[0]);
 }
