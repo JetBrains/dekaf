@@ -34,4 +34,21 @@ public class MysqlTestHelper extends BaseTestHelper<DBFacade> {
     performCommand(scriptum, "X1000000");
   }
 
+
+  @Override
+  protected void ensureNoTableOrView4(final Object[] params) {
+    // Unfortunately, MS SQL provides no way to easy drop tables.
+    // We have to drop foreign keys first.
+    performMetaQueryCommands(scriptum, "EnsureNoForeignKeysMetaQuery", params);
+    performMetaQueryCommands(scriptum, "EnsureNoTableOrViewMetaQuery", params);
+  }
+
+  @Override
+  protected void zapSchemaInternally(final ConnectionInfo connectionInfo) {
+    // Unfortunately, MS SQL provides no way to easy drop tables.
+    // We have to drop foreign keys first.
+    performMetaQueryCommands(scriptum, "ZapForeignKeysMetaQuery");
+    performMetaQueryCommands(scriptum, "ZapSchemaMetaQuery");
+  }
+
 }

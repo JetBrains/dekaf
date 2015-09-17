@@ -39,6 +39,14 @@ from X1000 P,
 ;
 
 
+---- EnsureNoForeignKeysMetaQuery ----
+select concat('alter table ',table_name,' drop foreign key ',constraint_name) as command
+from information_schema.table_constraints C
+where C.constraint_type = 'FOREIGN KEY'
+  and C.table_schema = schema()
+  and lower(table_name) in (lower(?),lower(?),lower(?),lower(?))
+;
+
 ---- EnsureNoTableOrViewMetaQuery ----
 select concat('drop ', object_type, ' if exists ', table_name, ' cascade') as cmd
      from (
@@ -54,6 +62,13 @@ select concat('drop ', object_type, ' if exists ', table_name, ' cascade') as cm
 where lower(table_name) in (lower(?),lower(?),lower(?),lower(?))
 ;
 
+
+---- ZapForeignKeysMetaQuery ----
+select concat('alter table ',table_name,' drop foreign key ',constraint_name) as command
+from information_schema.table_constraints C
+where C.constraint_type = 'FOREIGN KEY'
+  and C.table_schema = schema()
+;
 
 ---- ZapSchemaMetaQuery ----
 select concat('drop ', object_type, ' if exists ', table_name, ' cascade') as cmd
