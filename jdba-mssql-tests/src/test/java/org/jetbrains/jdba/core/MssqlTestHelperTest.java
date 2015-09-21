@@ -3,7 +3,7 @@ package org.jetbrains.jdba.core;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jdba.CommonIntegrationCase;
 import org.jetbrains.jdba.sql.SqlQuery;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,8 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MssqlTestHelperTest extends CommonIntegrationCase {
 
 
-  @BeforeClass
-  public static void connect() {
+  @Before
+  public void connect() {
     DB.connect();
     TH.zapSchema();
   }
