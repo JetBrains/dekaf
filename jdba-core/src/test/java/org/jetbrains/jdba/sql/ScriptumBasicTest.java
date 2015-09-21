@@ -7,6 +7,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -123,6 +125,27 @@ public class ScriptumBasicTest {
   public void name_adjustCase() {
     SqlCommand command = myScriptum.command("THECOMMAND");
     assertThat(command.getName()).isEqualTo("TheCommand");
+  }
+
+
+  @Test
+  public void fileWithOneCommand_text() {
+    Scriptum scriptum1 = Scriptum.of(ScriptumBasicTest.class, "FileWithOneCommand");
+    TextFileFragment text = scriptum1.getText("TheCommand");
+    assertThat(text).isNotNull();
+    assertThat(text.text).contains("select something", "from some_table");
+  }
+
+  @Test
+  public void fileWithOneCommand_script() {
+    Scriptum scriptum1 = Scriptum.of(ScriptumBasicTest.class, "FileWithOneCommand");
+    SqlScript script = scriptum1.script("TheCommand");
+    assertThat(script).isNotNull();
+    assertThat(script.count()).isEqualTo(1);
+
+    List<? extends SqlStatement> statements = script.getStatements();
+    SqlStatement statement = statements.get(0);
+    assertThat(statement.getSourceText()).contains("select something", "from some_table");
   }
 
 }

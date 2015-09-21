@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -28,6 +30,20 @@ public class SqlScriptBuilderTest {
     SqlStatement statement = script.getStatements().get(0);
     assertThat(statement.getSourceText()).isEqualTo(commandText);
     assertThat(statement.getRow()).isEqualTo(1);
+  }
+
+
+  @Test
+  public void parse_1x() {
+    final String commandText =
+        "select something\n" +
+        "from some_table\n";
+    final SqlScript script = build(commandText);
+
+    List<? extends SqlStatement> statements = script.getStatements();
+    assertThat(statements).hasSize(1);
+    SqlStatement statement = statements.get(0);
+    assertThat(statement.getSourceText()).contains("select something", "from some_table");
   }
 
 
