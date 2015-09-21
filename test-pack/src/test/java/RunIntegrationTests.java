@@ -1,4 +1,3 @@
-import com.google.common.collect.ImmutableMap;
 import org.jetbrains.jdba.*;
 import org.jetbrains.jdba.intermediate.IntegralIntermediateRdbmsProvider;
 import org.jetbrains.jdba.jdbc.H2dbJdbcIntegrationTests;
@@ -9,6 +8,8 @@ import org.jetbrains.jdba.junitft.TestSuiteExecutor;
 import org.jetbrains.jdba.util.Providers;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.TreeMap;
 
 
 
@@ -18,26 +19,22 @@ import java.util.Collection;
 public class RunIntegrationTests {
 
 
-  private static final ImmutableMap<String,Class> ourJdbcSuites =
-          ImmutableMap.<String,Class>builder()
-                            .put(Postgre.RDBMS.code, PostgreJdbcIntegrationTests.class)
-                            .put(Oracle.RDBMS.code, OracleJdbcIntegrationTests.class)
-                            .put(Mysql.RDBMS.code, MysqlJdbcIntegrationTests.class)
-                            .put(H2db.RDBMS.code, H2dbJdbcIntegrationTests.class)
-                            .build();
-
-  private static final ImmutableMap<String,Class> ourCoreSuites =
-          ImmutableMap.<String,Class>builder()
-                            .put(Postgre.RDBMS.code, PostgreIntegrationTests.class)
-                            .put(Oracle.RDBMS.code, OracleIntegrationTests.class)
-                            .put(Mysql.RDBMS.code, MysqlIntegrationTests.class)
-                            .put(H2db.RDBMS.code, H2dbIntegrationTests.class)
-                            .build();
-
+  private static final Map<String,Class> ourJdbcSuites;
+  private static final Map<String,Class> ourCoreSuites;
 
 
   static {
     System.setProperty("java.awt.headless", "true");
+    ourJdbcSuites = new TreeMap<String, Class>(String.CASE_INSENSITIVE_ORDER);
+    ourJdbcSuites.put(Postgre.RDBMS.code, PostgreJdbcIntegrationTests.class);
+    ourJdbcSuites.put(Oracle.RDBMS.code, OracleJdbcIntegrationTests.class);
+    ourJdbcSuites.put(Mysql.RDBMS.code, MysqlJdbcIntegrationTests.class);
+    ourJdbcSuites.put(H2db.RDBMS.code, H2dbJdbcIntegrationTests.class);
+    ourCoreSuites = new TreeMap<String, Class>(String.CASE_INSENSITIVE_ORDER);
+    ourCoreSuites.put(Postgre.RDBMS.code, PostgreIntegrationTests.class);
+    ourCoreSuites.put(Oracle.RDBMS.code, OracleIntegrationTests.class);
+    ourCoreSuites.put(Mysql.RDBMS.code, MysqlIntegrationTests.class);
+    ourCoreSuites.put(H2db.RDBMS.code, H2dbIntegrationTests.class);
   }
 
 
