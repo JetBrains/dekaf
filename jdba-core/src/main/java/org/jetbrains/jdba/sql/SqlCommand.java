@@ -1,6 +1,7 @@
 package org.jetbrains.jdba.sql;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 
@@ -15,8 +16,8 @@ public class SqlCommand extends SqlStatement {
     super(sourceFragment);
   }
 
-  public SqlCommand(@NotNull final String sourceText, final int row) {
-    super(sourceText, row);
+  public SqlCommand(@NotNull final String sourceText, final int row, @Nullable final String commandName) {
+    super(sourceText, row, commandName);
   }
 
 

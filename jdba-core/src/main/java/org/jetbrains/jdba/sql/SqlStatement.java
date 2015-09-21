@@ -64,19 +64,17 @@ public abstract class SqlStatement {
 
 
   protected SqlStatement(@NotNull String sourceText) {
-    mySourceText = sourceText;
-    myRow = 1;
-    myName = null;
-    myDescription = "SQL statement";
+    this(sourceText, 1, null);
   }
 
 
-  @Deprecated
-  protected SqlStatement(@NotNull final String sourceText, final int row) {
+  protected SqlStatement(@NotNull final String sourceText,
+                         final int row,
+                         @Nullable final String statementName) {
     this.mySourceText = sourceText;
     this.myRow = row;
-    this.myName = '@' + Integer.toString(row);
-    this.myDescription = "SQL statement at row " + row;
+    this.myName = statementName != null ? statementName : '@' + Integer.toString(row);
+    this.myDescription = statementName != null ? statementName : "SQL statement at row " + row;
   }
 
   public int getRow() {

@@ -121,7 +121,7 @@ public class SqlScriptBuilder {
     }
 
     String plText = rtrim(walker.getText().substring(begin.offset, position));
-    SqlCommand command = new SqlCommand(plText, begin.row);
+    SqlCommand command = new SqlCommand(plText, begin.row, null);
     myStatements.add(command);
   }
 
@@ -136,7 +136,7 @@ public class SqlScriptBuilder {
     final Matcher matcher = walker.skipToPattern(SQL_END_MARKER);
 
     final String sqlText = rtrim(walker.getText().substring(begin.offset, walker.getOffset()));
-    SqlCommand command = new SqlCommand(sqlText, begin.row);
+    SqlCommand command = new SqlCommand(sqlText, begin.row, null);
     myStatements.add(command);
 
     if (matcher != null) {
