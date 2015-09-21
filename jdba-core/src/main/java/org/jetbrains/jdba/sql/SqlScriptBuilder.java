@@ -112,14 +112,15 @@ public class SqlScriptBuilder {
 
   private void extractPLBlock(@NotNull TextWalker walker) {
     final TextPointer begin = walker.getPointer();
-    int rowOffset = begin.offset;
-    while (!walker.isEOT()) {
-      rowOffset = walker.getOffset();
+    int position;
+    while (true) {
+      position = walker.getOffset();
+      if (walker.isEOT()) break;
       String row = walker.popRow().trim();
       if (row.equals("/")) break;
     }
 
-    String plText = rtrim(walker.getText().substring(begin.offset, rowOffset));
+    String plText = rtrim(walker.getText().substring(begin.offset, position));
     SqlCommand command = new SqlCommand(plText, begin.row);
     myStatements.add(command);
   }

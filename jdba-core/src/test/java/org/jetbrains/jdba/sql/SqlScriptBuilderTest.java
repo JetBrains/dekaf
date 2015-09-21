@@ -38,12 +38,44 @@ public class SqlScriptBuilderTest {
     final String commandText =
         "select something\n" +
         "from some_table\n";
+    SqlStatement statement = parseScriptWithOneStatement(commandText);
+    assertThat(statement.getSourceText()).contains("select something", "from some_table");
+  }
+
+
+  @Test
+  public void parse_1_create_view() {
+    final String commandText =
+        "create view my_view \n" +
+        "as                  \n" +
+        "select *            \n" +
+        "from some_table     \n";
+    SqlStatement statement = parseScriptWithOneStatement(commandText);
+    assertThat(statement.getSourceText()).contains("create view", "from some_table");
+  }
+
+  @Test
+  public void parse_1_PL_block() {
+    final String commandText =
+        "create or replace procedure My_Proc as \n" +
+        "declare X natural := 2;                \n" +
+        "begin                                  \n" +
+        "    dbms_Output.put_line(X);           \n" +
+        "end;                                   \n";
+    SqlStatement statement = parseScriptWithOneStatement(commandText);
+    assertThat(statement.getSourceText()).contains("create or replace procedure My_Proc",
+                                                   "declare X natural := 2;",
+                                                   "begin",
+                                                   "dbms_Output.put_line(X);",
+                                                   "end;");
+  }
+
+  private static SqlStatement parseScriptWithOneStatement(final String commandText) {
     final SqlScript script = build(commandText);
 
     List<? extends SqlStatement> statements = script.getStatements();
     assertThat(statements).hasSize(1);
-    SqlStatement statement = statements.get(0);
-    assertThat(statement.getSourceText()).contains("select something", "from some_table");
+    return statements.get(0);
   }
 
 
@@ -164,7 +196,7 @@ public class SqlScriptBuilderTest {
           "/                                 \n";      //
 
 
-  private SqlScript build(String text) {
+  private static SqlScript build(String text) {
     SqlScriptBuilder b = new SqlScriptBuilder();
     b.parse(text);
     return b.build();
