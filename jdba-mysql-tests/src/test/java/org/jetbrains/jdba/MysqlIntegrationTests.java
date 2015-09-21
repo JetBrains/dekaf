@@ -4,10 +4,7 @@ package org.jetbrains.jdba;
  * @author Leonid Bushuev from JetBrains
  **/
 
-import org.jetbrains.jdba.core.MysqlCommandRunnerTest;
-import org.jetbrains.jdba.core.MysqlPrimaryTest;
-import org.jetbrains.jdba.core.MysqlQueryRunnerTest;
-import org.jetbrains.jdba.core.MysqlSessionTest;
+import org.jetbrains.jdba.core.*;
 import org.jetbrains.jdba.jdbc.MysqlExceptionRecognizerTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -20,6 +17,7 @@ import org.junit.runners.Suite;
                             MysqlSessionTest.class,
                             MysqlCommandRunnerTest.class,
                             MysqlQueryRunnerTest.class,
-                            MysqlExceptionRecognizerTest.class
+                            MysqlExceptionRecognizerTest.class,
+                            MysqlTestHelperTest.class
 })
 public class MysqlIntegrationTests {}

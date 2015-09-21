@@ -71,15 +71,19 @@ where C.constraint_type = 'FOREIGN KEY'
 ;
 
 ---- ZapSchemaMetaQuery ----
-select concat('drop ', object_type, ' if exists ', table_name, ' cascade') as cmd
+select concat('drop ', object_type, ' if exists ', object_name, ' ', suffix) as cmd
 from (
-  select 'table' as object_type, table_name
+  select 'table' as object_type, table_name as object_name, 'cascade' as suffix
   from information_schema.tables
   where table_schema = schema()
     and table_type like '%TABLE'
   union
-  select 'view' as object_type, table_name
+  select 'view' as object_type, table_name as object_name, 'cascade' as suffix
   from information_schema.views
   where table_schema = schema()
+  union
+  select lower(routine_type) as object_type, routine_name as object_name, '' as suffix
+  from information_schema.routines
+  where routine_schema = schema()
   ) objects_to_drop
 ;
