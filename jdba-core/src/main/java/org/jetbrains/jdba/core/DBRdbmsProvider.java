@@ -33,7 +33,7 @@ public interface DBRdbmsProvider extends ImplementationAccessibleService {
    * @param connectionString      database connection string.
    * @param connectionProperties  additional connection properties.
    * @param connectionsLimit      how many server connections allowed at the same time.
-   * @param connect
+   * @param connect               connect immediately (if true, the returned facade is connected).
    * @return                      the prepared facade (not connected).
    */
   @NotNull

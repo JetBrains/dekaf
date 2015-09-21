@@ -94,8 +94,7 @@ public abstract class Collects {
     }
 
     StringBuilder b = new StringBuilder();
-    Iterator it = collection.iterator();
-    while (it.hasNext()) {
+    for (final Object object : collection) {
       if (b.length() == 0) {
         if (prefix != null) b.append(prefix);
       }
@@ -103,7 +102,7 @@ public abstract class Collects {
         if (delimiter != null) b.append(delimiter);
       }
 
-      b.append(it.next());
+      b.append(object);
     }
 
     if (b.length() > 0) {

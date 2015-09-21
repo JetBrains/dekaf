@@ -114,13 +114,8 @@ public class ConnectionPool implements ImplementationAccessibleService {
     if (!myReady) throw new ConnectionPoolIsNotReadyException("The connection pool is not connected yet or may be is disconnecting.");
 
     Connection connection = provideWithConnection();
-    try {
-      activateConnection(connection);
-    }
-    catch (SQLException e) {
-      // TODO
-      throw e;
-    }
+
+    activateConnection(connection);
 
     return connection;
   }

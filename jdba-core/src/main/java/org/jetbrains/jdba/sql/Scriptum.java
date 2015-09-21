@@ -206,8 +206,7 @@ public final class Scriptum {
   public final SqlCommand command(@NotNull final String name) {
     TextFileFragment fragment = getText(name);
     fragment = stripSingleStatement(fragment);
-    final SqlCommand command = new SqlCommand(fragment);
-    return command;
+    return new SqlCommand(fragment);
   }
 
   @NotNull

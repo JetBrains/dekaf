@@ -194,7 +194,4 @@ public class SqlScriptBuilder {
   }
 
 
-
-  static final SqlScript EMPTY_SCRIPT = new SqlScript(new SqlCommand[0]);
-
 }

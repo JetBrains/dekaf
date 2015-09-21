@@ -33,13 +33,9 @@ final class TextPointer {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    TextPointer pointer = (TextPointer)o;
+    TextPointer pointer = (TextPointer) o;
 
-    if (offset != pointer.offset) return false;
-    if (pos != pointer.pos) return false;
-    if (row != pointer.row) return false;
-
-    return true;
+    return offset == pointer.offset && pos == pointer.pos && row == pointer.row;
   }
 
 

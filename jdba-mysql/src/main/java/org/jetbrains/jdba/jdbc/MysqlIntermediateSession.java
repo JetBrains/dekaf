@@ -29,6 +29,7 @@ public class MysqlIntermediateSession extends JdbcIntermediateSession {
   PreparedStatement prepareSimpleStatement(@NotNull final String statementText)
       throws SQLException
   {
+    //noinspection UnnecessaryLocalVariable
     PreparedStatement stmt = getConnection().prepareStatement(statementText,
                                                               ResultSet.TYPE_FORWARD_ONLY,
                                                               ResultSet.CONCUR_READ_ONLY);

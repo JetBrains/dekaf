@@ -520,7 +520,7 @@ public final class JdbcValueGetters {
 
       for (int i = 0; i < n; i++) {
         final Object x = java.lang.reflect.Array.get(sliceSource, i);
-        if (x == null) continue;;
+        if (x == null) continue;
 
         final Class<?> xClass =  x.getClass();
         final Object component;

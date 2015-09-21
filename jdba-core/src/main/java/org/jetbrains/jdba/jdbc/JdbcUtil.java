@@ -46,9 +46,8 @@ abstract class JdbcUtil {
 
   static void close(final Connection connection) {
     try {
-      if (!isClosed(connection)) {
-        connection.close();
-      }
+      if (isClosed(connection)) return;
+      connection.close();
     }
     catch (Exception e) {
       printCloseException(e, connection.getClass());
