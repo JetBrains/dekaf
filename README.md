@@ -49,14 +49,14 @@ Key features to address the problems mentioned above
 
 Supported RDBMS:
 
-* PostgreSQL 9.0+
-* Oracle     9+
-* MySQL
-* H2
+* PostgreSQL     9+
+* Oracle         9+
+* MS SQL Server  9+
+* MySQL          5.1+
+* H2             1.4+
 
 Planned supported RDBMS:
 
-* Microsoft SQL Server
+* Azure
+* RedShift
 * SQLite
-
-
