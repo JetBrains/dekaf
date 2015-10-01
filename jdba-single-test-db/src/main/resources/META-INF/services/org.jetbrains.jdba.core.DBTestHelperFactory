@@ -1,4 +1,4 @@
-org.jetbrains.jdba.core.PostgreTestHelperFactory
+org.jetbrains.jdba.core.PostgresTestHelperFactory
 org.jetbrains.jdba.core.OracleTestHelperFactory
 org.jetbrains.jdba.core.MssqlTestHelperFactory
 org.jetbrains.jdba.core.MysqlTestHelperFactory
