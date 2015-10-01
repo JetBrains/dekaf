@@ -108,8 +108,8 @@ public class ScriptumBasicTest {
   }
 
   @Test
-  public void postgreProcedure1() {
-    SqlCommand plb = myScriptum.command("PostgreProcedure1");
+  public void postgresProcedure1() {
+    SqlCommand plb = myScriptum.command("PostgresProcedure1");
     assertThat(plb.getSourceText()).startsWith("create")
                                    .endsWith("language plpgsql");
   }

@@ -64,7 +64,7 @@ end;
 /
 
 
----- PostgreProcedure1 ----
+---- PostgresProcedure1 ----
 
 create or replace function reffunc1() returns refcursor as $$
 declare

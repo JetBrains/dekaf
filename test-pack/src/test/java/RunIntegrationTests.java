@@ -23,13 +23,13 @@ public class RunIntegrationTests {
   static {
     System.setProperty("java.awt.headless", "true");
     ourJdbcSuites = new TreeMap<String, Class>(String.CASE_INSENSITIVE_ORDER);
-    ourJdbcSuites.put(Postgre.RDBMS.code, PostgreJdbcIntegrationTests.class);
+    ourJdbcSuites.put(Postgres.RDBMS.code, PostgresJdbcIntegrationTests.class);
     ourJdbcSuites.put(Oracle.RDBMS.code, OracleJdbcIntegrationTests.class);
     ourJdbcSuites.put(Mssql.RDBMS.code, MssqlJdbcIntegrationTests.class);
     ourJdbcSuites.put(Mysql.RDBMS.code, MysqlJdbcIntegrationTests.class);
     ourJdbcSuites.put(H2db.RDBMS.code, H2dbJdbcIntegrationTests.class);
     ourCoreSuites = new TreeMap<String, Class>(String.CASE_INSENSITIVE_ORDER);
-    ourCoreSuites.put(Postgre.RDBMS.code, PostgreIntegrationTests.class);
+    ourCoreSuites.put(Postgres.RDBMS.code, PostgresIntegrationTests.class);
     ourCoreSuites.put(Oracle.RDBMS.code, OracleIntegrationTests.class);
     ourCoreSuites.put(Mssql.RDBMS.code, MssqlIntegrationTests.class);
     ourCoreSuites.put(Mysql.RDBMS.code, MysqlIntegrationTests.class);

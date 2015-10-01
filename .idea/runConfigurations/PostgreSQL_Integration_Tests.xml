@@ -1,14 +1,14 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="PostgreSQL Integration Tests" type="JUnit" factoryName="JUnit" singleton="true">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-    <module name="jdba-postgre-tests" />
+    <module name="jdba-postgres-tests" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" value="" />
     <option name="PACKAGE_NAME" value="org.jetbrains.jdba" />
-    <option name="MAIN_CLASS_NAME" value="org.jetbrains.jdba.PostgreIntegrationTests" />
+    <option name="MAIN_CLASS_NAME" value="org.jetbrains.jdba.PostgresIntegrationTests" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="class" />
-    <option name="VM_PARAMETERS" value="-ea -Djava.awt.headless=true -Dtest-db=postgre" />
+    <option name="VM_PARAMETERS" value="-ea -Djava.awt.headless=true -Dtest-db=postgres" />
     <option name="PARAMETERS" value="" />
     <option name="WORKING_DIRECTORY" value="" />
     <option name="ENV_VARIABLES" />

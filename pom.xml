@@ -17,9 +17,9 @@
     <module>jdba-core</module>
     <module>jdba-core-test-db</module>
 
-    <module>jdba-postgre</module>
-    <module>jdba-postgre-test-db</module>
-    <module>jdba-postgre-tests</module>
+    <module>jdba-postgres</module>
+    <module>jdba-postgres-test-db</module>
+    <module>jdba-postgres-tests</module>
 
     <module>jdba-oracle</module>
     <module>jdba-oracle-test-db</module>

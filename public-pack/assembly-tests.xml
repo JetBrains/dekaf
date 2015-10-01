@@ -44,21 +44,21 @@
 
     <fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-postgre/target</directory>
+      <directory>../jdba-postgres/target</directory>
       <includes>
         <include>*-tests.jar</include>
       </includes>
     </fileSet>
     <!--fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-postgre-test-db/target</directory>
+      <directory>../jdba-postgres-test-db/target</directory>
       <includes>
         <include>*-tests.jar</include>
       </includes>
     </fileSet-->
     <fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-postgre-tests/target</directory>
+      <directory>../jdba-postgres-tests/target</directory>
       <includes>
         <include>*-tests.jar</include>
       </includes>

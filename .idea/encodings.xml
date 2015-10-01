@@ -17,9 +17,9 @@
     <file url="file://$PROJECT_DIR$/jdba-oracle" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jdba-oracle-test-db" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jdba-oracle-tests" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/jdba-postgre" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/jdba-postgre-test-db" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/jdba-postgre-tests" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jdba-postgres" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jdba-postgres-test-db" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jdba-postgres-tests" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jdba-single" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/jdba-single-test-db" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/public-pack" charset="UTF-8" />

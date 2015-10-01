@@ -14,7 +14,7 @@ import org.junit.runners.Suite;
     CoreUnitTests.class,
     JdbcUnitTests.class,
     OracleJdbcUnitTests.class,
-    PostgreJdbcUnitTests.class,
+    PostgresJdbcUnitTests.class,
     MssqlJdbcUnitTests.class,
     MysqlJdbcUnitTests.class,
     H2dbJdbcUnitTests.class

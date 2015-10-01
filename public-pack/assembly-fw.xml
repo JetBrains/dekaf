@@ -39,7 +39,7 @@
 
     <fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-postgre/target</directory>
+      <directory>../jdba-postgres/target</directory>
       <includes>
         <include>jdba-*.jar</include>
       </includes>
@@ -49,7 +49,7 @@
     </fileSet>
     <fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-postgre-test-db/target</directory>
+      <directory>../jdba-postgres-test-db/target</directory>
       <includes>
         <include>jdba-*.jar</include>
       </includes>
