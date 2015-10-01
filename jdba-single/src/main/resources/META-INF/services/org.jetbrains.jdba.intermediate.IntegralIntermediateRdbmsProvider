@@ -1,4 +1,4 @@
-org.jetbrains.jdba.jdbc.PostgreIntermediateProvider
+org.jetbrains.jdba.jdbc.PostgresIntermediateProvider
 org.jetbrains.jdba.jdbc.OracleIntermediateProvider
 org.jetbrains.jdba.jdbc.MssqlIntermediateProvider
 org.jetbrains.jdba.jdbc.MysqlIntermediateProvider
