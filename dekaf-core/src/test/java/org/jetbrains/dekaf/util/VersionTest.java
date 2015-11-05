@@ -129,5 +129,19 @@ public class VersionTest {
     assertThat(Version.of(1,2,3).isOrGreater(2)).isFalse();
   }
 
+  @Test
+  public void isOrGreater_2() {
+    assertThat(Version.of(1,2,3).isOrGreater(Version.of(1,2,3))).isTrue();
+    assertThat(Version.of(1,2,3).isOrGreater(Version.of(1,2,2))).isTrue();
+    assertThat(Version.of(1,2,3).isOrGreater(Version.of(1,2))).isTrue();
+    assertThat(Version.of(1,2,3).isOrGreater(Version.of(1,1,7))).isTrue();
+    assertThat(Version.of(1,2,3).isOrGreater(Version.of(1))).isTrue();
+    assertThat(Version.of(1,2,3).isOrGreater(Version.of(0))).isTrue();
+
+    assertThat(Version.of(1,2,3).isOrGreater(Version.of(1,2,4))).isFalse();
+    assertThat(Version.of(1,2,3).isOrGreater(Version.of(1,3))).isFalse();
+    assertThat(Version.of(1,2,3).isOrGreater(Version.of(2))).isFalse();
+  }
+
 
 }

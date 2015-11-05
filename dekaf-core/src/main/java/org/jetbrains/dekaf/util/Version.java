@@ -161,11 +161,20 @@ public final class Version implements Comparable<Version>, Serializable {
   }
 
   /**
-   * Checks whether the version is equal to or gerater than the specified version.
-   * @param than v ersion to compare.
+   * Checks whether the version is equal to or grater than the specified version.
+   * @param than the version to compare.
    * @return <i>true</i> if equals to or is greater than.
    */
   public boolean isOrGreater(final int... than) {
+    return compareTo(than) >= 0;
+  }
+
+  /**
+   * Checks whether the version is equal to or grater than the specified version.
+   * @param than the version to compare.
+   * @return <i>true</i> if equals to or is greater than.
+   */
+  public boolean isOrGreater(@NotNull final Version than) {
     return compareTo(than) >= 0;
   }
 
