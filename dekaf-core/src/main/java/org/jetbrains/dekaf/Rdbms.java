@@ -45,8 +45,7 @@ public final class Rdbms implements Serializable {
 
     Rdbms that = (Rdbms)o;
 
-    //noinspection StringEquality
-    return this.code == that.code;
+    return this.code.equals(that.code);
   }
 
 
