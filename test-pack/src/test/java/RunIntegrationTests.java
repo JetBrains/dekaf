@@ -1,8 +1,8 @@
-import org.jetbrains.jdba.*;
-import org.jetbrains.jdba.intermediate.IntegralIntermediateRdbmsProvider;
-import org.jetbrains.jdba.jdbc.*;
-import org.jetbrains.jdba.junitft.TestSuiteExecutor;
-import org.jetbrains.jdba.util.Providers;
+import org.jetbrains.dekaf.*;
+import org.jetbrains.dekaf.intermediate.IntegralIntermediateRdbmsProvider;
+import org.jetbrains.dekaf.jdbc.*;
+import org.jetbrains.dekaf.junitft.TestSuiteExecutor;
+import org.jetbrains.dekaf.util.Providers;
 
 import java.util.Collection;
 import java.util.Map;

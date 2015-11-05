@@ -3,7 +3,7 @@ Dekaf
 
 Java Database Access Layer Framework
 
-Dekaf is Java framework for working with databases, primarily via JDBC. JDBA is NOT an ORM.
+Dekaf is Java framework for working with databases, primarily via JDBC. Dekaf is NOT an ORM.
 
 
 NOW THIS FRAMEWORK IS UNDER DEVELOPMENT.
@@ -69,3 +69,5 @@ The name 'Dekaf' means that this framework allows to
 avoid all pains and problems belonging naturally to pure JDBC API.
 
 A coffee (Java) without headache.
+
+P.S. The former name of this framework is JDBA (just Java DataBase Access).

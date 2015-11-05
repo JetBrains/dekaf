@@ -2,8 +2,8 @@
  * @author Leonid Bushuev from JetBrains
  **/
 
-import org.jetbrains.jdba.CoreUnitTests;
-import org.jetbrains.jdba.jdbc.*;
+import org.jetbrains.dekaf.CoreUnitTests;
+import org.jetbrains.dekaf.jdbc.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

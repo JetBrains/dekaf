@@ -1,6 +1,0 @@
-org.jetbrains.jdba.jdbc.PostgresIntermediateProvider
-org.jetbrains.jdba.jdbc.OracleIntermediateProvider
-org.jetbrains.jdba.jdbc.MssqlIntermediateProvider
-org.jetbrains.jdba.jdbc.MysqlIntermediateProvider
-org.jetbrains.jdba.jdbc.H2dbIntermediateProvider
-org.jetbrains.jdba.jdbc.UnknownDatabaseProvider

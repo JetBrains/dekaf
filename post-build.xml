@@ -30,7 +30,7 @@
           description="Run unit tests">
     <mkdir dir="coverage"/>
     <java jar='bin/integration-tests.jar' fork='true' failonerror='true'>
-      <jvmarg value="-javaagent:${basedir}/tools/jacoco/lib/jacocoagent.jar=destfile=coverage/jacoco-unit.dat,includes=org.jetbrains.jdba.*,excludes=*Test"/>
+      <jvmarg value="-javaagent:${basedir}/tools/jacoco/lib/jacocoagent.jar=destfile=coverage/jacoco-unit.dat,includes=org.jetbrains.dekaf.*,excludes=*Test"/>
       <jvmarg value='-ea'/>
       <arg value="unit"/>
     </java>
@@ -44,7 +44,7 @@
       <syspropertyset>
         <propertyref prefix="test-db-"/>
       </syspropertyset>
-      <jvmarg value="-javaagent:${basedir}/tools/jacoco/lib/jacocoagent.jar=destfile=coverage/jacoco-${test-db}.dat,includes=org.jetbrains.jdba.*,excludes=*Test"/>
+      <jvmarg value="-javaagent:${basedir}/tools/jacoco/lib/jacocoagent.jar=destfile=coverage/jacoco-${test-db}.dat,includes=org.jetbrains.dekaf.*,excludes=*Test"/>
       <jvmarg value='-ea'/>
       <jvmarg value='-Dtest-db=${test-db}'/>
     </java>

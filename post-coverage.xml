@@ -54,7 +54,8 @@
 
 
   <target name="ask-teamcity" description="Ask TeamCity for Coverage">
-    <echo>##teamcity[jacocoReport dataPath='coverage/total.dat' classpath='+:bin/jdba*.jar' includes='org.jetbrains.jdba.*' excludes='*Test *Error *Exception']</echo>
+    <echo>##teamcity[jacocoReport dataPath='coverage/total.dat' classpath='+:bin/jdba*.jar'
+      includes='org.jetbrains.dekaf.*' excludes='*Test *Error *Exception']</echo>
   </target>
 
 </project>
