@@ -18,9 +18,9 @@
 
     <fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-single/target</directory>
+      <directory>../dekaf-single/target</directory>
       <includes>
-        <include>jdba-*.jar</include>
+        <include>dekaf-*.jar</include>
       </includes>
       <excludes>
         <exclude>*-tests.jar</exclude>
@@ -28,9 +28,9 @@
     </fileSet>
     <fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-single-test-db/target</directory>
+      <directory>../dekaf-single-test-db/target</directory>
       <includes>
-        <include>jdba-*.jar</include>
+        <include>dekaf-*.jar</include>
       </includes>
       <excludes>
         <exclude>*-tests.jar</exclude>

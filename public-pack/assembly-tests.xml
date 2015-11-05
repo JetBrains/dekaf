@@ -29,36 +29,14 @@
 
     <fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-core/target</directory>
+      <directory>../dekaf-core/target</directory>
       <includes>
         <include>*-tests.jar</include>
       </includes>
     </fileSet>
     <fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-core-test-db/target</directory>
-      <includes>
-        <include>*-tests.jar</include>
-      </includes>
-    </fileSet>
-
-    <fileSet>
-      <outputDirectory>/</outputDirectory>
-      <directory>../jdba-postgres/target</directory>
-      <includes>
-        <include>*-tests.jar</include>
-      </includes>
-    </fileSet>
-    <!--fileSet>
-      <outputDirectory>/</outputDirectory>
-      <directory>../jdba-postgres-test-db/target</directory>
-      <includes>
-        <include>*-tests.jar</include>
-      </includes>
-    </fileSet-->
-    <fileSet>
-      <outputDirectory>/</outputDirectory>
-      <directory>../jdba-postgres-tests/target</directory>
+      <directory>../dekaf-core-test-db/target</directory>
       <includes>
         <include>*-tests.jar</include>
       </includes>
@@ -66,21 +44,21 @@
 
     <fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-oracle/target</directory>
+      <directory>../dekaf-postgres/target</directory>
       <includes>
         <include>*-tests.jar</include>
       </includes>
     </fileSet>
     <!--fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-oracle-test-db/target</directory>
+      <directory>../dekaf-postgres-test-db/target</directory>
       <includes>
         <include>*-tests.jar</include>
       </includes>
     </fileSet-->
     <fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-oracle-tests/target</directory>
+      <directory>../dekaf-postgres-tests/target</directory>
       <includes>
         <include>*-tests.jar</include>
       </includes>
@@ -88,21 +66,21 @@
 
     <fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-mssql/target</directory>
+      <directory>../dekaf-oracle/target</directory>
       <includes>
         <include>*-tests.jar</include>
       </includes>
     </fileSet>
     <!--fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-mssql-test-db/target</directory>
+      <directory>../dekaf-oracle-test-db/target</directory>
       <includes>
         <include>*-tests.jar</include>
       </includes>
     </fileSet-->
     <fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-mssql-tests/target</directory>
+      <directory>../dekaf-oracle-tests/target</directory>
       <includes>
         <include>*-tests.jar</include>
       </includes>
@@ -110,21 +88,21 @@
 
     <fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-mysql/target</directory>
+      <directory>../dekaf-mssql/target</directory>
       <includes>
         <include>*-tests.jar</include>
       </includes>
     </fileSet>
     <!--fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-mysql-test-db/target</directory>
+      <directory>../dekaf-mssql-test-db/target</directory>
       <includes>
         <include>*-tests.jar</include>
       </includes>
     </fileSet-->
     <fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-mysql-tests/target</directory>
+      <directory>../dekaf-mssql-tests/target</directory>
       <includes>
         <include>*-tests.jar</include>
       </includes>
@@ -132,21 +110,43 @@
 
     <fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-h2db/target</directory>
+      <directory>../dekaf-mysql/target</directory>
       <includes>
         <include>*-tests.jar</include>
       </includes>
     </fileSet>
     <!--fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-h2db-test-db/target</directory>
+      <directory>../dekaf-mysql-test-db/target</directory>
       <includes>
         <include>*-tests.jar</include>
       </includes>
     </fileSet-->
     <fileSet>
       <outputDirectory>/</outputDirectory>
-      <directory>../jdba-h2db-tests/target</directory>
+      <directory>../dekaf-mysql-tests/target</directory>
+      <includes>
+        <include>*-tests.jar</include>
+      </includes>
+    </fileSet>
+
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>../dekaf-h2db/target</directory>
+      <includes>
+        <include>*-tests.jar</include>
+      </includes>
+    </fileSet>
+    <!--fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>../dekaf-h2db-test-db/target</directory>
+      <includes>
+        <include>*-tests.jar</include>
+      </includes>
+    </fileSet-->
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>../dekaf-h2db-tests/target</directory>
       <includes>
         <include>*-tests.jar</include>
       </includes>
@@ -160,7 +160,7 @@
         <include>*.jar</include>
       </includes>
       <excludes>
-        <exclude>jdba*</exclude>
+        <exclude>dekaf*</exclude>
         <exclude>fine-junit*</exclude>
       </excludes>
     </fileSet>

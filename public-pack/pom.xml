@@ -5,8 +5,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.jetbrains.jdba</groupId>
-    <artifactId>jdba</artifactId>
+    <groupId>org.jetbrains.dekaf</groupId>
+    <artifactId>dekaf</artifactId>
     <version>2.0.0-SNAPSHOT</version>
   </parent>
 
@@ -18,164 +18,164 @@
   <dependencies>
 
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-core</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-core</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-core</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-core</artifactId>
       <version>2.0.0-SNAPSHOT</version>
       <type>test-jar</type>
     </dependency>
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-core-test-db</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-core-test-db</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-core-test-db</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-core-test-db</artifactId>
       <version>2.0.0-SNAPSHOT</version>
       <type>test-jar</type>
     </dependency>
 
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
+      <groupId>org.jetbrains.dekaf</groupId>
       <artifactId>fine-junit</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
 
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-postgres</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-postgres</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-postgres</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-postgres</artifactId>
       <version>2.0.0-SNAPSHOT</version>
       <type>test-jar</type>
     </dependency>
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-postgres-test-db</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-postgres-test-db</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <!--dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-postgres-test-db</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-postgres-test-db</artifactId>
       <version>2.0.0-SNAPSHOT</version>
       <type>test-jar</type>
     </dependency-->
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-postgres-tests</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-postgres-tests</artifactId>
       <version>2.0.0-SNAPSHOT</version>
       <type>test-jar</type>
     </dependency>
 
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-oracle</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-oracle</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-oracle</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-oracle</artifactId>
       <version>2.0.0-SNAPSHOT</version>
       <type>test-jar</type>
     </dependency>
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-oracle-test-db</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-oracle-test-db</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <!--dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-oracle-test-db</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-oracle-test-db</artifactId>
       <version>2.0.0-SNAPSHOT</version>
       <type>test-jar</type>
     </dependency-->
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-oracle-tests</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-oracle-tests</artifactId>
       <version>2.0.0-SNAPSHOT</version>
       <type>test-jar</type>
     </dependency>
 
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-mssql</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-mssql</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
 
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-mysql</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-mysql</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-mysql</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-mysql</artifactId>
       <version>2.0.0-SNAPSHOT</version>
       <type>test-jar</type>
     </dependency>
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-mysql-test-db</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-mysql-test-db</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <!--dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-mysql-test-db</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-mysql-test-db</artifactId>
       <version>2.0.0-SNAPSHOT</version>
       <type>test-jar</type>
     </dependency-->
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-mysql-tests</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-mysql-tests</artifactId>
       <version>2.0.0-SNAPSHOT</version>
       <type>test-jar</type>
     </dependency>
 
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-h2db</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-h2db</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-h2db</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-h2db</artifactId>
       <version>2.0.0-SNAPSHOT</version>
       <type>test-jar</type>
     </dependency>
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-h2db-test-db</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-h2db-test-db</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <!--dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-h2db-test-db</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-h2db-test-db</artifactId>
       <version>2.0.0-SNAPSHOT</version>
       <type>test-jar</type>
     </dependency-->
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-h2db-tests</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-h2db-tests</artifactId>
       <version>2.0.0-SNAPSHOT</version>
       <type>test-jar</type>
     </dependency>
 
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-single</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-single</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.jetbrains.jdba</groupId>
-      <artifactId>jdba-single-test-db</artifactId>
+      <groupId>org.jetbrains.dekaf</groupId>
+      <artifactId>dekaf-single-test-db</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
 
@@ -185,7 +185,7 @@
   <build>
 
     <directory>../dist</directory>
-    <finalName>jdba</finalName>
+    <finalName>dekaf</finalName>
 
     <plugins>
 

@@ -2,30 +2,30 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/dekaf.iml" filepath="$PROJECT_DIR$/dekaf.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-core/dekaf-core.iml" filepath="$PROJECT_DIR$/dekaf-core/dekaf-core.iml" group="00 Core" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-core-test-db/dekaf-core-test-db.iml" filepath="$PROJECT_DIR$/dekaf-core-test-db/dekaf-core-test-db.iml" group="00 Core" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-h2db/dekaf-h2db.iml" filepath="$PROJECT_DIR$/dekaf-h2db/dekaf-h2db.iml" group="11 H2" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-h2db-test-db/dekaf-h2db-test-db.iml" filepath="$PROJECT_DIR$/dekaf-h2db-test-db/dekaf-h2db-test-db.iml" group="11 H2" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-h2db-tests/dekaf-h2db-tests.iml" filepath="$PROJECT_DIR$/dekaf-h2db-tests/dekaf-h2db-tests.iml" group="11 H2" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-mssql/dekaf-mssql.iml" filepath="$PROJECT_DIR$/dekaf-mssql/dekaf-mssql.iml" group="03 Microsoft" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-mssql-test-db/dekaf-mssql-test-db.iml" filepath="$PROJECT_DIR$/dekaf-mssql-test-db/dekaf-mssql-test-db.iml" group="03 Microsoft" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-mssql-tests/dekaf-mssql-tests.iml" filepath="$PROJECT_DIR$/dekaf-mssql-tests/dekaf-mssql-tests.iml" group="03 Microsoft" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-mysql/dekaf-mysql.iml" filepath="$PROJECT_DIR$/dekaf-mysql/dekaf-mysql.iml" group="04 MySQL" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-mysql-test-db/dekaf-mysql-test-db.iml" filepath="$PROJECT_DIR$/dekaf-mysql-test-db/dekaf-mysql-test-db.iml" group="04 MySQL" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-mysql-tests/dekaf-mysql-tests.iml" filepath="$PROJECT_DIR$/dekaf-mysql-tests/dekaf-mysql-tests.iml" group="04 MySQL" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-oracle/dekaf-oracle.iml" filepath="$PROJECT_DIR$/dekaf-oracle/dekaf-oracle.iml" group="02 Oracle" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-oracle-test-db/dekaf-oracle-test-db.iml" filepath="$PROJECT_DIR$/dekaf-oracle-test-db/dekaf-oracle-test-db.iml" group="02 Oracle" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-oracle-tests/dekaf-oracle-tests.iml" filepath="$PROJECT_DIR$/dekaf-oracle-tests/dekaf-oracle-tests.iml" group="02 Oracle" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-postgres/dekaf-postgre.iml" filepath="$PROJECT_DIR$/dekaf-postgres/dekaf-postgre.iml" group="01 Postgre" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-postgres-test-db/dekaf-postgre-test-db.iml" filepath="$PROJECT_DIR$/dekaf-postgres-test-db/dekaf-postgre-test-db.iml" group="01 Postgre" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-postgres-tests/dekaf-postgre-tests.iml" filepath="$PROJECT_DIR$/dekaf-postgres-tests/dekaf-postgre-tests.iml" group="01 Postgre" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-postgres/dekaf-postgres.iml" filepath="$PROJECT_DIR$/dekaf-postgres/dekaf-postgres.iml" group="01 Postgres" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-postgres-test-db/dekaf-postgres-test-db.iml" filepath="$PROJECT_DIR$/dekaf-postgres-test-db/dekaf-postgres-test-db.iml" group="01 Postgres" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-postgres-tests/dekaf-postgres-tests.iml" filepath="$PROJECT_DIR$/dekaf-postgres-tests/dekaf-postgres-tests.iml" group="01 Postgres" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-single/dekaf-single.iml" filepath="$PROJECT_DIR$/dekaf-single/dekaf-single.iml" group="70 All-containing JARs" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-single-test-db/dekaf-single-test-db.iml" filepath="$PROJECT_DIR$/dekaf-single-test-db/dekaf-single-test-db.iml" group="70 All-containing JARs" />
       <module fileurl="file://$PROJECT_DIR$/fine-junit/fine-junit.iml" filepath="$PROJECT_DIR$/fine-junit/fine-junit.iml" group="00 Core" />
-      <module fileurl="file://$PROJECT_DIR$/jdba.iml" filepath="$PROJECT_DIR$/jdba.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-core/jdba-core.iml" filepath="$PROJECT_DIR$/jdba-core/jdba-core.iml" group="00 Core" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-core-test-db/jdba-core-test-db.iml" filepath="$PROJECT_DIR$/jdba-core-test-db/jdba-core-test-db.iml" group="00 Core" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-h2db/jdba-h2db.iml" filepath="$PROJECT_DIR$/jdba-h2db/jdba-h2db.iml" group="11 H2" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-h2db-test-db/jdba-h2db-test-db.iml" filepath="$PROJECT_DIR$/jdba-h2db-test-db/jdba-h2db-test-db.iml" group="11 H2" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-h2db-tests/jdba-h2db-tests.iml" filepath="$PROJECT_DIR$/jdba-h2db-tests/jdba-h2db-tests.iml" group="11 H2" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-mssql/jdba-mssql.iml" filepath="$PROJECT_DIR$/jdba-mssql/jdba-mssql.iml" group="03 Microsoft" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-mssql-test-db/jdba-mssql-test-db.iml" filepath="$PROJECT_DIR$/jdba-mssql-test-db/jdba-mssql-test-db.iml" group="03 Microsoft" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-mssql-tests/jdba-mssql-tests.iml" filepath="$PROJECT_DIR$/jdba-mssql-tests/jdba-mssql-tests.iml" group="03 Microsoft" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-mysql/jdba-mysql.iml" filepath="$PROJECT_DIR$/jdba-mysql/jdba-mysql.iml" group="04 MySQL" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-mysql-test-db/jdba-mysql-test-db.iml" filepath="$PROJECT_DIR$/jdba-mysql-test-db/jdba-mysql-test-db.iml" group="04 MySQL" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-mysql-tests/jdba-mysql-tests.iml" filepath="$PROJECT_DIR$/jdba-mysql-tests/jdba-mysql-tests.iml" group="04 MySQL" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-oracle/jdba-oracle.iml" filepath="$PROJECT_DIR$/jdba-oracle/jdba-oracle.iml" group="02 Oracle" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-oracle-test-db/jdba-oracle-test-db.iml" filepath="$PROJECT_DIR$/jdba-oracle-test-db/jdba-oracle-test-db.iml" group="02 Oracle" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-oracle-tests/jdba-oracle-tests.iml" filepath="$PROJECT_DIR$/jdba-oracle-tests/jdba-oracle-tests.iml" group="02 Oracle" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-postgres/jdba-postgre.iml" filepath="$PROJECT_DIR$/jdba-postgres/jdba-postgre.iml" group="01 Postgre" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-postgres-test-db/jdba-postgre-test-db.iml" filepath="$PROJECT_DIR$/jdba-postgres-test-db/jdba-postgre-test-db.iml" group="01 Postgre" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-postgres-tests/jdba-postgre-tests.iml" filepath="$PROJECT_DIR$/jdba-postgres-tests/jdba-postgre-tests.iml" group="01 Postgre" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-postgres/jdba-postgres.iml" filepath="$PROJECT_DIR$/jdba-postgres/jdba-postgres.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-postgres-test-db/jdba-postgres-test-db.iml" filepath="$PROJECT_DIR$/jdba-postgres-test-db/jdba-postgres-test-db.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-postgres-tests/jdba-postgres-tests.iml" filepath="$PROJECT_DIR$/jdba-postgres-tests/jdba-postgres-tests.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-single/jdba-single.iml" filepath="$PROJECT_DIR$/jdba-single/jdba-single.iml" group="70 All-containing JARs" />
-      <module fileurl="file://$PROJECT_DIR$/jdba-single-test-db/jdba-single-test-db.iml" filepath="$PROJECT_DIR$/jdba-single-test-db/jdba-single-test-db.iml" group="70 All-containing JARs" />
       <module fileurl="file://$PROJECT_DIR$/public-pack/public-pack.iml" filepath="$PROJECT_DIR$/public-pack/public-pack.iml" group="90 Zipped Packs" />
       <module fileurl="file://$PROJECT_DIR$/test-pack/test-pack.iml" filepath="$PROJECT_DIR$/test-pack/test-pack.iml" group="90 Zipped Packs" />
     </modules>
