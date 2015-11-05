@@ -1,9 +1,9 @@
-JDBA
-====
+Dekaf
+=====
 
 Java Database Access Layer Framework
 
-JDBA is Java framework for working with databases, primarily via JDBC. JDBA is NOT an ORM.
+Dekaf is Java framework for working with databases, primarily via JDBC. JDBA is NOT an ORM.
 
 
 NOW THIS FRAMEWORK IS UNDER DEVELOPMENT.
@@ -60,3 +60,12 @@ Planned supported RDBMS:
 * Azure
 * RedShift
 * SQLite
+
+
+The Name
+--------
+
+The name 'Dekaf' means that this framework allows to
+avoid all pains and problems belonging naturally to pure JDBC API.
+
+A coffee (Java) without headache.
