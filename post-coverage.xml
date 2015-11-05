@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="JDBA Post-Coverage Operations" xmlns:jacoco="antlib:org.jacoco.ant">
+<project name="Dekaf Post-Coverage Operations" xmlns:jacoco="antlib:org.jacoco.ant">
 
   <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
     <classpath path="tools/jacoco/lib/jacocoant.jar"/>
@@ -20,7 +20,7 @@
   <target name="unpack-sources">
     <unzip dest="${basedir}/sources">
       <fileset dir="${basedir}/bin">
-        <include name="jdba-*-sources.jar"/>
+        <include name="dekaf-*-sources.jar"/>
       </fileset>
     </unzip>
   </target>
@@ -33,10 +33,10 @@
         <file file="${coverage-total-file}"/>
       </executiondata>
 
-      <structure name="JDBA">
+      <structure name="DEKAF">
         <classfiles>
           <fileset dir="${basedir}/bin">
-            <include name="jdba-*.jar"/>
+            <include name="dekaf-*.jar"/>
             <exclude name="*-sources.jar"/>
           </fileset>
         </classfiles>
@@ -54,7 +54,7 @@
 
 
   <target name="ask-teamcity" description="Ask TeamCity for Coverage">
-    <echo>##teamcity[jacocoReport dataPath='coverage/total.dat' classpath='+:bin/jdba*.jar'
+    <echo>##teamcity[jacocoReport dataPath='coverage/total.dat' classpath='+:bin/dekaf*.jar'
       includes='org.jetbrains.dekaf.*' excludes='*Test *Error *Exception']</echo>
   </target>
 

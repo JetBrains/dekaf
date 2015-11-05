@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="JDBA Post-Build Operations">
+<project name="Dekaf Post-Build Operations">
 
   <property name="ver">2.0.0-SNAPSHOT</property>
   <property name="test-db">h2</property>
@@ -7,22 +7,22 @@
 
   <target name="unpack-fw">
     <mkdir dir="bin"/>
-    <unzip src="dist/jdba-fw.zip" dest="bin" overwrite="true"/>
+    <unzip src="dist/dekaf-fw.zip" dest="bin" overwrite="true"/>
   </target>
 
   <target name="unpack-single">
     <mkdir dir="bin"/>
-    <unzip src="dist/jdba-single-templates.zip" dest="bin" overwrite="false"/>
+    <unzip src="dist/dekaf-single-templates.zip" dest="bin" overwrite="false"/>
   </target>
 
   <target name="unpack-tests">
     <mkdir dir="bin"/>
-    <unzip src="dist/jdba-tests.zip" dest="bin" overwrite="false"/>
+    <unzip src="dist/dekaf-tests.zip" dest="bin" overwrite="false"/>
   </target>
 
   <target name="unpack-tools">
     <mkdir dir="tools"/>
-    <unzip src="dist/jdba-tools.zip" dest="tools" overwrite="false"/>
+    <unzip src="dist/dekaf-tools.zip" dest="tools" overwrite="false"/>
   </target>
 
 
@@ -79,7 +79,7 @@
       <param name="suffix" value="-sources"/>
     </antcall>
 
-    <zip basedir="temp/combined-jars" destfile="dist/jdba-single.zip" compress="false"/>
+    <zip basedir="temp/combined-jars" destfile="dist/dekaf-single.zip" compress="false"/>
   </target>
 
 
@@ -87,19 +87,19 @@
     <delete dir="temp/content-${nr}"/>
     <mkdir dir="temp/content-${nr}"/>
 
-    <unjar src="bin/jdba-single-${infix}${ver}${suffix}.jar" dest="temp/content-${nr}"/>
+    <unjar src="bin/dekaf-single-${infix}${ver}${suffix}.jar" dest="temp/content-${nr}"/>
 
     <unjar dest="temp/content-${nr}" overwrite="false">
       <fileset dir="bin">
-        <include name="jdba-*-${infix}${ver}${suffix}.jar"/>
-        <exclude name="jdba-single*"/>
+        <include name="dekaf-*-${infix}${ver}${suffix}.jar"/>
+        <exclude name="dekaf-single*"/>
       </fileset>
       <patternset>
         <exclude name="META-INF/services/*"/>
       </patternset>
     </unjar>
 
-    <jar basedir="temp/content-${nr}" destfile="temp/combined-jars/jdba-single-${infix}${ver}${suffix}.jar"/>
+    <jar basedir="temp/content-${nr}" destfile="temp/combined-jars/dekaf-single-${infix}${ver}${suffix}.jar"/>
   </target>
 
 
