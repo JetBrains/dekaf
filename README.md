@@ -8,7 +8,7 @@ Dekaf is Java framework for working with databases, primarily via JDBC. Dekaf is
 
 NOW THIS FRAMEWORK IS UNDER DEVELOPMENT.
 
-The currently developed version: 2.0.0.X (where X is a build number).
+The currently developed version is 2.0.0.X (where X is a build number).
 
 
 Motivation
@@ -35,19 +35,18 @@ Development and debug of applications problem
 
 
 
-Planned Features
-----------------
+Features
+--------
 
-Key features to address the problems mentioned above
+R.2.0 features:
+
+Key features to address the problems mentioned above:
 
 * SQL queries are in separated .sql files, that allow to try/debug them right from these files
-* SQL macros that allow to unify queries and reduce dynamic query text constructions
-* named parameter
-* typed out parameters 
 * retrieve data as commonly used Java structures (arrays, lists, sets)
-* unified exceptions hierarchy
+* unified exceptions hierarchy (partially)
 
-Supported RDBMS:
+R.2.0 supported RDBMS:
 
 * PostgreSQL     9+
 * Oracle         9+
@@ -55,11 +54,19 @@ Supported RDBMS:
 * MySQL          5.1+
 * H2             1.4+
 
+Planned features to address the problems mentioned above:
+
+* SQL macros that allow to unify queries and reduce dynamic query text constructions
+* named parameter
+* typed out parameters
+* unified exceptions hierarchy (better hierarchy)
+
 Planned supported RDBMS:
 
 * Azure
 * RedShift
 * SQLite
+
 
 
 The Name
