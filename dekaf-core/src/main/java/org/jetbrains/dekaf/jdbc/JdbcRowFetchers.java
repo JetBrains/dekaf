@@ -36,6 +36,14 @@ public class JdbcRowFetchers {
     return new ArrayFetcher<V>(position, commonClass, getters);
   }
 
+  public static IntArrayFetcher createIntArrayFetcher(final int position) {
+    return new IntArrayFetcher(position);
+  }
+
+  public static LongArrayFetcher createLongArrayFetcher(final int position) {
+    return new LongArrayFetcher(position);
+  }
+
   public static TupleFetcher createTupleFetcher(final NameAndClass[] components) {
     return new TupleFetcher(components);
   }
@@ -89,6 +97,80 @@ public class JdbcRowFetchers {
       V[] array = (V[]) Array.newInstance(commonClass, n);
       for (int j = 0; j < n; j++) {
         array[j] = getters[j].getValue(rset, position + j);
+      }
+      return array;
+    }
+  }
+
+
+  public static final class IntArrayFetcher extends JdbcRowFetcher<int[]> {
+
+    private final int position;
+
+    private JdbcValueGetter<Integer>[] getters;
+
+    private IntArrayFetcher(final int position) {
+      this.position = position;
+    }
+
+    private void init(@NotNull final ResultSetMetaData md) throws SQLException {
+      int n = Math.max(md.getColumnCount() - (position-1), 0);
+      //noinspection unchecked
+      getters = (JdbcValueGetter<Integer>[]) new JdbcValueGetter[n];
+      for (int i = 0; i < n; i++) {
+        int jdbcType = md.getColumnType(position + i);
+        JdbcValueGetter<Integer> valueGetter = JdbcValueGetters.of(jdbcType, int.class);
+        getters[i] = valueGetter;
+      }
+    }
+
+    @Override
+    int[] fetchRow(@NotNull final ResultSet rset) throws SQLException {
+      if (getters == null) init(rset.getMetaData());
+
+      final int n = getters.length;
+      //noinspection unchecked
+      int[] array = new int[n];
+      for (int j = 0; j < n; j++) {
+        Integer value = getters[j].getValue(rset, position + j);
+        array[j] = value == null ? 0 : value;
+      }
+      return array;
+    }
+  }
+
+
+  public static final class LongArrayFetcher extends JdbcRowFetcher<long[]> {
+
+    private final int position;
+
+    private JdbcValueGetter<Long>[] getters;
+
+    private LongArrayFetcher(final int position) {
+      this.position = position;
+    }
+
+    private void init(@NotNull final ResultSetMetaData md) throws SQLException {
+      int n = Math.max(md.getColumnCount() - (position-1), 0);
+      //noinspection unchecked
+      getters = (JdbcValueGetter<Long>[]) new JdbcValueGetter[n];
+      for (int i = 0; i < n; i++) {
+        int jdbcType = md.getColumnType(position + i);
+        JdbcValueGetter<Long> valueGetter = JdbcValueGetters.of(jdbcType, long.class);
+        getters[i] = valueGetter;
+      }
+    }
+
+    @Override
+    long[] fetchRow(@NotNull final ResultSet rset) throws SQLException {
+      if (getters == null) init(rset.getMetaData());
+
+      final int n = getters.length;
+      //noinspection unchecked
+      long[] array = new long[n];
+      for (int j = 0; j < n; j++) {
+        Long value = getters[j].getValue(rset, position + j);
+        array[j] = value == null ? 0L : value;
       }
       return array;
     }

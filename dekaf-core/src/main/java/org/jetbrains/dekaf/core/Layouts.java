@@ -44,6 +44,16 @@ public abstract class Layouts {
     return new RowLayout<Object[]>(RowLayout.Kind.ARRAY, Object[].class, Object.class);
   }
 
+  @NotNull
+  public static RowLayout<int[]> arrayOfInts() {
+    return new RowLayout<int[]>(RowLayout.Kind.ARRAY, int[].class, int.class);
+  }
+
+  @NotNull
+  public static RowLayout<long[]> arrayOfLongs() {
+    return new RowLayout<long[]>(RowLayout.Kind.ARRAY, long[].class, long.class);
+  }
+
   /*
   @NotNull
   public static RowLayout<Object[]> tupleOf(@NotNull final NameAndClass[] components) {

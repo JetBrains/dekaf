@@ -236,6 +236,25 @@ public abstract class BaseQueryRunnerTest extends BaseInMemoryDBFacadeCase {
 
 
   @Test
+  public void int_array_basic() {
+    SqlQuery<int[]> query =
+        new SqlQuery<int[]>("select 11, 22, 33",
+                                rowOf(arrayOfInts()));
+    int[] array = query(query);
+    assertThat(array).containsExactly(11,22,33);
+  }
+
+  @Test
+  public void long_array_basic() {
+    SqlQuery<long[]> query =
+        new SqlQuery<long[]>("select 11, 22, 33",
+                                rowOf(arrayOfLongs()));
+    long[] array = query(query);
+    assertThat(array).containsExactly(11L,22L,33L);
+  }
+
+
+  @Test
   public void million_of_ints() {
     SqlQuery<int[]> query =
         new SqlQuery<int[]>("select cast(X as int) from system_range(1,1000000)", columnOfInts(1000));

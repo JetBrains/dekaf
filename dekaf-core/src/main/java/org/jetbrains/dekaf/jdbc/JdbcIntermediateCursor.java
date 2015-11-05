@@ -147,7 +147,15 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
         fetcher = JdbcRowFetchers.createOneValueFetcher(1, getters[0]);
         break;
       case ARRAY:
-        fetcher = JdbcRowFetchers.createArrayFetcher(1, rowLayout.commonComponentClass, getters);
+        if (rowLayout.commonComponentClass == int.class) {
+          fetcher = JdbcRowFetchers.createIntArrayFetcher(1);
+        }
+        else if (rowLayout.commonComponentClass == long.class) {
+          fetcher = JdbcRowFetchers.createLongArrayFetcher(1);
+        }
+        else {
+          fetcher = JdbcRowFetchers.createArrayFetcher(1, rowLayout.commonComponentClass, getters);
+        }
         break;
       case TUPLE:
         fetcher = JdbcRowFetchers.createTupleFetcher(rowLayout.components);
