@@ -16,6 +16,7 @@ import org.junit.runners.Suite;
     OracleJdbcUnitTests.class,
     PostgresJdbcUnitTests.class,
     MssqlJdbcUnitTests.class,
+    SybaseJdbcUnitTests.class,
     MysqlJdbcUnitTests.class,
     H2dbJdbcUnitTests.class
 })

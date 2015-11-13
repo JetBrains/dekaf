@@ -29,6 +29,10 @@
     <module>dekaf-mssql-test-db</module>
     <module>dekaf-mssql-tests</module>
 
+    <module>dekaf-sybase</module>
+    <module>dekaf-sybase-test-db</module>
+    <module>dekaf-sybase-tests</module>
+
     <module>dekaf-mysql</module>
     <module>dekaf-mysql-test-db</module>
     <module>dekaf-mysql-tests</module>

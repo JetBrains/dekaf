@@ -51,6 +51,7 @@ R.2.0 supported RDBMS:
 * PostgreSQL     9+
 * Oracle         9+
 * MS SQL Server  9+
+* Sybase ASE     15+
 * MySQL          5.1+
 * H2             1.4+
 

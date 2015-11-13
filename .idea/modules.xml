@@ -11,9 +11,9 @@
       <module fileurl="file://$PROJECT_DIR$/dekaf-mssql/dekaf-mssql.iml" filepath="$PROJECT_DIR$/dekaf-mssql/dekaf-mssql.iml" group="03 Microsoft" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-mssql-test-db/dekaf-mssql-test-db.iml" filepath="$PROJECT_DIR$/dekaf-mssql-test-db/dekaf-mssql-test-db.iml" group="03 Microsoft" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-mssql-tests/dekaf-mssql-tests.iml" filepath="$PROJECT_DIR$/dekaf-mssql-tests/dekaf-mssql-tests.iml" group="03 Microsoft" />
-      <module fileurl="file://$PROJECT_DIR$/dekaf-mysql/dekaf-mysql.iml" filepath="$PROJECT_DIR$/dekaf-mysql/dekaf-mysql.iml" group="04 MySQL" />
-      <module fileurl="file://$PROJECT_DIR$/dekaf-mysql-test-db/dekaf-mysql-test-db.iml" filepath="$PROJECT_DIR$/dekaf-mysql-test-db/dekaf-mysql-test-db.iml" group="04 MySQL" />
-      <module fileurl="file://$PROJECT_DIR$/dekaf-mysql-tests/dekaf-mysql-tests.iml" filepath="$PROJECT_DIR$/dekaf-mysql-tests/dekaf-mysql-tests.iml" group="04 MySQL" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-mysql/dekaf-mysql.iml" filepath="$PROJECT_DIR$/dekaf-mysql/dekaf-mysql.iml" group="05 MySQL" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-mysql-test-db/dekaf-mysql-test-db.iml" filepath="$PROJECT_DIR$/dekaf-mysql-test-db/dekaf-mysql-test-db.iml" group="05 MySQL" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-mysql-tests/dekaf-mysql-tests.iml" filepath="$PROJECT_DIR$/dekaf-mysql-tests/dekaf-mysql-tests.iml" group="05 MySQL" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-oracle/dekaf-oracle.iml" filepath="$PROJECT_DIR$/dekaf-oracle/dekaf-oracle.iml" group="02 Oracle" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-oracle-test-db/dekaf-oracle-test-db.iml" filepath="$PROJECT_DIR$/dekaf-oracle-test-db/dekaf-oracle-test-db.iml" group="02 Oracle" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-oracle-tests/dekaf-oracle-tests.iml" filepath="$PROJECT_DIR$/dekaf-oracle-tests/dekaf-oracle-tests.iml" group="02 Oracle" />
@@ -25,6 +25,9 @@
       <module fileurl="file://$PROJECT_DIR$/dekaf-postgres-tests/dekaf-postgres-tests.iml" filepath="$PROJECT_DIR$/dekaf-postgres-tests/dekaf-postgres-tests.iml" group="01 Postgres" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-single/dekaf-single.iml" filepath="$PROJECT_DIR$/dekaf-single/dekaf-single.iml" group="70 All-containing JARs" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-single-test-db/dekaf-single-test-db.iml" filepath="$PROJECT_DIR$/dekaf-single-test-db/dekaf-single-test-db.iml" group="70 All-containing JARs" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-sybase/dekaf-sybase.iml" filepath="$PROJECT_DIR$/dekaf-sybase/dekaf-sybase.iml" group="04 Sybase" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-sybase-test-db/dekaf-sybase-test-db.iml" filepath="$PROJECT_DIR$/dekaf-sybase-test-db/dekaf-sybase-test-db.iml" group="04 Sybase" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-sybase-tests/dekaf-sybase-tests.iml" filepath="$PROJECT_DIR$/dekaf-sybase-tests/dekaf-sybase-tests.iml" group="04 Sybase" />
       <module fileurl="file://$PROJECT_DIR$/fine-junit/fine-junit.iml" filepath="$PROJECT_DIR$/fine-junit/fine-junit.iml" group="00 Core" />
       <module fileurl="file://$PROJECT_DIR$/public-pack/public-pack.iml" filepath="$PROJECT_DIR$/public-pack/public-pack.iml" group="90 Zipped Packs" />
       <module fileurl="file://$PROJECT_DIR$/test-pack/test-pack.iml" filepath="$PROJECT_DIR$/test-pack/test-pack.iml" group="90 Zipped Packs" />

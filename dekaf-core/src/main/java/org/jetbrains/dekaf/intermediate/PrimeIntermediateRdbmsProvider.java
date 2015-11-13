@@ -69,6 +69,7 @@ public interface PrimeIntermediateRdbmsProvider extends ImplementationAccessible
   //// CONSTANTS \\\\
 
   byte SPECIFICITY_NATIVE = 10;
+  byte SPECIFICITY_3RD_PARTY = 20;
   byte SPECIFICITY_INTERMEDIATE = 50;
   byte SPECIFICITY_UNSPECIFIC = 90;
 
