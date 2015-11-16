@@ -17,21 +17,18 @@ import static org.jetbrains.dekaf.core.Layouts.singleOf;
 @FixMethodOrder(MethodSorters.JVM)
 public class SybaseQueryRunnerTest extends CommonQueryRunnerTest {
 
-  private static final String SELECT_1_BIT =
-      "declare @b bit \n" +
-      "set @b = 1     \n" +
-      "select @b      \n";
 
   @Test
   public void query_bit_as_boolean() {
-    SqlQuery<Boolean> q = new SqlQuery<Boolean>(SELECT_1_BIT, singleOf(Boolean.class));
+    TH.prepareX1();
+    SqlQuery<Boolean> q = new SqlQuery<Boolean>("select * from X1", singleOf(Boolean.class));
     final Boolean b = query(q);
     assertThat(b).isTrue();
   }
 
   @Test
   public void query_bit_as_int() {
-    SqlQuery<Byte> q = new SqlQuery<Byte>(SELECT_1_BIT, singleOf(Byte.class));
+    SqlQuery<Byte> q = new SqlQuery<Byte>("select * from X1", singleOf(Byte.class));
     final Byte b = query(q);
     assertThat(b).isEqualTo((byte)1);
   }

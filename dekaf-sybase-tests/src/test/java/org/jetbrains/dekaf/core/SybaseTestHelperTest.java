@@ -61,20 +61,12 @@ public class SybaseTestHelperTest extends CommonIntegrationCase {
 
   @Test
   public void zap_function() {
-    TH.performCommand("create function SimpleFun1() returns int begin return 1984; end");
-    assertThat(objectExists("SimpleFun1")).isTrue();
+    TH.performCommand("create function plus (@operand1 int, @operand2 int) returns int as return @operand1+@operand2");
+    assertThat(objectExists("plus")).isTrue();
     TH.zapSchema();
-    assertThat(objectExists("SimpleFun1")).isFalse();
+    assertThat(objectExists("plus")).isFalse();
   }
 
-  @Test
-  public void zap_synonym() {
-    TH.performScript("create table Tab1(Col1 int)",
-                     "create synonym Syn1 for Tab1");
-    assertThat(objectExists("Syn1")).isTrue();
-    TH.zapSchema();
-    assertThat(objectExists("Syn1")).isFalse();
-  }
 
 
   private static final SqlQuery<Boolean> ourObjectExistsQuery =

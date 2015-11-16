@@ -2,11 +2,7 @@ package org.jetbrains.dekaf.core;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.sql.Scriptum;
-import org.jetbrains.dekaf.sql.TextFileFragment;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import org.jetbrains.dekaf.sql.SqlQuery;
 
 
 
@@ -17,8 +13,22 @@ public class SybaseTestHelper extends BaseTestHelper<DBFacade> {
 
   public SybaseTestHelper(@NotNull final DBFacade db) {
     super(db, Scriptum.of(SybaseTestHelper.class));
-    schemasNotToZap.add("sys");
   }
+
+
+  private final SqlQuery<Boolean> myTableOrViewExistenceQuery =
+      scriptum.query("TableOrViewExistence", Layouts.existence());
+
+
+  private boolean tableExists(@NotNull final String name) {
+    return db.inSession(new InSession<Boolean>() {
+      @Override
+      public Boolean run(@NotNull final DBSession session) {
+          return session.query(myTableOrViewExistenceQuery).withParams(name).run();
+      }
+    });
+  }
+
 
 
   /*
@@ -30,38 +40,27 @@ public class SybaseTestHelper extends BaseTestHelper<DBFacade> {
 
   @Override
   public void prepareX1() {
-    final TextFileFragment x1 = scriptum.getText("X1");
-    db.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
-        Connection conn =
-          session.getSpecificService(Connection.class,
-                                     ImplementationAccessibleService.Names.JDBC_CONNECTION);
-        assert conn != null;
-        try {
-          conn.setAutoCommit(true);
-          Statement stmt = conn.createStatement();
-          stmt.execute(x1.text);
-          stmt.close();
-        }
-        catch (SQLException e) {
-          throw new RuntimeException(e);
-        }
-      }
-    });
+    if (tableExists("X1")) return;
+    performScript(scriptum, "X1");
   }
 
 
+  public void prepareX10() {
+    if (tableExists("X10")) return;
+    performScript(scriptum, "X10");
+  }
 
 
   @Override
   public void prepareX1000() {
-    performCommand(scriptum, "X10");
-    performCommand(scriptum, "X1000");
+    if (tableExists("X1000")) return;
+    prepareX10();
+    performScript(scriptum, "X1000");
   }
 
   @Override
   public void prepareX1000000() {
+    if (tableExists("X1000000")) return;
     prepareX1000();
     performCommand(scriptum, "X1000000");
   }

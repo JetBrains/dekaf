@@ -1,48 +1,39 @@
+---- TableOrViewExistence ----
+select top 1 1
+from sysobjects
+where name = ?
+  and type in ('U','V')
+
+
 ---- X1 ----
-if object_id('X1') is null
-execute('
-    create view X1
-    as
-    select 1 as X
-')
-;
+create table X1 (X bit not null);
+insert into X1 values (1);
+
 
 ---- X10 ----
-if object_id('X10') is null
-execute('
-    create view X10 as
-    select 1 as X
-    union all
-    select 2 as X
-    union all
-    select 3 as X
-    union all
-    select 4 as X
-    union all
-    select 5 as X
-    union all
-    select 6 as X
-    union all
-    select 7 as X
-    union all
-    select 8 as X
-    union all
-    select 9 as X
-    union all
-    select 10 as X
-')
-;  
+create table X10 (X int not null);
+
+insert into X10 values (1);
+insert into X10 values (2);
+insert into X10 values (3);
+insert into X10 values (4);
+insert into X10 values (5);
+insert into X10 values (6);
+insert into X10 values (7);
+insert into X10 values (8);
+insert into X10 values (9);
+insert into X10 values (10);
+
   
   
 ---- X1000 ----
-if object_id('X1000') is null
-execute('
-    create view X1000 as
-    select (A.X - 1) * 100 + (B.X - 1) * 10 + C.X as X
-    from X10 A,
-         X10 B,
-         X10 C
-')
+create table X1000 (X int not null);
+
+insert into X1000 (X)
+       select (A.X - 1) * 100 + (B.X - 1) * 10 + C.X as X
+       from X10 A,
+            X10 B,
+            X10 C
 ;
 
 
@@ -54,7 +45,7 @@ execute('
     from X1000 P,
          X1000 Q
 ')
-;
+
 
 
 ---- EnsureNoForeignKeysMetaQuery ----
@@ -96,10 +87,12 @@ order by R.constrid desc
 ---- ZapSchemaMetaQuery ----
 select 'drop ' + case when type = 'U' then 'table'
                       when type = 'V' then 'view'
+                      when type = 'P' then 'procedure'
+                      when type = 'SF' then 'function'
                       else 'unknown object' end
                + ' "' + name + '"' as cmd
 from sysobjects
-where type in ('U','V')
+where type in ('U','V','P','SF')
   and name not like 'sys%'
 order by type desc, id desc
 ;
