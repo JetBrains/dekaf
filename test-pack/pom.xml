@@ -254,7 +254,6 @@
       <groupId>net.sourceforge.jtds</groupId>
       <artifactId>jtds</artifactId>
       <version>1.2.8</version>
-      <scope>test</scope>
     </dependency>
 
   </dependencies>
