@@ -8,6 +8,6 @@ public abstract class Oracle {
   /**
    * Oracle RDBMS marker.
    */
-  public static final Rdbms RDBMS = new Rdbms("ORACLE");
+  public static final Rdbms RDBMS = Rdbms.of("ORACLE");
 
 }

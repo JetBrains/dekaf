@@ -10,6 +10,6 @@ public abstract class Sybase {
   /**
    * Sybase ASE RDBMS marker.
    */
-  public final static Rdbms RDBMS = new Rdbms("SYBASE");
+  public final static Rdbms RDBMS = Rdbms.of("SYBASE");
 
 }

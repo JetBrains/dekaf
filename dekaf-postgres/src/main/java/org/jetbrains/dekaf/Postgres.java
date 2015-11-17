@@ -10,6 +10,6 @@ public abstract class Postgres {
   /**
    * PostgreSQL RDBMS marker.
    */
-  public final static Rdbms RDBMS = new Rdbms("POSTGRES");
+  public final static Rdbms RDBMS = Rdbms.of("POSTGRES");
 
 }

@@ -10,6 +10,6 @@ public abstract class Mysql {
   /**
    * MySQL RDBMS marker.
    */
-  public final static Rdbms RDBMS = new Rdbms("MYSQL");
+  public final static Rdbms RDBMS = Rdbms.of("MYSQL");
 
 }

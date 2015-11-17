@@ -14,6 +14,6 @@ public abstract class UnknownDatabase {
   /**
    * Unknown RDBMS marker.
    */
-  public static final Rdbms RDBMS = new Rdbms("UNKNOWN");
+  public static final Rdbms RDBMS = Rdbms.of("UNKNOWN");
 
 }

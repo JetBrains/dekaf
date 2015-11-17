@@ -10,6 +10,6 @@ public abstract class Mssql {
   /**
    * MsSQL RDBMS marker.
    */
-  public final static Rdbms RDBMS = new Rdbms("MSSQL");
+  public final static Rdbms RDBMS = Rdbms.of("MSSQL");
 
 }

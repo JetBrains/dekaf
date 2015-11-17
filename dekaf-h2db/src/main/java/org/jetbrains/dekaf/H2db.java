@@ -10,6 +10,6 @@ public abstract class H2db {
   /**
    * H2 RDBMS marker.
    */
-  public final static Rdbms RDBMS = new Rdbms("H2");
+  public final static Rdbms RDBMS = Rdbms.of("H2");
 
 }

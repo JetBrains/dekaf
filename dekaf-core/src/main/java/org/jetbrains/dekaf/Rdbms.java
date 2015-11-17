@@ -44,7 +44,7 @@ public final class Rdbms implements Serializable {
   }
 
 
-  public Rdbms(@NotNull final String code) {
+  private Rdbms(@NotNull final String code) {
     this.code = code.intern();
   }
 
