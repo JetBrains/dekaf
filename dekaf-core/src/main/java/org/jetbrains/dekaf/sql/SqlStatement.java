@@ -2,6 +2,7 @@ package org.jetbrains.dekaf.sql;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.dekaf.util.StringOperator;
 
 
 
@@ -9,6 +10,8 @@ import org.jetbrains.annotations.Nullable;
  * @author Leonid Bushuev from JetBrains
  */
 public abstract class SqlStatement {
+
+  //// STATE \\\\
 
   /**
    * Number of lines skipped from source text.
@@ -37,7 +40,7 @@ public abstract class SqlStatement {
   final String myDescription;
 
 
-
+  //// CONSTRUCTORS \\\\
 
   protected SqlStatement(@NotNull TextFragment sourceFragment) {
     mySourceText = sourceFragment.text;
@@ -71,11 +74,40 @@ public abstract class SqlStatement {
   protected SqlStatement(@NotNull final String sourceText,
                          final int row,
                          @Nullable final String statementName) {
-    this.mySourceText = sourceText;
-    this.myRow = row;
-    this.myName = statementName != null ? statementName : '@' + Integer.toString(row);
-    this.myDescription = statementName != null ? statementName : "SQL statement at row " + row;
+    this(
+        row,
+        sourceText,
+        statementName != null ? statementName : '@' + Integer.toString(row),
+        statementName != null ? statementName : "SQL statement at row " + row
+    );
   }
+
+  /**
+   * Trivial constructor.
+   * @param row           row number (starting from 1)
+   * @param sourceText
+   * @param name
+   * @param description
+   */
+  protected SqlStatement(final int row,
+                         @NotNull final String sourceText,
+                         @Nullable final String name,
+                         @NotNull final String description) {
+    myRow = row;
+    mySourceText = sourceText;
+    myName = name;
+    myDescription = description;
+  }
+
+
+  //// MANIPULATION AND MUTATION \\\\
+
+  @NotNull
+  public abstract SqlStatement rewrite(@NotNull final StringOperator operator);
+
+
+
+  //// GETTERS AND FUNCTIONS (that don't modify the structure) \\\\
 
   public int getRow() {
     return myRow;
@@ -96,6 +128,8 @@ public abstract class SqlStatement {
     return myDescription;
   }
 
+
+  //// LEGACY FUNCTIONS \\\\
 
   @Override
   public String toString() {

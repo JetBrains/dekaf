@@ -3,10 +3,7 @@ package org.jetbrains.dekaf;
 import org.jetbrains.dekaf.core.*;
 import org.jetbrains.dekaf.exceptions.DBExceptionTest;
 import org.jetbrains.dekaf.intermediate.AdaptIntermediateRdbmsProviderTest;
-import org.jetbrains.dekaf.sql.ScriptumBasicTest;
-import org.jetbrains.dekaf.sql.ScriptumResourceFromJavaTest;
-import org.jetbrains.dekaf.sql.SqlScriptBuilderTest;
-import org.jetbrains.dekaf.sql.SqlScriptTest;
+import org.jetbrains.dekaf.sql.*;
 import org.jetbrains.dekaf.util.ArrayFunctionsTest;
 import org.jetbrains.dekaf.util.NumbersTest;
 import org.jetbrains.dekaf.util.StringsTest;
@@ -27,9 +24,11 @@ import org.junit.runners.Suite;
                             ArrayFunctionsTest.class,
                             DBExceptionTest.class,
                             VersionTest.class,
+                            RewritersTest.class,
                             // SQL
                             ScriptumResourceFromJavaTest.class,
                             ScriptumBasicTest.class,
+                            SqlCommandTest.class,
                             SqlScriptBuilderTest.class,
                             SqlScriptTest.class,
                             // Intermediate Layer

@@ -1,7 +1,9 @@
 package org.jetbrains.dekaf.sql;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.core.ResultLayout;
+import org.jetbrains.dekaf.util.StringOperator;
 
 
 
@@ -14,11 +16,15 @@ import org.jetbrains.dekaf.core.ResultLayout;
 public class SqlQuery<S> extends SqlStatement {
 
 
+  //// STATE \\\\
+
   @NotNull
   private final ResultLayout<S> myLayout;
 
+  private transient String myDisplayName;
 
-  private transient String displayName;
+
+  //// CONSTRUCTORS \\\\
 
 
   public SqlQuery(@NotNull final TextFragment sourceFragment,
@@ -33,39 +39,67 @@ public class SqlQuery<S> extends SqlStatement {
     this.myLayout = layout;
   }
 
+  public SqlQuery(final int row,
+                  @NotNull final String sourceText,
+                  @Nullable final String name,
+                  @NotNull final String description,
+                  @NotNull final ResultLayout<S> layout, final String displayName) {
+    super(row, sourceText, name, description);
+    myLayout = layout;
+    this.myDisplayName = displayName;
+  }
+
   protected void setDisplayName(final String displayName) {
-    this.displayName = displayName;
+    this.myDisplayName = displayName;
   }
 
   public String getDisplayName() {
-    if (displayName == null) {
+    if (myDisplayName == null) {
       prepareDisplayName();
     }
-    return displayName;
+    return myDisplayName;
   }
 
-
   private synchronized void prepareDisplayName() {
-    if (displayName != null) return;
+    if (myDisplayName != null) return;
 
     int nl = mySourceText.indexOf('\n');
     String str1 = nl > 0 ? mySourceText.substring(0, nl) : mySourceText;
     str1 = str1.trim();
 
-    displayName = str1;
+    myDisplayName = str1;
   }
 
+
+  //// MANIPULATING FUNCTIONS \\\\
 
   @NotNull
-  public String getSourceText() {
-    return mySourceText;
+  @Override
+  public SqlQuery<S> rewrite(@NotNull final StringOperator operator) {
+    String transformedSourceText = operator.apply(mySourceText);
+    return new SqlQuery<S>(
+        myRow,
+        transformedSourceText,
+        myName,
+        myDescription,
+        myLayout,
+        myDescription
+    );
   }
+
+
+
+  //// GETTERS AND USEFUL FUNCTIONS \\\\
 
 
   @NotNull
   public ResultLayout<S> getLayout() {
     return myLayout;
   }
+
+
+
+  //// LEGACY FUNCTIONS \\\\
 
   @Override
   public String toString() {
