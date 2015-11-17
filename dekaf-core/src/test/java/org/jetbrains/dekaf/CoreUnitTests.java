@@ -26,6 +26,7 @@ import org.junit.runners.Suite;
                             VersionTest.class,
                             RewritersTest.class,
                             // SQL
+                            RdbmsTest.class,
                             ScriptumResourceFromJavaTest.class,
                             ScriptumBasicTest.class,
                             SqlCommandTest.class,

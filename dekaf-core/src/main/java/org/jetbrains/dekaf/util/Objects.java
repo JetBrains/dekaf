@@ -37,4 +37,10 @@ public abstract class Objects {
     }
   }
 
+
+  @NotNull
+  public static <T> T notNull(@Nullable final T value, @NotNull final T defaultValue) {
+    return value != null ? value : defaultValue;
+  }
+
 }

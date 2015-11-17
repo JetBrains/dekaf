@@ -3,6 +3,9 @@ package org.jetbrains.dekaf;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static org.jetbrains.dekaf.util.Objects.notNull;
 
 
 
@@ -33,6 +36,14 @@ public final class Rdbms implements Serializable {
   //// METHODS \\\\
 
 
+  public static Rdbms of(@NotNull final String code) {
+    String theCode = code.intern();
+    Rdbms newRdbms = new Rdbms(theCode);
+    Rdbms oldRdbms = RdbmsMarkersCache.cache.putIfAbsent(theCode, newRdbms);
+    return notNull(oldRdbms, newRdbms);
+  }
+
+
   public Rdbms(@NotNull final String code) {
     this.code = code.intern();
   }
@@ -60,4 +71,36 @@ public final class Rdbms implements Serializable {
     return code;
   }
 
+
+  //// SERIALIZATION \\\\
+
+
+  @SuppressWarnings("unused")
+  private Object writeReplace() {
+    return new RdbmsProxy(code);
+  }
+
 }
+
+
+class RdbmsProxy implements Serializable {
+
+  private final String code;
+
+  RdbmsProxy(final String code) {
+    this.code = code;
+  }
+
+  Object readResolve() {
+    return Rdbms.of(code);
+  }
+
+}
+
+
+abstract class RdbmsMarkersCache {
+
+  static final ConcurrentHashMap<String,Rdbms> cache = new ConcurrentHashMap<String,Rdbms>();
+
+}
+
