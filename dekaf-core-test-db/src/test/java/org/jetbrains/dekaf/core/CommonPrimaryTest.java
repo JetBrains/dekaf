@@ -90,6 +90,7 @@ public abstract class CommonPrimaryTest extends CommonIntegrationCase {
 
   @Test
   public void getConnectionInfo_versions() {
+    DB.connect();
     ConnectionInfo info = DB.getConnectionInfo();
     assertThat(info.serverVersion.isOrGreater(1));
     assertThat(info.driverVersion.isOrGreater(1));
