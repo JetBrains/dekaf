@@ -2,8 +2,7 @@ package org.jetbrains.dekaf.jdbc;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.dekaf.exceptions.DBException;
-import org.jetbrains.dekaf.exceptions.NoTableOrViewException;
+import org.jetbrains.dekaf.exceptions.*;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -27,7 +26,10 @@ public class SybaseExceptionRecognizer extends BaseExceptionRecognizer {
       new HashMap<Integer, Class<? extends DBException>>();
 
   static {
-    simpleExceptionMap.put(208, NoTableOrViewException.class);
+    simpleExceptionMap.put(208,   NoTableOrViewException.class);
+    simpleExceptionMap.put(4002,  DBLoginFailedException.class);
+    simpleExceptionMap.put(10332, DBColumnAccessDeniedException.class);
+    simpleExceptionMap.put(10351, DBSchemaAccessDeniedException.class);
   }
 
 
