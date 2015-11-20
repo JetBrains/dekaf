@@ -4,12 +4,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.Rdbms;
 import org.jetbrains.dekaf.Sybase;
+import org.jetbrains.dekaf.core.ConnectionInfo;
 import org.jetbrains.dekaf.intermediate.DBExceptionRecognizer;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 
 
@@ -44,4 +46,19 @@ public class SybaseIntermediateFacade extends JdbcIntermediateFacade {
                                                         final boolean ownConnection) {
     return new SybaseIntermediateSession(this, myExceptionRecognizer, connection, ownConnection);
   }
+
+  @Override
+  public ConnectionInfo getConnectionInfo() {
+    return getConnectionInfoSmartly(CONNECTION_INFO_QUERY,
+                                    SYBASE_ASE_VERSION_PATTERN, 1,
+                                    SIMPLE_VERSION_PATTERN, 1);
+  }
+
+  @SuppressWarnings("SpellCheckingInspection")
+  public static final String CONNECTION_INFO_QUERY =
+      "select db_name(), user_name(), suser_name()";
+
+  protected static final Pattern SYBASE_ASE_VERSION_PATTERN =
+      Pattern.compile("/(\\d{1,2}(\\.\\d{1,3}){2,5})/");
+
 }

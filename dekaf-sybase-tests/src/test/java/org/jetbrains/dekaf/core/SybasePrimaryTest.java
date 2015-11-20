@@ -20,4 +20,12 @@ public class SybasePrimaryTest extends CommonPrimaryTest {
     assertThat(DB.rdbms()).isEqualTo(Sybase.RDBMS);
   }
 
+  @Test @Override
+  public void getConnectionInfo_versions() {
+    DB.connect();
+    ConnectionInfo info = DB.getConnectionInfo();
+    assertThat(info.serverVersion.isOrGreater(15));
+    assertThat(info.driverVersion.isOrGreater(1,2,5));
+  }
+
 }
