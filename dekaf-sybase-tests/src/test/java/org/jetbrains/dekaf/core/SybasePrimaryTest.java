@@ -24,8 +24,8 @@ public class SybasePrimaryTest extends CommonPrimaryTest {
   public void getConnectionInfo_versions() {
     DB.connect();
     ConnectionInfo info = DB.getConnectionInfo();
-    assertThat(info.serverVersion.isOrGreater(15));
-    assertThat(info.driverVersion.isOrGreater(1,2,5));
+    assertThat(info.serverVersion.isOrGreater(15)).isTrue();
+    assertThat(info.driverVersion.isOrGreater(1,2,5)).isTrue();
   }
 
 }

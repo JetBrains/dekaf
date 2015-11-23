@@ -6,10 +6,13 @@ import org.jetbrains.dekaf.Rdbms;
 import org.jetbrains.dekaf.Sybase;
 import org.jetbrains.dekaf.core.ConnectionInfo;
 import org.jetbrains.dekaf.intermediate.DBExceptionRecognizer;
+import org.jetbrains.dekaf.util.Version;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.Driver;
+import java.sql.SQLException;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
@@ -47,18 +50,50 @@ public class SybaseIntermediateFacade extends JdbcIntermediateFacade {
     return new SybaseIntermediateSession(this, myExceptionRecognizer, connection, ownConnection);
   }
 
+
   @Override
   public ConnectionInfo getConnectionInfo() {
-    return getConnectionInfoSmartly(CONNECTION_INFO_QUERY,
-                                    SYBASE_ASE_VERSION_PATTERN, 1,
-                                    SIMPLE_VERSION_PATTERN, 1);
+    String[] env;
+    String driverVersionStr;
+
+
+    final JdbcIntermediateSession session = openSession();
+    try {
+      // retrieving all except driver version
+      env = session.queryOneRow(CONNECTION_INFO_QUERY, 4, String.class);
+
+      // getting the driver version
+      try {
+        DatabaseMetaData md = session.getConnection().getMetaData();
+        driverVersionStr = md.getDriverVersion();
+      }
+      catch (SQLException sqle) {
+        throw getExceptionRecognizer().recognizeException(sqle, "getting versions using JDBC metadata");
+      }
+    }
+    finally {
+      session.close();
+    }
+
+    Version driverVersion =
+        extractVersion(driverVersionStr, SIMPLE_VERSION_PATTERN, 1);
+
+    if (env != null) {
+      assert env.length == 4;
+      Version serverVersion =
+          extractVersion(env[3], SYBASE_ASE_VERSION_PATTERN, 1);
+      return new ConnectionInfo(env[0], env[1], env[2], serverVersion, driverVersion);
+    }
+    else {
+      return new ConnectionInfo(null, null, null, Version.ZERO, driverVersion);
+    }
   }
 
   @SuppressWarnings("SpellCheckingInspection")
-  public static final String CONNECTION_INFO_QUERY =
-      "select db_name(), user_name(), suser_name()";
+  static final String CONNECTION_INFO_QUERY =
+      "select db_name(), user_name(), suser_name(), @@version";
 
-  protected static final Pattern SYBASE_ASE_VERSION_PATTERN =
+  static final Pattern SYBASE_ASE_VERSION_PATTERN =
       Pattern.compile("/(\\d{1,2}(\\.\\d{1,3}){2,5})/");
 
 }
