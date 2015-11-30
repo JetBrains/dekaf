@@ -78,4 +78,15 @@ public class SybaseQueryRunnerTest extends CommonQueryRunnerTest {
   }
 
 
+  @Test
+  public void query_binary() {
+    SqlQuery<byte[]> query =
+        new SqlQuery<byte[]>("select top 1 keys1 from dbo.sysindexes where keycnt > 1",
+                             singleOf(byte[].class));
+    final byte[] rowValue = query(query);
+    assertThat(rowValue).isNotNull()
+                        .isNotEmpty();
+  }
+
+
 }

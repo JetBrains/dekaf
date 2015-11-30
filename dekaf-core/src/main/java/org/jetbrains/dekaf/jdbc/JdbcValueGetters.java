@@ -139,6 +139,12 @@ public final class JdbcValueGetters {
     SPECIFIC_GETTERS.put(new SpecificKey(Types.DOUBLE, Object.class), DoubleGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.DECIMAL, Number.class), BigDecimalGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.DECIMAL, Object.class), BigDecimalGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BINARY, byte[].class), BinaryGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.BINARY, Object.class), BinaryGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.VARBINARY, byte[].class), BinaryGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.VARBINARY, Object.class), BinaryGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.LONGVARBINARY, byte[].class), BinaryGetter.INSTANCE);
+    SPECIFIC_GETTERS.put(new SpecificKey(Types.LONGVARBINARY, Object.class), BinaryGetter.INSTANCE);
   }
 
 
@@ -365,6 +371,17 @@ public final class JdbcValueGetters {
     final static BigDecimalGetter INSTANCE = new BigDecimalGetter();
   }
 
+
+  static final class BinaryGetter extends JdbcValueGetter<byte[]> {
+    @Nullable
+    @Override
+    byte[] getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
+      final byte[] binaryValue = rset.getBytes(index);
+      return rset.wasNull() ? null : binaryValue;
+    }
+
+    static final BinaryGetter INSTANCE = new BinaryGetter();
+  }
 
 
   static final class StringGetter extends JdbcValueGetter<String> {
