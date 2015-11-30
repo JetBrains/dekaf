@@ -121,9 +121,9 @@ public abstract class CommonPrimaryTest extends CommonIntegrationCase {
 
     // create a table and a view
     TH.performScript(
-        "create table T1 (X char(1) primary key)",
-        "create table T2 (Y char(1))",
-        "create table T3 (Z char(1) primary key)",
+        "create table T1 (X char(1) not null primary key)",
+        "create table T2 (Y char(1) not null)",
+        "create table T3 (Z char(1) not null primary key)",
         "alter table T2 add foreign key (Y) references T1",
         "alter table T2 add foreign key (Y) references T3"
     );

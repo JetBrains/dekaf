@@ -51,7 +51,7 @@ public abstract class CommonSessionTest extends CommonIntegrationCase {
   @Test
   public void transaction_rollback() {
     TH.ensureNoTableOrView("Tab_1");
-    TH.performCommand("create table Tab_1 (C1 char(1))");
+    TH.performCommand("create table Tab_1 (C1 char(1) not null)");
     TH.performCommand("insert into Tab_1 values ('A')");
 
     DBLeasedSession session = DB.leaseSession();

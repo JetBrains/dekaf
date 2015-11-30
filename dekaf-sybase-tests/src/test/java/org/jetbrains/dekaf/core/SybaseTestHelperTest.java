@@ -33,8 +33,8 @@ public class SybaseTestHelperTest extends CommonIntegrationCase {
 
   @Test
   public void ensure_no_table_fk() {
-    TH.performScript("create table T1(Id int primary key)",
-                     "create table T2(Id int primary key references T1)",
+    TH.performScript("create table T1(Id int not null primary key)",
+                     "create table T2(Id int not null primary key references T1)",
                      "alter table T1 add foreign key (Id) references T2");
     assertThat(objectExists("T1")).isTrue();
     assertThat(objectExists("T2")).isTrue();
