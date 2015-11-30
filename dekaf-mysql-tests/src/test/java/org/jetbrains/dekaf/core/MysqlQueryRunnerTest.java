@@ -67,4 +67,10 @@ public class MysqlQueryRunnerTest extends CommonQueryRunnerTest {
     assertThat(result).isEqualTo(string);
   }
 
+  @NotNull
+  @Override
+  protected String queryCalendarValuesFromParameters() {
+    return "select ? as javaDate, date(?) as sqlDate, ? as sqlTimestamp, time(?) as sqlTime";
+  }
+
 }

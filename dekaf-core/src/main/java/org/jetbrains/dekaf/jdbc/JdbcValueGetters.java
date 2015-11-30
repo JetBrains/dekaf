@@ -402,7 +402,7 @@ public final class JdbcValueGetters {
     @Nullable
     java.util.Date getValue(@NotNull final ResultSet rset, final int index)  throws SQLException {
       final Timestamp timestamp = rset.getTimestamp(index);
-      return rset.wasNull() ? null : new java.util.Date(timestamp.getTime());
+      return timestamp != null ? new java.util.Date(timestamp.getTime()) : null;
     }
 
 
@@ -414,7 +414,8 @@ public final class JdbcValueGetters {
     @Override
     @Nullable
     java.sql.Date getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
-      return rset.getDate(index);
+      final java.sql.Date date = rset.getDate(index);
+      return date != null ? new Date(date.getTime()) : null;
     }
 
 
@@ -426,7 +427,8 @@ public final class JdbcValueGetters {
     @Override
     @Nullable
     Timestamp getValue(@NotNull final ResultSet rset, final int index)  throws SQLException {
-      return rset.getTimestamp(index);
+      final Timestamp timestamp = rset.getTimestamp(index);
+      return timestamp != null ? new Timestamp(timestamp.getTime()) : null;
     }
 
 
@@ -438,7 +440,8 @@ public final class JdbcValueGetters {
     @Override
     @Nullable
     java.sql.Time getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
-      return rset.getTime(index);
+      final Time time = rset.getTime(index);
+      return time != null ? new Time(time.getTime()) : null;
     }
 
 

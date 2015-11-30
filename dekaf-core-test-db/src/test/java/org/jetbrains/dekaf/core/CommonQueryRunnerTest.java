@@ -2,6 +2,7 @@ package org.jetbrains.dekaf.core;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.CommonIntegrationCase;
+import org.jetbrains.dekaf.sql.Rewriters;
 import org.jetbrains.dekaf.sql.SqlQuery;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -147,6 +148,64 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
   }
 
 
+  protected static class CalendarValues {
+    public java.util.Date      javaDate;
+    public java.sql.Date       sqlDate;
+    public java.sql.Timestamp  sqlTimestamp;
+    public java.sql.Time       sqlTime;
+  }
+
+
+  @Test
+  public void query_calendar_values_now() {
+    String queryText =
+        "select NOW as javaDate, NOW as sqlDate, NOW as sqlTimestamp, NOW as sqlTime";
+    if (isOracle) queryText += " from dual";
+    SqlQuery<CalendarValues> query =
+        new SqlQuery<CalendarValues>(queryText, rowOf(structOf(CalendarValues.class)))
+          .rewrite(Rewriters.replace("NOW", sqlNow()));
+
+    CalendarValues cv = query(query);
+
+    assertThat(cv.javaDate)    .isExactlyInstanceOf(java.util.Date.class);
+    assertThat(cv.sqlDate)     .isExactlyInstanceOf(java.sql.Date.class);
+    assertThat(cv.sqlTimestamp).isExactlyInstanceOf(java.sql.Timestamp.class);
+    assertThat(cv.sqlTime)     .isExactlyInstanceOf(java.sql.Time.class);
+  }
+
+  @Test
+  public void query_calendar_values_parameters() {
+    String queryText =
+        queryCalendarValuesFromParameters();
+    if (isOracle) queryText += " from dual";
+    SqlQuery<CalendarValues> query =
+        new SqlQuery<CalendarValues>(queryText, rowOf(structOf(CalendarValues.class)));
+
+    CalendarValues cv = query(query,
+                              new java.sql.Timestamp(System.currentTimeMillis()),
+                              new java.sql.Timestamp(System.currentTimeMillis()),
+                              new java.sql.Timestamp(System.currentTimeMillis()),
+                              new java.sql.Timestamp(System.currentTimeMillis())/*,
+                              new java.sql.Time(System.currentTimeMillis())*/
+    );
+
+    assertThat(cv.javaDate)    .isExactlyInstanceOf(java.util.Date.class);
+    assertThat(cv.sqlDate)     .isExactlyInstanceOf(java.sql.Date.class);
+    assertThat(cv.sqlTimestamp).isExactlyInstanceOf(java.sql.Timestamp.class);
+    assertThat(cv.sqlTime)     .isExactlyInstanceOf(java.sql.Time.class);
+  }
+
+  @NotNull
+  protected String queryCalendarValuesFromParameters() {
+    return "select ? as javaDate, ? as sqlDate, ? as sqlTimestamp, ? as sqlTime";
+  }
+
+  @NotNull
+  protected String sqlNow() {
+    //noinspection SpellCheckingInspection
+    return "current_timestamp";
+  }
+
 
   @Test
   public void query_1000_values() {
@@ -183,6 +242,15 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
       @Override
       public T run(@NotNull final DBTransaction tran) {
         return tran.query(query).run();
+      }
+    });
+  }
+
+  protected <T> T query(@NotNull final SqlQuery<T> query, final Object... params) {
+    return DB.inTransaction(new InTransaction<T>() {
+      @Override
+      public T run(@NotNull final DBTransaction tran) {
+        return tran.query(query).withParams(params).run();
       }
     });
   }

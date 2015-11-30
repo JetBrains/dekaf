@@ -69,4 +69,13 @@ public class SybaseQueryRunnerTest extends CommonQueryRunnerTest {
     assertThat(result).isEqualTo(string);
   }
 
+
+  @NotNull
+  @Override
+  protected String sqlNow() {
+    //noinspection SpellCheckingInspection
+    return "getdate()";
+  }
+
+
 }

@@ -1,5 +1,6 @@
 package org.jetbrains.dekaf.core;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.sql.SqlQuery;
 import org.junit.Test;
 
@@ -11,6 +12,13 @@ import static org.jetbrains.dekaf.core.Layouts.singleOf;
  * @author Leonid Bushuev from JetBrains
  **/
 public class PostgresQueryRunnerTest extends CommonQueryRunnerTest {
+
+
+  @NotNull
+  protected String queryCalendarValuesFromParameters() {
+    return "select ?::timestamp as javaDate, ?::date as sqlDate, ?::timestamp as sqlTimestamp, ?::time as sqlTime";
+  }
+
 
   @Test
   public void query_boolean_as_boolean() {
