@@ -46,7 +46,7 @@ public class SybaseIntermediateFacade extends JdbcIntermediateFacade {
   @NotNull
   @Override
   protected SybaseIntermediateSession instantiateSession(@NotNull final Connection connection,
-                                                        final boolean ownConnection) {
+                                                         final boolean ownConnection) {
     return new SybaseIntermediateSession(this, myExceptionRecognizer, connection, ownConnection);
   }
 

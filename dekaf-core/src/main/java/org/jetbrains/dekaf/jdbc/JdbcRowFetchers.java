@@ -201,7 +201,7 @@ public class JdbcRowFetchers {
         Map<String, Integer> columnNames =
             new TreeMap<String, Integer>(String.CASE_INSENSITIVE_ORDER);
         for (int j = 1, cn = md.getColumnCount(); j <= cn; j++) {
-          String columnName = md.getColumnName(j);
+          String columnName = JdbcUtil.getColumnName(md, j);
           columnNames.put(columnName, j);
         }
 

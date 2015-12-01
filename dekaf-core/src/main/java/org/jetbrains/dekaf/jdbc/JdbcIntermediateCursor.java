@@ -229,7 +229,7 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
       final ResultSetMetaData md = myResultSet.getMetaData();
       int n = md.getColumnCount();
       String[] names = new String[n];
-      for (int j = 0; j < n; j++) names[j] = md.getColumnName(j+1);
+      for (int j = 0; j < n; j++) names[j] = JdbcUtil.getColumnName(md, j+1);
       return names;
     }
     catch (SQLException sqle) {

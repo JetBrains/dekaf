@@ -103,14 +103,16 @@ public class SybaseIntermediateProvider extends JdbcIntermediateRdbmsProvider {
   @NotNull
   @Override
   protected SybaseIntermediateFacade instantiateFacade(@NotNull final String connectionString,
-                                                      @Nullable final Properties connectionProperties,
-                                                      final int connectionsLimit,
-                                                      @NotNull final Driver driver) {
+                                                       @Nullable final Properties connectionProperties,
+                                                       final int connectionsLimit,
+                                                       @NotNull final Driver driver) {
+    Properties properties = new Properties(connectionProperties);
+    properties.setProperty("GET_BY_NAME_USES_COLUMN_LABEL", "true");
     return new SybaseIntermediateFacade(connectionString,
-                                       connectionProperties,
-                                       driver,
-                                       connectionsLimit,
-                                       SybaseExceptionRecognizer.INSTANCE);
+                                        properties,
+                                        driver,
+                                        connectionsLimit,
+                                        SybaseExceptionRecognizer.INSTANCE);
   }
 
   @NotNull

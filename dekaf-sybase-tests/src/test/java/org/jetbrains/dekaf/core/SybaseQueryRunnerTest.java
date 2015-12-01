@@ -94,13 +94,31 @@ public class SybaseQueryRunnerTest extends CommonQueryRunnerTest {
   @Test
   public void query_from_sysusers() {
     SqlQuery<List<Object[]>> query =
-        new SqlQuery<List<Object[]>>("select uid as id, name from dbo.sysusers",
+        new SqlQuery<List<Object[]>>("select top 1 uid as id, name from dbo.sysusers",
                                      listOf(arrayOf(2, Object.class)));
     final List<Object[]> rows = query(query);
 
     assertThat(rows).isNotEmpty();
     assertThat(rows.get(0)[0]).isExactlyInstanceOf(Integer.class);
   }
+
+
+  static class UserBrief {
+    Integer user_id;
+    String  user_name;
+  }
+
+  @Test
+  public void query_correct_column_name() {
+    String queryText = "select top 1 uid as user_id, name as user_name from dbo.sysusers";
+    SqlQuery<UserBrief> query = new SqlQuery<UserBrief>(queryText, rowOf(structOf(UserBrief.class)));
+
+    final UserBrief ub = query(query);
+
+    assertThat(ub.user_id).isNotNull();
+    assertThat(ub.user_name).isNotNull();
+  }
+
 
 
 }

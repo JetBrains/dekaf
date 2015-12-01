@@ -1,9 +1,8 @@
 package org.jetbrains.dekaf.jdbc;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import org.jetbrains.annotations.NotNull;
+
+import java.sql.*;
 
 
 
@@ -12,6 +11,15 @@ import java.sql.Statement;
  * @author Leonid Bushuev from JetBrains
  */
 abstract class JdbcUtil {
+
+
+  static String getColumnName(@NotNull final ResultSetMetaData md, int columnIndex)
+      throws SQLException
+  {
+    boolean sybaseNative = md.getClass().getSimpleName().equals("RowFormat2Token");
+    return !sybaseNative ? md.getColumnName(columnIndex) : md.getColumnLabel(columnIndex);
+  }
+
 
   static boolean isClosed(final Connection connection) throws SQLException {
     if (connection == null) return true;
