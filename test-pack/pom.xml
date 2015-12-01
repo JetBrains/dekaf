@@ -255,6 +255,11 @@
       <artifactId>jtds</artifactId>
       <version>1.2.8</version>
     </dependency>
+    <dependency>
+      <groupId>sybase.jdbc</groupId>
+      <artifactId>jconn4</artifactId>
+      <version>7.0.7</version>
+    </dependency>
 
   </dependencies>
 

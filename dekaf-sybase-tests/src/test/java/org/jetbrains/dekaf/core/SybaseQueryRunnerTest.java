@@ -7,8 +7,10 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jetbrains.dekaf.core.Layouts.singleOf;
+import static org.jetbrains.dekaf.core.Layouts.*;
 
 
 /**
@@ -86,6 +88,18 @@ public class SybaseQueryRunnerTest extends CommonQueryRunnerTest {
     final byte[] rowValue = query(query);
     assertThat(rowValue).isNotNull()
                         .isNotEmpty();
+  }
+
+
+  @Test
+  public void query_from_sysusers() {
+    SqlQuery<List<Object[]>> query =
+        new SqlQuery<List<Object[]>>("select uid as id, name from dbo.sysusers",
+                                     listOf(arrayOf(2, Object.class)));
+    final List<Object[]> rows = query(query);
+
+    assertThat(rows).isNotEmpty();
+    assertThat(rows.get(0)[0]).isExactlyInstanceOf(Integer.class);
   }
 
 
