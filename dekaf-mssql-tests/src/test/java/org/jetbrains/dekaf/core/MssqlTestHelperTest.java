@@ -87,7 +87,7 @@ public class MssqlTestHelperTest extends CommonIntegrationCase {
 
 
   private static final SqlQuery<Boolean> ourObjectExistsQuery =
-      new SqlQuery<Boolean>("select 1 from sysobjects where name = ?", Layouts.existence());
+      new SqlQuery<Boolean>("select 1 from sys.all_objects where name = ?", Layouts.existence());
 
   private static final SqlQuery<Boolean> ourTypeExistsQuery =
       new SqlQuery<Boolean>("select 1 from sys.types where name = ?", Layouts.existence());

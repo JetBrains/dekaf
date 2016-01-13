@@ -57,37 +57,39 @@ execute('
 ;
 
 
----- EnsureNoForeignKeysMetaQuery ----
-select 'alter table ' + T.name + ' drop constraint [' + rtrim(F.name) +']'
-from sys.tables T,
-     sys.foreign_keys F
-where F.parent_object_id = T.object_id
-  and F.schema_id = schema_id()
-  and lower(T.name) in (lower(?),lower(?),lower(?),lower(?))
-  and not T.is_ms_shipped = 1
-order by T.create_date desc
-;
-
 ---- EnsureNoTableOrViewMetaQuery ----
-select 'drop ' + replace(replace(type collate database_default,'U','table'),'V','view') + ' ' + name as cmd
-from sys.objects
-where type collate database_default in ('U','V')
-  and lower(name) in (lower(?),lower(?),lower(?),lower(?))
-  and parent_object_id = 0
-  and not is_ms_shipped = 1
-order by create_date desc
+with Names as ( select lower(?) as name
+                union
+                select lower(?) as name
+                union
+                select lower(?) as name
+                union
+                select lower(?) as name ),
+     Drop_FK as ( select 'alter table ' + T.name + ' drop constraint ' + quotename(rtrim(F.name)) as cmd,
+                         1 as priority,
+                         F.create_date
+                  from sys.tables T,
+                       sys.foreign_keys F
+                  where F.parent_object_id = T.object_id
+                    and F.schema_id = schema_id()
+                    and lower(T.name) in (select name from Names)
+                    and not T.is_ms_shipped = 1 ),
+     Drop_Tables_or_Views as ( select 'drop ' + replace(replace(type collate database_default,'U','table'),'V','view') + ' ' + quotename(name) as cmd,
+                                      2 as priority,
+                                      create_date
+                               from sys.objects
+                               where type collate database_default in ('U','V')
+                                 and lower(name) in (select name from Names)
+                                 and parent_object_id = 0
+                                 and not is_ms_shipped = 1 ),
+     Drop_All as ( select * from Drop_FK
+                   union all
+                   select * from Drop_Tables_or_Views )
+select cmd
+from Drop_All
+order by priority asc, create_date desc
 ;
 
-
----- ZapForeignKeysMetaQuery ----
-select 'alter table ' + T.name + ' drop constraint [' + rtrim(F.name) +']'
-from sys.tables T,
-     sys.foreign_keys F
-where F.parent_object_id = T.object_id
-  and F.schema_id = schema_id()
-  and not T.is_ms_shipped = 1
-order by T.create_date desc
-;
 
 ---- ZapSchemaMetaQuery ----
 with Objects as ( select type collate database_default as kind,
@@ -107,16 +109,26 @@ with Objects as ( select type collate database_default as kind,
                 select 'FN' as kind, 'function' as word
                 union all
                 select 'SN' as kind, 'synonym' as word ),
+     Drop_FK as ( select 'alter table ' + quotename(T.name) + ' drop constraint ' + quotename(rtrim(F.name)) as cmd,
+                         1 as priority,
+                         F.create_date
+                  from sys.tables T,
+                       sys.foreign_keys F
+                  where F.parent_object_id = T.object_id
+                    and F.schema_id = schema_id()
+                    and not T.is_ms_shipped = 1 ),
      Drop_Objects as ( select 'drop ' + word + ' ' + quotename(name) as cmd,
-                              1 as priority,
+                              2 as priority,
                               create_date
                        from Objects join Kinds on Objects.kind = Kinds.kind ),
      Drop_Types as ( select 'drop type ' + quotename(name) as cmd,
-                            2 as priority,
+                            3 as priority,
                             cast(null as datetime) as created_date
                      from sys.types
                      where is_user_defined = 1 ),
-     Drop_All as ( select * from Drop_Objects
+     Drop_All as ( select * from Drop_FK
+                   union all
+                   select * from Drop_Objects
                    union all
                    select * from Drop_Types )
 select cmd
