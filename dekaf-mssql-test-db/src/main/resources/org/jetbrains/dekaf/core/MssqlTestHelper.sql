@@ -90,23 +90,37 @@ order by T.create_date desc
 ;
 
 ---- ZapSchemaMetaQuery ----
-with Objects as ( select type collate database_default as type, name, create_date
+with Objects as ( select type collate database_default as kind,
+                         name,
+                         create_date
                   from sys.objects
                   where schema_id = schema_id()
                     and type collate database_default in ('U','V','P','FN','SN')
                     and parent_object_id = 0
                     and not is_ms_shipped = 1),
-     Types as ( select 'U' as type, 'table' as word
+     Kinds as ( select 'U' as kind, 'table' as word
                 union all
-                select 'V' as type, 'view' as word
+                select 'V' as kind, 'view' as word
                 union all
-                select 'P' as type, 'procedure' as word
+                select 'P' as kind, 'procedure' as word
                 union all
-                select 'FN' as type, 'function' as word
+                select 'FN' as kind, 'function' as word
                 union all
-                select 'SN' as type, 'synonym' as word )
-select 'drop ' + word + ' ' + name as cmd
-from Objects join Types on Objects.type = Types.type
-order by create_date desc
+                select 'SN' as kind, 'synonym' as word ),
+     Drop_Objects as ( select 'drop ' + word + ' ' + quotename(name) as cmd,
+                              1 as priority,
+                              create_date
+                       from Objects join Kinds on Objects.kind = Kinds.kind ),
+     Drop_Types as ( select 'drop type ' + quotename(name) as cmd,
+                            2 as priority,
+                            cast(null as datetime) as created_date
+                     from sys.types
+                     where is_user_defined = 1 ),
+     Drop_All as ( select * from Drop_Objects
+                   union all
+                   select * from Drop_Types )
+select cmd
+from Drop_All
+order by priority asc, create_date desc
 ;
 

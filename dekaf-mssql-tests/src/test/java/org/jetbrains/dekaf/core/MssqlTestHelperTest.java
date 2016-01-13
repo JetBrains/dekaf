@@ -76,9 +76,21 @@ public class MssqlTestHelperTest extends CommonIntegrationCase {
     assertThat(objectExists("Syn1")).isFalse();
   }
 
+  @Test
+  public void zap_alias_type() {
+    TH.performScript("create type just_alias_type_33 from decimal(33)");
+    assertThat(typeExists("just_alias_type_33")).isTrue();
+    TH.zapSchema();
+    assertThat(typeExists("just_alias_type_33")).isFalse();
+  }
+
+
 
   private static final SqlQuery<Boolean> ourObjectExistsQuery =
       new SqlQuery<Boolean>("select 1 from sysobjects where name = ?", Layouts.existence());
+
+  private static final SqlQuery<Boolean> ourTypeExistsQuery =
+      new SqlQuery<Boolean>("select 1 from sys.types where name = ?", Layouts.existence());
 
   private static boolean objectExists(@NotNull final String sequenceName) {
     assert DB != null;
@@ -88,6 +100,19 @@ public class MssqlTestHelperTest extends CommonIntegrationCase {
           @Override
           public Boolean run(@NotNull final DBSession session) {
             return session.query(ourObjectExistsQuery).withParams(sequenceName).run();
+          }
+        });
+    return exists != null && exists;
+  }
+
+  private static boolean typeExists(@NotNull final String typeName) {
+    assert DB != null;
+
+    Boolean exists =
+        DB.inSession(new InSession<Boolean>() {
+          @Override
+          public Boolean run(@NotNull final DBSession session) {
+            return session.query(ourTypeExistsQuery).withParams(typeName).run();
           }
         });
     return exists != null && exists;
