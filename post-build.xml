@@ -4,6 +4,8 @@
   <property name="ver">2.0.0-SNAPSHOT</property>
   <property name="test-db">h2</property>
 
+  <property name="coverage-file-name">${teamcity.buildType.id}</property>
+
 
   <target name="unpack-fw">
     <mkdir dir="bin"/>
@@ -44,7 +46,7 @@
       <syspropertyset>
         <propertyref prefix="test-db-"/>
       </syspropertyset>
-      <jvmarg value="-javaagent:${basedir}/tools/jacoco/lib/jacocoagent.jar=destfile=coverage/jacoco-${test-db}.dat,includes=org.jetbrains.dekaf.*,excludes=*Test"/>
+      <jvmarg value="-javaagent:${basedir}/tools/jacoco/lib/jacocoagent.jar=destfile=coverage/jacoco-${coverage-file-name}.dat,includes=org.jetbrains.dekaf.*,excludes=*Test"/>
       <jvmarg value='-ea'/>
       <jvmarg value='-Dtest-db=${test-db}'/>
     </java>
