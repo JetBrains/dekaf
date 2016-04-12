@@ -1,6 +1,8 @@
 package org.jetbrains.dekaf.intermediate;
 
+import org.intellij.lang.annotations.MagicConstant;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.core.ResultLayout;
 
 import java.util.List;
@@ -23,6 +25,9 @@ public class AdaptIntermediateSeance implements IntegralIntermediateSeance {
 
   @Override
   public void setInParameters(@NotNull final Object[] parameters) {myRemoteSeance.setInParameters(parameters);}
+
+  @Override
+  public void setPackLimit(final int packLimit) {myRemoteSeance.setPackLimit(packLimit);}
 
   @Override
   public void execute() {myRemoteSeance.execute();}
@@ -52,5 +57,10 @@ public class AdaptIntermediateSeance implements IntegralIntermediateSeance {
   @Override
   public void close() {myRemoteSeance.close();}
 
-
+  @Nullable
+  @Override
+  public <I> I getSpecificService(@NotNull final Class<I> serviceClass,
+                                  @NotNull @MagicConstant(valuesFromClass = Names.class) final String serviceName) throws ClassCastException {
+    return myRemoteSeance.getSpecificService(serviceClass, serviceName);
+  }
 }

@@ -38,7 +38,7 @@ public class SybaseIntermediateSession extends JdbcIntermediateSession {
 
 
   @Override
-  void tuneResultSetWithFetchSize(@NotNull final ResultSet rset, final int fetchLimit) {
+  protected void tuneResultSetWithFetchSize(@NotNull final ResultSet rset, final int packLimit) {
     // nothing to do
   }
 }

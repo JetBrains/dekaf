@@ -11,7 +11,8 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-                            MysqlInterServiceProviderTest.class
+    MysqlInterServiceProviderTest.class,
+    MysqlIntermediateSessionUnitTest.class
 })
 public class MysqlJdbcUnitTests {
 

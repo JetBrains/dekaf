@@ -1,10 +1,12 @@
 package org.jetbrains.dekaf.core;
 
+import org.intellij.lang.annotations.MagicConstant;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.intermediate.DBIntermediateConsts;
 import org.jetbrains.dekaf.intermediate.IntegralIntermediateCursor;
 import org.jetbrains.dekaf.intermediate.IntegralIntermediateSeance;
+import org.jetbrains.dekaf.util.Objects;
 
 import java.lang.reflect.Array;
 import java.util.Collections;
@@ -62,6 +64,8 @@ public class BaseQueryRunner<S> implements DBQueryRunner<S>, BaseSeanceRunner {
   @Override
   public synchronized S run() {
     endFetching();
+
+    myInterSeance.setPackLimit(myPackLimit);
 
     myInterSeance.execute();
 
@@ -123,4 +127,16 @@ public class BaseQueryRunner<S> implements DBQueryRunner<S>, BaseSeanceRunner {
     myInterSeance.close();
   }
 
+
+  @Nullable
+  @Override
+  public <I> I getSpecificService(@NotNull final Class<I> serviceClass,
+                                  @NotNull @MagicConstant(valuesFromClass = Names.class) final String serviceName) {
+    if (serviceName.equalsIgnoreCase(Names.INTERMEDIATE_SERVICE)) {
+      return Objects.castTo(serviceClass, myInterSeance);
+    }
+    else {
+      return myInterSeance.getSpecificService(serviceClass, serviceName);
+    }
+  }
 }

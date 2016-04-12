@@ -29,17 +29,44 @@ public class MysqlIntermediateSession extends JdbcIntermediateSession {
   PreparedStatement prepareSimpleStatement(@NotNull final String statementText)
       throws SQLException
   {
-    //noinspection UnnecessaryLocalVariable
-    PreparedStatement stmt = getConnection().prepareStatement(statementText,
-                                                              ResultSet.TYPE_FORWARD_ONLY,
-                                                              ResultSet.CONCUR_READ_ONLY);
-    // stmt.setFetchSize(Integer.MIN_VALUE); // it looks like this slows down fetching operations
-    return stmt;
+    return getConnection().prepareStatement(statementText,
+                                            ResultSet.TYPE_FORWARD_ONLY,
+                                            ResultSet.CONCUR_READ_ONLY);
+  }
+
+  @Override
+  protected void tuneStatementWithFetchSize(final PreparedStatement stmt,
+                                            final int packLimit) throws SQLException {
+    final boolean rowByRow;
+    switch (getFetchStrategy()) {
+      case MysqlConsts.FETCH_STRATEGY_ROW:
+        rowByRow = true;
+        break;
+      case MysqlConsts.FETCH_STRATEGY_AUTO:
+        rowByRow = packLimit > 0;
+        break;
+      case MysqlConsts.FETCH_STRATEGY_WHOLE:
+      default:
+        rowByRow = false;
+        break;
+    }
+
+    if (rowByRow) {
+      stmt.setFetchSize(Integer.MIN_VALUE);
+    }
   }
 
 
   @Override
-  void tuneResultSetWithFetchSize(@NotNull final ResultSet rset, final int fetchLimit) {
+  protected void tuneResultSetWithFetchSize(@NotNull final ResultSet rset, final int packLimit) {
     // nothing to do
   }
+
+  public byte getFetchStrategy() {
+    MysqlIntermediateFacade facade = myFacade instanceof MysqlIntermediateFacade
+        ? (MysqlIntermediateFacade) myFacade
+        : null;
+    return facade != null ? facade.getFetchStrategy() : MysqlConsts.FETCH_STRATEGY_AUTO;
+  }
+
 }

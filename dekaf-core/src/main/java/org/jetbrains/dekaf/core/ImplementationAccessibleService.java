@@ -39,6 +39,8 @@ public interface ImplementationAccessibleService {
     String CONNECTION_POOL      = "connection-pool";
     String JDBC_DRIVER          = "jdbc-driver";
     String JDBC_CONNECTION      = "jdbc-connection";
+    String JDBC_STATEMENT       = "jdbc-statement";
+    String JDBC_RESULT_SET      = "jdbc-result-set";
 
   }
 

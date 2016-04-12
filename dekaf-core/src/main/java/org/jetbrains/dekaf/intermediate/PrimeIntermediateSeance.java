@@ -1,6 +1,7 @@
 package org.jetbrains.dekaf.intermediate;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.dekaf.core.ImplementationAccessibleService;
 import org.jetbrains.dekaf.core.ResultLayout;
 
 
@@ -10,10 +11,12 @@ import org.jetbrains.dekaf.core.ResultLayout;
  *
  * @author Leonid Bushuev from JetBrains
  */
-public interface PrimeIntermediateSeance {
+public interface PrimeIntermediateSeance extends ImplementationAccessibleService {
 
 
   void setInParameters(@NotNull Object[] parameters);
+
+  void setPackLimit(int packLimit);
 
   void execute();
 

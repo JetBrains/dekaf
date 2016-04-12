@@ -1,5 +1,6 @@
 package org.jetbrains.dekaf.jdbc;
 
+import org.intellij.lang.annotations.MagicConstant;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.core.ResultLayout;
@@ -8,6 +9,8 @@ import org.jetbrains.dekaf.intermediate.IntegralIntermediateSeance;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import static org.jetbrains.dekaf.util.Objects.castTo;
 
 
 
@@ -26,6 +29,12 @@ public abstract class JdbcIntermediateSeance implements IntegralIntermediateSean
   protected final String myStatementText;
 
   protected PreparedStatement myStatement;
+
+  /**
+   * In pack mode, it holds a positive number of rows per pack.
+   * In non-pack mode the value is 0 (it means default fetch size).
+   */
+  protected int myPackLimit = 0;
 
   @Nullable
   protected ResultSet myDefaultResultSet;
@@ -76,15 +85,21 @@ public abstract class JdbcIntermediateSeance implements IntegralIntermediateSean
     }
   }
 
+  @Override
+  public void setPackLimit(final int packLimit) {
+    if (packLimit < 0) throw new IllegalArgumentException("PackLimit is negative: " + packLimit);
+    myPackLimit = packLimit;
+  }
 
 
   @Override
   public synchronized void execute() {
     try {
+      mySession.tuneStatement(myStatement, myPackLimit);
       boolean gotResultSet = myStatement.execute();
       if (gotResultSet)  {
         myDefaultResultSet = mySession.getDefaultResultSet(myStatement);
-        mySession.tuneResultSet(myDefaultResultSet);
+        mySession.tuneResultSet(myDefaultResultSet, myPackLimit);
         myDefaultResultSetHasRows = myDefaultResultSet.next();  // download first rows
         if (!myDefaultResultSetHasRows)  {
           JdbcUtil.close(myDefaultResultSet); // close it if it has no rows
@@ -158,6 +173,23 @@ public abstract class JdbcIntermediateSeance implements IntegralIntermediateSean
 
 
   //// DIAGNOSTIC METHODS \\\\
+
+
+
+  @Nullable
+  @Override
+  public <I> I getSpecificService(@NotNull final Class<I> serviceClass,
+                                  @NotNull @MagicConstant(valuesFromClass = Names.class) final String serviceName) throws ClassCastException {
+    if (serviceName.equalsIgnoreCase(Names.JDBC_STATEMENT)) {
+      return castTo(serviceClass, myStatement);
+    }
+    else if (serviceName.equalsIgnoreCase(Names.JDBC_RESULT_SET)) {
+      return castTo(serviceClass, myDefaultResultSet);
+    }
+    else {
+      return null;
+    }
+  }
 
   public boolean isStatementOpened() {
     try {

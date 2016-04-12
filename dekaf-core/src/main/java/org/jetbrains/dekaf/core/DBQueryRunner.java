@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public interface DBQueryRunner<S> {
+public interface DBQueryRunner<S> extends ImplementationAccessibleService {
 
   /**
    * Assigns query parameters.

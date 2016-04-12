@@ -37,7 +37,7 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
 
   private boolean myHasRows;
 
-  private int myFetchLimit = DBIntermediateConsts.DEFAULT_FETCH_LIMIT;
+  private int myFetchLimit;
 
   private JdbcRowsCollector<R> myRowsCollector;
 
@@ -85,6 +85,13 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
         throw seance.mySession.recognizeException(sqle, seance.myStatementText);
       }
     }
+
+    myFetchLimit = getInitialFetchLimit();
+  }
+
+  protected int getInitialFetchLimit() {
+    int seancePackLimit = mySeance.myPackLimit;
+    return seancePackLimit > 0 ? seancePackLimit : DBIntermediateConsts.DEFAULT_FETCH_LIMIT;
   }
 
 

@@ -12,6 +12,7 @@ import java.sql.*;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static java.lang.Math.min;
 import static org.jetbrains.dekaf.core.Layouts.arrayOf;
 import static org.jetbrains.dekaf.core.Layouts.rowOf;
 import static org.jetbrains.dekaf.util.Objects.castTo;
@@ -24,7 +25,7 @@ import static org.jetbrains.dekaf.util.Objects.castTo;
 public class JdbcIntermediateSession implements IntegralIntermediateSession {
 
   @Nullable
-  private final JdbcIntermediateFacade myFacade;
+  protected final JdbcIntermediateFacade myFacade;
 
   @NotNull
   private final DBExceptionRecognizer myExceptionRecognizer;
@@ -139,7 +140,7 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
 
   @NotNull
   protected JdbcIntermediateCallableSeance openPreparedStatementSeance(@NotNull final String statementText,
-                                                                    @NotNull final ParameterDef[] outParameterDefs) {
+                                                                       @NotNull final ParameterDef[] outParameterDefs) {
     return new JdbcIntermediateCallableSeance(this, statementText, outParameterDefs);
   }
 
@@ -233,6 +234,7 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
   //// INTERNAL METHODS TO WORK WITH JDBC \\\\
 
   static final int DEFAULT_FETCH_SIZE = 1000;
+  static final int LARGEST_FETCH_SIZE = 1000000;
 
 
   @NotNull
@@ -242,7 +244,6 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
     PreparedStatement statement = myConnection.prepareStatement(statementText,
                                                                 ResultSet.TYPE_FORWARD_ONLY,
                                                                 ResultSet.CONCUR_READ_ONLY);
-    statement.setFetchSize(DEFAULT_FETCH_SIZE);
     return statement;
   }
 
@@ -258,16 +259,26 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
     return statement.getResultSet();
   }
 
-  void tuneResultSet(@NotNull final ResultSet rset) throws SQLException {
-    tuneResultSetWithFetchSize(rset, DEFAULT_FETCH_SIZE);
+  void tuneStatement(@NotNull final PreparedStatement stmt, final int packLimit) throws SQLException {
+    tuneStatementWithFetchSize(stmt, packLimit);
   }
 
-  void tuneResultSetWithFetchSize(@NotNull final ResultSet rset, int fetchLimit) throws SQLException {
+  protected void tuneStatementWithFetchSize(final PreparedStatement stmt, final int packLimit) throws SQLException {
+    int fetchSize = packLimit > 0 ? min(packLimit, LARGEST_FETCH_SIZE) : 0 ;
+    stmt.setFetchSize(fetchSize);
+  }
+
+  void tuneResultSet(@NotNull final ResultSet rset, final int packLimit) throws SQLException {
+    tuneResultSetWithFetchSize(rset, packLimit);
+  }
+
+  protected void tuneResultSetWithFetchSize(@NotNull final ResultSet rset, int packLimit) throws SQLException {
     if (rset.getFetchDirection() != ResultSet.FETCH_FORWARD) {
       rset.setFetchDirection(ResultSet.FETCH_FORWARD);
     }
 
-    rset.setFetchSize(fetchLimit);
+    int fetchSize = packLimit > 0 ? min(packLimit, LARGEST_FETCH_SIZE) : DEFAULT_FETCH_SIZE ;
+    rset.setFetchSize(fetchSize);
   }
 
 
