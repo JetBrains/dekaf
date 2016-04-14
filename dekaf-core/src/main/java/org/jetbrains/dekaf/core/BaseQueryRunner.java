@@ -3,7 +3,6 @@ package org.jetbrains.dekaf.core;
 import org.intellij.lang.annotations.MagicConstant;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.dekaf.intermediate.DBIntermediateConsts;
 import org.jetbrains.dekaf.intermediate.IntegralIntermediateCursor;
 import org.jetbrains.dekaf.intermediate.IntegralIntermediateSeance;
 import org.jetbrains.dekaf.util.Objects;
@@ -27,7 +26,10 @@ public class BaseQueryRunner<S> implements DBQueryRunner<S>, BaseSeanceRunner {
   @Nullable
   private IntegralIntermediateCursor<S> myCursor;
 
-  private int myPackLimit = DBIntermediateConsts.DEFAULT_FETCH_LIMIT;
+  /**
+   * Pack size limit. 0 means unlimited.
+   */
+  private int myPackLimit = 0;
 
   private boolean myMultiPackMode = false;
 
@@ -88,7 +90,6 @@ public class BaseQueryRunner<S> implements DBQueryRunner<S>, BaseSeanceRunner {
     assert myCursor != null;
     boolean ok = false;
     try {
-      myCursor.setFetchLimit(myPackLimit);
       S result = myCursor.fetch();
       ok = true;
       return result != null ? result : emptyResult();

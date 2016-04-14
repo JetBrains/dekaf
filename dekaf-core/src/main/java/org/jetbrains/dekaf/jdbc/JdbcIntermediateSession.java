@@ -233,8 +233,8 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
 
   //// INTERNAL METHODS TO WORK WITH JDBC \\\\
 
-  static final int DEFAULT_FETCH_SIZE = 1000;
-  static final int LARGEST_FETCH_SIZE = 1000000;
+  protected static final int DEFAULT_FETCH_SIZE = 1000;
+  protected static final int LARGEST_FETCH_SIZE = 1000000;
 
 
   @NotNull
@@ -264,8 +264,14 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
   }
 
   protected void tuneStatementWithFetchSize(final PreparedStatement stmt, final int packLimit) throws SQLException {
-    int fetchSize = packLimit > 0 ? min(packLimit, LARGEST_FETCH_SIZE) : 0 ;
-    stmt.setFetchSize(fetchSize);
+    if (packLimit > 0) {
+      int fetchSize = min(packLimit, LARGEST_FETCH_SIZE);
+      stmt.setFetchSize(fetchSize);
+    }
+    else {
+      stmt.setFetchSize(getDefaultFetchSize());
+    }
+
   }
 
   void tuneResultSet(@NotNull final ResultSet rset, final int packLimit) throws SQLException {
@@ -277,8 +283,18 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
       rset.setFetchDirection(ResultSet.FETCH_FORWARD);
     }
 
-    int fetchSize = packLimit > 0 ? min(packLimit, LARGEST_FETCH_SIZE) : DEFAULT_FETCH_SIZE ;
-    rset.setFetchSize(fetchSize);
+    if (packLimit > 0) {
+      int fetchSize = min(packLimit, LARGEST_FETCH_SIZE);
+      rset.setFetchSize(fetchSize);
+    }
+    else {
+      rset.setFetchSize(getDefaultFetchSize());
+    }
+  }
+
+
+  protected int getDefaultFetchSize() {
+    return DEFAULT_FETCH_SIZE;
   }
 
 

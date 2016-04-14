@@ -5,7 +5,6 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.core.ResultLayout;
 import org.jetbrains.dekaf.core.RowLayout;
 import org.jetbrains.dekaf.exceptions.DBPreparingException;
-import org.jetbrains.dekaf.intermediate.DBIntermediateConsts;
 import org.jetbrains.dekaf.intermediate.IntegralIntermediateCursor;
 
 import java.sql.ResultSet;
@@ -37,7 +36,11 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
 
   private boolean myHasRows;
 
-  private int myFetchLimit;
+  /**
+   * Limits number of rows to collect from JDBC result set into an internal container.
+   * Don't mix with PackLimit or FetchLimit.
+   */
+  private int myCollectLimit = Integer.MAX_VALUE;
 
   private JdbcRowsCollector<R> myRowsCollector;
 
@@ -86,12 +89,15 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
       }
     }
 
-    myFetchLimit = getInitialFetchLimit();
-  }
-
-  protected int getInitialFetchLimit() {
-    int seancePackLimit = mySeance.myPackLimit;
-    return seancePackLimit > 0 ? seancePackLimit : DBIntermediateConsts.DEFAULT_FETCH_LIMIT;
+    if (resultLayout.kind == ResultLayout.Kind.EXISTENCE || resultLayout.kind == ResultLayout.Kind.SINGLE_ROW) {
+      myCollectLimit = 1;
+    }
+    else {
+      int seancePackLimit = mySeance.myPackLimit;
+      if (seancePackLimit > 0) {
+        myCollectLimit = seancePackLimit;
+      }
+    }
   }
 
 
@@ -244,9 +250,8 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
     }
   }
 
-  @Override
-  public synchronized void setFetchLimit(final int limit) {
-    myFetchLimit = limit;
+  public synchronized void setCollectLimit(final int limit) {
+    myCollectLimit = limit;
   }
 
   @Override
@@ -265,7 +270,7 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
 
     final R result;
     try {
-      result = myRowsCollector.collectRows(myResultSet, myFetchLimit);
+      result = myRowsCollector.collectRows(myResultSet, myCollectLimit);
     }
     catch (SQLException sqle) {
       close();

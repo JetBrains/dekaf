@@ -16,7 +16,7 @@ public interface PrimeIntermediateCursor<R> {
   String[] getColumnNames();
 
 
-  void setFetchLimit(int limit);
+  void setCollectLimit(int limit);
 
 
   R fetch();

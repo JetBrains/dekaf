@@ -27,9 +27,8 @@ public abstract class AdaptIntermediateCursor<T,RT> implements IntegralIntermedi
     return myRemoteCursor.getColumnNames();
   }
 
-  @Override
-  public void setFetchLimit(final int limit) {
-    myRemoteCursor.setFetchLimit(limit);
+  public void setCollectLimit(final int limit) {
+    myRemoteCursor.setCollectLimit(limit);
   }
 
   @Override
