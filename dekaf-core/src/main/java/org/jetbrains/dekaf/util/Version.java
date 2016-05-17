@@ -133,9 +133,8 @@ public final class Version implements Comparable<Version>, Serializable {
 
     int m = Math.max(this.size(), that.size());
     for (int i = 0; i < m; i++) {
-      int z = this.get(i) - that.get(i);
-      if (z > 0) return +1;
-      if (z < 0) return -1;
+      int z = compare(this.get(i), that.get(i));
+      if (z != 0) return z;
     }
 
     return 0;
@@ -152,18 +151,21 @@ public final class Version implements Comparable<Version>, Serializable {
   public int compareTo(final int... that) {
     int m = Math.max(this.size(), that.length);
     for (int i = 0; i < m; i++) {
-      int z = this.get(i) - (i < that.length ? that[i] : 0);
-      if (z > 0) return +1;
-      if (z < 0) return -1;
+      int z = compare(this.get(i), (i < that.length ? that[i] : 0));
+      if (z != 0) return z;
     }
 
     return 0;
   }
 
+  private static int compare(final int x, final int y) {
+    return x < y ? -1 : x > y ? +1 : 0;
+  }
+
   /**
    * Checks whether the version is equal to or grater than the specified version.
    * @param than the version to compare.
-   * @return <i>true</i> if equals to or is greater than.
+   * @return <i>true</i> if equals to or is greater than the other.
    */
   public boolean isOrGreater(final int... than) {
     return compareTo(than) >= 0;
@@ -172,10 +174,28 @@ public final class Version implements Comparable<Version>, Serializable {
   /**
    * Checks whether the version is equal to or grater than the specified version.
    * @param than the version to compare.
-   * @return <i>true</i> if equals to or is greater than.
+   * @return <i>true</i> if equals to or is greater than the other.
    */
   public boolean isOrGreater(@NotNull final Version than) {
     return compareTo(than) >= 0;
+  }
+
+  /**
+   * Checks whether the version is less than the specified version.
+   * @param than the version to compare.
+   * @return <i>true</i> if less than the other.
+   */
+  public boolean less(final int... than) {
+    return compareTo(than) < 0;
+  }
+
+  /**
+   * Checks whether the version is less than the specified version.
+   * @param than the version to compare.
+   * @return <i>true</i> if less than the other.
+   */
+  public boolean less(@NotNull final Version than) {
+    return compareTo(than) < 0;
   }
 
 

@@ -85,24 +85,48 @@ public class VersionTest {
   public void compare_basic() {
     Version v = Version.of(1,6,22);
     Integer expected1 = +1;
-    assertThat((Integer)v.compareTo(1, 6)).isEqualTo(expected1);
-    assertThat((Integer)v.compareTo(1, 6, 22)).isEqualTo((Integer)0);
+    assertThat(v.compareTo(1, 6)).isEqualTo(expected1);
+    assertThat(v.compareTo(1, 6, 22)).isEqualTo(0);
     Integer expected = -1;
-    assertThat((Integer)v.compareTo(1, 7)).isEqualTo(expected);
+    assertThat(v.compareTo(1, 7)).isEqualTo(expected);
   }
 
   @Test
   public void compare_zeros() {
     Version v1 = Version.of(1,2,3),
             v2 = Version.of(1,2,3,0,0);
-    assertThat((Integer)v1.compareTo(v2)).isEqualTo((Integer)0);
-    assertThat((Integer)v2.compareTo(v1)).isEqualTo((Integer)0);
+    assertThat(v1.compareTo(v2)).isEqualTo(0);
+    assertThat(v2.compareTo(v1)).isEqualTo(0);
+  }
+
+  @Test
+  public void compare_bounds() {
+    Version v1 = Version.of(1,1000),
+            v2 = Version.of(1,Integer.MAX_VALUE),
+            v3 = Version.of(1,Integer.MIN_VALUE);
+
+    assertThat(v1.compareTo(v2)).isEqualTo(-1);
+    assertThat(v2.compareTo(v1)).isEqualTo(+1);
+
+    assertThat(v3.compareTo(v2)).isEqualTo(-1);
+    assertThat(v2.compareTo(v3)).isEqualTo(+1);
+
+    assertThat(v3.compareTo(v1)).isEqualTo(-1);
+    assertThat(v1.compareTo(v3)).isEqualTo(+1);
   }
 
   @Test
   public void equal_zeros() {
     Version v1 = Version.of(1,2,3),
             v2 = Version.of(1,2,3,0,0);
+    assertThat(v2).isEqualTo(v1);
+    assertThat(v1).isEqualTo(v2);
+  }
+
+  @Test
+  public void equal_zeros_and_empty() {
+    Version v1 = Version.of(),
+            v2 = Version.of(0,0,0);
     assertThat(v2).isEqualTo(v1);
     assertThat(v1).isEqualTo(v2);
   }
@@ -116,7 +140,7 @@ public class VersionTest {
 
 
   @Test
-  public void isOrGreater() {
+  public void isOrGreater_1() {
     assertThat(Version.of(1,2,3).isOrGreater(1,2,3)).isTrue();
     assertThat(Version.of(1,2,3).isOrGreater(1,2,2)).isTrue();
     assertThat(Version.of(1,2,3).isOrGreater(1,2)).isTrue();
@@ -143,5 +167,16 @@ public class VersionTest {
     assertThat(Version.of(1,2,3).isOrGreater(Version.of(2))).isFalse();
   }
 
+  @Test
+  public void less_1() {
+    assertThat(Version.of(1,2,3).less(4)).isTrue();
+    assertThat(Version.of(1,2,3).less(1)).isFalse();
+  }
+
+  @Test
+  public void less_2() {
+    assertThat(Version.of(1,2,3).less(Version.of(4))).isTrue();
+    assertThat(Version.of(1,2,3).less(Version.of(1))).isFalse();
+  }
 
 }
