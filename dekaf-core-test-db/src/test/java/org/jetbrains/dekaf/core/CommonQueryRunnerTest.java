@@ -9,6 +9,8 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -234,6 +236,36 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
     assertThat(values).isNotNull()
                       .hasSize(1000000)
                       .contains(1,2,3,4,999998,999999,1000000);
+  }
+
+
+  @Test
+  public void access_metadata() {
+    final SqlQuery<List<Number>> query =
+        new SqlQuery<List<Number>>("select X from X1000", listOf(oneOf(Number.class)));
+
+    DB.inSession(new InSessionNoResult() {
+      @Override
+      public void run(@NotNull final DBSession session) {
+
+        DBQueryRunner<List<Number>> qr = session.query(query).packBy(10);
+        qr.run();
+        ResultSetMetaData md =
+            qr.getSpecificService(ResultSetMetaData.class,
+                                  ImplementationAccessibleService.Names.JDBC_METADATA);
+        assertThat(md).isNotNull();
+
+        String columnName = null;
+        try {
+          columnName = md.getColumnName(1);
+        }
+        catch (SQLException e) {
+          throw new RuntimeException(e.getMessage(), e);
+        }
+        assertThat(columnName).isEqualToIgnoringCase("X");
+
+      }
+    });
   }
 
 

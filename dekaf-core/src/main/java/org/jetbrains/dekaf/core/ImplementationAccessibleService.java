@@ -41,6 +41,7 @@ public interface ImplementationAccessibleService {
     String JDBC_CONNECTION      = "jdbc-connection";
     String JDBC_STATEMENT       = "jdbc-statement";
     String JDBC_RESULT_SET      = "jdbc-result-set";
+    String JDBC_METADATA        = "jdbc-metadata";
 
   }
 

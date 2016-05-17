@@ -8,6 +8,7 @@ import org.jetbrains.dekaf.intermediate.IntegralIntermediateSeance;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import static org.jetbrains.dekaf.util.Objects.castTo;
@@ -186,10 +187,27 @@ public abstract class JdbcIntermediateSeance implements IntegralIntermediateSean
     else if (serviceName.equalsIgnoreCase(Names.JDBC_RESULT_SET)) {
       return castTo(serviceClass, myDefaultResultSet);
     }
+    else if (serviceName.equalsIgnoreCase(Names.JDBC_METADATA)) {
+      return castTo(serviceClass, getResultSetMetaData());
+    }
     else {
       return null;
     }
   }
+
+  @Nullable
+  private ResultSetMetaData getResultSetMetaData() {
+    final ResultSet rset = myDefaultResultSet;
+    if (rset == null) return null;
+    try {
+      return rset.getMetaData();
+    }
+    catch (SQLException e) {
+      String className = rset.getClass().getName();
+      throw mySession.recognizeException(e, className+".getMetaData()");
+    }
+  }
+
 
   public boolean isStatementOpened() {
     try {

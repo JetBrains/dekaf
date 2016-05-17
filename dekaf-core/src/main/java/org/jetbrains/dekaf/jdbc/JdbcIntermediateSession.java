@@ -154,8 +154,21 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
     else if (serviceName.equalsIgnoreCase(Names.JDBC_CONNECTION)) {
       return castTo(serviceClass, myConnection);
     }
+    else if (serviceName.equalsIgnoreCase(Names.JDBC_METADATA)) {
+      return castTo(serviceClass, getConnectionMetaData());
+    }
     else {
       return null;
+    }
+  }
+
+  private DatabaseMetaData getConnectionMetaData() {
+    try {
+      return myConnection.getMetaData();
+    }
+    catch (SQLException e) {
+      String className = myConnection.getClass().getName();
+      throw myExceptionRecognizer.recognizeException(e, className+".getMetaData()");
     }
   }
 

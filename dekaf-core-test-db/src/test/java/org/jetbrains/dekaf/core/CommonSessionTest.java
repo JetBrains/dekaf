@@ -1,10 +1,14 @@
 package org.jetbrains.dekaf.core;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.CommonIntegrationCase;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
+import java.sql.DatabaseMetaData;
+import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -74,6 +78,30 @@ public abstract class CommonSessionTest extends CommonIntegrationCase {
   }
 
 
+  @Test
+  public void access_metadata() {
+    DB.inSession(new InSessionNoResult() {
+      @Override
+      public void run(@NotNull final DBSession session) {
+
+        DatabaseMetaData md =
+            session.getSpecificService(DatabaseMetaData.class,
+                                       ImplementationAccessibleService.Names.JDBC_METADATA);
+
+        assertThat(md).isNotNull();
+
+        String driverName = null;
+        try {
+          driverName = md.getDriverName();
+        }
+        catch (SQLException e) {
+          throw new RuntimeException(e.getMessage(), e);
+        }
+        assertThat(driverName).isNotNull();
+
+      }
+    });
+  }
 
 
 }
