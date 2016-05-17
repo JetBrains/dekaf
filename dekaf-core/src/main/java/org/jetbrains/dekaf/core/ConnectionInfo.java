@@ -17,6 +17,9 @@ import java.io.Serializable;
  **/
 public final class ConnectionInfo implements Serializable {
 
+  @NotNull
+  public final String rdbmsName;
+
   @Nullable
   public final String databaseName;
 
@@ -33,11 +36,13 @@ public final class ConnectionInfo implements Serializable {
   public final Version driverVersion;
 
 
-  public ConnectionInfo(@Nullable final String databaseName,
+  public ConnectionInfo(@NotNull final String rdbmsName,
+                        @Nullable final String databaseName,
                         @Nullable final String schemaName,
                         @Nullable final String userName,
                         @NotNull final Version serverVersion,
                         @NotNull final Version driverVersion) {
+    this.rdbmsName = rdbmsName;
     this.databaseName = databaseName;
     this.schemaName = schemaName;
     this.userName = userName;
@@ -53,7 +58,8 @@ public final class ConnectionInfo implements Serializable {
 
     ConnectionInfo that = (ConnectionInfo) o;
 
-    return !(databaseName != null ? !databaseName.equals(that.databaseName) : that.databaseName != null)
+    return rdbmsName.equals(that.rdbmsName)
+        && !(databaseName != null ? !databaseName.equals(that.databaseName) : that.databaseName != null)
         && !(schemaName != null ? !schemaName.equals(that.schemaName) : that.schemaName != null)
         && !(userName != null ? !userName.equals(that.userName) : that.userName != null)
         && serverVersion.equals(that.serverVersion)
@@ -66,6 +72,7 @@ public final class ConnectionInfo implements Serializable {
     result = 31 * result + (schemaName != null ? schemaName.hashCode() : 0);
     result = 31 * result + (userName != null ? userName.hashCode() : 0);
     result = 31 * result + serverVersion.hashCode();
+    result = 31 * result + rdbmsName.hashCode();
     return result;
   }
 }

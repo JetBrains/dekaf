@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.Rdbms;
 
 import java.sql.Driver;
+import java.util.Properties;
 import java.util.regex.Pattern;
 
 
@@ -52,4 +53,18 @@ public final class UnknownDatabaseProvider extends JdbcIntermediateRdbmsProvider
   public BaseExceptionRecognizer getExceptionRecognizer() {
     return UnknownDatabaseExceptionRecognizer.INSTANCE;
   }
+
+  @NotNull
+  @Override
+  protected JdbcIntermediateFacade instantiateFacade(@NotNull final String connectionString,
+                                                     @Nullable final Properties connectionProperties,
+                                                     final int connectionsLimit,
+                                                     @NotNull final Driver driver) {
+    return new UnknownDatabaseIntermediateFacade(connectionString,
+                                                 connectionProperties,
+                                                 driver,
+                                                 connectionsLimit,
+                                                 getExceptionRecognizer());
+  }
+
 }

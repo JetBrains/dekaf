@@ -129,16 +129,25 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
 
   @Override
   public ConnectionInfo getConnectionInfo() {
+    return getConnectionInfoFromJdbc();
+  }
+
+  @NotNull
+  private ConnectionInfo getConnectionInfoFromJdbc() {
     try {
       Connection connection = myPool.borrow();
       try {
         DatabaseMetaData md = connection.getMetaData();
+        String rdbmsName = md.getDatabaseProductName();
+        if (rdbmsName == null) rdbmsName = connection.getClass().getName();
         String databaseName = connection.getCatalog();
         String schemaName = getSchema(connection);
         String userName = md.getUserName();
         Version serverVersion = Version.of(md.getDatabaseMajorVersion(), md.getDatabaseMinorVersion());
         Version driverVersion = Version.of(md.getDriverMajorVersion(), md.getDriverMinorVersion());
-        return new ConnectionInfo(databaseName, schemaName, userName, serverVersion, driverVersion);
+        return new ConnectionInfo(rdbmsName,
+                                  databaseName, schemaName, userName,
+                                  serverVersion, driverVersion);
       }
       finally {
         myPool.release(connection);
@@ -238,9 +247,11 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
       assert env.length == 3 : "Session info should contain 3 components";
 
       // versions
-      String serverVersionStr, driverVersionStr;
+      String rdbmsName, serverVersionStr, driverVersionStr;
       try {
         DatabaseMetaData md = session.getConnection().getMetaData();
+        rdbmsName = md.getDatabaseProductName();
+        if (rdbmsName == null) rdbmsName = session.getConnection().getClass().getName();
         serverVersionStr = md.getDatabaseProductVersion();
         driverVersionStr = md.getDriverVersion();
       }
@@ -254,7 +265,7 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
           extractVersion(driverVersionStr, driverVersionPattern, driverVersionGroupIndex);
 
       // ok
-      return new ConnectionInfo(env[0], env[1], env[2], serverVersion, driverVersion);
+      return new ConnectionInfo(rdbmsName, env[0], env[1], env[2], serverVersion, driverVersion);
     }
     finally {
       session.close();

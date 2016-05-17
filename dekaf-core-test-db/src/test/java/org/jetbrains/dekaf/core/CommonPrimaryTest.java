@@ -16,17 +16,40 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Leonid Bushuev from JetBrains
  **/
 @FixMethodOrder(MethodSorters.JVM)
-public abstract class CommonPrimaryTest extends CommonIntegrationCase {
+public class CommonPrimaryTest extends CommonIntegrationCase {
 
   @Test
-  public void connect_disconnect() {
+  public void connect() {
     assert DB != null;
 
     DB.connect();
     assertThat(DB.isConnected()).isTrue();
 
+    ConnectionInfo info = DB.getConnectionInfo();
+    System.out.println("Connection info:");
+    System.out.println("\tRDBMS: " + info.rdbmsName);
+    System.out.println("\tDatabase: " + info.databaseName);
+    System.out.println("\tSchema: " + info.schemaName);
+    System.out.println("\tUser: " + info.userName);
+    System.out.println("\tServer version: " + info.serverVersion);
+    System.out.println("\tDriver version: " + info.driverVersion);
+  }
+
+  @Test
+  public void disconnect() {
+    assert DB != null;
+
     DB.disconnect();
     assertThat(DB.isConnected()).isFalse();
+  }
+
+
+  @Test
+  public void getConnectionInfo_versions() {
+    DB.connect();
+    ConnectionInfo info = DB.getConnectionInfo();
+    assertThat(info.serverVersion.isOrGreater(1));
+    assertThat(info.driverVersion.isOrGreater(1));
   }
 
 
@@ -53,7 +76,7 @@ public abstract class CommonPrimaryTest extends CommonIntegrationCase {
       @Override
       public void run(@NotNull final DBSession session) {
 
-        final Integer v = session.query("select 1 " + fromSingleRowTable(),
+        final Integer v = session.query("select 1 " + TH.fromSingleRowTable(),
                                           Layouts.singleOf(Integer.class))
                                    .run();
         assertThat(v).isNotNull()
@@ -72,7 +95,7 @@ public abstract class CommonPrimaryTest extends CommonIntegrationCase {
       @Override
       public void run(@NotNull final DBTransaction tran) {
 
-        final Integer v = tran.query("select 1 " + fromSingleRowTable(),
+        final Integer v = tran.query("select 1 " + TH.fromSingleRowTable(),
                                         Layouts.singleOf(Integer.class))
                                  .run();
         assertThat(v).isNotNull()
@@ -80,20 +103,6 @@ public abstract class CommonPrimaryTest extends CommonIntegrationCase {
 
       }
     });
-  }
-
-  @NotNull
-  protected String fromSingleRowTable() {
-    return "";
-  }
-
-
-  @Test
-  public void getConnectionInfo_versions() {
-    DB.connect();
-    ConnectionInfo info = DB.getConnectionInfo();
-    assertThat(info.serverVersion.isOrGreater(1));
-    assertThat(info.driverVersion.isOrGreater(1));
   }
 
 

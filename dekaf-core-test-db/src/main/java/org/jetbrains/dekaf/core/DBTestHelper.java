@@ -13,6 +13,14 @@ import org.jetbrains.dekaf.sql.SqlScript;
 public interface DBTestHelper {
 
   /**
+   * Returns a string like " from dual" if the database requires such syntax.
+   * @return a string like " from dual", started with a space,
+   *         or an empty string when the RDBMS allows queries like "select 1" without specified table.
+   */
+  @NotNull
+  String fromSingleRowTable();
+
+  /**
    * Performs a command from the scriptum.
    * @param scriptum        scriptum with the command to perform.
    * @param commandName     name of the command to perform.

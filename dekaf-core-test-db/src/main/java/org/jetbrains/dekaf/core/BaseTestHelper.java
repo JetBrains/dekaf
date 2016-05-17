@@ -41,6 +41,11 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
   }
 
 
+  @NotNull
+  public String fromSingleRowTable() {
+    return "";
+  }
+
   @Override
   public void performCommand(@NotNull final Scriptum scriptum, @NotNull final String commandName) {
     final SqlCommand command = scriptum.command(commandName);

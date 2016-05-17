@@ -54,8 +54,7 @@ public class SybaseIntermediateFacade extends JdbcIntermediateFacade {
   @Override
   public ConnectionInfo getConnectionInfo() {
     String[] env;
-    String driverVersionStr;
-
+    String rdbmsName, driverVersionStr;
 
     final JdbcIntermediateSession session = openSession();
     try {
@@ -65,6 +64,8 @@ public class SybaseIntermediateFacade extends JdbcIntermediateFacade {
       // getting the driver version
       try {
         DatabaseMetaData md = session.getConnection().getMetaData();
+        rdbmsName = md.getDatabaseProductName();
+        if (rdbmsName == null) rdbmsName = session.getConnection().getClass().getName();
         driverVersionStr = md.getDriverVersion();
       }
       catch (SQLException sqle) {
@@ -82,10 +83,10 @@ public class SybaseIntermediateFacade extends JdbcIntermediateFacade {
       assert env.length == 4;
       Version serverVersion =
           extractVersion(env[3], SYBASE_ASE_VERSION_PATTERN, 1);
-      return new ConnectionInfo(env[0], env[1], env[2], serverVersion, driverVersion);
+      return new ConnectionInfo(rdbmsName, env[0], env[1], env[2], serverVersion, driverVersion);
     }
     else {
-      return new ConnectionInfo(null, null, null, Version.ZERO, driverVersion);
+      return new ConnectionInfo(rdbmsName, null, null, null, Version.ZERO, driverVersion);
     }
   }
 

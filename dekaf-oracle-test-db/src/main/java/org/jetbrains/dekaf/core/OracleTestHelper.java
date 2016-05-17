@@ -21,6 +21,12 @@ public class OracleTestHelper extends BaseTestHelper<DBFacade> {
                                          "XDB", "BENCHMARK"));
   }
 
+  @NotNull
+  @Override
+  public String fromSingleRowTable() {
+    return " from dual";
+  }
+
   @Override
   public void prepareX1() {
     performCommand("create or replace view X1 as select 1 as X from dual");
