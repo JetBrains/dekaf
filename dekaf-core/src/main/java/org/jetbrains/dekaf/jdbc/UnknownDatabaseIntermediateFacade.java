@@ -2,6 +2,7 @@ package org.jetbrains.dekaf.jdbc;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.dekaf.core.ConnectionInfo;
 import org.jetbrains.dekaf.exceptions.DBIsNotConnected;
 import org.jetbrains.dekaf.intermediate.DBExceptionRecognizer;
 
@@ -38,6 +39,36 @@ public class UnknownDatabaseIntermediateFacade extends JdbcIntermediateFacade {
   public synchronized void connect() {
     super.connect();
     myUnknownInfo = UnknownDatabaseInfoHelper.obtainDatabaseInfo(getConnectionInfo());
+  }
+
+
+  @Override
+  public ConnectionInfo getConnectionInfo() {
+    ConnectionInfo info = super.getConnectionInfo();
+    if (info.rdbmsName.startsWith("DB2")) {
+      info = hackDB2ConnectionInfo(info);
+    }
+    return info;
+  }
+
+  @NotNull
+  private ConnectionInfo hackDB2ConnectionInfo(ConnectionInfo info) {
+    String query = "select rtrim(current_server), rtrim(current schema), rtrim(current_user) from sysibm.sysdummy1";
+    String[] env = queryStrings(query, 3);
+    info = new ConnectionInfo(info.rdbmsName, env[0], env[1], env[2], info.serverVersion, info.driverVersion);
+    return info;
+  }
+
+  private String[] queryStrings(final String query, final int columnCount) {
+    String[] env;
+    JdbcIntermediateSession session = openSession();
+    try {
+      env = session.queryOneRow(query, columnCount, String.class);
+    }
+    finally {
+      session.close();
+    }
+    return env;
   }
 
 
