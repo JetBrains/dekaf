@@ -17,7 +17,7 @@ import static org.jetbrains.dekaf.util.Strings.removeEnding;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "RedundantCast"})
 @RunWith(FineRunner.class)
 public class NumbersTest {
 
@@ -99,6 +99,40 @@ public class NumbersTest {
     String originalString = removeEnding(number.toString(), ".0");
     String convertedString = removeEnding(convertedNumber.toString(),".0");
     assertThat(convertedString).isEqualTo(originalString);
+  }
+
+
+  static final Number[] CONVERT_SMART_CASES = new Number[] {
+      BYTE_ZERO,
+      (byte)  -1,
+      (byte)  +1,
+      (byte)  -128,
+      (byte)  +127,
+      (short) -129,
+      (short) +128,
+      (short) -32768,
+      (short) +32767,
+      (int)   -32769,
+      (int)   +32768,
+      (int)   -32769,
+      (int)   -2147483648,
+      (int)   +2147483647,
+      (long)  -2147483649L,
+      (long)  +2147483648L,
+      (long)  -9223372036854775808L,
+      (long)  +9223372036854775807L,
+      new BigInteger("-9223372036854775809"),
+      new BigInteger("9223372036854775808"),
+      (float)  123.456,
+      (double) 123456.7890123,
+      new BigDecimal("1234567890.123456789")
+  };
+
+  @TestWithParams(params = "CONVERT_SMART_CASES")
+  public void convertNumberSmartly_basic(Number origin) {
+    BigDecimal d = new BigDecimal(origin.toString());
+    Number num = convertNumberSmartly(d);
+    assertThat(num).isEqualTo(origin);
   }
 
 

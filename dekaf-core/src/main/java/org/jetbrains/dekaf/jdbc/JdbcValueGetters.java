@@ -82,6 +82,7 @@ public final class JdbcValueGetters {
     NORMAL_GETTERS.put(Double.class, DoubleGetter.INSTANCE);
     NORMAL_GETTERS.put(BigInteger.class, BigIntegerGetter.INSTANCE);
     NORMAL_GETTERS.put(BigDecimal.class, BigDecimalGetter.INSTANCE);
+    NORMAL_GETTERS.put(Number.class, GenericNumberGetter.INSTANCE);
     NORMAL_GETTERS.put(String.class, StringGetter.INSTANCE);
     NORMAL_GETTERS.put(char.class, CharGetter.INSTANCE);
     NORMAL_GETTERS.put(Character.class, CharGetter.INSTANCE);
@@ -369,6 +370,18 @@ public final class JdbcValueGetters {
 
 
     final static BigDecimalGetter INSTANCE = new BigDecimalGetter();
+  }
+
+
+  static final class GenericNumberGetter extends JdbcValueGetter<Number> {
+    @Override
+    @Nullable
+    Number getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
+      return Numbers.convertNumberSmartly(rset.getBigDecimal(index));
+    }
+
+
+    final static GenericNumberGetter INSTANCE = new GenericNumberGetter();
   }
 
 

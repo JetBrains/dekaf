@@ -38,7 +38,7 @@ public abstract class Numbers {
    * @return               the converted number.
    */
   @SuppressWarnings("unchecked")
-  @Contract("_,!null -> !null; _,null -> null")
+  @Contract(value = "_,!null -> !null; _,null -> null", pure = true)
   public static <N extends Number> N convertNumber(final Class<N> numberClass, final Number number) {
     if (number == null) return null;
     if (numberClass.isAssignableFrom(number.getClass())) return (N) number;
@@ -60,6 +60,47 @@ public abstract class Numbers {
     throw new IllegalArgumentException(message);
   }
 
+  @Contract(value = "!null -> !null; null -> null", pure = true)
+  public static Number convertNumberSmartly(final BigDecimal decimal) {
+    if (decimal == null) return null;
+    if (decimal.equals(Numbers.DECIMAL_ZERO)) return BYTE_ZERO;
+
+    final int precision = decimal.precision();
+    final int scale = decimal.scale();
+
+    Number num;
+    if (scale == 0) {
+      try {
+        if (precision <= 19 && decimal.compareTo(Numbers.DECIMAL_MIN_LONG) >= 0
+                            && decimal.compareTo(Numbers.DECIMAL_MAX_LONG) <= 0) {
+          long v = decimal.longValueExact();
+          if (-128 <= v && v <= 127) num = (byte) v;
+          else if (-32768 <= v && v <= 32767) num = (short) v;
+          else if (Integer.MIN_VALUE <= v && v <= Integer.MAX_VALUE) num = (int) v;
+          else num = v;
+        }
+        else {
+          num = decimal.toBigIntegerExact();
+        }
+      }
+      catch (ArithmeticException ae) {
+        num = decimal;
+      }
+    }
+    else {
+      if (precision <= 6) {
+        num = decimal.floatValue();
+      }
+      else if (precision <= 15) {
+        num = decimal.doubleValue();
+      }
+      else {
+        num = decimal;
+      }
+    }
+
+    return num;
+  }
 
   public static int parseIntSafe(@Nullable final String str) {
     if (str == null) {
@@ -91,4 +132,11 @@ public abstract class Numbers {
       return 0;
     }
   }
+
+
+  public static final Byte       BYTE_ZERO        = (byte) 0;
+  public static final BigDecimal DECIMAL_ZERO     = new BigDecimal(0);
+  public static final BigDecimal DECIMAL_MIN_LONG = new BigDecimal(Long.MIN_VALUE);
+  public static final BigDecimal DECIMAL_MAX_LONG = new BigDecimal(Long.MAX_VALUE);
+
 }
