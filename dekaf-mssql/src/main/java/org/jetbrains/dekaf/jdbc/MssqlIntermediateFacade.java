@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.Mssql;
 import org.jetbrains.dekaf.Rdbms;
+import org.jetbrains.dekaf.core.ConnectionInfo;
 import org.jetbrains.dekaf.intermediate.DBExceptionRecognizer;
 
 import javax.sql.DataSource;
@@ -37,6 +38,17 @@ public class MssqlIntermediateFacade extends JdbcIntermediateFacade {
   public Rdbms rdbms() {
     return Mssql.RDBMS;
   }
+
+  @Override
+  public ConnectionInfo getConnectionInfo() {
+    return getConnectionInfoSmartly(CONNECTION_INFO_QUERY,
+                                    SIMPLE_VERSION_PATTERN, 1,
+                                    SIMPLE_VERSION_PATTERN, 1);
+  }
+
+  private static final String CONNECTION_INFO_QUERY =
+      "select db_name(), schema_name(), original_login()";
+
 
   @NotNull
   @Override

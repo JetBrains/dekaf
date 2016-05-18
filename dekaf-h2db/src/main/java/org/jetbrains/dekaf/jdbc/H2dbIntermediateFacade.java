@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.H2db;
 import org.jetbrains.dekaf.Rdbms;
+import org.jetbrains.dekaf.core.ConnectionInfo;
 import org.jetbrains.dekaf.intermediate.DBExceptionRecognizer;
 
 import javax.sql.DataSource;
@@ -36,5 +37,18 @@ public class H2dbIntermediateFacade extends JdbcIntermediateFacade {
   public Rdbms rdbms() {
     return H2db.RDBMS;
   }
+
+
+  @Override
+  public ConnectionInfo getConnectionInfo() {
+    return getConnectionInfoSmartly(CONNECTION_INFO_QUERY,
+                                    SIMPLE_VERSION_PATTERN, 1,
+                                    SIMPLE_VERSION_PATTERN, 1);
+  }
+
+  @SuppressWarnings("SpellCheckingInspection")
+  private static final String CONNECTION_INFO_QUERY =
+      "select database(), schema(), nvl(current_user(), user())";
+
 
 }

@@ -88,7 +88,7 @@ public class OracleIntermediateFacade extends JdbcIntermediateFacade {
   }
 
   @SuppressWarnings("SpellCheckingInspection")
-  public static final String CONNECTION_INFO_QUERY =
+  private static final String CONNECTION_INFO_QUERY =
       "select sys_context('userenv', 'db_name') as database_name,      \n" +
       "       sys_context('userenv', 'current_schema') as schema_name, \n" +
       "       user as user_name                                        \n" +

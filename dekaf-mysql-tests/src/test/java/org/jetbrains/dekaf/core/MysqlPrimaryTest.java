@@ -4,6 +4,7 @@ import org.jetbrains.dekaf.Mysql;
 import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.internal.AssumptionViolatedException;
 import org.junit.runners.MethodSorters;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,6 +22,11 @@ public class MysqlPrimaryTest extends CommonPrimaryTest {
     assertThat(DB.rdbms()).isEqualTo(Mysql.RDBMS);
   }
 
+
+  @Override
+  public void getConnectionInfo_database() {
+    throw new AssumptionViolatedException("For MySQL a database name is not applicable");
+  }
 
   @Override
   @Test @Ignore
