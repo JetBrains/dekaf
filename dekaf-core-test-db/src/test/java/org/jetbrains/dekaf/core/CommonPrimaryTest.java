@@ -6,7 +6,9 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import java.sql.DatabaseMetaData;
 import java.sql.Driver;
+import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,6 +45,40 @@ public class CommonPrimaryTest extends CommonIntegrationCase {
     assertThat(DB.isConnected()).isFalse();
   }
 
+  @Test
+  public void access_metaData() {
+    DB.connect();
+
+    final StringBuilder b = new StringBuilder(240);
+    b.append("JDBC DatabaseMetaData:\n");
+
+    DB.inSession(new InSessionNoResult() {
+      @Override
+      public void run(@NotNull final DBSession session) {
+
+        DatabaseMetaData md =
+            session.getSpecificService(DatabaseMetaData.class,
+                                       ImplementationAccessibleService.Names.JDBC_METADATA);
+        assertThat(md).isNotNull();
+
+        try {
+          b.append("\tDatabaseProductName: ").append(md.getDatabaseProductName()).append('\n');
+          b.append("\tDriverName: ").append(md.getDriverName()).append('\n');
+          b.append("\tUserName: ").append(md.getUserName()).append('\n');
+          b.append("\tDatabaseProductVersion: ").append(md.getDatabaseProductVersion()).append('\n');
+          b.append("\tDriverVersion: ").append(md.getDriverVersion()).append('\n');
+          b.append("\tExtraNameCharacters: ").append(md.getExtraNameCharacters()).append('\n');
+          b.append("\tIdentifierQuoteString: ").append(md.getIdentifierQuoteString()).append('\n');
+        }
+        catch (SQLException e) {
+          throw new RuntimeException(e);
+        }
+
+      }
+    });
+
+    System.out.println(b.toString());
+  }
 
   @Test
   public void getConnectionInfo_versions() {
@@ -50,6 +86,34 @@ public class CommonPrimaryTest extends CommonIntegrationCase {
     ConnectionInfo info = DB.getConnectionInfo();
     assertThat(info.serverVersion.isOrGreater(1));
     assertThat(info.driverVersion.isOrGreater(1));
+  }
+
+  @Test
+  public void getConnectionInfo_rdbms() {
+    DB.connect();
+    ConnectionInfo info = DB.getConnectionInfo();
+    assertThat(info.rdbmsName).isNotEmpty();
+  }
+
+  @Test
+  public void getConnectionInfo_database() {
+    DB.connect();
+    ConnectionInfo info = DB.getConnectionInfo();
+    assertThat(info.databaseName).isNotEmpty();
+  }
+
+  @Test
+  public void getConnectionInfo_schema() {
+    DB.connect();
+    ConnectionInfo info = DB.getConnectionInfo();
+    assertThat(info.schemaName).isNotEmpty();
+  }
+
+  @Test
+  public void getConnectionInfo_user() {
+    DB.connect();
+    ConnectionInfo info = DB.getConnectionInfo();
+    assertThat(info.userName).isNotEmpty();
   }
 
 
