@@ -1,7 +1,6 @@
 package org.jetbrains.dekaf.jdbc;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dekaf.core.ConnectionInfo;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -11,8 +10,20 @@ import java.sql.SQLException;
 
 public class UnknownDatabaseInfoHelper {
 
-  static UnknownDatabaseInfo obtainDatabaseInfo(ConnectionInfo connectionInfo) {
-    return obtainDatabaseInfo(connectionInfo.rdbmsName);
+  static UnknownDatabaseInfo obtainDatabaseInfo(JdbcIntermediateFacade facade) {
+    JdbcIntermediateSession session = facade.openSession();
+    try {
+      Connection connection = session.getConnection();
+      try {
+        return obtainDatabaseInfo(connection);
+      }
+      catch (SQLException e) {
+        throw session.recognizeException(e);
+      }
+    }
+    finally {
+      session.close();
+    }
   }
 
   static UnknownDatabaseInfo obtainDatabaseInfo(Connection connection) throws SQLException {
@@ -25,9 +36,18 @@ public class UnknownDatabaseInfoHelper {
 
   private static UnknownDatabaseInfo obtainDatabaseInfo(@NotNull String rdbmsName) {
     UnknownDatabaseInfo info = new UnknownDatabaseInfo();
-    info.isOracle = rdbmsName.contains("ORACLE");
-    info.isDB2 = rdbmsName.startsWith("DB2");
-    info.fromSingleRowTable = info.isOracle ? " from dual" : info.isDB2 ? " from sysibm.sysdummy1" : "";
+
+    info.isOracle = rdbmsName.startsWith("Oracle");
+    info.isDB2    = rdbmsName.startsWith("DB2");
+    info.isHsql   = rdbmsName.startsWith("HSQL");
+    info.isDerby  = rdbmsName.contains("Derby");
+
+    info.fromSingleRowTable =
+        info.isOracle               ? " from dual" :
+        info.isDB2 || info.isDerby  ? " from sysibm.sysdummy1" :
+        info.isHsql                 ? " from information_schema.schemata limit 1" :
+        "";
+
     return info;
   }
 

@@ -16,6 +16,7 @@ import java.util.Properties;
 /**
  * @author Leonid Bushuev
  **/
+@SuppressWarnings("SpellCheckingInspection")
 public class UnknownDatabaseIntermediateFacade extends JdbcIntermediateFacade {
 
   @Nullable
@@ -38,38 +39,35 @@ public class UnknownDatabaseIntermediateFacade extends JdbcIntermediateFacade {
   @Override
   public synchronized void connect() {
     super.connect();
-    myUnknownInfo = UnknownDatabaseInfoHelper.obtainDatabaseInfo(getConnectionInfo());
+    if (myUnknownInfo == null)
+      myUnknownInfo = UnknownDatabaseInfoHelper.obtainDatabaseInfo(this);
   }
 
 
   @Override
   public ConnectionInfo getConnectionInfo() {
-    ConnectionInfo info = super.getConnectionInfo();
-    if (info.rdbmsName.startsWith("DB2")) {
-      info = hackDB2ConnectionInfo(info);
+    //if (myUnknownInfo == null)
+    //  myUnknownInfo = UnknownDatabaseInfoHelper.obtainDatabaseInfo(this);
+    assert myUnknownInfo != null;
+
+    String query = null;
+    if (myUnknownInfo.isDB2) query = CONNECTION_INFO_DB2_QUERY;
+    if (myUnknownInfo.isHsql) query = CONNECTION_INFO_HSQL_QUERY;
+
+    if (query != null) {
+      return getConnectionInfoSmartly(query, SIMPLE_VERSION_PATTERN, 1, SIMPLE_VERSION_PATTERN, 1);
     }
-    return info;
+    else {
+      return super.getConnectionInfo();
+    }
   }
 
-  @NotNull
-  private ConnectionInfo hackDB2ConnectionInfo(ConnectionInfo info) {
-    String query = "select rtrim(current_server), rtrim(current schema), rtrim(current_user) from sysibm.sysdummy1";
-    String[] env = queryStrings(query, 3);
-    info = new ConnectionInfo(info.rdbmsName, env[0], env[1], env[2], info.serverVersion, info.driverVersion);
-    return info;
-  }
+  private static final String CONNECTION_INFO_DB2_QUERY =
+      "select rtrim(current_server), rtrim(current schema), rtrim(current_user) from sysibm.sysdummy1";
 
-  private String[] queryStrings(final String query, final int columnCount) {
-    String[] env;
-    JdbcIntermediateSession session = openSession();
-    try {
-      env = session.queryOneRow(query, columnCount, String.class);
-    }
-    finally {
-      session.close();
-    }
-    return env;
-  }
+  private static final String CONNECTION_INFO_HSQL_QUERY =
+      "select database(), current_schema, current_user from information_schema.schemata limit 1";
+
 
 
   @NotNull

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class UnknownDBTestHelper extends BaseTestHelper<DBFacade> {
 
   private boolean initialized;
-  private boolean isOracle, isDB2;
+  private boolean isOracle, isDB2, isHsql, isDerby;
 
   private String fromSingleRowTable = "";
 
@@ -33,9 +33,15 @@ public class UnknownDBTestHelper extends BaseTestHelper<DBFacade> {
 
   private void initVariables() {
     ConnectionInfo info = db.getConnectionInfo();
-    isOracle = info.rdbmsName.contains("ORACLE");
+    isOracle = info.rdbmsName.startsWith("Oracle");
     isDB2 = info.rdbmsName.startsWith("DB2");
-    fromSingleRowTable = isOracle ? " from dual" : isDB2 ? " from sysibm.sysdummy1" : "";
+    isHsql = info.rdbmsName.startsWith("HSQL");
+    isDerby = info.rdbmsName.contains("Derby");
+    fromSingleRowTable =
+        isOracle          ? " from dual" :
+        isDB2 || isDerby  ? " from sysibm.sysdummy1" :
+        isHsql            ? " from information_schema.schemata limit 1" :
+        "";
     initialized = true;
   }
 
