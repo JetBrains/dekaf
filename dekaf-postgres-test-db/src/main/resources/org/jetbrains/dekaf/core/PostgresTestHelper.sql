@@ -22,6 +22,17 @@ where table_catalog = current_database()
   and lower(table_name) in (lower(?),lower(?),lower(?),lower(?))
 ;
 
+---- ZapExtensionsMetaQuery ----
+with N as ( select min(oid) as n_id
+            from pg_catalog.pg_namespace
+            where nspname = current_schema
+            limit 1 )
+--
+select 'drop extension ' || E.extname || ' cascade' as cmd,
+       null as ord
+from pg_catalog.pg_extension E
+where E.extnamespace = (select n_id from N)
+;
 
 ---- ZapSchemaMetaQuery ----
 with N as ( select min(oid) as n_id

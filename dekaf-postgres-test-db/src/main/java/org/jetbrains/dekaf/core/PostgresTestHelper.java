@@ -31,4 +31,9 @@ public class PostgresTestHelper extends BaseTestHelper<DBFacade> {
     performCommand(scriptum, "X1000000");
   }
 
+  @Override
+  protected void zapSchemaInternally(final ConnectionInfo connectionInfo) {
+    performMetaQueryCommands(scriptum, "ZapExtensionsMetaQuery");
+    performMetaQueryCommands(scriptum, "ZapSchemaMetaQuery");
+  }
 }
