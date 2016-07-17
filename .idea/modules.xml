@@ -17,9 +17,6 @@
       <module fileurl="file://$PROJECT_DIR$/dekaf-oracle/dekaf-oracle.iml" filepath="$PROJECT_DIR$/dekaf-oracle/dekaf-oracle.iml" group="02 Oracle" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-oracle-test-db/dekaf-oracle-test-db.iml" filepath="$PROJECT_DIR$/dekaf-oracle-test-db/dekaf-oracle-test-db.iml" group="02 Oracle" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-oracle-tests/dekaf-oracle-tests.iml" filepath="$PROJECT_DIR$/dekaf-oracle-tests/dekaf-oracle-tests.iml" group="02 Oracle" />
-      <module fileurl="file://$PROJECT_DIR$/dekaf-postgres/dekaf-postgre.iml" filepath="$PROJECT_DIR$/dekaf-postgres/dekaf-postgre.iml" group="01 Postgre" />
-      <module fileurl="file://$PROJECT_DIR$/dekaf-postgres-test-db/dekaf-postgre-test-db.iml" filepath="$PROJECT_DIR$/dekaf-postgres-test-db/dekaf-postgre-test-db.iml" group="01 Postgre" />
-      <module fileurl="file://$PROJECT_DIR$/dekaf-postgres-tests/dekaf-postgre-tests.iml" filepath="$PROJECT_DIR$/dekaf-postgres-tests/dekaf-postgre-tests.iml" group="01 Postgre" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-postgres/dekaf-postgres.iml" filepath="$PROJECT_DIR$/dekaf-postgres/dekaf-postgres.iml" group="01 Postgres" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-postgres-test-db/dekaf-postgres-test-db.iml" filepath="$PROJECT_DIR$/dekaf-postgres-test-db/dekaf-postgres-test-db.iml" group="01 Postgres" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-postgres-tests/dekaf-postgres-tests.iml" filepath="$PROJECT_DIR$/dekaf-postgres-tests/dekaf-postgres-tests.iml" group="01 Postgres" />
