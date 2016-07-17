@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.Rdbms;
 import org.jetbrains.dekaf.core.ConnectionInfo;
+import org.jetbrains.dekaf.exceptions.DBException;
 import org.jetbrains.dekaf.intermediate.DBExceptionRecognizer;
 import org.jetbrains.dekaf.intermediate.IntegralIntermediateFacade;
 import org.jetbrains.dekaf.jdbc.pooling.ConnectionPool;
@@ -127,13 +128,31 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
     return myPool.isReady();
   }
 
+  @NotNull
   @Override
   public ConnectionInfo getConnectionInfo() {
-    return getConnectionInfoFromJdbc();
+    ConnectionInfo info = null;
+    try {
+      info = obtainConnectionInfoNatively();
+    }
+    catch (DBException e) {
+      // TODO log the exception if in debug mode
+    }
+
+    if (info == null) {
+      info = obtainConnectionInfoFromJdbc();
+    }
+
+    return info;
+  }
+
+  @Nullable
+  protected ConnectionInfo obtainConnectionInfoNatively() {
+    return null; // inheritors should override this method
   }
 
   @NotNull
-  private ConnectionInfo getConnectionInfoFromJdbc() {
+  protected ConnectionInfo obtainConnectionInfoFromJdbc() {
     try {
       Connection connection = myPool.borrow();
       try {

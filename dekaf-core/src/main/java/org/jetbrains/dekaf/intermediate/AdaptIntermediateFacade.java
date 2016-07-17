@@ -43,6 +43,7 @@ public class AdaptIntermediateFacade implements IntegralIntermediateFacade {
   @Override
   public boolean isConnected() {return myRemoteFacade.isConnected();}
 
+  @NotNull
   @Override
   public ConnectionInfo getConnectionInfo() {return myRemoteFacade.getConnectionInfo();}
 

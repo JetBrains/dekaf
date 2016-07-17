@@ -52,7 +52,7 @@ public class SybaseIntermediateFacade extends JdbcIntermediateFacade {
 
 
   @Override
-  public ConnectionInfo getConnectionInfo() {
+  public ConnectionInfo obtainConnectionInfoNatively() {
     String[] env;
     String rdbmsName, driverVersionStr;
 

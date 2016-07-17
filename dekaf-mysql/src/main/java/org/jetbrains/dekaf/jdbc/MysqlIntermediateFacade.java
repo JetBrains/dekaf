@@ -49,7 +49,7 @@ public class MysqlIntermediateFacade extends JdbcIntermediateFacade {
   }
 
   @Override
-  public ConnectionInfo getConnectionInfo() {
+  public ConnectionInfo obtainConnectionInfoNatively() {
     return getConnectionInfoSmartly(CONNECTION_INFO_QUERY,
                                     SIMPLE_VERSION_PATTERN, 1,
                                     SIMPLE_VERSION_PATTERN, 1);

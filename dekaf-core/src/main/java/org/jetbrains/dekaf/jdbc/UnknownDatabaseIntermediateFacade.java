@@ -45,7 +45,7 @@ public class UnknownDatabaseIntermediateFacade extends JdbcIntermediateFacade {
 
 
   @Override
-  public ConnectionInfo getConnectionInfo() {
+  public ConnectionInfo obtainConnectionInfoNatively() {
     //if (myUnknownInfo == null)
     //  myUnknownInfo = UnknownDatabaseInfoHelper.obtainDatabaseInfo(this);
     assert myUnknownInfo != null;
@@ -58,7 +58,7 @@ public class UnknownDatabaseIntermediateFacade extends JdbcIntermediateFacade {
       return getConnectionInfoSmartly(query, SIMPLE_VERSION_PATTERN, 1, SIMPLE_VERSION_PATTERN, 1);
     }
     else {
-      return super.getConnectionInfo();
+      return super.obtainConnectionInfoNatively();
     }
   }
 

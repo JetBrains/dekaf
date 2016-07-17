@@ -67,6 +67,7 @@ public interface PrimeIntermediateFacade extends ImplementationAccessibleService
    * @return a brief connection info.
    * @throws IllegalStateException the facade is not connected.
    */
+  @NotNull
   ConnectionInfo getConnectionInfo();
 
 
