@@ -64,21 +64,25 @@
       <param name="nr" value="1"/>
       <param name="infix" value=""/>
       <param name="suffix" value=""/>
+      <param name="excludeJars" value="*-test-*"/>
     </antcall>
     <antcall target="combine-jar">
       <param name="nr" value="2"/>
       <param name="infix" value=""/>
       <param name="suffix" value="-sources"/>
+      <param name="excludeJars" value="*-test-*"/>
     </antcall>
     <antcall target="combine-jar">
       <param name="nr" value="3"/>
       <param name="infix" value="test-db-"/>
       <param name="suffix" value=""/>
+      <param name="excludeJars" value="Z"/>
     </antcall>
     <antcall target="combine-jar">
       <param name="nr" value="4"/>
       <param name="infix" value="test-db-"/>
       <param name="suffix" value="-sources"/>
+      <param name="excludeJars" value="Z"/>
     </antcall>
 
     <zip basedir="temp/combined-jars" destfile="dist/dekaf-single.zip" compress="false"/>
@@ -95,6 +99,7 @@
       <fileset dir="bin">
         <include name="dekaf-*-${infix}${ver}${suffix}.jar"/>
         <exclude name="dekaf-single*"/>
+        <exclude name="${excludeJars}"/>
       </fileset>
       <patternset>
         <exclude name="META-INF/services/*"/>
