@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Properties;
 
 import static org.jetbrains.dekaf.util.Objects.castTo;
@@ -21,6 +23,8 @@ import static org.jetbrains.dekaf.util.Objects.castTo;
  * @author Leonid Bushuev from JetBrains
  */
 public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermediateRdbmsProvider {
+
+  private static Collection<Driver> myPreferredDrivers = Collections.emptySet();
 
 
   /**
@@ -66,6 +70,12 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
 
 
   protected Driver getDriver(@NotNull final String connectionString) {
+    Driver driver = JdbcDrivers.findPreferredDriverFor(connectionString);
+    if (driver == null) driver = getDriverFromJavaDriverManager(connectionString);
+    return driver;
+  }
+
+  private Driver getDriverFromJavaDriverManager(final @NotNull String connectionString) {
     tryToLoadDriverIfNeeded();
     try {
       return DriverManager.getDriver(connectionString);

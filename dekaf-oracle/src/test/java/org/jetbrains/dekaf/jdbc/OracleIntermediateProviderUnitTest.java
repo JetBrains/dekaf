@@ -40,7 +40,7 @@ public class OracleIntermediateProviderUnitTest {
   @Test
   public void provider_is_registered() {
     final Collection<IntegralIntermediateRdbmsProvider> providers =
-            Providers.loadAllProviders(IntegralIntermediateRdbmsProvider.class);
+            Providers.loadAllProviders(IntegralIntermediateRdbmsProvider.class, null);
     assertThat(providers).extracting("class").contains(OracleIntermediateProvider.class);
   }
 

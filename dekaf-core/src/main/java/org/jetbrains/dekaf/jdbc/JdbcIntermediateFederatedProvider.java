@@ -61,7 +61,7 @@ public final class JdbcIntermediateFederatedProvider
   public JdbcIntermediateFederatedProvider() {
     // register existent RDBMS providers
     final Collection<IntegralIntermediateRdbmsProvider> rdbmsProviders =
-            Providers.loadAllProviders(IntegralIntermediateRdbmsProvider.class);
+            Providers.loadAllProviders(IntegralIntermediateRdbmsProvider.class, null);
     for (IntegralIntermediateRdbmsProvider rdbmsProvider : rdbmsProviders) {
       registerProvider(rdbmsProvider);
     }

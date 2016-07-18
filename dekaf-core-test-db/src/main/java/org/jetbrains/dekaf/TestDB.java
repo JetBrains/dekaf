@@ -67,7 +67,7 @@ public abstract class TestDB {
 
   @NotNull
   private static DBTestHelper prepareTH(@NotNull final DBFacade db) {
-    Collection<DBTestHelperFactory> helperFactories = Providers.loadAllProviders(DBTestHelperFactory.class);
+    Collection<DBTestHelperFactory> helperFactories = Providers.loadAllProviders(DBTestHelperFactory.class, null);
     for (DBTestHelperFactory helperFactory : helperFactories) {
       if (helperFactory.supportRdbms().contains(db.rdbms())) {
         return helperFactory.createTestHelperFor(db);

@@ -101,7 +101,10 @@
       </patternset>
     </unjar>
 
-    <jar basedir="temp/content-${nr}" destfile="temp/combined-jars/dekaf-single-${infix}${ver}${suffix}.jar"/>
+    <jar basedir="temp/content-${nr}"
+         destfile="temp/combined-jars/dekaf-single-${infix}${ver}${suffix}.jar"
+         manifest="temp/content-${nr}/META-INF/MANIFEST.MF"
+    />
   </target>
 
 

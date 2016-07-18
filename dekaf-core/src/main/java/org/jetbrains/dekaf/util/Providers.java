@@ -1,6 +1,7 @@
 package org.jetbrains.dekaf.util;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -45,9 +46,14 @@ public abstract class Providers {
   }
 
 
-  public static <P> Collection<P> loadAllProviders(@NotNull final Class<P> serviceClass) {
+  public static <P> Collection<P> loadAllProviders(@NotNull final Class<P> serviceClass,
+                                                   @Nullable final ClassLoader classLoader) {
+    final ClassLoader theClassLoader =
+        classLoader != null
+          ? classLoader
+          : Thread.currentThread().getContextClassLoader();
     final Iterator providersIterator =
-            sun.misc.Service.providers(serviceClass);
+            sun.misc.Service.providers(serviceClass, theClassLoader);
 
     Collection<P> providers = new LinkedList<P>();
     while (providersIterator.hasNext()) {

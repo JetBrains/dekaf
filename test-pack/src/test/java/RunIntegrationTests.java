@@ -63,7 +63,7 @@ public class RunIntegrationTests {
     String connectionString = TestEnvironment.obtainConnectionString();
 
     final Collection<IntegralIntermediateRdbmsProvider> providers =
-        Providers.loadAllProviders(IntegralIntermediateRdbmsProvider.class);
+        Providers.loadAllProviders(IntegralIntermediateRdbmsProvider.class, null);
 
     byte specificity = Byte.MAX_VALUE;
     IntegralIntermediateRdbmsProvider provider = null;
