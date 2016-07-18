@@ -8,7 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.atomic.AtomicReference;
+
+import static java.util.Collections.emptySet;
 
 
 
@@ -21,14 +22,22 @@ public final class JdbcDrivers {
 
   ////// STATE \\\\\\
 
+  private static final Object syncObject = new Object();
+
   @NotNull
-  private static final AtomicReference<Collection<Driver>> ourPreferredDrivers;
+  private static ClassLoader ourDriversClassLoader;
+
+  @NotNull
+  private static Collection<Driver> ourPreferredDrivers;
 
 
   ////// INITIALIZATION \\\\\\
 
   static {
-    ourPreferredDrivers = new AtomicReference<Collection<Driver>>(Collections.<Driver>emptySet());
+    synchronized (syncObject) {
+      ourDriversClassLoader = Thread.currentThread().getContextClassLoader();
+      ourPreferredDrivers = emptySet();
+    }
   }
 
   private JdbcDrivers() {}
@@ -36,22 +45,44 @@ public final class JdbcDrivers {
 
   ////// SET-UP \\\\\\
 
-  public static void setPreferredDrivers(@Nullable final Collection<Driver> drivers) {
-    if (drivers != null && !drivers.isEmpty()) {
-      Collection<Driver> newDrivers = Collections.unmodifiableList(new ArrayList<Driver>(drivers));
-      ourPreferredDrivers.set(newDrivers);
-    }
-    else {
-      ourPreferredDrivers.set(Collections.<Driver>emptySet());
+
+
+  public static void setPreferredDrivers(@Nullable final ClassLoader classLoader,
+                                         @Nullable final Collection<Driver> drivers) {
+    synchronized (syncObject) {
+      // class loader
+      if (classLoader != null) {
+        ourDriversClassLoader = classLoader;
+      }
+      else {
+        ourDriversClassLoader = Thread.currentThread().getContextClassLoader();
+      }
+      // drivers
+      if (drivers != null && !drivers.isEmpty()) {
+        ourPreferredDrivers = Collections.unmodifiableList(new ArrayList<Driver>(drivers));
+      }
+      else {
+        ourPreferredDrivers = emptySet();
+      }
     }
   }
 
 
   ////// USING \\\\\\
 
+
+  @NotNull
+  public static ClassLoader getDriversClassLoader() {
+    synchronized (syncObject) {
+      return ourDriversClassLoader;
+    }
+  }
+
   @NotNull
   public static Collection<Driver> getPreferredDrivers() {
-    return ourPreferredDrivers.get();
+    synchronized (syncObject) {
+      return ourPreferredDrivers;
+    }
   }
 
   @Nullable

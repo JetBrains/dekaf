@@ -11,8 +11,6 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Properties;
 
 import static org.jetbrains.dekaf.util.Objects.castTo;
@@ -23,9 +21,6 @@ import static org.jetbrains.dekaf.util.Objects.castTo;
  * @author Leonid Bushuev from JetBrains
  */
 public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermediateRdbmsProvider {
-
-  private static Collection<Driver> myPreferredDrivers = Collections.emptySet();
-
 
   /**
    * Unfortunately, JDBC framework doesn't provide constant for this strange text 8-/
@@ -130,10 +125,10 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
 
 
   protected Class<Driver> getSimpleAccessibleDriverClass(@NotNull final String driverClassName) {
-    Class<Driver> driverClass;
     try {
+      final ClassLoader driversClassLoader = JdbcDrivers.getDriversClassLoader();
       //noinspection unchecked
-      return (Class<Driver>) Class.forName(driverClassName);
+      return (Class<Driver>) Class.forName(driverClassName, true, driversClassLoader);
     }
     catch (ClassNotFoundException e) {
       return null;

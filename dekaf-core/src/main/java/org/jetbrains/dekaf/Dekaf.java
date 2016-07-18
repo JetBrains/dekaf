@@ -141,6 +141,8 @@ public final class Dekaf {
   }
 
   private void loadDrivers() {
+    if (myJarNamesToLoad.isEmpty()) return;
+
     final Collection<Driver> loadedDrivers = Providers.loadAllProviders(Driver.class, myDriversClassLoader);
     ArrayList<Driver> drivers = new ArrayList<Driver>(loadedDrivers.size());
     for (Driver driver : loadedDrivers) {
@@ -156,9 +158,7 @@ public final class Dekaf {
       }
     }
 
-    if (!loadedDrivers.isEmpty()) {
-      JdbcDrivers.setPreferredDrivers(drivers);
-    }
+    JdbcDrivers.setPreferredDrivers(myDriversClassLoader, drivers);
   }
 
   private void connect() {
