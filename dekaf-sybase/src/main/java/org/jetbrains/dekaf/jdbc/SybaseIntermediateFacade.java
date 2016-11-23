@@ -81,8 +81,9 @@ public class SybaseIntermediateFacade extends JdbcIntermediateFacade {
 
     if (env != null) {
       assert env.length == 4;
+      String serverVersionStr = env[3];
       Version serverVersion =
-          extractVersion(env[3], SYBASE_ASE_VERSION_PATTERN, 1);
+          extractVersion(serverVersionStr, SYBASE_ASE_VERSION_PATTERN, 1);
       return new ConnectionInfo(rdbmsName, env[0], env[1], env[2], serverVersion, driverVersion);
     }
     else {
@@ -95,6 +96,6 @@ public class SybaseIntermediateFacade extends JdbcIntermediateFacade {
       "select db_name(), user_name(), suser_name(), @@version";
 
   static final Pattern SYBASE_ASE_VERSION_PATTERN =
-      Pattern.compile("/(\\d{1,2}(\\.\\d{1,3}){2,5})/");
+      Pattern.compile("/(\\d{2}(\\.\\d{1,3}){1,5})/");
 
 }
