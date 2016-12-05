@@ -70,8 +70,12 @@ begin
            2 as ord, 0 as rnum
       from sys.user_types
     union all
+    select 'drop cluster "'||cluster_name||'"' as cmd,
+           3 as ord, 0 as rnum
+      from sys.user_clusters
+    union all
     select 'drop table "'||object_name||'" cascade constraints' as cmd,
-           3 as ord, object_id as rnum
+           4 as ord, object_id as rnum
       from sys.user_objects
       where object_type = 'TABLE'
         and object_name not like 'BIN$%$_'
@@ -79,19 +83,19 @@ begin
         and object_name not in (select mview_name from sys.user_mviews)
     union all
     select 'drop materialized view "'||mview_name||'"' as cmd,
-           4 as ord, rnum
+           5 as ord, rnum
       from sys.user_mviews
         natural join
         (select object_name as view_name, object_id as rnum from sys.user_objects where object_type = 'MATERIALIZED VIEW')
     union all
     select 'drop view "'||view_name||'"' as cmd,
-           5 as ord, rnum
+           6 as ord, rnum
       from sys.user_views
         natural join
         (select object_name as view_name, object_id as rnum from sys.user_objects where object_type = 'VIEW')
     union all
     select 'drop '||object_type||' '||object_name as cmd,
-           6 as ord, object_id as rnum
+           7 as ord, object_id as rnum
        from sys.user_objects
        where object_type in ('FUNCTION','PROCEDURE','PACKAGE','OPERATOR')
     union all

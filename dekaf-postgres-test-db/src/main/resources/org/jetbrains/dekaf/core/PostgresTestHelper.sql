@@ -13,13 +13,21 @@ from generate_series(1,1000000)
 
 
 ---- EnsureNoTableOrViewMetaQuery ----
-select case when table_type like 'VIEW' then 'drop view if exists ' || table_name
-            when table_type like '%TABLE' then 'drop table if exists ' || table_name || ' cascade'
-            else null end as cmd
-from information_schema.tables
-where table_catalog = current_database()
-  and table_schema = current_schema()
-  and lower(table_name) in (lower(?),lower(?),lower(?),lower(?))
+with N as ( select min(oid) as n_id
+            from pg_catalog.pg_namespace
+            where nspname = current_schema
+            limit 1 )
+select 'drop ' || what || ' if exists ' || quote_ident(relname) || ' cascade' as cmd,
+       C.oid::varchar::bigint as ord
+from pg_catalog.pg_class C
+     natural join
+     (values ('S'::"char", 'sequence'),
+             ('r'::"char", 'table'),
+             ('v'::"char", 'view'),
+             ('m'::"char", 'materialized view')
+      ) as CX(relkind, what)
+where relnamespace = (select n_id from N)
+  and lower(relname) in (lower(?),lower(?),lower(?),lower(?))
 ;
 
 ---- ZapExtensionsMetaQuery ----
@@ -40,7 +48,7 @@ with N as ( select min(oid) as n_id
             where nspname = current_schema
             limit 1 )
 --
-select 'drop ' || what || ' if exists ' || typname || ' cascade' as cmd,
+select 'drop ' || what || ' if exists ' || quote_ident(typname) || ' cascade' as cmd,
        T.oid::varchar::bigint as ord
 from pg_catalog.pg_type T
      natural join
@@ -49,7 +57,7 @@ where typnamespace = (select n_id from N)
 --
 union all
 --
-select 'drop type if exists ' || ST.typname || ' cascade' as cmd,
+select 'drop type if exists ' || quote_ident(ST.typname) || ' cascade' as cmd,
        ST.oid::varchar::bigint as ord
 from pg_catalog.pg_type ST,
      pg_catalog.pg_class SC
@@ -59,7 +67,7 @@ where ST.typnamespace = (select n_id from N)
 --
 union all
 --
-select 'drop ' || what || ' if exists ' || relname || ' cascade' as cmd,
+select 'drop ' || what || ' if exists ' || quote_ident(relname) || ' cascade' as cmd,
        C.oid::varchar::bigint as ord
 from pg_catalog.pg_class C
      natural join
@@ -72,7 +80,8 @@ where relnamespace = (select n_id from N)
 --
 union all
 --
-select 'drop function if exists ' || proname || '(' || oidvectortypes(proargtypes)::varchar || ') cascade' as cmd,
+select 'drop ' || case when proisagg then 'aggregate' else 'function' end
+               || ' if exists ' || quote_ident(proname) || '(' || oidvectortypes(proargtypes)::varchar || ') cascade' as cmd,
        oid::varchar::bigint as ord
 from pg_catalog.pg_proc
 where pronamespace = (select n_id from N)

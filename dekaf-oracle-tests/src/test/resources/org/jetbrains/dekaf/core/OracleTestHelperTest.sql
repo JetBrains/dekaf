@@ -36,3 +36,93 @@ create materialized view X_Order_Stat
     group by City_Id
 /
 
+
+---- CreateIndexedCluster ----
+
+create cluster project_data
+(
+    tm_id number(6),
+    pro_id number(6)
+)
+    size 256
+/
+
+create index project_data_i
+    on cluster project_data
+/
+
+create table project
+(
+    tm_id number(6),
+    pro_id number(6),
+    pro_name varchar(60),
+    primary key (tm_id,pro_id)
+)
+    cluster project_data(tm_id,pro_id)
+/
+
+create table project_property
+(
+    tm_id number(6),
+    pro_id number(6),
+    prop_code varchar(26),
+    prop_name varchar(60),
+    prop_value varchar(60),
+    primary key (tm_id,pro_id,prop_code)
+)
+    cluster project_data(tm_id,pro_id)
+/
+
+insert into project
+       values (111111, 222222, 'Y')
+/
+
+insert into project_property
+       values (111111, 222222, 'X', 'Y', 'Z')
+/
+
+commit
+/
+
+
+---- CreateHashCluster ----
+
+create cluster dump
+(
+    x number(9),
+    y number(9)
+)
+    hash is x*13 + y*7 hashkeys 129
+/
+
+create table capping
+(
+    coord_x number(9),
+    coord_y number(9),
+    amount number(10,4),
+    primary key (coord_x,coord_y)
+)
+    cluster dump(coord_x,coord_y)
+/
+
+create table kern_rock
+(
+    coord_x number(9),
+    coord_y number(9),
+    rock_type char(1),
+    amount number(10,4),
+    primary key (coord_x,coord_y,rock_type)
+)
+    cluster dump(coord_x,coord_y)
+/
+
+insert into capping
+       values (-1, +1, 1000)
+/
+
+insert into kern_rock
+       values (-1, +1, 'F', 670)
+/
+
+commit
+/

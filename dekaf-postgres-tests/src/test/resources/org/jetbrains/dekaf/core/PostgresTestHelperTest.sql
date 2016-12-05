@@ -51,3 +51,13 @@ select city_id, count(*) as frequency
 from x_order
 group by city_id
 ;
+
+
+---- create_aggregate_1 ----
+create aggregate avg1 (float8)
+(
+    sfunc = float8_accum,
+    stype = float8[],
+    finalfunc = float8_avg,
+    initcond = '{0,0,0}'
+);

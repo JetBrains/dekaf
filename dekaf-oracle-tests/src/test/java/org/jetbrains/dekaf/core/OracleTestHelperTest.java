@@ -95,6 +95,38 @@ public class OracleTestHelperTest extends CommonIntegrationCase {
   }
 
 
+  @Test
+  public void zap_indexed_cluster() {
+    // create function and operator
+    TH.performScript(ourScriptum, "CreateIndexedCluster");
+
+    // ensure that we can detect a materialized view
+    assertThat(objectExists("PROJECT_DATA")).isTrue();
+
+    // zap it
+    TH.zapSchema();
+
+    // verify
+    assertThat(objectExists("PROJECT_DATA")).isFalse();
+  }
+
+
+  @Test
+  public void zap_hash_cluster() {
+    // create function and operator
+    TH.performScript(ourScriptum, "CreateHashCluster");
+
+    // ensure that we can detect a materialized view
+    assertThat(objectExists("DUMP")).isTrue();
+
+    // zap it
+    TH.zapSchema();
+
+    // verify
+    assertThat(objectExists("DUMP")).isFalse();
+  }
+
+
   private static boolean objectExists(@NotNull final String sequenceName) {
     assert DB != null;
 

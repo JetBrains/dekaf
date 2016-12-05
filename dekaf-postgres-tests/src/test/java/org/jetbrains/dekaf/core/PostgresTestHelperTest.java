@@ -47,6 +47,44 @@ public class PostgresTestHelperTest extends CommonIntegrationCase {
 
 
   @Test
+  public void ensure_no_table() {
+    test_ensure_no("my_table", "create table my_table (c1 char(1))");
+  }
+
+  @Test
+  public void ensure_no_mat_view_1() {
+    assumeTrue(ver.isOrGreater(9,3));
+    test_ensure_no("my_mat_view", "create materialized view my_mat_view as select 007");
+  }
+
+  @Test
+  public void ensure_no_view() {
+    test_ensure_no("my_view", "create view my_view as select 01");
+  }
+
+  @Test
+  public void ensure_no_view_mixed_case() {
+    test_ensure_no("my_VieW_Mc", "create view \"my_VieW_Mc\" as select -666");
+  }
+
+  @Test
+  public void ensure_no_view_upper_case() {
+    test_ensure_no("MY_VIEW_UC", "create view \"MY_VIEW_UC\" as select -666");
+  }
+
+  @Test
+  public void ensure_no_view_quote_1() {
+    test_ensure_no("my'view", "create view \"my'view\" as select -111");
+  }
+
+  @Test
+  public void ensure_no_view_quote_2() {
+    test_ensure_no("my\"view", "create view \"my\"\"view\" as select -111");
+  }
+
+
+
+  @Test
   public void zap_sequence() {
     test_zap_object("seq_101", Kind.CLASS, "create sequence seq_101");
   }
@@ -102,8 +140,40 @@ public class PostgresTestHelperTest extends CommonIntegrationCase {
   }
 
   @Test
+  public void zap_mater_view_1() {
+    assumeTrue(ver.isOrGreater(9,3));
+    test_zap_object("my_mat_view", Kind.CLASS, "create materialized view my_mat_view as select 007");
+  }
+
+  @Test
+  public void zap_mater_view_2() {
+    assumeTrue(ver.isOrGreater(9,3));
+    test_zap_objects("x_order,x_order_stat", Kind.CLASS, ourScriptum, "create_mater_view");
+  }
+
+  @Test
   public void zap_view() {
     test_zap_object("my_view", Kind.CLASS, "create view my_view as select 01");
+  }
+
+  @Test
+  public void zap_view_mixed_case() {
+    test_zap_object("my_VieW_Mc", Kind.CLASS, "create view \"my_VieW_Mc\" as select -666");
+  }
+
+  @Test
+  public void zap_view_upper_case() {
+    test_zap_object("MY_VIEW_UC", Kind.CLASS, "create view \"MY_VIEW_UC\" as select -666");
+  }
+
+  @Test
+  public void zap_view_quote_1() {
+    test_zap_object("my'view", Kind.CLASS, "create view \"my'view\" as select -111");
+  }
+
+  @Test
+  public void zap_view_quote_2() {
+    test_zap_object("my\"view", Kind.CLASS, "create view \"my\"\"view\" as select -111");
   }
 
   @Test
@@ -163,11 +233,25 @@ public class PostgresTestHelperTest extends CommonIntegrationCase {
   }
 
   @Test
-  public void zap_mater_view() {
-    assumeTrue(ver.isOrGreater(9,3));
-    test_zap_objects("x_order,x_order_stat", Kind.CLASS, ourScriptum, "create_mater_view");
+  public void zap_aggreagte_1() {
+    test_zap_objects("avg1", Kind.PROC, ourScriptum, "create_aggregate_1");
   }
 
+
+  private void test_ensure_no(@NotNull final String name,
+                              @NotNull final String... creationCommands) {
+    // create an object
+    TH.performScript(creationCommands);
+
+    // ensure that we can detect this kind of objects existence
+    assertThat(objectExists(name, Kind.CLASS)).isTrue();
+
+    // ensure no such table
+    TH.ensureNoTableOrView(name);
+
+    // ensure that the object is dropped
+    assertThat(objectExists(name, Kind.CLASS)).isFalse();
+  }
 
   private void test_zap_object(@NotNull final String name,
                                @NotNull final Kind kind,
