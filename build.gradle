@@ -11,12 +11,9 @@ configurations {
 }
 
 dependencies {
-    lib "com.google.guava:guava:14.0.1",
-        "com.google.guava:guava:14.0.1:sources",
-        "com.google.guava:guava:14.0.1:javadoc",
-        "com.intellij:annotations:12.0",
-        "com.intellij:annotations:12.0:sources",
-        "com.intellij:annotations:12.0:javadoc"
+    lib "org.jetbrains:annotations:15.0",
+        "org.jetbrains:annotations:15.0:sources",
+        "org.jetbrains:annotations:15.0:javadoc"
 }
 
 task getLibs(type:Copy) {
