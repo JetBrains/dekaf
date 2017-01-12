@@ -40,11 +40,11 @@ select case when type = 'view' then 'drop view if exists main.' || name
             when type = 'table' then 'drop table if exists main.' || name
             when type = 'trigger' then 'drop trigger if exists main.' || name
             else null end as cmd
-from sqlite_master
+from sqlite_master where name <> 'sqlite_sequence'
 union all
 select case when type = 'view' then 'drop view if exists temp.' || name
             when type = 'table' then 'drop table if exists temp.' || name
             when type = 'trigger' then 'drop trigger if exists temp.' || name
             else null end as cmd
-from sqlite_temp_master
+from sqlite_temp_master where name <> 'sqlite_sequence'
 ;
