@@ -37,6 +37,10 @@
     <module>dekaf-mysql-test-db</module>
     <module>dekaf-mysql-tests</module>
 
+    <module>dekaf-sqlite</module>
+    <module>dekaf-sqlite-test-db</module>
+    <module>dekaf-sqlite-tests</module>
+
     <module>dekaf-h2db</module>
     <module>dekaf-h2db-test-db</module>
     <module>dekaf-h2db-tests</module>
