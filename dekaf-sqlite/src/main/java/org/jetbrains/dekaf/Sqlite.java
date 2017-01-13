@@ -10,6 +10,6 @@ public abstract class Sqlite {
   /**
    * Sqlite RDBMS marker.
    */
-  public final static Rdbms RDBMS = Rdbms.of("Sqlite");
+  public final static Rdbms RDBMS = Rdbms.of("SQLITE");
 
 }
