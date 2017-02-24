@@ -97,10 +97,10 @@ public class OracleTestHelperTest extends CommonIntegrationCase {
 
   @Test
   public void zap_indexed_cluster() {
-    // create function and operator
+    // create a cluster
     TH.performScript(ourScriptum, "CreateIndexedCluster");
 
-    // ensure that we can detect a materialized view
+    // ensure that we can detect a cluster
     assertThat(objectExists("PROJECT_DATA")).isTrue();
 
     // zap it
@@ -113,10 +113,10 @@ public class OracleTestHelperTest extends CommonIntegrationCase {
 
   @Test
   public void zap_hash_cluster() {
-    // create function and operator
+    // create a hash cluster
     TH.performScript(ourScriptum, "CreateHashCluster");
 
-    // ensure that we can detect a materialized view
+    // ensure that we can detect a hash cluster
     assertThat(objectExists("DUMP")).isTrue();
 
     // zap it
@@ -127,7 +127,24 @@ public class OracleTestHelperTest extends CommonIntegrationCase {
   }
 
 
-  private static boolean objectExists(@NotNull final String sequenceName) {
+  @Test
+  public void zap_indextype() {
+    // create all that needs to make an INDEXTYPE and use it
+    final Scriptum theScriptum =  Scriptum.of(this.getClass(), "OracleTestHelperTest_CreateIndexType");
+    TH.performScript(theScriptum, "INDEXTYPE");
+
+    // ensure that we can detect an indextype
+    assertThat(objectExists("POSITION_INDEXTYPE")).isTrue();
+
+    // zap it
+    TH.zapSchema();
+
+    // verify
+    assertThat(objectExists("POSITION_INDEXTYPE")).isFalse();
+  }
+
+
+  private static boolean objectExists(@NotNull final String objectName) {
     assert DB != null;
 
     final String query =
@@ -137,7 +154,7 @@ public class OracleTestHelperTest extends CommonIntegrationCase {
         DB.inSession(new InSession<Boolean>() {
           @Override
           public Boolean run(@NotNull final DBSession session) {
-            return session.query(query, Layouts.existence()).withParams(sequenceName).run();
+            return session.query(query, Layouts.existence()).withParams(objectName).run();
           }
         });
     return exists != null && exists;

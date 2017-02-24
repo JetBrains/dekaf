@@ -94,12 +94,17 @@ begin
         natural join
         (select object_name as view_name, object_id as rnum from sys.user_objects where object_type = 'VIEW')
     union all
-    select 'drop '||object_type||' '||object_name as cmd,
+    select 'drop '||object_type||' "'||object_name||'"' as cmd,
            7 as ord, object_id as rnum
        from sys.user_objects
-       where object_type in ('FUNCTION','PROCEDURE','PACKAGE','OPERATOR')
+       where object_type in ('FUNCTION','PROCEDURE','PACKAGE')
     union all
-    select 'drop synonym '||object_name as cmd,
+    select 'drop '||object_type||' "'||object_name||'" force' as cmd,
+           8 as ord, object_id as rnum
+       from sys.user_objects
+       where object_type in ('OPERATOR','INDEXTYPE')
+    union all
+    select 'drop synonym "'||object_name ||'"' as cmd,
            9 as ord, object_id as rnum
        from sys.user_objects
        where object_type = 'SYNONYM'
