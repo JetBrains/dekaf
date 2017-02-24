@@ -22,6 +22,9 @@
       <module fileurl="file://$PROJECT_DIR$/dekaf-postgres-tests/dekaf-postgres-tests.iml" filepath="$PROJECT_DIR$/dekaf-postgres-tests/dekaf-postgres-tests.iml" group="01 Postgres" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-single/dekaf-single.iml" filepath="$PROJECT_DIR$/dekaf-single/dekaf-single.iml" group="70 All-containing JARs" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-single-test-db/dekaf-single-test-db.iml" filepath="$PROJECT_DIR$/dekaf-single-test-db/dekaf-single-test-db.iml" group="70 All-containing JARs" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-sqlite/dekaf-sqlite.iml" filepath="$PROJECT_DIR$/dekaf-sqlite/dekaf-sqlite.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-sqlite-test-db/dekaf-sqlite-test-db.iml" filepath="$PROJECT_DIR$/dekaf-sqlite-test-db/dekaf-sqlite-test-db.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-sqlite-tests/dekaf-sqlite-tests.iml" filepath="$PROJECT_DIR$/dekaf-sqlite-tests/dekaf-sqlite-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-sybase/dekaf-sybase.iml" filepath="$PROJECT_DIR$/dekaf-sybase/dekaf-sybase.iml" group="04 Sybase" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-sybase-test-db/dekaf-sybase-test-db.iml" filepath="$PROJECT_DIR$/dekaf-sybase-test-db/dekaf-sybase-test-db.iml" group="04 Sybase" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-sybase-tests/dekaf-sybase-tests.iml" filepath="$PROJECT_DIR$/dekaf-sybase-tests/dekaf-sybase-tests.iml" group="04 Sybase" />
