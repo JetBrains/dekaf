@@ -128,6 +128,36 @@ public class OracleTestHelperTest extends CommonIntegrationCase {
 
 
   @Test
+  public void zap_quoted_objects() {
+    // create a lot of quoted objects
+    TH.performScript(ourScriptum, "Quotation");
+
+    // ensure that we can detect these objects
+    assertThat(objectExists("The Cluster")).isTrue();
+    assertThat(objectExists("The Table")).isTrue();
+    assertThat(objectExists("The Index")).isTrue();
+    assertThat(objectExists("The Package")).isTrue();
+    assertThat(objectExists("The Object Type")).isTrue();
+    assertThat(objectExists("The Procedure")).isTrue();
+    assertThat(objectExists("The Fun")).isTrue();
+    assertThat(objectExists("The Operator")).isTrue();
+
+    // zap it
+    TH.zapSchema();
+
+    // verify
+    assertThat(objectExists("The Cluster")).isFalse();
+    assertThat(objectExists("The Table")).isFalse();
+    assertThat(objectExists("The Index")).isFalse();
+    assertThat(objectExists("The Package")).isFalse();
+    assertThat(objectExists("The Object Type")).isFalse();
+    assertThat(objectExists("The Procedure")).isFalse();
+    assertThat(objectExists("The Fun")).isFalse();
+    assertThat(objectExists("The Operator")).isFalse();
+  }
+
+
+  @Test
   public void zap_indextype() {
     // create all that needs to make an INDEXTYPE and use it
     final Scriptum theScriptum =  Scriptum.of(this.getClass(), "OracleTestHelperTest_CreateIndexType");

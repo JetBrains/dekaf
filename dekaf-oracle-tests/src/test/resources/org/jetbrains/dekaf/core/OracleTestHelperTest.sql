@@ -126,3 +126,66 @@ insert into kern_rock
 
 commit
 /
+
+
+---- Quotation ----
+
+create cluster "The Cluster"
+(
+    "Id" number(9)
+)
+    size 64
+/
+
+create table "The Table"
+(
+    "My Id"   number(9) constraint "The Primary Key" primary key,
+    "My Name" varchar(26) constraint "The Alternative Key" unique,
+    "My DOB"  date
+)
+    cluster "The Cluster" ("My Id")
+/
+
+create index "The Index"
+    on "The Table" ("My DOB")
+/
+
+create view "The View" as
+select *
+from "The Table"
+/
+
+create package "The Package" as
+    function "Fun";
+    pragma restrict_references ("Fun", rnds, wnds);
+end "The Package";
+/
+
+create package body "The Package" as
+    function "Fun" is
+    begin
+      null;
+    end;
+end "The Package";
+/
+
+create type "The Object Type" as object ("ha-ha" varchar(4))
+/
+
+create procedure "The Procedure" is
+begin
+    null;
+end;
+/
+
+create function "The Fun" (a varchar, b varchar) return number as
+begin
+    return 42;
+end;
+/
+
+create or replace operator "The Operator"
+    binding (varchar, varchar)
+    return number
+    using "The Fun"
+/
