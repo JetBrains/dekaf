@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DBA/DBA.iml" filepath="$PROJECT_DIR$/DBA/DBA.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Common/Common.iml" filepath="$PROJECT_DIR$/Common/Common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Core/Core.iml" filepath="$PROJECT_DIR$/Core/Core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Jdbc/Jdbc.iml" filepath="$PROJECT_DIR$/Jdbc/Jdbc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JunitExtension/JunitExtension.iml" filepath="$PROJECT_DIR$/JunitExtension/JunitExtension.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TestDB/TestDB.iml" filepath="$PROJECT_DIR$/TestDB/TestDB.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TestIntegration/TestIntegration.iml" filepath="$PROJECT_DIR$/TestIntegration/TestIntegration.iml" />
     </modules>
   </component>
 </project>
-
