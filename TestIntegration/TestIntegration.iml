@@ -10,7 +10,8 @@
     <orderEntry type="module" module-name="Common" />
     <orderEntry type="module" module-name="Core" />
     <orderEntry type="module" module-name="Jdbc" />
-    <orderEntry type="module" module-name="JunitExtension" />
-    <orderEntry type="module" module-name="TestDB" />
+    <orderEntry type="module" module-name="JunitExtension" scope="TEST" />
+    <orderEntry type="module" module-name="TestDB" scope="TEST" />
+    <orderEntry type="library" scope="TEST" name="testing" level="project" />
   </component>
 </module>

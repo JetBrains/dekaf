@@ -5,18 +5,56 @@ repositories {
 }
 
 configurations {
-    lib {
-
-    }
+    pro  { }
+    test { }
+    jdbc { }
 }
+
+def annotationsVersion = "15.0"
+def junitVersion       = "4.11"
+def assertJVersion     = "1.6.0"
+def mockitoVersion     = "2.0.7-beta"
+
+def h2dbVersion        = "1.4.187"
 
 dependencies {
-    lib "org.jetbrains:annotations:15.0",
-        "org.jetbrains:annotations:15.0:sources",
-        "org.jetbrains:annotations:15.0:javadoc"
+    pro "org.jetbrains:annotations:$annotationsVersion",
+        "org.jetbrains:annotations:$annotationsVersion:sources",
+        "org.jetbrains:annotations:$annotationsVersion:javadoc"
+
+    test "junit:junit:$junitVersion",
+         "junit:junit:$junitVersion:sources",
+         "junit:junit:$junitVersion:javadoc",
+         "org.assertj:assertj-core:$assertJVersion",
+         "org.assertj:assertj-core:$assertJVersion:sources",
+         "org.assertj:assertj-core:$assertJVersion:javadoc",
+         "org.mockito:mockito-core:$mockitoVersion",
+         "org.mockito:mockito-core:$mockitoVersion:sources",
+         "org.mockito:mockito-core:$mockitoVersion:javadoc"
+
+    jdbc "com.h2database:h2:$h2dbVersion",
+         "com.h2database:h2:$h2dbVersion:sources",
+         "com.h2database:h2:$h2dbVersion:javadoc"
 }
 
-task getLibs(type:Copy) {
-    from configurations.lib
-    into "lib/"
+
+task getLibsPro(type: Copy) {
+    from configurations.pro
+    into "lib/pro/"
+}
+
+task getLibsTest(type: Copy) {
+    from configurations.test - configurations.pro
+    into "lib/test/"
+}
+
+task getLibsJdbc(type: Copy) {
+    from configurations.jdbc - configurations.pro
+    into "lib/jdbc/"
+}
+
+task getLibs {
+    dependsOn << getLibsPro
+    dependsOn << getLibsTest
+    dependsOn << getLibsJdbc
 }
