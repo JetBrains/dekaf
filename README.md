@@ -7,7 +7,7 @@ Dekaf is Java framework for working with databases, primarily via JDBC.
 
 Dekaf is NOT an ORM.
 
-The currently stable version is **2.0.0.264**.
+The currently stable version is **2.0.0.274**.
 The development version is **3.0.0.X** (brunch **dekaf-3**). 
 
 

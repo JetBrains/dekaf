@@ -1,0 +1,7 @@
+org.jetbrains.dekaf.jdbc.H2dbIntermediateProvider
+org.jetbrains.dekaf.jdbc.MssqlIntermediateProvider
+org.jetbrains.dekaf.jdbc.MysqlIntermediateProvider
+org.jetbrains.dekaf.jdbc.OracleIntermediateProvider
+org.jetbrains.dekaf.jdbc.PostgresIntermediateProvider
+org.jetbrains.dekaf.jdbc.SqliteIntermediateProvider
+org.jetbrains.dekaf.jdbc.SybaseIntermediateProvider

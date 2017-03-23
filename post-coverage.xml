@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<project name="Dekaf Post-Coverage Operations" xmlns:jacoco="antlib:org.jacoco.ant">
+
+  <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+    <classpath path="tools/jacoco/lib/jacocoant.jar"/>
+  </taskdef>
+
+  <target name="process-coverage" depends="merge-it,unpack-sources,report-it"
+          description="Merge coverage and generate report"/>
+
+  <property name="coverage-total-file" value="${basedir}/coverage/total.dat"/>
+
+  <target name="merge-it">
+    <jacoco:merge destfile="${coverage-total-file}">
+      <fileset dir="${basedir}/coverage" includes="jacoco-*.dat"/>
+    </jacoco:merge>
+  </target>
+
+
+  <target name="unpack-sources">
+    <unzip dest="${basedir}/sources">
+      <fileset dir="${basedir}/bin">
+        <include name="dekaf-*-sources.jar"/>
+      </fileset>
+    </unzip>
+  </target>
+
+
+  <target name="report-it">
+    <jacoco:report>
+
+      <executiondata>
+        <file file="${coverage-total-file}"/>
+      </executiondata>
+
+      <structure name="DEKAF">
+        <classfiles>
+          <fileset dir="${basedir}/bin">
+            <include name="dekaf-*.jar"/>
+            <exclude name="*-sources.jar"/>
+          </fileset>
+        </classfiles>
+        <sourcefiles encoding="UTF-8">
+          <fileset dir="${basedir}/sources">
+            <exclude name="**/*Test"/>
+          </fileset>
+        </sourcefiles>
+      </structure>
+
+      <html destdir="${basedir}/coverage/report"/>
+
+    </jacoco:report>
+  </target>
+
+
+  <target name="ask-teamcity" description="Ask TeamCity for Coverage">
+    <echo>##teamcity[jacocoReport dataPath='coverage/total.dat' classpath='+:bin/dekaf*.jar'
+      includes='org.jetbrains.dekaf.*' excludes='*Test *Error *Exception']</echo>
+  </target>
+
+</project>

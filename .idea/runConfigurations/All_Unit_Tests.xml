@@ -1,0 +1,37 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="All Unit Tests" type="JUnit" factoryName="JUnit">
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+    <module name="test-pack" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <option name="PACKAGE_NAME" value="" />
+    <option name="MAIN_CLASS_NAME" value="UnitTests" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="class" />
+    <option name="VM_PARAMETERS" value="-ea -Djava.awt.headless=true -Duser.language=en" />
+    <option name="PARAMETERS" value="" />
+    <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
+    <option name="ENV_VARIABLES" />
+    <option name="PASS_PARENT_ENVS" value="true" />
+    <option name="TEST_SEARCH_SCOPE">
+      <value defaultName="wholeProject" />
+    </option>
+    <envs />
+    <category value="testing.categories.UnitTest" />
+    <patterns>
+      <pattern testClass="org.jetbrains.jdba.CoreUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.core1.CoreOldUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.oracle.OracleUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.microsoft.MicrosoftUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.jdbc.JdbcUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.jdbc.OracleJdbcUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.jdbc.PostgreJdbcUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.jdbc.MysqlJdbcUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.jdbc.H2dbJdbcUnitTests" />
+    </patterns>
+    <RunnerSettings RunnerId="Profile ">
+      <option name="myExternalizedOptions" value="&#13;&#10;additional-options2=onexit\=snapshot&#13;&#10;" />
+    </RunnerSettings>
+    <method />
+  </configuration>
+</component>

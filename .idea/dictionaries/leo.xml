@@ -3,6 +3,31 @@
     <words>
       <w>assertj</w>
       <w>mockito</w>
+      <w>callables</w>
+      <w>claß</w>
+      <w>consts</w>
+      <w>dedulplicate</w>
+      <w>dekaf</w>
+      <w>inno</w>
+      <w>isam</w>
+      <w>jacoco</w>
+      <w>jacocoagent</w>
+      <w>javaagent</w>
+      <w>jdba</w>
+      <w>klass</w>
+      <w>klazz</w>
+      <w>lada</w>
+      <w>mssql</w>
+      <w>passivate</w>
+      <w>plpgsql</w>
+      <w>postgre</w>
+      <w>postgresql</w>
+      <w>reinit</w>
+      <w>rewriters</w>
+      <w>sqle</w>
+      <w>struct</w>
+      <w>sudoku</w>
+      <w>unexistent</w>
     </words>
   </dictionary>
 </component>
