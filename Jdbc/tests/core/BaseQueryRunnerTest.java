@@ -88,7 +88,7 @@ public abstract class BaseQueryRunnerTest extends BaseInMemoryDBFacadeCase {
         IntAndString[] bs = tran.query(query).run();
 
         assertThat(bs).isNotNull()
-                      .hasSize(2);
+                  .hasSize(2);
         assertThat(bs[0].the_int_value).isEqualTo(11);
         assertThat(bs[0].the_string_value).isEqualTo("one");
         assertThat(bs[1].the_int_value).isEqualTo(22);
@@ -111,7 +111,7 @@ public abstract class BaseQueryRunnerTest extends BaseInMemoryDBFacadeCase {
         List<IntAndString> bs = tran.query(query).run();
 
         assertThat(bs).isNotNull()
-                      .hasSize(2);
+                  .hasSize(2);
         assertThat(bs.get(0).the_int_value).isEqualTo(11);
         assertThat(bs.get(0).the_string_value).isEqualTo("one");
         assertThat(bs.get(1).the_int_value).isEqualTo(22);
@@ -145,7 +145,7 @@ public abstract class BaseQueryRunnerTest extends BaseInMemoryDBFacadeCase {
     Tetra struct =
         queryForStruct("select 11 as A, 22 as B, 33 as C, 44 as D",
                        Tetra.class);
-    assertThat(struct).isEqualTo(new Tetra(11,22,33,44));
+    assertThat(struct).isEqualTo(new Tetra(11, 22, 33, 44));
   }
 
   @Test
@@ -153,14 +153,14 @@ public abstract class BaseQueryRunnerTest extends BaseInMemoryDBFacadeCase {
     Tetra struct =
         queryForStruct("select 33 as C, 11 as A, 44 as D, 22 as B",
                        Tetra.class);
-    assertThat(struct).isEqualTo(new Tetra(11,22,33,44));
+    assertThat(struct).isEqualTo(new Tetra(11, 22, 33, 44));
   }
 
   @Test
   public void struct_has_more_fields_than_query() {
     Tetra struct =
         queryForStruct("select 22 as B, 44 as D", Tetra.class);
-    assertThat(struct).isEqualTo(new Tetra(0,22,0,44));
+    assertThat(struct).isEqualTo(new Tetra(0, 22, 0, 44));
   }
 
   @Test
@@ -169,7 +169,7 @@ public abstract class BaseQueryRunnerTest extends BaseInMemoryDBFacadeCase {
         queryForStruct(
             "select 11 as A, 22 as B, 99 as X, 33 as C, 88 as Y, 44 as D",
             Tetra.class);
-    assertThat(struct).isEqualTo(new Tetra(11,22,33,44));
+    assertThat(struct).isEqualTo(new Tetra(11, 22, 33, 44));
   }
 
 
@@ -241,7 +241,7 @@ public abstract class BaseQueryRunnerTest extends BaseInMemoryDBFacadeCase {
         new SqlQuery<int[]>("select 11, 22, 33",
                                 rowOf(arrayOfInts()));
     int[] array = query(query);
-    assertThat(array).containsExactly(11,22,33);
+    assertThat(array).containsExactly(11, 22, 33);
   }
 
   @Test
@@ -250,7 +250,7 @@ public abstract class BaseQueryRunnerTest extends BaseInMemoryDBFacadeCase {
         new SqlQuery<long[]>("select 11, 22, 33",
                                 rowOf(arrayOfLongs()));
     long[] array = query(query);
-    assertThat(array).containsExactly(11L,22L,33L);
+    assertThat(array).containsExactly(11L, 22L, 33L);
   }
 
 

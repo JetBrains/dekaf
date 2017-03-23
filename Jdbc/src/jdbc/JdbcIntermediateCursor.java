@@ -13,6 +13,7 @@ import java.sql.SQLException;
 
 import static java.lang.Math.min;
 import static java.lang.String.format;
+import static org.jetbrains.dekaf.core.RowLayout.Kind.*;
 
 
 
@@ -122,13 +123,13 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
     final int m = metaData.getColumnCount();
 
     final JdbcValueGetter<?>[] getters;
-    if (n > 0 && rowLayout.kind != RowLayout.Kind.TUPLE && rowLayout.kind != RowLayout.Kind.STRUCT) {
+    if (n > 0 && rowLayout.kind != TUPLE && rowLayout.kind != STRUCT) {
       // array with specified components
       getters = new JdbcValueGetter[n];
 
-      if (n > m && rowLayout.kind == RowLayout.Kind.ARRAY) {
-        throw new DBPreparingException(format("Query returns too few columns: %d when expected %d (row type is %s).",
-                                              m, n, resultLayout.row.rowClass),
+      if (n > m && rowLayout.kind == ARRAY) {
+        throw new DBPreparingException(String.format("Query returns too few columns: %d when expected %d (row type is %s).",
+                                                     m, n, resultLayout.row.rowClass),
                                        statementText);
       }
 
@@ -177,7 +178,7 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
         fetcher = JdbcRowFetchers.createStructFetcher(rowLayout.rowClass, rowLayout.components);
         break;
       default:
-        throw new DBPreparingException(format("Unknown how to handle the row layout %s", rowLayout.kind.toString()),
+        throw new DBPreparingException(String.format("Unknown how to handle the row layout %s", rowLayout.kind.toString()),
                                        statementText);
     }
 
@@ -218,7 +219,7 @@ public class JdbcIntermediateCursor<R> implements IntegralIntermediateCursor<R> 
         }
         break;
       default:
-        throw new DBPreparingException(format("Unknown how to handle the result layout %s", resultLayout.kind.toString()),
+        throw new DBPreparingException(String.format("Unknown how to handle the result layout %s", resultLayout.kind.toString()),
                                        statementText);
     }
 

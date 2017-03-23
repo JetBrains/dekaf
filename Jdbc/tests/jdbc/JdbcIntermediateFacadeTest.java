@@ -101,8 +101,8 @@ public class JdbcIntermediateFacadeTest {
     DBExceptionRecognizer mockExceptionRecognizer = mock(DBExceptionRecognizer.class);
 
     when(mockDataSource.getConnection()).thenReturn(mockConnection1)
-                                        .thenReturn(mockConnection2)
-                                        .thenThrow(new RuntimeException("Too many connections"));
+           .thenReturn(mockConnection2)
+           .thenThrow(new RuntimeException("Too many connections"));
 
     // testing
     JdbcIntermediateFacade facade = new JdbcIntermediateFacade(mockDataSource, 2, mockExceptionRecognizer);

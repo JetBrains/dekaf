@@ -56,7 +56,7 @@ public class AdaptIntermediateStructCollectingCursor<T> extends AdaptIntermediat
 
     final Class<?> rowClass = resultLayout.row.rowClass;
     myResultLayout = resultLayout;
-    myRowConstructor = Classes.defaultConstructorOf(rowClass);
+    myRowConstructor = defaultConstructorOf(rowClass);
     myRowConstructor.setAccessible(true);
 
     final NameAndClass[] components = myResultLayout.row.components;
@@ -87,7 +87,7 @@ public class AdaptIntermediateStructCollectingCursor<T> extends AdaptIntermediat
 
     if (!somethingMatched) {
       String msg = String.format("The query result and the class %s have no common fields. Fields of the class: [%s].",
-                                 rowClass.getName(), Collects.arrayToString(components, ", "));
+                                 rowClass.getName(), arrayToString(components, ", "));
       throw new IllegalStateException(msg);
     }
   }
@@ -124,12 +124,12 @@ public class AdaptIntermediateStructCollectingCursor<T> extends AdaptIntermediat
 
   private void prepareContainer(final int capacity) {
     switch (myResultLayout.kind) {
-      case Kind.SINGLE_ROW:
-      case Kind.ARRAY:
-      case Kind.LIST:
+      case SINGLE_ROW:
+      case ARRAY:
+      case LIST:
         myContainer = new ArrayList(capacity);
         break;
-      case Kind.SET:
+      case SET:
         myContainer = myResultLayout.sorted
                     ? new TreeSet()
                     : new HashSet(capacity);
@@ -179,18 +179,18 @@ public class AdaptIntermediateStructCollectingCursor<T> extends AdaptIntermediat
     final T result;
 
     switch (myResultLayout.kind) {
-      case Kind.SINGLE_ROW:
+      case SINGLE_ROW:
         result = !myContainer.isEmpty() ? (T) myContainer.iterator().next() : null;
         break;
-      case Kind.ARRAY:
+      case ARRAY:
         int n = myContainer.size();
         Object[] array = (Object[]) Array.newInstance(myResultLayout.row.rowClass, n);
         result = (T) myContainer.toArray(array);
         break;
-      case Kind.LIST:
+      case LIST:
         result = (T) myContainer;
         break;
-      case Kind.SET:
+      case SET:
         result = (T) myContainer;
         break;
       default:

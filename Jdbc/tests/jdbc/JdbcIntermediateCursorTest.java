@@ -23,7 +23,7 @@ public class JdbcIntermediateCursorTest extends BaseIntermediateInMemoryDBCase {
     assertThat(cursor.isOpened()).isTrue();
     Integer v = cursor.fetch();
     assertThat(v).isNotNull()
-                 .isEqualTo(123);
+              .isEqualTo(123);
     assertThat(cursor.isOpened()).isFalse();
   }
 
@@ -36,7 +36,7 @@ public class JdbcIntermediateCursorTest extends BaseIntermediateInMemoryDBCase {
     assertThat(cursor.isOpened()).isTrue();
     Integer[] array = cursor.fetch();
     assertThat(array).isNotNull()
-                     .containsExactly(123, 456, 789);
+              .containsExactly(123, 456, 789);
     assertThat(cursor.isOpened()).isFalse();
   }
 
@@ -54,8 +54,8 @@ public class JdbcIntermediateCursorTest extends BaseIntermediateInMemoryDBCase {
     assertThat(cursor.isOpened()).isTrue();
     Integer[] array = cursor.fetch();
     assertThat(array).isNotNull()
-                     .contains(123, 456, 789)
-                     .hasSize(3);
+              .contains(123, 456, 789)
+              .hasSize(3);
     assertThat(cursor.isOpened()).isFalse();
   }
 
@@ -74,7 +74,7 @@ public class JdbcIntermediateCursorTest extends BaseIntermediateInMemoryDBCase {
     assertThat(cursor.isOpened()).isTrue();
     Integer[][] matrix = cursor.fetch();
     assertThat(matrix).isNotNull()
-                      .hasSize(3);
+              .hasSize(3);
     assertThat(matrix[0]).isNotNull().hasSize(3);
     assertThat(matrix[1]).isNotNull().hasSize(3);
     assertThat(matrix[2]).isNotNull().hasSize(3);
@@ -94,8 +94,8 @@ public class JdbcIntermediateCursorTest extends BaseIntermediateInMemoryDBCase {
     assertThat(cursor.isOpened()).isTrue();
     int[] array = cursor.fetch();
     assertThat(array).isNotNull()
-                     .contains(123, 456, 789)
-                     .hasSize(3);
+              .contains(123, 456, 789)
+              .hasSize(3);
     assertThat(cursor.isOpened()).isFalse();
   }
 
@@ -113,8 +113,8 @@ public class JdbcIntermediateCursorTest extends BaseIntermediateInMemoryDBCase {
     assertThat(cursor.isOpened()).isTrue();
     long[] array = cursor.fetch();
     assertThat(array).isNotNull()
-                     .contains(123456789000L, 456789123000L, 789123456000L)
-                     .hasSize(3);
+              .contains(123456789000L, 456789123000L, 789123456000L)
+              .hasSize(3);
     assertThat(cursor.isOpened()).isFalse();
   }
 
@@ -139,7 +139,7 @@ public class JdbcIntermediateCursorTest extends BaseIntermediateInMemoryDBCase {
     seance.close();
 
     assertThat(row).isNotNull()
-                   .hasSize(4);
+              .hasSize(4);
     assertThat(row[0]).isInstanceOf(Byte.class).isEqualTo((byte) 10);
     assertThat(row[1]).isInstanceOf(Short.class).isEqualTo((short) 1000);
     assertThat(row[2]).isInstanceOf(Integer.class).isEqualTo(1000000);
@@ -167,7 +167,7 @@ public class JdbcIntermediateCursorTest extends BaseIntermediateInMemoryDBCase {
     seance.close();
 
     assertThat(row).isNotNull()
-                   .hasSize(3);
+              .hasSize(3);
     assertThat(row[0]).isInstanceOf(Float.class).isEqualTo(3.1415f);
     assertThat(row[1]).isInstanceOf(Double.class).isEqualTo(2.718281828d);
     assertThat(row[2]).isInstanceOfAny(Float.class, Double.class);
@@ -194,7 +194,7 @@ public class JdbcIntermediateCursorTest extends BaseIntermediateInMemoryDBCase {
     seance.close();
 
     assertThat(row).isNotNull()
-                   .hasSize(2);
+              .hasSize(2);
     assertThat(row[0]).isInstanceOf(BigDecimal.class).isEqualTo(new BigDecimal("123456781234567812345678"));
     assertThat(row[1]).isInstanceOf(BigDecimal.class).isEqualTo(new BigDecimal("123456789012345678901234567890.666666"));
   }
@@ -215,9 +215,9 @@ public class JdbcIntermediateCursorTest extends BaseIntermediateInMemoryDBCase {
     Map<Integer, Long> map = cursor.fetch();
 
     assertThat(map).containsEntry(11, 10000001L)
-                   .containsEntry(22, 20000002L)
-                   .containsEntry(33, 30000003L)
-                   .hasSize(3);
+              .containsEntry(22, 20000002L)
+              .containsEntry(33, 30000003L)
+              .hasSize(3);
   }
 
 

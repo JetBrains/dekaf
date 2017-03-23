@@ -29,7 +29,7 @@ public class AdaptIntermediateRdbmsProviderTest extends BaseInMemoryDBCase {
 
     // try a basic scenario
     IntegralIntermediateFacade facade =
-            provider.openFacade(BaseInMemoryDBCase.H2_CONNECTION_STRING, null, 1);
+            provider.openFacade(H2_CONNECTION_STRING, null, 1);
     facade.connect();
     IntegralIntermediateSession session =
             facade.openSession();
@@ -54,7 +54,7 @@ public class AdaptIntermediateRdbmsProviderTest extends BaseInMemoryDBCase {
 
     // try a basic scenario
     IntegralIntermediateFacade facade =
-            provider.openFacade(BaseInMemoryDBCase.H2_CONNECTION_STRING, null, 1);
+            provider.openFacade(H2_CONNECTION_STRING, null, 1);
     facade.connect();
     IntegralIntermediateSession session =
             facade.openSession();

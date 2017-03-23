@@ -1,5 +1,3 @@
-package org.jetbrains.dekaf;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.core.BaseFederatedProvider;
 import org.jetbrains.dekaf.core.ConnectionInfo;

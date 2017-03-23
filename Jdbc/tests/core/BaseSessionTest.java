@@ -1,5 +1,6 @@
 package org.jetbrains.dekaf.core;
 
+import org.assertj.core.api.Assertions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.intermediate.IntegralIntermediateSession;
 import org.jetbrains.dekaf.jdbc.JdbcIntermediateSession;
@@ -51,7 +52,7 @@ public class BaseSessionTest extends BaseInMemoryDBFacadeCase {
 
         session.command("drop table tab1").run();
 
-        assertThat(x).isEqualTo(44);
+        Assertions.assertThat(x).isEqualTo(44);
 
       }
     });
@@ -77,9 +78,9 @@ public class BaseSessionTest extends BaseInMemoryDBFacadeCase {
                        .packBy(100);
         Short[] pack = qr.run();
 
-        assertThat(pack).isNotNull()
-                        .startsWith((short) 1)
-                        .endsWith((short) 100);
+        Assertions.assertThat(pack).isNotNull()
+                  .startsWith((short) 1)
+                  .endsWith((short) 100);
 
         int packs = 0;
         while (pack != null) {
@@ -87,7 +88,7 @@ public class BaseSessionTest extends BaseInMemoryDBFacadeCase {
           pack = qr.nextPack();
         }
 
-        assertThat(packs).isEqualTo(20); // 2000 / 100 = 20
+        Assertions.assertThat(packs).isEqualTo(20); // 2000 / 100 = 20
       }
     });
 
@@ -99,15 +100,15 @@ public class BaseSessionTest extends BaseInMemoryDBFacadeCase {
   public void isInTransaction_begin_commit() {
     final DBLeasedSession session = myFacade.leaseSession();
     try {
-      assertThat(session.isInTransaction()).isFalse();
+      Assertions.assertThat(session.isInTransaction()).isFalse();
 
       session.beginTransaction();
 
-      assertThat(session.isInTransaction()).isTrue();
+      Assertions.assertThat(session.isInTransaction()).isTrue();
 
       session.commit();
 
-      assertThat(session.isInTransaction()).isFalse();
+      Assertions.assertThat(session.isInTransaction()).isFalse();
     }
     finally {
       session.close();
@@ -118,15 +119,15 @@ public class BaseSessionTest extends BaseInMemoryDBFacadeCase {
   public void isInTransaction_begin_rollback() {
     final DBLeasedSession session = myFacade.leaseSession();
     try {
-      assertThat(session.isInTransaction()).isFalse();
+      Assertions.assertThat(session.isInTransaction()).isFalse();
 
       session.beginTransaction();
 
-      assertThat(session.isInTransaction()).isTrue();
+      Assertions.assertThat(session.isInTransaction()).isTrue();
 
       session.rollback();
 
-      assertThat(session.isInTransaction()).isFalse();
+      Assertions.assertThat(session.isInTransaction()).isFalse();
     }
     finally {
       session.close();
@@ -176,7 +177,7 @@ public class BaseSessionTest extends BaseInMemoryDBFacadeCase {
             session.getSpecificService(
                 IntegralIntermediateSession.class,
                 ImplementationAccessibleService.Names.INTERMEDIATE_SERVICE);
-        assertThat(intermediateSession).isInstanceOf(JdbcIntermediateSession.class);
+        Assertions.assertThat(intermediateSession).isInstanceOf(JdbcIntermediateSession.class);
 
       }
     });
@@ -191,8 +192,8 @@ public class BaseSessionTest extends BaseInMemoryDBFacadeCase {
         java.sql.Connection connection =
             session.getSpecificService(java.sql.Connection.class,
                                        ImplementationAccessibleService.Names.JDBC_CONNECTION);
-        assertThat(connection).isNotNull()
-                              .isInstanceOf(java.sql.Connection.class);
+        Assertions.assertThat(connection).isNotNull()
+                  .isInstanceOf(java.sql.Connection.class);
 
       }
     });

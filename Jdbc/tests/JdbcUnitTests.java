@@ -1,7 +1,25 @@
 package org.jetbrains.dekaf;
 
+import org.jetbrains.dekaf.core.*;
+import org.jetbrains.dekaf.intermediate.AdaptIntermediateRdbmsProviderTest;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
+
+
 /**
- * Created by leo on 23-03-2017.
+ * @author Leonid Bushuev
  */
-public class JdbcUnitTests {
-}
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+    // Intermediate Layer
+    AdaptIntermediateRdbmsProviderTest.class,
+    // Base client functionality
+    BaseSessionTest.class,
+    BaseQueryRunnerDirectTest.class,
+    BaseQueryRunnerPseudoRemoteTest.class,
+    BaseFacadeTest.class,
+    BaseRdbmsProviderTest.class,
+    BaseFederatedProviderTest.class
+})
+public class JdbcUnitTests {}

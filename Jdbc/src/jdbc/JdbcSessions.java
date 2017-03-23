@@ -22,7 +22,7 @@ public abstract class JdbcSessions extends DBSessions {
                                      final boolean takeOwnership) {
     final JdbcIntermediateSession intermediateSession =
         rdbmsProvider.wrapConnection(connection, takeOwnership);
-    return wrap(intermediateSession);
+    return DBSessions.wrap(intermediateSession);
   }
 
 
@@ -43,7 +43,7 @@ public abstract class JdbcSessions extends DBSessions {
 
     final JdbcIntermediateSession intermediateSession =
         ((JdbcIntermediateRdbmsProvider)rdbmsProvider).wrapConnection(connection, takeOwnership);
-    return wrap(intermediateSession);
+    return DBSessions.wrap(intermediateSession);
   }
 
 

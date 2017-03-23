@@ -1,2 +1,2 @@
-*	text=auto eol=lf
-*.sql	text eol=lf
+*       text=auto eol=lf
+*.sql   text eol=lf

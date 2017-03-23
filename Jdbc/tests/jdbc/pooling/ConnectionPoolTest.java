@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.util.concurrent.Callable;
 
 import static org.assertj.core.api.BDDAssertions.then;
-import static org.jetbrains.dekaf.junitft.ThreadTestUtils.sleep;
 
 
 
@@ -154,7 +153,7 @@ public class ConnectionPoolTest {
       public Void call() throws Exception {
 
         Connection connection = pool.borrow();
-        sleep(25);
+        ThreadTestUtils.sleep(25);
         pool.release(connection);
         return null;
 
