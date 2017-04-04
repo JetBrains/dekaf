@@ -1,1 +1,8 @@
+org.jetbrains.dekaf.core.PostgresTestHelperFactory
+org.jetbrains.dekaf.core.OracleTestHelperFactory
+org.jetbrains.dekaf.core.MssqlTestHelperFactory
+org.jetbrains.dekaf.core.SybaseTestHelperFactory
+org.jetbrains.dekaf.core.MysqlTestHelperFactory
+org.jetbrains.dekaf.core.H2dbTestHelperFactory
+org.jetbrains.dekaf.core.SqliteTestHelperFactory
 org.jetbrains.dekaf.core.UnknownDBTestHelperFactory
