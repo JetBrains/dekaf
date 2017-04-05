@@ -1,13 +1,18 @@
 package org.jetbrains.dekaf.jdbc;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.intermediate.IntegralIntermediateFederatedProvider;
 import org.jetbrains.dekaf.intermediate.IntegralIntermediateRdbmsProvider;
 import org.junit.Test;
 import sun.misc.Service;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 
 
@@ -18,12 +23,10 @@ public class JdbcJarProvidersTest {
 
   @Test
   public void check_federated_provider_service_is_published() {
-    final Iterator providers = Service.providers(IntegralIntermediateFederatedProvider.class);
+    Set<IntegralIntermediateFederatedProvider> providers =
+        fetchServiceProviders(IntegralIntermediateFederatedProvider.class);
 
-    boolean ok = providers.hasNext();
-    assertThat(ok).isTrue();
-
-    Object svc = providers.next();
+    Object svc = providers.stream().findFirst().get();
 
     assertThat(svc).isInstanceOf(IntegralIntermediateFederatedProvider.class);
     assertThat(svc).isInstanceOf(JdbcIntermediateFederatedProvider.class);
@@ -31,15 +34,21 @@ public class JdbcJarProvidersTest {
 
   @Test
   public void check_unknown_database_provider_service_is_published() {
-    final Iterator providers = Service.providers(IntegralIntermediateRdbmsProvider.class);
+    Set<IntegralIntermediateRdbmsProvider> providers =
+        fetchServiceProviders(IntegralIntermediateRdbmsProvider.class);
 
-    boolean ok = providers.hasNext();
-    assertThat(ok).isTrue();
+    for (IntegralIntermediateRdbmsProvider provider : providers) {
+      if (provider instanceof UnknownDatabaseProvider) return; // found
+    }
 
-    Object svc = providers.next();
+    fail("A provider for unknown database is not found");
+  }
 
-    assertThat(svc).isInstanceOf(IntegralIntermediateRdbmsProvider.class);
-    assertThat(svc).isInstanceOf(JdbcIntermediateRdbmsProvider.class);
+  private static <S> Set<S> fetchServiceProviders(@NotNull Class<S> ifc) {
+    HashSet<S> providers = new LinkedHashSet<S>();
+    Iterator<S> it = Service.providers(ifc);
+    while (it.hasNext()) providers.add(it.next());
+    return providers;
   }
 
 }

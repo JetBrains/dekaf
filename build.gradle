@@ -16,6 +16,11 @@ def assertJVersion     = "1.6.0"
 def mockitoVersion     = "2.0.7-beta"
 
 def h2dbVersion        = "1.4.187"
+def postgresVersion    = "9.4-1201-jdbc4"
+def mysqlVersion       = "6.0.6"
+def microsoftVersion   = "6.1.5.jre8-preview"
+def jtdsVersion        = "1.2.8"
+
 
 dependencies {
     pro "org.jetbrains:annotations:$annotationsVersion",
@@ -34,7 +39,18 @@ dependencies {
 
     jdbc "com.h2database:h2:$h2dbVersion",
          "com.h2database:h2:$h2dbVersion:sources",
-         "com.h2database:h2:$h2dbVersion:javadoc"
+         "com.h2database:h2:$h2dbVersion:javadoc",
+         "org.postgresql:postgresql:$postgresVersion",
+         "org.postgresql:postgresql:$postgresVersion:sources",
+         "org.postgresql:postgresql:$postgresVersion:javadoc",
+         "mysql:mysql-connector-java:$mysqlVersion",
+         "mysql:mysql-connector-java:$mysqlVersion:sources",  // mysql driver has no javadoc
+         "com.microsoft.sqlserver:mssql-jdbc:$microsoftVersion",
+         "com.microsoft.sqlserver:mssql-jdbc:$microsoftVersion:sources",
+         "com.microsoft.sqlserver:mssql-jdbc:$microsoftVersion:javadoc",
+         "net.sourceforge.jtds:jtds:$jtdsVersion",
+         "net.sourceforge.jtds:jtds:$jtdsVersion:sources",
+         "net.sourceforge.jtds:jtds:$jtdsVersion:javadoc"
 }
 
 

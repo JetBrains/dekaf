@@ -8,7 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/Jdbc/Jdbc.iml" filepath="$PROJECT_DIR$/Jdbc/Jdbc.iml" />
       <module fileurl="file://$PROJECT_DIR$/JunitExtension/JunitExtension.iml" filepath="$PROJECT_DIR$/JunitExtension/JunitExtension.iml" />
       <module fileurl="file://$PROJECT_DIR$/TestDB/TestDB.iml" filepath="$PROJECT_DIR$/TestDB/TestDB.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Tests/TestIntegration.iml" filepath="$PROJECT_DIR$/Tests/TestIntegration.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Tests/Tests.iml" filepath="$PROJECT_DIR$/Tests/Tests.iml" />
     </modules>
   </component>
 </project>

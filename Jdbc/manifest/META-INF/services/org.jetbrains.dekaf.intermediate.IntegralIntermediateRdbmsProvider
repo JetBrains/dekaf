@@ -5,3 +5,4 @@ org.jetbrains.dekaf.jdbc.OracleIntermediateProvider
 org.jetbrains.dekaf.jdbc.PostgresIntermediateProvider
 org.jetbrains.dekaf.jdbc.SqliteIntermediateProvider
 org.jetbrains.dekaf.jdbc.SybaseIntermediateProvider
+org.jetbrains.dekaf.jdbc.UnknownDatabaseProvider
