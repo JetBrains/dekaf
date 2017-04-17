@@ -56,6 +56,7 @@ declare
   type strings is table of varchar(160);
   commands strings;
   cmd varchar(160);
+  toRecycle integer;
 begin
   --
   select cmd
@@ -65,6 +66,7 @@ begin
     select 'drop sequence "'||sequence_name||'"' as cmd,
            1 as ord, 0 as rnum
     from sys.user_sequences
+    where sequence_name not like 'ISEQ$$#_%' escape '#'
     union all
     select 'drop type "'||type_name||'" force' as cmd,
            2 as ord, 0 as rnum
@@ -79,7 +81,7 @@ begin
       from sys.user_objects
       where object_type = 'TABLE'
         and object_name not like 'BIN$%$_'
-        and object_name not like 'MLOG$\_%' escape '\'
+        and object_name not like 'MLOG$#_%' escape '#'
         and object_name not in (select mview_name from sys.user_mviews)
     union all
     select 'drop materialized view "'||mview_name||'"' as cmd,
@@ -117,6 +119,15 @@ begin
         cmd := commands(i);
         execute immediate cmd;
       end loop;
+  end if;
+  --
+  select count(1)
+    into toRecycle
+    from user_objects
+    where object_type in ('TABLE','SEQUENCE');
+  --
+  if toRecycle >= 1 then
+    execute immediate 'purge recyclebin';
   end if;
   --
 end;

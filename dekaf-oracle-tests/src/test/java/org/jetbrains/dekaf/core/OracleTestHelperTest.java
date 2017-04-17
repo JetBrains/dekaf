@@ -174,6 +174,24 @@ public class OracleTestHelperTest extends CommonIntegrationCase {
   }
 
 
+  @Test
+  public void zap_identity_column() {
+    if (DB.getConnectionInfo().serverVersion.less(12)) return;
+
+    // create a table with identity column
+    TH.performCommand("create table table_with_identity_column(col1 number(9) generated as identity)");
+
+    // ensure that we can detect a sequence
+    assertThat(objectLikeExists("ISEQ$$_%")).isTrue();
+
+    // zap it
+    TH.zapSchema();
+
+    // verify
+    assertThat(objectLikeExists("ISEQ$$_%")).isFalse();
+  }
+
+
   private static boolean objectExists(@NotNull final String objectName) {
     assert DB != null;
 
@@ -185,6 +203,23 @@ public class OracleTestHelperTest extends CommonIntegrationCase {
           @Override
           public Boolean run(@NotNull final DBSession session) {
             return session.query(query, Layouts.existence()).withParams(objectName).run();
+          }
+        });
+    return exists != null && exists;
+  }
+
+
+  private static boolean objectLikeExists(@NotNull final String objectNamePattern) {
+    assert DB != null;
+
+    final String query =
+        "select 1 from user_objects where object_name like ?";
+
+    Boolean exists =
+        DB.inSession(new InSession<Boolean>() {
+          @Override
+          public Boolean run(@NotNull final DBSession session) {
+            return session.query(query, Layouts.existence()).withParams(objectNamePattern).run();
           }
         });
     return exists != null && exists;
