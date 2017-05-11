@@ -5,8 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static org.jetbrains.dekaf.util.Objects.notNull;
-
 
 
 /**
@@ -40,7 +38,7 @@ public final class Rdbms implements Serializable {
     String theCode = code.intern();
     Rdbms newRdbms = new Rdbms(theCode);
     Rdbms oldRdbms = RdbmsMarkersCache.cache.putIfAbsent(theCode, newRdbms);
-    return notNull(oldRdbms, newRdbms);
+    return oldRdbms != null ? oldRdbms : newRdbms;
   }
 
 
@@ -100,7 +98,7 @@ class RdbmsProxy implements Serializable {
 
 abstract class RdbmsMarkersCache {
 
-  static final ConcurrentHashMap<String,Rdbms> cache = new ConcurrentHashMap<String,Rdbms>();
+  static final ConcurrentHashMap<String,Rdbms> cache = new ConcurrentHashMap<>();
 
 }
 

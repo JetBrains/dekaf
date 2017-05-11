@@ -7,7 +7,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="annotations" level="project" />
-    <orderEntry type="module" module-name="DekafAbstracts" exported="" />
+    <orderEntry type="library" name="annotations" level="project" />
   </component>
 </module>
