@@ -16,5 +16,10 @@ final class SpecificForOracle extends Specific {
         return CONNECTION_STRING_PATTERN;
     }
 
+    @Override
+    protected String getDriverClassName() {
+        return "oracle.jdbc.driver.OracleDriver";
+    }
+
 
 }

@@ -9,5 +9,7 @@ abstract class Specific {
 
     protected abstract Pattern getConnectionStringPattern();
 
+    protected abstract String getDriverClassName();
+
 
 }

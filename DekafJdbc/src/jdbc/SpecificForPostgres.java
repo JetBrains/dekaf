@@ -16,5 +16,10 @@ final class SpecificForPostgres extends Specific {
         return CONNECTION_STRING_PATTERN;
     }
 
+    @Override
+    protected String getDriverClassName() {
+        return "org.postgresql.Driver";
+    }
+
 
 }

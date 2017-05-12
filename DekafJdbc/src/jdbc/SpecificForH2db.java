@@ -16,5 +16,10 @@ final class SpecificForH2db extends Specific {
         return CONNECTION_STRING_PATTERN;
     }
 
+    @Override
+    protected String getDriverClassName() {
+        return "org.h2.Driver";
+    }
+
 
 }

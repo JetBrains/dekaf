@@ -6,6 +6,7 @@ import org.jetbrains.dekaf.Rdbms;
 import org.jetbrains.dekaf.inter.InterFacade;
 import org.jetbrains.dekaf.inter.InterProvider;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -17,19 +18,49 @@ import static org.jetbrains.dekaf.jdbc.JdbcDescriptor.DESCRIPTORS;
 
 final class JdbcProvider implements InterProvider {
 
+    ////// STATE \\\\\\
+
+    private final JdbcDriverManager driverManager = new JdbcDriverManager();
 
 
-    ////// API \\\\\\
+    ////// RDBMS \\\\\\
 
     @Override
-    public @NotNull Set<Rdbms> supportsRdbms() {
+    public @NotNull Set<Rdbms> supportedRdbms() {
         return DESCRIPTORS.keySet();
     }
 
     @Override
-    public boolean supportsConnectionString(final @NotNull String connectionString) {
+    public boolean supportedConnectionString(final @NotNull String connectionString) {
         return false;
     }
+
+
+    ////// DRIVERS \\\\\\
+
+    @Override
+    public void setDriverDirectory(final @NotNull String directory) {
+        driverManager.setDriverDirectory(directory);
+    }
+
+    @Override
+    public @NotNull String getDriverDirectory() {
+        return driverManager.getDriverDirectory();
+    }
+
+    @Override
+    public void setDriverJars(final @Nullable Collection<String> jars) {
+        driverManager.setDriverJars(jars);
+    }
+
+    @Override
+    public @Nullable Collection<String> getDriverJars() {
+        return driverManager.getDriverJars();
+    }
+
+
+
+    ////// FACADES \\\\\\
 
     @Override
     public @NotNull InterFacade createFacade(final @NotNull Rdbms rdbms) {
@@ -62,9 +93,10 @@ final class JdbcProvider implements InterProvider {
     }
 
 
-    ////// IMPLEMENTATION \\\\\\
 
 
-
+    public void shutDown() {
+        driverManager.deregisterAllDrivers();
+    }
 
 }

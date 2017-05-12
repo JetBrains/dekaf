@@ -30,6 +30,8 @@ final class JdbcFacade implements InterFacade {
     private Properties properties;
 
 
+
+
     JdbcFacade(final @Nullable JdbcProvider provider,
                final @NotNull Rdbms rdbms,
                final @NotNull Specific specific) {
