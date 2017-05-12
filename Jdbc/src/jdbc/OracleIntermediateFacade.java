@@ -7,7 +7,6 @@ import org.jetbrains.dekaf.Rdbms;
 import org.jetbrains.dekaf.core.ConnectionInfo;
 import org.jetbrains.dekaf.exceptions.OracleTimezoneRegionNotFoundException;
 import org.jetbrains.dekaf.intermediate.DBExceptionRecognizer;
-import org.jetbrains.dekaf.jdbc.pooling.SimpleDataSource;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -55,10 +54,10 @@ public class OracleIntermediateFacade extends JdbcIntermediateFacade {
       catch (OracleTimezoneRegionNotFoundException otr) {
         if (myCompatibility1882 == null) {
           final DataSource originalDataSource = myPool.getOriginalDataSource();
-          if (originalDataSource instanceof SimpleDataSource) {
+          if (originalDataSource instanceof JdbcSimpleDataSource) {
             // a workaround of a bug inside oracle JDBC driver
             // that occurs when connecting to old versions of oracle
-            SimpleDataSource sds = (SimpleDataSource) originalDataSource;
+            JdbcSimpleDataSource sds = (JdbcSimpleDataSource) originalDataSource;
             sds.setConnectionProperty("oracle.jdbc.timezoneAsRegion", "false");
             myCompatibility1882 = Boolean.TRUE;
             continue;

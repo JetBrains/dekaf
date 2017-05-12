@@ -28,11 +28,11 @@ public interface InterFacade {
 
     ////// CONNECT-DISCONNECT \\\\\\
 
-    void connect();
+    void activate();
 
-    void disconnect();
+    void deactivate();
 
-    boolean isConnected();
+    boolean isActive();
 
 
     ////// SESSIONS \\\\\\

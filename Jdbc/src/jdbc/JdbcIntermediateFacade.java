@@ -8,7 +8,6 @@ import org.jetbrains.dekaf.exceptions.DBException;
 import org.jetbrains.dekaf.intermediate.DBExceptionRecognizer;
 import org.jetbrains.dekaf.intermediate.IntegralIntermediateFacade;
 import org.jetbrains.dekaf.jdbc.pooling.ConnectionPool;
-import org.jetbrains.dekaf.jdbc.pooling.SimpleDataSource;
 import org.jetbrains.dekaf.util.Version;
 
 import javax.sql.DataSource;
@@ -70,9 +69,9 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
   private static DataSource prepareDataSource(final @NotNull String connectionString,
                                               final @Nullable Properties connectionProperties,
                                               final @NotNull Driver driver) {
-    final SimpleDataSource dataSource = new SimpleDataSource(connectionString,
-                                                             connectionProperties,
-                                                             driver);
+    final JdbcSimpleDataSource dataSource = new JdbcSimpleDataSource(connectionString,
+                                                                     connectionProperties,
+                                                                     driver);
     dataSource.setLogWriter(new PrintWriter(System.out));
     return dataSource;
   }
@@ -93,7 +92,7 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
       myPool.connect();
     }
     catch (SQLException sqle) {
-      throw  myExceptionRecognizer.recognizeException(sqle, "connect");
+      throw  myExceptionRecognizer.recognizeException(sqle, "activate");
     }
   }
 

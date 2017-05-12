@@ -120,6 +120,7 @@ final class JdbcDriverManager {
     }
 
 
+    @NotNull
     synchronized Driver getDriver(@NotNull String className) {
         Driver driver = drivers.get(className);
         if (driver == null && parentDriverManager != null) {

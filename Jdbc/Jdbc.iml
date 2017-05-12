@@ -9,6 +9,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="DekafAbstracts" />
+    <orderEntry type="module" module-name="DekafJdbc" />
     <orderEntry type="module" module-name="Common" />
     <orderEntry type="module" module-name="JunitExtension" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="testing" level="project" />

@@ -1,4 +1,4 @@
-package org.jetbrains.dekaf.jdbc.pooling;
+package org.jetbrains.dekaf.jdbc;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,10 +21,10 @@ import static java.lang.String.format;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public class SimpleDataSource implements DataSource, ImplementationAccessibleService {
+public class JdbcSimpleDataSource implements DataSource, ImplementationAccessibleService {
 
 
-  //// STATE \\\\
+  ////// STATE \\\\\\
 
   @NotNull
   private final String myConnectionString;
@@ -39,11 +39,11 @@ public class SimpleDataSource implements DataSource, ImplementationAccessibleSer
   private PrintWriter myLogWriter;
 
 
-  //// CONSTRUCTORS \\\\
+  ////// CONSTRUCTORS \\\\\\
 
-  public SimpleDataSource(@NotNull final String connectionString,
-                          @Nullable final Properties connectionProperties,
-                          @NotNull final Driver driver) {
+  public JdbcSimpleDataSource(@NotNull final String connectionString,
+                              @Nullable final Properties connectionProperties,
+                              @NotNull final Driver driver) {
     myConnectionString = connectionString;
     myConnectionProperties = cloneProperties(connectionProperties);
     myDriver = driver;
@@ -68,7 +68,7 @@ public class SimpleDataSource implements DataSource, ImplementationAccessibleSer
   }
 
 
-  //// IMPLEMENTATION \\\\
+  ////// IMPLEMENTATION \\\\\\
 
   @Override
   public Connection getConnection() throws SQLException {
@@ -77,7 +77,7 @@ public class SimpleDataSource implements DataSource, ImplementationAccessibleSer
 
   @Override
   public Connection getConnection(final String username, final String password) {
-    throw new IllegalArgumentException("SimpleDataSource.getConnection(username, password) is not supported. You can pass credentials via connection string or via connection properties.");
+    throw new IllegalArgumentException("JdbcSimpleDataSource.getConnection(username, password) is not supported. You can pass credentials via connection string or via connection properties.");
   }
 
   @Nullable
@@ -93,31 +93,31 @@ public class SimpleDataSource implements DataSource, ImplementationAccessibleSer
 
   @Override
   public void setLoginTimeout(final int seconds) {
-    // TODO implement SimpleDataSource.setLoginTimeout
-    throw new RuntimeException("The SimpleDataSource.setLoginTimeout has not been implemented yet.");
+    // TODO implement JdbcSimpleDataSource.setLoginTimeout
+    throw new RuntimeException("The JdbcSimpleDataSource.setLoginTimeout has not been implemented yet.");
   }
 
   @Override
   public int getLoginTimeout() {
-    // TODO implement SimpleDataSource.getLoginTimeout
-    throw new RuntimeException("The SimpleDataSource.getLoginTimeout has not been implemented yet.");
+    // TODO implement JdbcSimpleDataSource.getLoginTimeout
+    throw new RuntimeException("The JdbcSimpleDataSource.getLoginTimeout has not been implemented yet.");
   }
 
   @Override
   @NotNull
   public <T> T unwrap(@SuppressWarnings("SpellCheckingInspection") final Class<T> iface) {
-    if (iface.isAssignableFrom(SimpleDataSource.class)) {
+    if (iface.isAssignableFrom(JdbcSimpleDataSource.class)) {
       //noinspection unchecked
       return (T) this;
     }
     else {
-      throw new IllegalArgumentException(format("%s is not a wrapper for %s", SimpleDataSource.class.getSimpleName(), iface.getName()));
+      throw new IllegalArgumentException(format("%s is not a wrapper for %s", JdbcSimpleDataSource.class.getSimpleName(), iface.getName()));
     }
   }
 
   @Override
   public boolean isWrapperFor(@SuppressWarnings("SpellCheckingInspection") final Class<?> iface) throws SQLException {
-    return iface.isAssignableFrom(SimpleDataSource.class);
+    return iface.isAssignableFrom(JdbcSimpleDataSource.class);
   }
 
   @Nullable
@@ -133,10 +133,9 @@ public class SimpleDataSource implements DataSource, ImplementationAccessibleSer
   }
 
 
-  //// NOT-SUPPORTED STUFF \\\\
+  ////// NOT-SUPPORTED STUFF \\\\\\
 
-  @SuppressWarnings("unused") // it's needed for compilation by 1.7.
   public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-    throw new SQLFeatureNotSupportedException("The SimpleDataSource.getParentLogger is not supported by Dekaf 2.0.");
+    throw new SQLFeatureNotSupportedException("The JdbcSimpleDataSource.getParentLogger is not supported by Dekaf 2.0.");
   }
 }

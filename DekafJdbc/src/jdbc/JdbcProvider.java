@@ -6,6 +6,7 @@ import org.jetbrains.dekaf.Rdbms;
 import org.jetbrains.dekaf.inter.InterFacade;
 import org.jetbrains.dekaf.inter.InterProvider;
 
+import java.sql.Driver;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -58,6 +59,10 @@ final class JdbcProvider implements InterProvider {
         return driverManager.getDriverJars();
     }
 
+    @NotNull
+    public Driver getDriver(final @NotNull String className) {
+        return driverManager.getDriver(className);
+    }
 
 
     ////// FACADES \\\\\\
