@@ -15,7 +15,7 @@ import java.util.Properties;
 final class JdbcFacade implements InterFacade {
 
     @Nullable
-    final JdbcFactory factory;
+    final JdbcProvider provider;
 
     @NotNull
     final Rdbms rdbms;
@@ -30,10 +30,10 @@ final class JdbcFacade implements InterFacade {
     private Properties properties;
 
 
-    JdbcFacade(final @Nullable JdbcFactory factory,
+    JdbcFacade(final @Nullable JdbcProvider provider,
                final @NotNull Rdbms rdbms,
                final @NotNull Specific specific) {
-        this.factory = factory;
+        this.provider = provider;
         this.rdbms = rdbms;
         this.specific = specific;
         this.connectionString = null;

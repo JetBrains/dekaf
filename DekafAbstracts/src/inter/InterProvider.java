@@ -7,7 +7,7 @@ import java.util.Set;
 
 
 
-public interface InterFactory {
+public interface InterProvider {
 
     @NotNull
     Set<Rdbms> supportsRdbms();

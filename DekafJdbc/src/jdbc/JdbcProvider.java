@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.Rdbms;
 import org.jetbrains.dekaf.inter.InterFacade;
-import org.jetbrains.dekaf.inter.InterFactory;
+import org.jetbrains.dekaf.inter.InterProvider;
 
 import java.util.Map;
 import java.util.Set;
@@ -15,7 +15,7 @@ import static org.jetbrains.dekaf.jdbc.JdbcDescriptor.DESCRIPTORS;
 
 
 
-final class JdbcFactory implements InterFactory {
+final class JdbcProvider implements InterProvider {
 
 
 
