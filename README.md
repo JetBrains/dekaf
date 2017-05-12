@@ -8,7 +8,8 @@ Dekaf is Java framework for working with databases, primarily via JDBC. Dekaf is
 
 NOW THIS FRAMEWORK IS UNDER DEVELOPMENT.
 
-The currently developed version is 2.0.0.X (where X is a build number).
+The stable version is 2.0.0.X. 
+The currently developed version is 3.0.0.
 
 
 Motivation
