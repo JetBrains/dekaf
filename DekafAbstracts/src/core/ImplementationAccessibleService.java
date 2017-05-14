@@ -38,6 +38,7 @@ public interface ImplementationAccessibleService {
     String INTERMEDIATE_SERVICE = "intermediate-service";
     String CONNECTION_POOL      = "connection-pool";
     String JDBC_DRIVER          = "jdbc-driver";
+    String JDBC_DATA_SOURCE     = "jdbc-data-source";
     String JDBC_CONNECTION      = "jdbc-connection";
     String JDBC_STATEMENT       = "jdbc-statement";
     String JDBC_RESULT_SET      = "jdbc-result-set";

@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.Rdbms;
 import org.jetbrains.dekaf.core.ConnectionParameterCategory;
+import org.jetbrains.dekaf.core.ImplementationAccessibleService;
 import org.jetbrains.dekaf.exceptions.DBConnectionException;
 import org.jetbrains.dekaf.inter.InterFacade;
 import org.jetbrains.dekaf.inter.InterSession;
@@ -15,6 +16,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
+
+import static org.jetbrains.dekaf.util.Objects.castTo;
 
 
 
@@ -92,14 +95,19 @@ final class JdbcFacade implements InterFacade {
     @Override
     public void activate() {
         if (dataSource != null) {
-            if (provider == null) throw new IllegalStateException("Neither provider nor data source specified — impossible to activate");
-            Driver driver = provider.getDriver(specific.getDriverClassName());
+            Driver driver = ensureDriver();
             JdbcSimpleDataSource ds = new JdbcSimpleDataSource(connectionString, properties, driver);
             dataSource = ds;
         }
         if (!active) {
             active = true;
         }
+    }
+
+    @NotNull
+    Driver ensureDriver() {
+        if (provider == null) throw new IllegalStateException("Neither provider nor data source specified — impossible to activate");
+        return provider.getDriver(specific.getDriverClassName());
     }
 
     @Override
@@ -134,4 +142,33 @@ final class JdbcFacade implements InterFacade {
             throw new DBConnectionException(e, null);
         }
     }
+
+
+    ////// IMPLEMENTATION SERVICES \\\\\\
+
+
+
+
+    @Override @SuppressWarnings("unchecked")
+    public <I> @Nullable I getSpecificService(final @NotNull Class<I> serviceClass,
+                                              final @NotNull String serviceName)
+            throws ClassCastException
+    {
+        switch (serviceName) {
+            case Names.JDBC_DATA_SOURCE: return castTo(serviceClass, dataSource);
+            case Names.JDBC_DRIVER:      return castTo(serviceClass, getDriver());
+            default:                     return null;
+        }
+    }
+
+    private @Nullable Driver getDriver() {
+        if (dataSource != null && dataSource instanceof ImplementationAccessibleService) {
+            ImplementationAccessibleService service = (ImplementationAccessibleService) dataSource;
+            return service.getSpecificService(Driver.class, Names.JDBC_DRIVER);
+        }
+        else {
+            return null;
+        }
+    }
+
 }

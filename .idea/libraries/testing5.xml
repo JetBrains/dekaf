@@ -1,0 +1,26 @@
+<component name="libraryTable">
+  <library name="testing5">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/test/junit-jupiter-api-5.0.0-M4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/junit-jupiter-engine-5.0.0-M4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/junit-jupiter-params-5.0.0-M4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/junit-platform-commons-1.0.0-M4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/junit-platform-engine-1.0.0-M4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/opentest4j-1.0.0-M2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/test/junit-jupiter-api-5.0.0-M4-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/junit-jupiter-engine-5.0.0-M4-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/junit-jupiter-params-5.0.0-M4-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/junit-platform-commons-1.0.0-M4-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/junit-platform-engine-1.0.0-M4-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/test/junit-jupiter-api-5.0.0-M4-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/junit-jupiter-engine-5.0.0-M4-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/junit-jupiter-params-5.0.0-M4-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/junit-platform-commons-1.0.0-M4-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/junit-platform-engine-1.0.0-M4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

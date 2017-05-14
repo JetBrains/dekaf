@@ -106,7 +106,7 @@ final class JdbcDriverManager {
             urls = us.toArray(urls);
         }
 
-        ClassLoader myClassLoader = new URLClassLoader(urls, parentClassLoader);
+        driverClassLoader = new URLClassLoader(urls, parentClassLoader);
     }
 
     private static URL fileToURL(File f) {

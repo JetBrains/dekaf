@@ -10,16 +10,20 @@ configurations {
     jdbc { }
 }
 
-def annotationsVersion = "15.0"
-def junitVersion       = "4.11"
-def assertJVersion     = "1.6.0"
-def mockitoVersion     = "2.0.7-beta"
+def annotationsVersion  = "15.0"
 
-def h2dbVersion        = "1.4.187"
-def postgresVersion    = "9.4-1201-jdbc4"
-def mysqlVersion       = "6.0.6"
-def microsoftVersion   = "6.1.5.jre8-preview"
-def jtdsVersion        = "1.2.8"
+def junit5Version       = "1.0.0-M4"
+def junitJupiterVersion = "5.0.0-M4"
+
+def junitVersion        = "4.11"
+def assertJVersion      = "1.6.0"
+def mockitoVersion      = "2.0.7-beta"
+
+def h2dbVersion         = "1.4.187"
+def postgresVersion     = "9.4-1201-jdbc4"
+def mysqlVersion        = "6.0.6"
+def microsoftVersion    = "6.1.5.jre8-preview"
+def jtdsVersion         = "1.2.8"
 
 
 dependencies {
@@ -27,7 +31,26 @@ dependencies {
         "org.jetbrains:annotations:$annotationsVersion:sources",
         "org.jetbrains:annotations:$annotationsVersion:javadoc"
 
-    test "junit:junit:$junitVersion",
+    test "org.junit.platform:junit-platform-commons:$junit5Version",
+         "org.junit.platform:junit-platform-commons:$junit5Version:sources",
+         "org.junit.platform:junit-platform-commons:$junit5Version:javadoc",
+         "org.junit.platform:junit-platform-engine:$junit5Version",
+         "org.junit.platform:junit-platform-engine:$junit5Version:sources",
+         "org.junit.platform:junit-platform-engine:$junit5Version:javadoc",
+         //"org.junit.platform:junit-platform-launcher:$junit5Version",
+         //"org.junit.platform:junit-platform-launcher:$junit5Version:sources",
+         //"org.junit.platform:junit-platform-launcher:$junit5Version:javadoc",
+         "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion",
+         "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion:sources",
+         "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion:javadoc",
+         "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion",
+         "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion:sources",
+         "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion:javadoc",
+         "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion",
+         "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion:sources",
+         "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion:javadoc",
+
+         "junit:junit:$junitVersion",
          "junit:junit:$junitVersion:sources",
          "junit:junit:$junitVersion:javadoc",
          "org.assertj:assertj-core:$assertJVersion",

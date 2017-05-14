@@ -4,12 +4,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.Rdbms;
 import org.jetbrains.dekaf.core.ConnectionParameterCategory;
+import org.jetbrains.dekaf.core.ImplementationAccessibleService;
 
 import java.util.Map;
 
 
 
-public interface InterFacade {
+public interface InterFacade extends ImplementationAccessibleService {
 
     ////// TUNING \\\\\\
 

@@ -3,7 +3,6 @@ package org.jetbrains.dekaf.jdbc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.Rdbms;
-import org.jetbrains.dekaf.inter.InterFacade;
 import org.jetbrains.dekaf.inter.InterProvider;
 
 import java.sql.Driver;
@@ -33,6 +32,10 @@ final class JdbcProvider implements InterProvider {
 
     @Override
     public boolean supportedConnectionString(final @NotNull String connectionString) {
+        for (JdbcDescriptor descriptor : DESCRIPTORS.values())
+            if (descriptor.specific.getConnectionStringPattern()
+                                   .matcher(connectionString)
+                                   .matches()) return true;
         return false;
     }
 
@@ -68,7 +71,7 @@ final class JdbcProvider implements InterProvider {
     ////// FACADES \\\\\\
 
     @Override
-    public @NotNull InterFacade createFacade(final @NotNull Rdbms rdbms) {
+    public @NotNull JdbcFacade createFacade(final @NotNull Rdbms rdbms) {
         if (!(DESCRIPTORS.containsKey(rdbms))) throw new IllegalArgumentException("The RDBMS " + rdbms + " is not supported");
         JdbcDescriptor descriptor = DESCRIPTORS.get(rdbms);
         assert descriptor != null;
@@ -77,7 +80,7 @@ final class JdbcProvider implements InterProvider {
     }
 
     @Override
-    public @NotNull InterFacade createFacade(final @NotNull String connectionString) {
+    public @NotNull JdbcFacade createFacade(final @NotNull String connectionString) {
         final JdbcDescriptor descriptor = findDescriptor(connectionString);
         if (descriptor == null)
             throw new IllegalArgumentException("Cannot determine RDBMS by the connection string: " + connectionString);
