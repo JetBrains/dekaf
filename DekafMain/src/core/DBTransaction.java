@@ -1,31 +1,24 @@
-package org.jetbrains.dekaf.core;
+package org.jetbrains.dekaf.core
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dekaf.sql.SqlCommand;
-import org.jetbrains.dekaf.sql.SqlQuery;
-import org.jetbrains.dekaf.sql.SqlScript;
-
+import org.jetbrains.dekaf.sql.SqlCommand
+import org.jetbrains.dekaf.sql.SqlQuery
+import org.jetbrains.dekaf.sql.SqlScript
 
 
 /**
  * Database transaction.
- **/
-public interface DBTransaction {
+ */
+interface DBTransaction {
 
-  @NotNull
-  DBCommandRunner command(@NotNull final SqlCommand command);
+    fun command(command: SqlCommand): DBCommandRunner
 
-  @NotNull
-  DBCommandRunner command(@NotNull final String commandText);
+    fun command(commandText: String): DBCommandRunner
 
-  @NotNull
-  <S> DBQueryRunner<S> query(@NotNull final SqlQuery<S> query);
+    fun <S> query(query: SqlQuery<S>): DBQueryRunner<S>
 
-  @NotNull
-  <S> DBQueryRunner<S> query(@NotNull final String queryText,
-                             @NotNull final ResultLayout<S> layout);
+    fun <S> query(queryText: String,
+                  layout: ResultLayout<S>): DBQueryRunner<S>
 
-  @NotNull
-  DBScriptRunner script(@NotNull final SqlScript script);
+    fun script(script: SqlScript): DBScriptRunner
 
 }

@@ -1,13 +1,11 @@
-package org.jetbrains.dekaf.core;
-
-import org.jetbrains.annotations.NotNull;
-
+package org.jetbrains.dekaf.core
 
 
 /**
  * In-session closure.
  */
-public interface InSessionNoResult {
+interface InSessionNoResult {
 
-  void run(@NotNull final DBSession session);
+    fun run(session: DBSession)
+
 }

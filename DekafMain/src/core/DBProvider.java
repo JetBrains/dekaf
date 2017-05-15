@@ -1,16 +1,12 @@
-package org.jetbrains.dekaf.core;
+package org.jetbrains.dekaf.core
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dekaf.Rdbms;
-
+import org.jetbrains.dekaf.Rdbms
 
 
-public interface DBProvider {
+interface DBProvider {
 
-    @NotNull
-    DBFacade provide(@NotNull Rdbms rdbms);
+    fun provide(rdbms: Rdbms): DBFacade
 
-    @NotNull
-    DBFacade provide(@NotNull String connectionString);
+    fun provide(connectionString: String): DBFacade
 
 }

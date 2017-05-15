@@ -1,46 +1,51 @@
-package org.jetbrains.dekaf.core;
+package org.jetbrains.dekaf.core
 
 /**
  * Leased session.
- *
- * @author Leonid Bushuev from JetBrains
+
+ * @author Leonid Bushuev
  */
-public interface DBLeasedSession extends DBSession, DBTransactionControl  {
+interface DBLeasedSession : DBSession, DBTransactionControl {
 
-  /**
-   * Checks whether the session is really alive.
-   *
-   * <p>
-   *   If the check is successful, just returns the ping duration.
-   * </p>
-   * <p>
-   *   If the check failed, closes the session and throws an exception.
-   * </p>
-   *
-   * @return ping duration (in milliseconds).
-   *
-   * @see #isClosed()
-   */
-  long ping();
+    /**
+     * Checks whether the session is really alive.
 
-  /**
-   * Check whether the session is closed.
-   * @return  is closed.
-   *
-   * @see #ping()
-   * @see #close()
-   */
-  boolean isClosed();
+     *
+     *
+     * If the check is successful, just returns the ping duration.
+     *
+     *
+     *
+     * If the check failed, closes the session and throws an exception.
+     *
 
-  /**
-   * Closes the session.
-   *
-   * <p>
-   *   When session is already closed, just does nothing.
-   * </p>
-   *
-   * @see #isClosed()
-   */
-  void close();
+     * @return ping duration (in milliseconds).
+     * *
+     * *
+     * @see .isClosed
+     */
+    fun ping(): Long
+
+    /**
+     * Check whether the session is closed.
+     * @return  is closed.
+     * *
+     * *
+     * @see .ping
+     * @see .close
+     */
+    val isClosed: Boolean
+
+    /**
+     * Closes the session.
+
+     *
+     *
+     * When session is already closed, just does nothing.
+     *
+
+     * @see .isClosed
+     */
+    fun close()
 
 }

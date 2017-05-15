@@ -1,13 +1,13 @@
-package org.jetbrains.dekaf.core;
+package org.jetbrains.dekaf.core
 
 /**
- * @author Leonid Bushuev from JetBrains
+ * @author Leonid Bushuev
  */
-public interface DBScriptRunner {
+interface DBScriptRunner {
 
-  /**
-   * Performs the script - all commands one by one.
-   */
-  DBScriptRunner run();
+    /**
+     * Performs the script - all commands one by one.
+     */
+    fun run(): DBScriptRunner
 }
 

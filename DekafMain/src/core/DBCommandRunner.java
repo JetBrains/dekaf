@@ -1,20 +1,21 @@
-package org.jetbrains.dekaf.core;
+package org.jetbrains.dekaf.core
 
 /**
- * @author Leonid Bushuev from JetBrains
+ * @author Leonid Bushuev
  */
-public interface DBCommandRunner {
+interface DBCommandRunner {
 
-  /**
-   * Assigns command parameters.
-   * @param params parameters, one for each '?' sign in the command.
-   * @return the query.
-   */
-  DBCommandRunner withParams(Object... params);
+    /**
+     * Assigns command parameters.
+     * @param params parameters, one for each '?' sign in the command.
+     * *
+     * @return the query.
+     */
+    fun withParams(vararg params: Any): DBCommandRunner
 
-  /**
-   * Performs the query.
-   */
-  DBCommandRunner run();
+    /**
+     * Performs the query.
+     */
+    fun run(): DBCommandRunner
 }
 

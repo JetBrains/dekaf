@@ -1,13 +1,11 @@
-package org.jetbrains.dekaf.core;
-
-import org.jetbrains.annotations.NotNull;
-
+package org.jetbrains.dekaf.core
 
 
 /**
  * In-transaction closure.
  */
-public interface InTransaction<R> {
+interface InTransaction<out R> {
 
-  R run(@NotNull final DBTransaction tran);
+    fun run(tran: DBTransaction): R
+
 }

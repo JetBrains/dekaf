@@ -1,33 +1,36 @@
-package org.jetbrains.dekaf.core;
-
+package org.jetbrains.dekaf.core
 
 
 /**
  * A session with database.
+
  *
- * <p>
- *   The instance of this session can be borrowed from {@link DBFacade}.
- * </p>
  *
+ * The instance of this session can be borrowed from [DBFacade].
+ *
+
  * @see DBFacade
+
  * @see DBTransaction
- **/
-public interface DBSession extends DBTransaction, ImplementationAccessibleService {
+ */
+interface DBSession : DBTransaction, ImplementationAccessibleService {
 
-  /**
-   * Performs the given operation in transaction and returns the result.
-   *
-   * @param operation operation to perform.
-   * @param <R>       type of result.
-   * @return the result.
-   */
-  <R> R inTransaction(InTransaction<R> operation);
+    /**
+     * Performs the given operation in transaction and returns the result.
 
-  /**
-   * Performs the given operation in transaction and returns the result.
-   *
-   * @param operation operation to perform.
-   */
-  void inTransaction(InTransactionNoResult operation);
+     * @param operation operation to perform.
+     * *
+     * @param <R>       type of result.
+     * *
+     * @return the result.
+    </R> */
+    fun <R> inTransaction(operation: InTransaction<R>): R
+
+    /**
+     * Performs the given operation in transaction and returns the result.
+
+     * @param operation operation to perform.
+     */
+    fun inTransaction(operation: InTransactionNoResult)
 
 }
