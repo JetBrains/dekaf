@@ -6,13 +6,11 @@ package org.jetbrains.dekaf.core;
  * A session with database.
  *
  * <p>
- *   The instance of this session can be borrowed from {@link DBFacade},
- *   or instantiated by {@link DBSessions}.
+ *   The instance of this session can be borrowed from {@link DBFacade}.
  * </p>
  *
  * @see DBFacade
  * @see DBTransaction
- * @see DBSessions
  **/
 public interface DBSession extends DBTransaction, ImplementationAccessibleService {
 
