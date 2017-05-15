@@ -10,6 +10,7 @@ configurations {
     jdbc { }
 }
 
+def kotlinVersion       = "1.1.2-3"
 def annotationsVersion  = "15.0"
 
 def junit5Version       = "1.0.0-M4"
@@ -29,7 +30,19 @@ def jtdsVersion         = "1.2.8"
 dependencies {
     pro "org.jetbrains:annotations:$annotationsVersion",
         "org.jetbrains:annotations:$annotationsVersion:sources",
-        "org.jetbrains:annotations:$annotationsVersion:javadoc"
+        "org.jetbrains:annotations:$annotationsVersion:javadoc",
+        "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion",
+        "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion:sources",
+        "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion:javadoc",
+        "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion",
+        "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion:sources",
+        "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion:javadoc",
+        "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion",
+        "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion:sources",
+        "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion:javadoc",
+        "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
+        "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion:sources",
+        "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion:javadoc"
 
     test "org.junit.platform:junit-platform-commons:$junit5Version",
          "org.junit.platform:junit-platform-commons:$junit5Version:sources",

@@ -12,5 +12,6 @@
     <orderEntry type="module" module-name="DekafAbstracts" exported="" />
     <orderEntry type="library" name="annotations" level="project" />
     <orderEntry type="library" scope="TEST" name="testing5" level="project" />
+    <orderEntry type="library" name="kotlin" level="project" />
   </component>
 </module>
