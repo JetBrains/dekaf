@@ -73,7 +73,7 @@ public class BaseFacade implements DBFacade {
 
 
   @Override
-  public <R> R inTransaction(final InTransaction<R> operation) {
+  public <R> R inTransaction(final InTransaction<? extends R> operation) {
     return inSession(new InSession<R>() {
       @Override
       public R run(@NotNull final DBSession session) {
@@ -97,7 +97,7 @@ public class BaseFacade implements DBFacade {
   }
 
   @Override
-  public <R> R inSession(final InSession<R> operation) {
+  public <R> R inSession(final InSession<? extends R> operation) {
     if (operation == null) throw new IllegalArgumentException("The operation is null");
     if (!isConnected()) throw new DBIsNotConnected("Facade is not connected.");
 

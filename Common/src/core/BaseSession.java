@@ -56,7 +56,7 @@ public class BaseSession implements DBSession, DBLeasedSession, DBTransaction  {
 
 
   @Override
-  public synchronized  <R> R inTransaction(final InTransaction<R> operation) {
+  public synchronized  <R> R inTransaction(final InTransaction<? extends R> operation) {
     closeRunners();
 
     final R result;

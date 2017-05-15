@@ -85,7 +85,7 @@ class DBLeasedSessionWrapper implements DBLeasedSession {
   }
 
   @Override
-  public synchronized <R> R inTransaction(final InTransaction<R> operation) {
+  public synchronized <R> R inTransaction(final InTransaction<? extends R> operation) {
     checkIsNotClosed();
     return myOriginalSession.inTransaction(operation);
   }
