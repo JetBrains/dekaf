@@ -65,26 +65,41 @@ internal open class BaseFacade: DBFacade {
     }
 
     override fun disconnect() {
-        closeNormalSessions()
+        closeAllSessions()
         closePrima()
         inter.deactivate()
         connected = false
     }
 
-    private fun closeNormalSessions() {
-        // TODO close all normal sessions
+    private fun closeAllSessions() {
+        val sessionsToClose = sessions.toArray(emptyArray<BaseSession>())
+        val n = sessionsToClose.size
+        for (i in n-1 downTo 0) {
+            val session = sessionsToClose[i]
+            if (!session.isClosed) closeTheSession(session)
+            sessions.remove(session)
+        }
     }
 
     private fun closePrima() {
         val p = prima
         if (p != null) {
-            p.close()
+            closeTheSession(p)
             prima = null
         }
     }
 
+    private fun closeTheSession(session: BaseSession) {
+        try {
+            session.close()
+        }
+        catch(e: Exception) {
+            System.err.println("Failed to close session: ${e.javaClass.simpleName}: ${e.message}")
+        }
+    }
+
     override val isConnected: Boolean
-        get() = TODO("not implemented yet")
+        get() = connected
 
     override val connectionInfo: ConnectionInfo
         get() = TODO("not implemented yet")
@@ -94,19 +109,43 @@ internal open class BaseFacade: DBFacade {
     }
 
     override fun <R> inTransaction(operation: InTransaction<R>): R {
-        TODO("not implemented yet")
+        val session = openSession()
+        try {
+            return session.inTransaction(operation)
+        }
+        finally {
+            session.close()
+        }
     }
 
     override fun inTransaction(operation: InTransactionNoResult) {
-        TODO("not implemented yet")
+        val session = openSession()
+        try {
+            session.inTransaction(operation)
+        }
+        finally {
+            session.close()
+        }
     }
 
     override fun <R> inSession(operation: InSession<R>): R {
-        TODO("not implemented yet")
+        val session = openSession()
+        try {
+            return operation.run(session)
+        }
+        finally {
+            session.close()
+        }
     }
 
     override fun inSession(operation: InSessionNoResult) {
-        TODO("not implemented yet")
+        val session = openSession()
+        try {
+            operation.run(session)
+        }
+        finally {
+            session.close()
+        }
     }
 
     override fun leaseSession(): BaseSession {

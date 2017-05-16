@@ -9,16 +9,72 @@ import org.jetbrains.dekaf.sql.SqlScript
 
 internal open class BaseSession: DBLeasedSession {
 
+    /// SETTINGS \\\
+
     val facade: BaseFacade
 
     val inter: InterSession
 
+
+    /// STATE \\\
+
+    var closed: Boolean = false
+
+    var insideTran: Boolean = false
+
+
+    /// INITIALIZATION \\\
 
     constructor(facade: BaseFacade, inter: InterSession) {
         this.facade = facade
         this.inter = inter
     }
 
+
+    /// TRANSACTIONS \\\
+
+    override fun <R> inTransaction(operation: InTransaction<R>): R {
+        beginTransaction()
+        try {
+            val result = operation.run(this)
+            commit()
+            return result
+        }
+        catch (e: Exception) {
+            rollback()
+            throw e
+        }
+    }
+
+    override fun inTransaction(operation: InTransactionNoResult) {
+        beginTransaction()
+        try {
+            operation.run(this)
+            commit()
+        }
+        catch (e: Exception) {
+            rollback()
+            throw e
+        }
+    }
+
+    override fun beginTransaction() {
+        TODO("not implemented yet")
+    }
+
+    override val isInTransaction: Boolean
+        get() = insideTran
+
+    override fun commit() {
+        TODO("not implemented yet")
+    }
+
+    override fun rollback() {
+        TODO("not implemented yet")
+    }
+
+
+    /// RUNNERS \\\
 
     override fun command(command: SqlCommand): DBCommandRunner {
         TODO("not implemented yet")
@@ -44,23 +100,12 @@ internal open class BaseSession: DBLeasedSession {
         return inter.ping().toLong()
     }
 
-    override fun <R> inTransaction(operation: InTransaction<R>): R {
-        TODO("not implemented yet")
-    }
-
-    override fun beginTransaction() {
-        TODO("not implemented yet")
-    }
-
     override val isClosed: Boolean
-        get() = TODO("not implemented yet")
-
-    override fun inTransaction(operation: InTransactionNoResult) {
-        TODO("not implemented yet")
-    }
+        get() = closed
 
     override fun close() {
         inter.close()
+        closed = true
         facade.sessionClosed(this)
     }
 
@@ -68,14 +113,4 @@ internal open class BaseSession: DBLeasedSession {
         TODO("not implemented yet")
     }
 
-    override val isInTransaction: Boolean
-        get() = TODO("not implemented yet")
-
-    override fun commit() {
-        TODO("not implemented yet")
-    }
-
-    override fun rollback() {
-        TODO("not implemented yet")
-    }
 }
