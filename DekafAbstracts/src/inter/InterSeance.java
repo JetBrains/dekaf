@@ -14,6 +14,8 @@ public interface InterSeance {
 
     void execute();
 
+    int getAffectedRowsCount();
+
 
     ////// CURSORS \\\\\\
 

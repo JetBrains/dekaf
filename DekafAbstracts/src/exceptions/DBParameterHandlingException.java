@@ -15,4 +15,8 @@ public abstract class DBParameterHandlingException extends DBException {
     super(message, exception, statementText);
   }
 
+  public DBParameterHandlingException(@NotNull final String message) {
+    super(message, null);
+  }
+
 }

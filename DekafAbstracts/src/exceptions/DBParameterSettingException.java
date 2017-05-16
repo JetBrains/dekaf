@@ -9,10 +9,14 @@ import org.jetbrains.annotations.NotNull;
  */
 public class DBParameterSettingException extends DBParameterHandlingException {
 
-  public DBParameterSettingException(@NotNull final String message,
-                                     @NotNull final Exception exception,
+  public DBParameterSettingException(final @NotNull String message,
+                                     final @NotNull Exception exception,
                                      final String statementText) {
     super(message, exception, statementText);
+  }
+
+  public DBParameterSettingException(final @NotNull String message) {
+    super(message);
   }
 
 }

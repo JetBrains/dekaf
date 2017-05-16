@@ -6,6 +6,7 @@ import org.jetbrains.dekaf.sql.SqlCommand
 import org.jetbrains.dekaf.sql.SqlQuery
 import org.jetbrains.dekaf.sql.SqlScript
 import org.jetbrains.dekaf.util.Function
+import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.function.Consumer
 
 
@@ -23,6 +24,8 @@ internal open class BaseSession: DBLeasedSession {
     var closed: Boolean = false
 
     var insideTran: Boolean = false
+
+    val runners = ConcurrentLinkedDeque<BaseRunner>()
 
 
     /// INITIALIZATION \\\
@@ -82,11 +85,16 @@ internal open class BaseSession: DBLeasedSession {
     /// RUNNERS \\\
 
     override fun command(command: SqlCommand): DBCommandRunner {
-        TODO("not implemented yet")
+        val commandText = command.sourceText
+        return command(commandText)
     }
 
     override fun command(commandText: String): DBCommandRunner {
-        TODO("not implemented yet")
+        val interSeance = inter.openSeance()
+        val runner = BaseCommandRunner(this, interSeance, commandText)
+        runners.add(runner)
+        runner.prepare()
+        return runner
     }
 
     override fun <S> query(query: SqlQuery<S>): DBQueryRunner<S> {
@@ -116,6 +124,13 @@ internal open class BaseSession: DBLeasedSession {
 
     override fun <I : Any?> getSpecificService(serviceClass: Class<I>, serviceName: String): I? {
         TODO("not implemented yet")
+    }
+
+
+    /// OTHER \\\
+
+    internal fun runnerClosed(runner: BaseRunner) {
+        runners.remove(runner)
     }
 
 }

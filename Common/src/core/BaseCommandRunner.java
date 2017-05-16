@@ -27,6 +27,10 @@ public class BaseCommandRunner implements DBCommandRunner, BaseSeanceRunner {
     return this;
   }
 
+  @Override
+  public int getAffectedRowsCount() {
+    return myInterSeance.getAffectedRowsCount();
+  }
 
   @Override
   public void close() {

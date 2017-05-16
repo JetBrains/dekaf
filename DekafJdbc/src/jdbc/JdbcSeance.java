@@ -2,6 +2,7 @@ package org.jetbrains.dekaf.jdbc;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.dekaf.exceptions.DBParameterSettingException;
 import org.jetbrains.dekaf.inter.InterCursor;
 import org.jetbrains.dekaf.inter.InterSeance;
 import org.jetbrains.dekaf.inter.InterTask;
@@ -36,7 +37,7 @@ final class JdbcSeance implements InterSeance {
 
     @Override
     public void prepare(final InterTask task) {
-        if (task != null) throw new IllegalStateException("The seance is already prepared");
+        if (this.task != null) throw new IllegalStateException("The seance is already prepared");
         this.task = task;
         String text = task.text;
         try {
@@ -62,7 +63,19 @@ final class JdbcSeance implements InterSeance {
 
     @Override
     public void assignParameters(final Object[] parameters) {
+        if (parameters == null) return;
+        if (statement == null) throw new DBParameterSettingException("Statement is not prepared yet");
 
+        for (int i = 0; i < parameters.length; i++) {
+            Object param = parameters[i];
+            try {
+                JdbcParametersHandler.assignParameter(statement, i + 1, param);
+            }
+            catch (SQLException e) {
+                String message = "Cannot assign parameter " + (i + 1) + ": " + e.getMessage();
+                throw new DBParameterSettingException(message, e, task != null ? task.text : "(no statement text)");
+            }
+        }
     }
 
     @Override
@@ -87,6 +100,11 @@ final class JdbcSeance implements InterSeance {
         catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public int getAffectedRowsCount() {
+        return affectedRows;
     }
 
     @Override
