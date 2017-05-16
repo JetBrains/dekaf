@@ -11,10 +11,9 @@ interface DBTransactionControl {
 
     /**
      * Begins the transaction.
-
+     *
      * @throws DBTransactionIsAlreadyStartedException when is already in a transaction.
-     * *
-     * *
+     * 
      * @see .commit
      * @see .rollback
      * @see .isInTransaction
@@ -24,21 +23,14 @@ interface DBTransactionControl {
 
     /**
      * Determine whether the current session is in a transaction.
-
-     *
      *
      * This function doesn't call DB server, it just checks
      * it's own flag.
      *
-
-     *
-     *
      * If the session is closed, it returns *false* (doesn't throws an exception).
      *
-
      * @return whether is in a transaction.
-     * *
-     * *
+     * 
      * @see .beginTransaction
      * @see .commit
      * @see .rollback
@@ -47,12 +39,9 @@ interface DBTransactionControl {
 
     /**
      * Commits the current transaction.
-
-     *
      *
      * If not in transaction, just does nothing silently.
      *
-
      * @see .beginTransaction
      * @see .rollback
      * @throws DBSessionIsClosedException
@@ -62,16 +51,12 @@ interface DBTransactionControl {
 
     /**
      * Roll the current transaction back.
-
-     *
      *
      * If not in transaction or connection is closed, just does nothing silently.
      *
-
      * @see .beginTransaction
      * @see .commit
      */
     fun rollback()
-
 
 }

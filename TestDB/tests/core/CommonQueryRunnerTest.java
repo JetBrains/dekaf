@@ -212,12 +212,9 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
   @Test
   public void query_1000_values() {
     List<Integer> values =
-        DB.inTransaction(new InTransaction<List<Integer>>() {
-          @Override
-          public List<Integer> run(@NotNull final DBTransaction tran) {
-            return tran.query("select X from X1000 order by 1", listOf(oneOf(Integer.class))).run();
-          }
-        });
+        DB.inTransaction(tran ->
+            tran.query("select X from X1000 order by 1", listOf(oneOf(Integer.class))).run()
+        );
     assertThat(values).isNotNull()
                       .hasSize(1000)
                       .contains(1,2,3,4,998,999,1000);
@@ -227,12 +224,7 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
   @Test
   public void query_1000000_values() {
     List<Integer> values =
-        DB.inTransaction(new InTransaction<List<Integer>>() {
-          @Override
-          public List<Integer> run(@NotNull final DBTransaction tran) {
-            return tran.query("select X from X1000000 order by 1", listOf(oneOf(Integer.class))).run();
-          }
-        });
+        DB.inTransaction(tran -> tran.query("select X from X1000000 order by 1", listOf(oneOf(Integer.class))).run());
     assertThat(values).isNotNull()
                       .hasSize(1000000)
                       .contains(1,2,3,4,999998,999999,1000000);
@@ -244,9 +236,7 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
     final SqlQuery<List<Number>> query =
         new SqlQuery<List<Number>>("select X from X1000", listOf(oneOf(Number.class)));
 
-    DB.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
+    DB.inSessionDo(session -> {
 
         DBQueryRunner<List<Number>> qr = session.query(query).packBy(10);
         qr.run();
@@ -264,27 +254,18 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
         }
         assertThat(columnName).isEqualToIgnoringCase("X");
 
-      }
     });
   }
 
 
   protected <T> T query(@NotNull final SqlQuery<T> query) {
-    return DB.inTransaction(new InTransaction<T>() {
-      @Override
-      public T run(@NotNull final DBTransaction tran) {
+    return DB.inTransaction(tran -> {
         return tran.query(query).run();
-      }
     });
   }
 
   protected <T> T query(@NotNull final SqlQuery<T> query, final Object... params) {
-    return DB.inTransaction(new InTransaction<T>() {
-      @Override
-      public T run(@NotNull final DBTransaction tran) {
-        return tran.query(query).withParams(params).run();
-      }
-    });
+    return DB.inTransaction(tran -> tran.query(query).withParams(params).run());
   }
 
 }

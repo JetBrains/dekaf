@@ -174,7 +174,7 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
 
 
   @Override
-  public long ping() {
+  public int ping() {
     if (myClosed) throw new DBSessionIsClosedException("The session is closed.");
 
     long time1 = System.currentTimeMillis();
@@ -199,8 +199,8 @@ public class JdbcIntermediateSession implements IntegralIntermediateSession {
       if (!ok) close();
     }
 
-    long duration = System.currentTimeMillis() - time1;
-    if (duration == 0L) duration = 1L;
+    int duration = (int) (System.currentTimeMillis() - time1);
+    if (duration == 0L) duration = 1;
     return duration;
   }
 

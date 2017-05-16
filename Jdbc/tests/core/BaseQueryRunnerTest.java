@@ -1,6 +1,5 @@
 package org.jetbrains.dekaf.core;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.sql.SqlQuery;
 import org.junit.Test;
@@ -52,9 +51,7 @@ public abstract class BaseQueryRunnerTest extends BaseInMemoryDBFacadeCase {
     final SqlQuery<IntAndString> query =
             new SqlQuery<IntAndString>(queryText, rowOf(structOf(IntAndString.class)));
 
-    myFacade.inTransaction(new InTransactionNoResult() {
-      @Override
-      public void run(@NotNull final DBTransaction tran) {
+    myFacade.inTransactionDo(tran -> {
 
         IntAndString bs = tran.query(query).run();
 
@@ -62,7 +59,6 @@ public abstract class BaseQueryRunnerTest extends BaseInMemoryDBFacadeCase {
         assertThat(bs.the_int_value).isEqualTo(44);
         assertThat(bs.the_string_value).isEqualTo("million");
 
-      }
     });
   }
 
@@ -81,9 +77,7 @@ public abstract class BaseQueryRunnerTest extends BaseInMemoryDBFacadeCase {
             new SqlQuery<IntAndString[]>(QUERY_RETURNS_TWO_BASIC_STRUCT_ROWS,
                                         arrayOf(structOf(IntAndString.class)));
 
-    myFacade.inTransaction(new InTransactionNoResult() {
-      @Override
-      public void run(@NotNull final DBTransaction tran) {
+    myFacade.inTransactionDo(tran -> {
 
         IntAndString[] bs = tran.query(query).run();
 
@@ -94,7 +88,6 @@ public abstract class BaseQueryRunnerTest extends BaseInMemoryDBFacadeCase {
         assertThat(bs[1].the_int_value).isEqualTo(22);
         assertThat(bs[1].the_string_value).isEqualTo("two");
 
-      }
     });
   }
 
@@ -104,9 +97,7 @@ public abstract class BaseQueryRunnerTest extends BaseInMemoryDBFacadeCase {
             new SqlQuery<List<IntAndString>>(QUERY_RETURNS_TWO_BASIC_STRUCT_ROWS,
                                             listOf(structOf(IntAndString.class)));
 
-    myFacade.inTransaction(new InTransactionNoResult() {
-      @Override
-      public void run(@NotNull final DBTransaction tran) {
+    myFacade.inTransactionDo(tran -> {
 
         List<IntAndString> bs = tran.query(query).run();
 
@@ -117,7 +108,6 @@ public abstract class BaseQueryRunnerTest extends BaseInMemoryDBFacadeCase {
         assertThat(bs.get(1).the_int_value).isEqualTo(22);
         assertThat(bs.get(1).the_string_value).isEqualTo("two");
 
-      }
     });
   }
 
@@ -131,12 +121,9 @@ public abstract class BaseQueryRunnerTest extends BaseInMemoryDBFacadeCase {
             "select 11,22,33,44 from information_schema.schemata where 1 is null",
             listOf(structOf(Tetra.class)));
 
-    myFacade.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
+    myFacade.inSessionDo(session -> {
         List<Tetra> result = session.query(query).run();
         assertThat(result).isEmpty();
-      }
     });
   }
 
@@ -175,31 +162,25 @@ public abstract class BaseQueryRunnerTest extends BaseInMemoryDBFacadeCase {
 
   @Test
   public void char_single_1() {
-    myFacade.inTransaction(new InTransactionNoResult() {
-      @Override
-      public void run(@NotNull final DBTransaction tran) {
+    myFacade.inTransactionDo(tran -> {
 
         char c =
             tran.query("select 'M'", singleOf(Character.class)).run();
 
         assertThat(c).isEqualTo('M');
 
-      }
     });
   }
 
   @Test
   public void char_single_2() {
-    myFacade.inTransaction(new InTransactionNoResult() {
-      @Override
-      public void run(@NotNull final DBTransaction tran) {
+    myFacade.inTransactionDo(tran -> {
 
         Character c =
             tran.query("select 'MN'", singleOf(Character.class)).run();
 
         assertThat(c).isEqualTo('M');
 
-      }
     });
   }
 
@@ -285,13 +266,10 @@ public abstract class BaseQueryRunnerTest extends BaseInMemoryDBFacadeCase {
 
 
   private <X> X query(final SqlQuery<X> query) {
-    return myFacade.inTransaction(new InTransaction<X>() {
-      @Override
-      public X run(@NotNull final DBTransaction tran) {
+    return myFacade.inTransaction(tran -> {
 
         return tran.query(query).run();
 
-      }
     });
   }
 

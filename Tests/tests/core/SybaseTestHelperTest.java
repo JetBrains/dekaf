@@ -76,12 +76,7 @@ public class SybaseTestHelperTest extends CommonIntegrationCase {
     assert DB != null;
 
     Boolean exists =
-        DB.inSession(new InSession<Boolean>() {
-          @Override
-          public Boolean run(@NotNull final DBSession session) {
-            return session.query(ourObjectExistsQuery).withParams(sequenceName).run();
-          }
-        });
+        DB.inSession(session -> session.query(ourObjectExistsQuery).withParams(sequenceName).run());
     return exists != null && exists;
   }
 

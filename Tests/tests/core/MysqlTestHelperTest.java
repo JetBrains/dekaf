@@ -1,6 +1,5 @@
 package org.jetbrains.dekaf.core;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.CommonIntegrationCase;
 import org.jetbrains.dekaf.sql.Scriptum;
 import org.jetbrains.dekaf.sql.SqlQuery;
@@ -144,21 +143,11 @@ public class MysqlTestHelperTest extends CommonIntegrationCase {
 
 
   private boolean tableExists(final String tableName) {
-    return DB.inTransaction(new InTransaction<Boolean>() {
-      @Override
-      public Boolean run(@NotNull final DBTransaction tran) {
-        return tran.query(CHECK_TABLE_EXISTS_QUERY).withParams(tableName).run();
-      }
-    });
+    return DB.inTransaction(tran -> tran.query(CHECK_TABLE_EXISTS_QUERY).withParams(tableName).run());
   }
 
   private boolean routineExists(final String routineName) {
-    return DB.inTransaction(new InTransaction<Boolean>() {
-      @Override
-      public Boolean run(@NotNull final DBTransaction tran) {
-        return tran.query(CHECK_ROUTINE_EXISTS_QUERY).withParams(routineName).run();
-      }
-    });
+    return DB.inTransaction(tran -> tran.query(CHECK_ROUTINE_EXISTS_QUERY).withParams(routineName).run());
   }
 
 

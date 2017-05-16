@@ -321,11 +321,8 @@ public class PostgresTestHelperTest extends CommonIntegrationCase {
         ourScriptum.query("existence_of_" + kind.name().toLowerCase(Locale.ROOT), Layouts.existence());
 
     Boolean exists =
-        DB.inSession(new InSession<Boolean>() {
-          @Override
-          public Boolean run(@NotNull final DBSession session) {
+        DB.inSession(session -> {
             return session.query(query).withParams(name).run();
-          }
         });
     return exists != null && exists;
   }

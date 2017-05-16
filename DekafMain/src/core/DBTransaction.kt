@@ -16,8 +16,7 @@ interface DBTransaction {
 
     fun <S> query(query: SqlQuery<S>): DBQueryRunner<S>
 
-    fun <S> query(queryText: String,
-                  layout: ResultLayout<S>): DBQueryRunner<S>
+    fun <S> query(queryText: String, layout: ResultLayout<S>): DBQueryRunner<S>
 
     fun script(script: SqlScript): DBScriptRunner
 

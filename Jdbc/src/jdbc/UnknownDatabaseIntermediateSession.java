@@ -46,7 +46,7 @@ public class UnknownDatabaseIntermediateSession extends JdbcIntermediateSession 
 
 
   @Override
-  public long ping() {
+  public int ping() {
     getUnknownInfo(); // to pre-load it
     return super.ping();
   }

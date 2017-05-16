@@ -1,6 +1,5 @@
 package org.jetbrains.dekaf.core;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.CommonIntegrationCase;
 import org.jetbrains.dekaf.exceptions.NoTableOrViewException;
 import org.junit.Before;
@@ -20,12 +19,9 @@ public class CommonExceptionRecognizingTest extends CommonIntegrationCase {
 
   @Test(expected = NoTableOrViewException.class)
   public void recognize_NoTableOrView() {
-    DB.inTransaction(new InTransactionNoResult() {
-      @Override
-      public void run(@NotNull final DBTransaction tran) {
-        tran.query("select * from unexistent_table", Layouts.existence()).run();
-      }
-    });
+    DB.inTransactionDo(tran ->
+        tran.query("select * from unexistent_table", Layouts.existence()).run()
+    );
   }
 
 }

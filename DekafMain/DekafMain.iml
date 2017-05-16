@@ -6,12 +6,13 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="org.jetbrains.dekaf" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" packagePrefix="org.jetbrains.dekaf" />
       <sourceFolder url="file://$MODULE_DIR$/sql" type="java-resource" relativeOutputPath="org.jetbrains.dekaf" />
+      <sourceFolder url="file://$MODULE_DIR$/kotlinhack" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="DekafAbstracts" exported="" />
     <orderEntry type="library" name="annotations" level="project" />
+    <orderEntry type="library" exported="" name="kotlin" level="project" />
     <orderEntry type="library" scope="TEST" name="testing5" level="project" />
-    <orderEntry type="library" name="kotlin" level="project" />
   </component>
 </module>

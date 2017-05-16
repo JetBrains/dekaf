@@ -181,11 +181,8 @@ public class OracleTestHelperTest extends CommonIntegrationCase {
         "select 1 from user_objects where object_name = ?";
 
     Boolean exists =
-        DB.inSession(new InSession<Boolean>() {
-          @Override
-          public Boolean run(@NotNull final DBSession session) {
+        DB.inSession(session -> {
             return session.query(query, Layouts.existence()).withParams(objectName).run();
-          }
         });
     return exists != null && exists;
   }

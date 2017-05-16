@@ -7,10 +7,12 @@ import org.jetbrains.dekaf.intermediate.IntegralIntermediateSession;
 import org.jetbrains.dekaf.sql.SqlCommand;
 import org.jetbrains.dekaf.sql.SqlQuery;
 import org.jetbrains.dekaf.sql.SqlScript;
+import org.jetbrains.dekaf.util.Function;
 import org.jetbrains.dekaf.util.Objects;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.function.Consumer;
 
 
 
@@ -24,7 +26,7 @@ public class BaseSession implements DBSession, DBLeasedSession, DBTransaction  {
   @NotNull
   private final IntegralIntermediateSession myInterSession;
 
-  private final Queue<BaseSeanceRunner> myRunners = new LinkedList<BaseSeanceRunner>();
+  private final Queue<BaseSeanceRunner> myRunners = new LinkedList<>();
 
 
 
@@ -56,14 +58,14 @@ public class BaseSession implements DBSession, DBLeasedSession, DBTransaction  {
 
 
   @Override
-  public synchronized  <R> R inTransaction(final InTransaction<? extends R> operation) {
+  public <R> R inTransaction(@NotNull final Function<@NotNull DBTransaction, R> operation) {
     closeRunners();
 
     final R result;
     boolean ok = false;
     beginTransaction();
     try {
-      result = operation.run(this);
+      result = operation.apply(this);
       commit();
       ok = true;
     }
@@ -77,15 +79,14 @@ public class BaseSession implements DBSession, DBLeasedSession, DBTransaction  {
     return result;
   }
 
-
   @Override
-  public synchronized void inTransaction(final InTransactionNoResult operation) {
+  public void inTransactionDo(@NotNull final Consumer<@NotNull DBTransaction> operation) {
     closeRunners();
 
     boolean ok = false;
     beginTransaction();
     try {
-      operation.run(this);
+      operation.accept(this);
       commit();
       ok = true;
     }
@@ -125,7 +126,7 @@ public class BaseSession implements DBSession, DBLeasedSession, DBTransaction  {
   public synchronized <S> BaseQueryRunner<S> query(@NotNull final SqlQuery<S> query) {
     final IntegralIntermediateSeance interSeance =
             myInterSession.openSeance(query.getSourceText(), null);
-    BaseQueryRunner<S> queryRunner = new BaseQueryRunner<S>(interSeance, query.getLayout());
+    BaseQueryRunner<S> queryRunner = new BaseQueryRunner<>(interSeance, query.getLayout());
     myRunners.add(queryRunner);
     return queryRunner;
   }
@@ -135,7 +136,7 @@ public class BaseSession implements DBSession, DBLeasedSession, DBTransaction  {
   @Override
   public synchronized  <S> BaseQueryRunner<S> query(@NotNull final String queryText,
                                                     @NotNull final ResultLayout<S> layout) {
-    SqlQuery<S> query = new SqlQuery<S>(queryText, layout);
+    SqlQuery<S> query = new SqlQuery<>(queryText, layout);
     return this.query(query);
   }
 
@@ -170,7 +171,7 @@ public class BaseSession implements DBSession, DBLeasedSession, DBTransaction  {
   }
 
   @Override
-  public long ping() {
+  public int ping() {
     return myInterSession.ping();
   }
 

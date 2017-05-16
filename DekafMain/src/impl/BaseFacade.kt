@@ -1,10 +1,15 @@
 package org.jetbrains.dekaf.impl
 
 import org.jetbrains.dekaf.Rdbms
-import org.jetbrains.dekaf.core.*
+import org.jetbrains.dekaf.core.ConnectionInfo
+import org.jetbrains.dekaf.core.DBFacade
+import org.jetbrains.dekaf.core.DBSession
+import org.jetbrains.dekaf.core.DBTransaction
 import org.jetbrains.dekaf.inter.InterFacade
+import org.jetbrains.dekaf.util.Function
 import java.lang.IllegalStateException
 import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.function.Consumer
 
 
 internal open class BaseFacade: DBFacade {
@@ -57,7 +62,7 @@ internal open class BaseFacade: DBFacade {
     override fun ping(): Int {
         val p = prima
         if (p != null) {
-            return p.ping().toInt()
+            return p.ping()
         }
         else {
             throw IllegalStateException("No primary session")
@@ -108,7 +113,7 @@ internal open class BaseFacade: DBFacade {
         TODO("not implemented yet")
     }
 
-    override fun <R> inTransaction(operation: InTransaction<R>): R {
+    override fun <R : Any?> inTransaction(operation: Function<DBTransaction, R>): R {
         val session = openSession()
         try {
             return session.inTransaction(operation)
@@ -118,30 +123,30 @@ internal open class BaseFacade: DBFacade {
         }
     }
 
-    override fun inTransaction(operation: InTransactionNoResult) {
+    override fun inTransactionDo(operation: Consumer<DBTransaction>) {
         val session = openSession()
         try {
-            session.inTransaction(operation)
+            session.inTransactionDo(operation)
         }
         finally {
             session.close()
         }
     }
 
-    override fun <R> inSession(operation: InSession<R>): R {
+    override fun <R : Any?> inSession(operation: Function<DBSession, R>): R {
         val session = openSession()
         try {
-            return operation.run(session)
+            return operation.apply(session)
         }
         finally {
             session.close()
         }
     }
 
-    override fun inSession(operation: InSessionNoResult) {
+    override fun inSessionDo(operation: Consumer<DBSession>) {
         val session = openSession()
         try {
-            operation.run(session)
+            operation.accept(session)
         }
         finally {
             session.close()

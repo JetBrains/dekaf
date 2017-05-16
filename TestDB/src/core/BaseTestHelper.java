@@ -28,8 +28,7 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
   protected final Scriptum scriptum;
 
   @NotNull
-  protected final Set<String> schemasNotToZap =
-      new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+  protected final Set<String> schemasNotToZap = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 
 
 
@@ -60,12 +59,7 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
 
   @Override
   public void performCommand(@NotNull final SqlCommand command) {
-    db.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
-        session.command(command).run();
-      }
-    });
+    db.inSessionDo(session -> session.command(command).run());
   }
 
   @Override
@@ -96,12 +90,7 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
 
   @Override
   public void performScript(@NotNull final SqlScript script) {
-    db.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
-        session.script(script).run();
-      }
-    });
+    db.inSessionDo(session -> session.script(script).run());
   }
 
   @Override
@@ -138,9 +127,7 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
     final SqlQuery<List<String>> metaQuery =
         scriptum.query(metaQueryName, listOf(oneOf(String.class)));
 
-    db.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
+    db.inSessionDo(session -> {
 
         List<String> commands = session.query(metaQuery).withParams(params).run();
 
@@ -153,21 +140,13 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
 
         session.script(script).run();
 
-      }
     });
   }
 
 
   @Override
   public int countTableRows(@NotNull final String tableName) {
-    return db.inSession(new InSession<Integer>() {
-      @Override
-      public Integer run(@NotNull final DBSession session) {
-
-        return countTableRows(session, tableName);
-
-      }
-    });
+    return db.inSession(session -> countTableRows(session, tableName));
   }
 
   @Override

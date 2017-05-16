@@ -1,6 +1,5 @@
 package org.jetbrains.dekaf.core;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.sql.SqlCommand;
 import org.jetbrains.dekaf.sql.SqlQuery;
 import org.jetbrains.dekaf.sql.SqlScript;
@@ -16,13 +15,10 @@ public class BaseScriptRunnerTest extends BaseInMemoryDBFacadeCase {
     final SqlScript script = new SqlScript("create table TT2(X1 integer)",
                                            "drop table TT2");
 
-    myFacade.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
+    myFacade.inSessionDo(session -> {
 
         session.script(script).run();
 
-      }
     });
   }
 
@@ -33,13 +29,10 @@ public class BaseScriptRunnerTest extends BaseInMemoryDBFacadeCase {
                                            "select * from TT4",
                                            "drop table TT4");
 
-    myFacade.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
+    myFacade.inSessionDo(session -> {
 
         session.script(script).run();
 
-      }
     });
   }
 
@@ -51,13 +44,10 @@ public class BaseScriptRunnerTest extends BaseInMemoryDBFacadeCase {
                       new SqlQuery<Boolean>("select * from TT4a", Layouts.existence()),
                       new SqlCommand("drop table TT4a"));
 
-    myFacade.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
+    myFacade.inSessionDo(session -> {
 
         session.script(script).run();
 
-      }
     });
   }
 

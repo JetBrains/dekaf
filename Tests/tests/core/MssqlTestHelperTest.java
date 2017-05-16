@@ -96,11 +96,8 @@ public class MssqlTestHelperTest extends CommonIntegrationCase {
     assert DB != null;
 
     Boolean exists =
-        DB.inSession(new InSession<Boolean>() {
-          @Override
-          public Boolean run(@NotNull final DBSession session) {
+        DB.inSession(session -> {
             return session.query(ourObjectExistsQuery).withParams(sequenceName).run();
-          }
         });
     return exists != null && exists;
   }
@@ -109,11 +106,8 @@ public class MssqlTestHelperTest extends CommonIntegrationCase {
     assert DB != null;
 
     Boolean exists =
-        DB.inSession(new InSession<Boolean>() {
-          @Override
-          public Boolean run(@NotNull final DBSession session) {
+        DB.inSession(session -> {
             return session.query(ourTypeExistsQuery).withParams(typeName).run();
-          }
         });
     return exists != null && exists;
   }

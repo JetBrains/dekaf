@@ -6,6 +6,9 @@ import org.jetbrains.dekaf.Rdbms;
 import org.jetbrains.dekaf.exceptions.DBIsNotConnected;
 import org.jetbrains.dekaf.intermediate.IntegralIntermediateFacade;
 import org.jetbrains.dekaf.intermediate.IntegralIntermediateSession;
+import org.jetbrains.dekaf.util.Function;
+
+import java.util.function.Consumer;
 
 
 
@@ -76,33 +79,19 @@ public class BaseFacade implements DBFacade {
   }
 
 
-
   @Override
-  public <R> R inTransaction(final InTransaction<? extends R> operation) {
-    return inSession(new InSession<R>() {
-      @Override
-      public R run(@NotNull final DBSession session) {
-
-        return session.inTransaction(operation);
-
-      }
-    });
+  public <R> R inTransaction(@NotNull final Function<@NotNull DBTransaction, R> operation) {
+    return inSession(session -> session.inTransaction(operation));
   }
 
   @Override
-  public void inTransaction(final InTransactionNoResult operation) {
-    inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
-
-        session.inTransaction(operation);
-
-      }
-    });
+  public void inTransactionDo(@NotNull final Consumer<@NotNull DBTransaction> operation) {
+    inSessionDo(session -> session.inTransactionDo(operation));
   }
 
   @Override
-  public <R> R inSession(final InSession<? extends R> operation) {
+  public <R> R inSession(@NotNull final Function<@NotNull DBSession, R> operation) {
+    //noinspection ConstantConditions
     if (operation == null) throw new IllegalArgumentException("The operation is null");
     if (!isConnected()) throw new DBIsNotConnected("Facade is not connected.");
 
@@ -110,7 +99,7 @@ public class BaseFacade implements DBFacade {
     final IntegralIntermediateSession interSession = instantiateIntermediateSession();
     try {
       final BaseSession session = new BaseSession(interSession);
-      result = operation.run(session);
+      result = operation.apply(session);
       session.closeRunners();
     }
     finally {
@@ -120,14 +109,15 @@ public class BaseFacade implements DBFacade {
   }
 
   @Override
-  public void inSession(final InSessionNoResult operation) {
+  public void inSessionDo(@NotNull final Consumer<@NotNull DBSession> operation) {
+    //noinspection ConstantConditions
     if (operation == null) return;
     if (!isConnected()) throw new DBIsNotConnected("Facade is not connected.");
 
     final IntegralIntermediateSession interSession = instantiateIntermediateSession();
     try {
       final BaseSession session = new BaseSession(interSession);
-      operation.run(session);
+      operation.accept(session);
       session.closeRunners();
     }
     finally {

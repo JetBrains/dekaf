@@ -1,9 +1,10 @@
 package org.jetbrains.dekaf.jdbc;
 
 import org.hamcrest.core.IsEqual;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.TestEnvironment;
-import org.jetbrains.dekaf.core.*;
+import org.jetbrains.dekaf.core.BaseFederatedProvider;
+import org.jetbrains.dekaf.core.CommonExceptionRecognizingTest;
+import org.jetbrains.dekaf.core.DBFacade;
 import org.jetbrains.dekaf.exceptions.DBColumnAccessDeniedException;
 import org.jetbrains.dekaf.exceptions.DBLoginFailedException;
 import org.jetbrains.dekaf.sql.SqlQuery;
@@ -28,14 +29,7 @@ public class SybaseExceptionRecognizerTest extends CommonExceptionRecognizingTes
     final String queryText = "select * from master.dbo.sysdatabases";
     final SqlQuery<Boolean> query = new SqlQuery<Boolean>(queryText, existence());
 
-    DB.inTransaction(new InTransactionNoResult() {
-      @Override
-      public void run(@NotNull final DBTransaction tran) {
-
-        tran.query(query).run();
-
-      }
-    });
+    DB.inTransactionDo(tran -> tran.query(query).run());
   }
 
 

@@ -84,15 +84,12 @@ public class MysqlQueryRunnerTest extends CommonQueryRunnerTest {
     final int[] x = new int[1];
 
     int[] values =
-      DB.inTransaction(new InTransaction<int[]>() {
-        @Override
-        public int[] run(@NotNull final DBTransaction tran) {
+      DB.inTransaction(tran -> {
           DBQueryRunner<int[]> queryRunner =
               tran.query("select X from X1000000 order by 1", columnOfInts(1000000));
-          int[] values = queryRunner.run();
+          int[] vals = queryRunner.run();
           x[0] = getStatementFetchSize(queryRunner);
-          return values;
-        }
+          return vals;
       });
 
     assertThat(values).isNotNull()
@@ -115,9 +112,7 @@ public class MysqlQueryRunnerTest extends CommonQueryRunnerTest {
 
     final int[] result = new int[1000000];
 
-    DB.inTransaction(new InTransactionNoResult() {
-      @Override
-      public void run(@NotNull final DBTransaction tran) {
+    DB.inTransactionDo(tran -> {
 
         DBQueryRunner<int[]> queryRunner = tran.query("select X from X1000000 order by 1",
                                                 columnOfInts(1000));
@@ -131,7 +126,6 @@ public class MysqlQueryRunnerTest extends CommonQueryRunnerTest {
           pack = queryRunner.nextPack();
         }
 
-      }
     });
 
     assertThat(result).contains(1,2,3,4,999998,999999,1000000);
@@ -155,13 +149,10 @@ public class MysqlQueryRunnerTest extends CommonQueryRunnerTest {
   private void query_string(@NotNull final String string) {
     final String query = "select '" + string + "' as test_str";
     String result =
-        DB.inTransaction(new InTransaction<String>() {
-          @Override
-          public String run(@NotNull final DBTransaction tran) {
+        DB.inTransaction(tran -> {
 
             return tran.query(query, singleOf(String.class)).run();
 
-          }
         });
 
     assertThat(result).isEqualTo(string);

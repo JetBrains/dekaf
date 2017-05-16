@@ -1,9 +1,6 @@
 package org.jetbrains.dekaf.jdbc;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.core.CommonExceptionRecognizingTest;
-import org.jetbrains.dekaf.core.DBTransaction;
-import org.jetbrains.dekaf.core.InTransactionNoResult;
 import org.jetbrains.dekaf.exceptions.NoRowsException;
 import org.jetbrains.dekaf.sql.Scriptum;
 import org.jetbrains.dekaf.sql.SqlCommand;
@@ -21,12 +18,7 @@ public class OracleExceptionRecognizingTest extends CommonExceptionRecognizingTe
   @Test(expected = NoRowsException.class)
   public void recognize_NoRows() {
     final SqlCommand command = myScriptum.command("NoRows");
-    DB.inTransaction(new InTransactionNoResult() {
-      @Override
-      public void run(@NotNull final DBTransaction tran) {
-        tran.command(command).run();
-      }
-    });
+    DB.inTransactionDo(tran -> tran.command(command).run());
   }
 
 

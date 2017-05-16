@@ -1,6 +1,5 @@
 package org.jetbrains.dekaf.core;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.CommonIntegrationCase;
 import org.jetbrains.dekaf.sql.Scriptum;
 import org.jetbrains.dekaf.sql.SqlQuery;
@@ -35,14 +34,7 @@ public class SudokuTest extends CommonIntegrationCase {
         myScriptum.query("retrieve-one-sudoku", Layouts.singleOf(byte[][].class));
 
     byte[][] rebus =
-        DB.inSession(new InSession<byte[][]>() {
-          @Override
-          public byte[][] run(@NotNull final DBSession session) {
-
-            return session.query(query).run();
-
-          }
-        });
+        DB.inSession(session -> session.query(query).run());
 
     assertThat(rebus).hasSize(3);
     assertThat(rebus[0]).hasSize(9);
@@ -57,14 +49,7 @@ public class SudokuTest extends CommonIntegrationCase {
         myScriptum.query("retrieve-couple-of-sudoku", rowOf(arrayOf(2, byte[][].class)));
 
     byte[][][] puzzle =
-        DB.inSession(new InSession<byte[][][]>() {
-          @Override
-          public byte[][][] run(@NotNull final DBSession session) {
-
-            return session.query(query).run();
-
-          }
-        });
+        DB.inSession(session -> session.query(query).run());
 
     assertThat(puzzle).hasSize(2);
     assertThat(puzzle[0]).hasSize(3);

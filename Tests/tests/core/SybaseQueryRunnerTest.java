@@ -59,14 +59,7 @@ public class SybaseQueryRunnerTest extends CommonQueryRunnerTest {
   private void query_string(@NotNull final String string) {
     final String query = "select '" + string + "' as test_str";
     String result =
-        DB.inTransaction(new InTransaction<String>() {
-          @Override
-          public String run(@NotNull final DBTransaction tran) {
-
-            return tran.query(query, singleOf(String.class)).run();
-
-          }
-        });
+        DB.inTransaction(tran -> tran.query(query, singleOf(String.class)).run());
 
     assertThat(result).isEqualTo(string);
   }

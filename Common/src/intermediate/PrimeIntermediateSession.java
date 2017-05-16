@@ -51,7 +51,7 @@ public interface PrimeIntermediateSession extends ImplementationAccessibleServic
    * @see #isClosed()
    * @see org.jetbrains.dekaf.core.DBLeasedSession#ping()
    */
-  long ping();
+  int ping();
 
   /**
    * Closes the session.

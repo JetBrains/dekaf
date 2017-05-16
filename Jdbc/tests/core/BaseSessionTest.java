@@ -1,7 +1,6 @@
 package org.jetbrains.dekaf.core;
 
 import org.assertj.core.api.Assertions;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.intermediate.IntegralIntermediateSession;
 import org.jetbrains.dekaf.jdbc.JdbcIntermediateSession;
 import org.jetbrains.dekaf.sql.SqlQuery;
@@ -24,37 +23,28 @@ public class BaseSessionTest extends BaseInMemoryDBFacadeCase {
 
   @Test
   public void basic_scenario() {
-    myFacade.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
+    myFacade.inSessionDo(session -> {
 
         session.command("create table tab1 (x integer)").run();
 
-        session.inTransaction(new InTransactionNoResult() {
-          @Override
-          public void run(@NotNull final DBTransaction tran) {
+        session.inTransactionDo(tran -> {
 
             tran.command("insert into tab1 values(44)").run();
 
-          }
         });
 
         final SqlQuery<Integer> query =
                 new SqlQuery<Integer>("select * from tab1", singleOf(Integer.class));
-        int x = session.inTransaction(new InTransaction<Integer>() {
-          @Override
-          public Integer run(@NotNull final DBTransaction tran) {
+        int x = session.inTransaction(tran -> {
 
             return tran.query(query).run();
 
-          }
         });
 
         session.command("drop table tab1").run();
 
         Assertions.assertThat(x).isEqualTo(44);
 
-      }
     });
 
     checkAllAreClosed();
@@ -63,9 +53,7 @@ public class BaseSessionTest extends BaseInMemoryDBFacadeCase {
 
   @Test
   public void iterative_scenario() {
-    myFacade.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
+    myFacade.inSessionDo(session -> {
 
         session.command("create table Turbo2000 (x smallint)").run();
 
@@ -89,7 +77,6 @@ public class BaseSessionTest extends BaseInMemoryDBFacadeCase {
         }
 
         Assertions.assertThat(packs).isEqualTo(20); // 2000 / 100 = 20
-      }
     });
 
     checkAllAreClosed();
@@ -137,22 +124,17 @@ public class BaseSessionTest extends BaseInMemoryDBFacadeCase {
 
   @Test
   public void transaction_should_close_seances() {
-    myFacade.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
+    myFacade.inSessionDo(session -> {
 
         session.command("create table just_table_333 (x integer)").run();
 
-        session.inTransaction(new InTransactionNoResult() {
-          @Override
-          public void run(@NotNull final DBTransaction tran) {
+        session.inTransactionDo(tran -> {
 
             tran.command("insert into just_table_333 values (111), (222), (333)").run();
             tran.query("select * from just_table_333", singleOf(Integer.class))
                 .packBy(1)
                 .run();
 
-          }
         });
 
         JdbcIntermediateSession intermediateSession =
@@ -162,16 +144,13 @@ public class BaseSessionTest extends BaseInMemoryDBFacadeCase {
         assertThat(intermediateSession.countOpenedSeances()).isZero();
         assertThat(intermediateSession.countOpenedCursors()).isZero();
 
-      }
     });
   }
 
 
   @Test
   public void get_intermediate_service() {
-    myFacade.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
+    myFacade.inSessionDo(session -> {
 
         final IntegralIntermediateSession intermediateSession =
             session.getSpecificService(
@@ -179,15 +158,12 @@ public class BaseSessionTest extends BaseInMemoryDBFacadeCase {
                 ImplementationAccessibleService.Names.INTERMEDIATE_SERVICE);
         Assertions.assertThat(intermediateSession).isInstanceOf(JdbcIntermediateSession.class);
 
-      }
     });
   }
 
   @Test
   public void get_jdbc_connection() {
-    myFacade.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
+    myFacade.inSessionDo(session -> {
 
         java.sql.Connection connection =
             session.getSpecificService(java.sql.Connection.class,
@@ -195,7 +171,6 @@ public class BaseSessionTest extends BaseInMemoryDBFacadeCase {
         Assertions.assertThat(connection).isNotNull()
                   .isInstanceOf(java.sql.Connection.class);
 
-      }
     });
   }
 

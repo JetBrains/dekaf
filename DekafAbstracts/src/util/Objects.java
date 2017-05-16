@@ -15,14 +15,14 @@ import static java.lang.String.format;
  **/
 public abstract class Objects {
 
-  @Contract("_,!null->!null; _,null->null")
+
+  @Contract("_,!null->!null; _,null->null") @SuppressWarnings("unchecked")
   public static <C> C castTo(@NotNull final Class<C> clazz, @Nullable final Object object)
       throws ClassCastException
   {
     if (object != null) {
       final Class<?> objectClass = object.getClass();
       if (clazz.isAssignableFrom(objectClass)) {
-        //noinspection unchecked
         return (C) object;
       }
       else {

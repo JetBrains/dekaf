@@ -5,6 +5,8 @@ import org.jetbrains.dekaf.inter.InterSession
 import org.jetbrains.dekaf.sql.SqlCommand
 import org.jetbrains.dekaf.sql.SqlQuery
 import org.jetbrains.dekaf.sql.SqlScript
+import org.jetbrains.dekaf.util.Function
+import java.util.function.Consumer
 
 
 internal open class BaseSession: DBLeasedSession {
@@ -33,10 +35,10 @@ internal open class BaseSession: DBLeasedSession {
 
     /// TRANSACTIONS \\\
 
-    override fun <R> inTransaction(operation: InTransaction<R>): R {
+    override fun <R : Any?> inTransaction(operation: Function<DBTransaction, R>): R {
         beginTransaction()
         try {
-            val result = operation.run(this)
+            val result = operation.apply(this)
             commit()
             return result
         }
@@ -46,10 +48,10 @@ internal open class BaseSession: DBLeasedSession {
         }
     }
 
-    override fun inTransaction(operation: InTransactionNoResult) {
+    override fun inTransactionDo(operation: Consumer<DBTransaction>) {
         beginTransaction()
         try {
-            operation.run(this)
+            operation.accept(this)
             commit()
         }
         catch (e: Exception) {
@@ -59,18 +61,21 @@ internal open class BaseSession: DBLeasedSession {
     }
 
     override fun beginTransaction() {
-        TODO("not implemented yet")
+        inter.begin()
+        insideTran = true
     }
 
     override val isInTransaction: Boolean
         get() = insideTran
 
     override fun commit() {
-        TODO("not implemented yet")
+        inter.commit()
+        insideTran = false
     }
 
     override fun rollback() {
-        TODO("not implemented yet")
+        inter.rollback()
+        insideTran = false
     }
 
 
@@ -96,8 +101,8 @@ internal open class BaseSession: DBLeasedSession {
         TODO("not implemented yet")
     }
 
-    override fun ping(): Long {
-        return inter.ping().toLong()
+    override fun ping(): Int {
+        return inter.ping()
     }
 
     override val isClosed: Boolean

@@ -3,6 +3,9 @@ package demo.kotlin
 import org.jetbrains.dekaf.DekafMaster
 
 
+/**
+ * Step 01: Connect to a database, ping and disconnect.
+ */
 object Step01 {
 
     @JvmStatic

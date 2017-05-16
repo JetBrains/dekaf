@@ -1,6 +1,5 @@
 package org.jetbrains.dekaf.core;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.CommonIntegrationCase;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -52,9 +51,7 @@ public class CommonPrimaryTest extends CommonIntegrationCase {
     final StringBuilder b = new StringBuilder(240);
     b.append("JDBC DatabaseMetaData:\n");
 
-    DB.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
+    DB.inSessionDo(session -> {
 
         DatabaseMetaData md =
             session.getSpecificService(DatabaseMetaData.class,
@@ -74,7 +71,6 @@ public class CommonPrimaryTest extends CommonIntegrationCase {
           throw new RuntimeException(e);
         }
 
-      }
     });
 
     System.out.println(b.toString());
@@ -136,9 +132,7 @@ public class CommonPrimaryTest extends CommonIntegrationCase {
     assert DB != null;
 
     DB.connect();
-    DB.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
+    DB.inSessionDo(session -> {
 
         final Integer v = session.query("select 1 " + TH.fromSingleRowTable(),
                                           Layouts.singleOf(Integer.class))
@@ -146,7 +140,6 @@ public class CommonPrimaryTest extends CommonIntegrationCase {
         assertThat(v).isNotNull()
                      .isEqualTo(1);
 
-      }
     });
   }
 
@@ -155,9 +148,7 @@ public class CommonPrimaryTest extends CommonIntegrationCase {
     assert DB != null;
 
     DB.connect();
-    DB.inTransaction(new InTransactionNoResult() {
-      @Override
-      public void run(@NotNull final DBTransaction tran) {
+    DB.inTransactionDo(tran -> {
 
         final Integer v = tran.query("select 1 " + TH.fromSingleRowTable(),
                                         Layouts.singleOf(Integer.class))
@@ -165,7 +156,6 @@ public class CommonPrimaryTest extends CommonIntegrationCase {
         assertThat(v).isNotNull()
                      .isEqualTo(1);
 
-      }
     });
   }
 

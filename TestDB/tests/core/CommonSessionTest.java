@@ -1,6 +1,5 @@
 package org.jetbrains.dekaf.core;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.CommonIntegrationCase;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -80,9 +79,7 @@ public abstract class CommonSessionTest extends CommonIntegrationCase {
 
   @Test
   public void access_metadata() {
-    DB.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
+    DB.inSessionDo(session -> {
 
         DatabaseMetaData md =
             session.getSpecificService(DatabaseMetaData.class,
@@ -99,7 +96,6 @@ public abstract class CommonSessionTest extends CommonIntegrationCase {
         }
         assertThat(driverName).isNotNull();
 
-      }
     });
   }
 

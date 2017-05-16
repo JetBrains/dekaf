@@ -58,7 +58,7 @@ public class AdaptIntermediateSession implements IntegralIntermediateSession {
 
 
   @Override
-  public long ping() {
+  public int ping() {
     if (myRemoteSession.isClosed())
       throw new DBSessionIsClosedException("The intermediate session is closed.");
 

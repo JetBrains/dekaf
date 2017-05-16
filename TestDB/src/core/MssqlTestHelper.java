@@ -31,9 +31,7 @@ public class MssqlTestHelper extends BaseTestHelper<DBFacade> {
   @Override
   public void prepareX1() {
     final TextFileFragment x1 = scriptum.getText("X1");
-    db.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
+    db.inSessionDo(session -> {
         Connection conn =
           session.getSpecificService(Connection.class,
                                      ImplementationAccessibleService.Names.JDBC_CONNECTION);
@@ -47,7 +45,6 @@ public class MssqlTestHelper extends BaseTestHelper<DBFacade> {
         catch (SQLException e) {
           throw new RuntimeException(e);
         }
-      }
     });
   }
 

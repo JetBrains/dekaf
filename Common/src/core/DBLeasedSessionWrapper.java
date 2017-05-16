@@ -7,6 +7,9 @@ import org.jetbrains.dekaf.exceptions.DBSessionIsClosedException;
 import org.jetbrains.dekaf.sql.SqlCommand;
 import org.jetbrains.dekaf.sql.SqlQuery;
 import org.jetbrains.dekaf.sql.SqlScript;
+import org.jetbrains.dekaf.util.Function;
+
+import java.util.function.Consumer;
 
 
 
@@ -51,7 +54,7 @@ class DBLeasedSessionWrapper implements DBLeasedSession {
   }
 
   @Override
-  public long ping() {
+  public int ping() {
     checkIsNotClosed();
     return myOriginalSession.ping();
   }
@@ -85,15 +88,15 @@ class DBLeasedSessionWrapper implements DBLeasedSession {
   }
 
   @Override
-  public synchronized <R> R inTransaction(final InTransaction<? extends R> operation) {
+  public <R> R inTransaction(@NotNull final Function<@NotNull DBTransaction, R> operation) {
     checkIsNotClosed();
     return myOriginalSession.inTransaction(operation);
   }
 
   @Override
-  public synchronized void inTransaction(final InTransactionNoResult operation) {
+  public void inTransactionDo(@NotNull final Consumer<@NotNull DBTransaction> operation) {
     checkIsNotClosed();
-    myOriginalSession.inTransaction(operation);
+    myOriginalSession.inTransactionDo(operation);
   }
 
   @Override

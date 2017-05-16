@@ -103,11 +103,11 @@ public class JdbcSimpleDataSource implements DataSource, ImplementationAccessibl
     throw new RuntimeException("The JdbcSimpleDataSource.getLoginTimeout has not been implemented yet.");
   }
 
-  @Override
+
   @NotNull
+  @Override @SuppressWarnings("unchecked")
   public <T> T unwrap(@SuppressWarnings("SpellCheckingInspection") final Class<T> iface) {
     if (iface.isAssignableFrom(JdbcSimpleDataSource.class)) {
-      //noinspection unchecked
       return (T) this;
     }
     else {

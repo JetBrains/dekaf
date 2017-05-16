@@ -80,15 +80,12 @@ public class UnknownDBTestHelper extends BaseTestHelper<DBFacade> {
     if (connectionInfo.schemaName == null)
       throw new IllegalStateException("Cannot clean schema when the schema name is unknown");
 
-    db.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
+    db.inSessionDo(session -> {
 
         for (String name : names) {
           zapTables(session, connectionInfo, name, tableTypes);
         }
 
-      }
     });
   }
 
@@ -100,13 +97,10 @@ public class UnknownDBTestHelper extends BaseTestHelper<DBFacade> {
     if (connectionInfo.schemaName == null)
       throw new IllegalStateException("Cannot clean schema when the schema name is unknown");
 
-    db.inSession(new InSessionNoResult() {
-      @Override
-      public void run(@NotNull final DBSession session) {
+    db.inSessionDo(session -> {
 
         zapTables(session, connectionInfo, "%", null);
 
-      }
     });
   }
 

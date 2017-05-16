@@ -21,12 +21,9 @@ public class SybaseTestHelper extends BaseTestHelper<DBFacade> {
 
 
   private boolean tableExists(@NotNull final String name) {
-    return db.inSession(new InSession<Boolean>() {
-      @Override
-      public Boolean run(@NotNull final DBSession session) {
-          return session.query(myTableOrViewExistenceQuery).withParams(name).run();
-      }
-    });
+    return db.inSession(session ->
+           session.query(myTableOrViewExistenceQuery).withParams(name).run()
+    );
   }
 
 
