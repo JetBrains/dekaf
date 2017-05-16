@@ -45,6 +45,11 @@ public class BaseFacade implements DBFacade {
   }
 
   @Override
+  public int ping() {
+    return Integer.MIN_VALUE;
+  }
+
+  @Override
   public synchronized void disconnect() {
     myInterFacade.disconnect();
     myConnectionInfo = null;

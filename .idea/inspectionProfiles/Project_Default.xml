@@ -1,10 +1,12 @@
 <component name="InspectionProjectProfileManager">
   <profile version="1.0">
     <option name="myName" value="Project Default" />
+    <inspection_tool class="ConvertSecondaryConstructorToPrimary" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="ForCanBeForeach" enabled="false" level="WARNING" enabled_by_default="false">
       <option name="REPORT_INDEXED_LOOP" value="true" />
       <option name="ignoreUntypedCollections" value="false" />
     </inspection_tool>
+    <inspection_tool class="LoopToCallChain" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="UnnecessaryLocalVariable" enabled="true" level="INFORMATION" enabled_by_default="true">
       <option name="m_ignoreImmediatelyReturnedVariables" value="false" />
       <option name="m_ignoreAnnotatedVariables" value="false" />

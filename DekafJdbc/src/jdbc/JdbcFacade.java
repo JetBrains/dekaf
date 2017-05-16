@@ -94,7 +94,7 @@ final class JdbcFacade implements InterFacade {
 
     @Override
     public void activate() {
-        if (dataSource != null) {
+        if (dataSource == null) {
             Driver driver = ensureDriver();
             JdbcSimpleDataSource ds = new JdbcSimpleDataSource(connectionString, properties, driver);
             dataSource = ds;
@@ -111,13 +111,13 @@ final class JdbcFacade implements InterFacade {
     }
 
     @Override
-    public void deactivate() {
-        if (!active) return;
+    public boolean isActive() {
+        return active;
     }
 
     @Override
-    public boolean isActive() {
-        return active;
+    public void deactivate() {
+        if (!active) return;
     }
 
 
@@ -135,8 +135,12 @@ final class JdbcFacade implements InterFacade {
     }
 
     private Connection obtainConnection() {
+        DataSource ds = dataSource;
+        assert ds != null : "DataSource is not initialized";
         try {
-            return dataSource.getConnection();
+            Connection connection = ds.getConnection();
+            assert connection != null : "Connection is not obtained";
+            return connection;
         }
         catch (SQLException e) {
             throw new DBConnectionException(e, null);

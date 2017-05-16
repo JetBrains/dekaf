@@ -84,6 +84,21 @@ final class JdbcSession implements InterSession {
         return seance;
     }
 
+    @Override
+    public int ping() {
+        final long time1 = System.currentTimeMillis();
+
+        try {
+            specific.ping(connection);
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        
+        final long time2 = System.currentTimeMillis();
+        return (int) (time2 - time1);
+    }
+
     synchronized void seanceJustClosed(@NotNull JdbcSeance seance) {
         seances.remove(seance);
     }

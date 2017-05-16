@@ -23,6 +23,11 @@ public interface InterSession {
     InterSeance openSeance();
 
 
+    ////// OTHER \\\\\\
+
+    int ping();
+
+
     ////// CLOSING \\\\\\
 
     void close();

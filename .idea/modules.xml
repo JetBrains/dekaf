@@ -8,6 +8,8 @@
       <module fileurl="file://$PROJECT_DIR$/DekafAbstracts/DekafAbstracts.iml" filepath="$PROJECT_DIR$/DekafAbstracts/DekafAbstracts.iml" />
       <module fileurl="file://$PROJECT_DIR$/DekafJdbc/DekafJdbc.iml" filepath="$PROJECT_DIR$/DekafJdbc/DekafJdbc.iml" />
       <module fileurl="file://$PROJECT_DIR$/DekafMain/DekafMain.iml" filepath="$PROJECT_DIR$/DekafMain/DekafMain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DemoOnJava/DemoOnJava.iml" filepath="$PROJECT_DIR$/DemoOnJava/DemoOnJava.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DemoOnKotlin/DemoOnKotlin.iml" filepath="$PROJECT_DIR$/DemoOnKotlin/DemoOnKotlin.iml" />
       <module fileurl="file://$PROJECT_DIR$/Jdbc/Jdbc.iml" filepath="$PROJECT_DIR$/Jdbc/Jdbc.iml" />
       <module fileurl="file://$PROJECT_DIR$/JunitExtension/JunitExtension.iml" filepath="$PROJECT_DIR$/JunitExtension/JunitExtension.iml" />
       <module fileurl="file://$PROJECT_DIR$/TestDB/TestDB.iml" filepath="$PROJECT_DIR$/TestDB/TestDB.iml" />

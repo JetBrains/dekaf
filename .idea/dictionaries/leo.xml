@@ -11,6 +11,7 @@
       <w>dekaf</w>
       <w>deregister</w>
       <w>deregistering</w>
+      <w>iface</w>
       <w>inno</w>
       <w>isam</w>
       <w>jacoco</w>
@@ -28,6 +29,7 @@
       <w>plpgsql</w>
       <w>postgre</w>
       <w>postgresql</w>
+      <w>prima</w>
       <w>rdbms</w>
       <w>reinit</w>
       <w>rewriters</w>

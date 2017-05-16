@@ -28,6 +28,12 @@ interface DBFacade : ImplementationAccessibleService {
     fun reconnect()
 
     /**
+     * Ping the server to check whether it's alive.
+     * @return respond delay, in ms.
+     */
+    fun ping(): Int
+
+    /**
      * Disconnects from the database server.
      *
      *

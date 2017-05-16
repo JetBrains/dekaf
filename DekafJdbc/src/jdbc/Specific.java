@@ -3,7 +3,9 @@ package org.jetbrains.dekaf.jdbc;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.regex.Pattern;
 
 
@@ -31,4 +33,16 @@ abstract class Specific {
         connection.rollback();
     }
 
+    void ping(final @NotNull Connection connection) throws SQLException {
+        final String query = pingQuery();
+        try (Statement statement = connection.createStatement()) {
+            try (ResultSet rset = statement.executeQuery(query)) {
+                rset.next();
+            }
+        }
+    }
+
+    String pingQuery() {
+        return "select 1";
+    }
 }

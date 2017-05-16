@@ -31,9 +31,9 @@ public interface InterFacade extends ImplementationAccessibleService {
 
     void activate();
 
-    void deactivate();
-
     boolean isActive();
+
+    void deactivate();
 
 
     ////// SESSIONS \\\\\\
