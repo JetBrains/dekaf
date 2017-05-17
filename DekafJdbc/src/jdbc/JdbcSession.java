@@ -25,6 +25,7 @@ final class JdbcSession implements InterSession {
     private final ArrayList<JdbcSeance> seances = new ArrayList<>();
 
     private boolean inTransaction;
+    private boolean closed;
 
 
     JdbcSession(final @NotNull JdbcFacade facade, final @NotNull Connection connection) {
@@ -105,10 +106,17 @@ final class JdbcSession implements InterSession {
 
     @Override
     public synchronized void close() {
-        if (seances.isEmpty()) return;
-        JdbcSeance[] seancesToClose = this.seances.toArray(new JdbcSeance[0]);
-        for (int i = seancesToClose.length-1; i >= 0; i--) {
-            seancesToClose[i].close();  // TODO wrap by try/catch?
+        if (!seances.isEmpty()) {
+            JdbcSeance[] seancesToClose = this.seances.toArray(new JdbcSeance[0]);
+            for (int i = seancesToClose.length - 1; i >= 0; i--) {
+                seancesToClose[i].close();  // TODO wrap by try/catch?
+            }
         }
+        if (inTransaction) {
+            rollback();
+        }
+        JdbcUtil.close(connection);
+        closed = true;
+        facade.sessionClosed(this);
     }
 }

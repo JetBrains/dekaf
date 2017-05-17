@@ -118,6 +118,15 @@ final class JdbcFacade implements InterFacade {
     @Override
     public void deactivate() {
         if (!active) return;
+        if (!sessions.isEmpty()) closeAllSessions();
+        active = false;
+    }
+
+    private void closeAllSessions() {
+        JdbcSession[] sessionsToClose = this.sessions.toArray(new JdbcSession[0]);
+        for (int i = sessionsToClose.length-1; i >= 0; i--) {
+            sessionsToClose[i].close();
+        }
     }
 
 
@@ -134,7 +143,8 @@ final class JdbcFacade implements InterFacade {
         return session;
     }
 
-    private Connection obtainConnection() {
+    @NotNull
+    Connection obtainConnection() {
         DataSource ds = dataSource;
         assert ds != null : "DataSource is not initialized";
         try {
@@ -147,10 +157,19 @@ final class JdbcFacade implements InterFacade {
         }
     }
 
+    void sessionClosed(final @NotNull JdbcSession session) {
+        sessions.remove(session);
+    }
+
+
+    ////// DIAGNOSTIC FUNCTIONS \\\\\\
+
+    int countSessions() {
+        return sessions.size();
+    }
+
 
     ////// IMPLEMENTATION SERVICES \\\\\\
-
-
 
 
     @Override @SuppressWarnings("unchecked")
