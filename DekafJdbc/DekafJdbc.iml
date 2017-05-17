@@ -14,5 +14,7 @@
     <orderEntry type="library" scope="TEST" name="testing5" level="project" />
     <orderEntry type="library" scope="TEST" name="h2" level="project" />
     <orderEntry type="library" scope="TEST" name="jdbc" level="project" />
+    <orderEntry type="library" scope="TEST" name="kotlin" level="project" />
+    <orderEntry type="module" module-name="KoExpectations" />
   </component>
 </module>
