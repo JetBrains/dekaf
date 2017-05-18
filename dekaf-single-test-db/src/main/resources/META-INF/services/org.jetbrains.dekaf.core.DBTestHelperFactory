@@ -5,3 +5,4 @@ org.jetbrains.dekaf.core.SybaseTestHelperFactory
 org.jetbrains.dekaf.core.MysqlTestHelperFactory
 org.jetbrains.dekaf.core.H2dbTestHelperFactory
 org.jetbrains.dekaf.core.SqliteTestHelperFactory
+org.jetbrains.dekaf.core.RedshiftTestHelperFactory

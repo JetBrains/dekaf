@@ -45,6 +45,10 @@
     <module>dekaf-h2db-test-db</module>
     <module>dekaf-h2db-tests</module>
 
+    <module>dekaf-redshift</module>
+    <module>dekaf-redshift-test-db</module>
+    <module>dekaf-redshift-tests</module>
+
     <module>dekaf-single</module>
     <module>dekaf-single-test-db</module>
 

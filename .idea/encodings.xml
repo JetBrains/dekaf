@@ -19,6 +19,9 @@
     <file url="file://$PROJECT_DIR$/dekaf-postgres" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dekaf-postgres-test-db" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dekaf-postgres-tests" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dekaf-redshift" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dekaf-redshift-test-db" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dekaf-redshift-tests" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dekaf-single" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dekaf-single-test-db" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dekaf-sqlite" charset="UTF-8" />

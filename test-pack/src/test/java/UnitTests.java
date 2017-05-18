@@ -1,12 +1,13 @@
-/**
- * @author Leonid Bushuev from JetBrains
- **/
-
 import org.jetbrains.dekaf.CoreUnitTests;
 import org.jetbrains.dekaf.jdbc.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+
+
+/**
+ * @author Leonid Bushuev from JetBrains
+ **/
 
 
 @RunWith(Suite.class)
@@ -19,6 +20,7 @@ import org.junit.runners.Suite;
     SybaseJdbcUnitTests.class,
     MysqlJdbcUnitTests.class,
     H2dbJdbcUnitTests.class,
-    SqliteJdbcUnitTests.class
+    SqliteJdbcUnitTests.class,
+    RedshiftJdbcUnitTests.class
 })
 public class UnitTests {}

@@ -184,6 +184,27 @@
       </excludes>
     </fileSet>
 
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>../dekaf-redshift/target</directory>
+      <includes>
+        <include>dekaf-*.jar</include>
+      </includes>
+      <excludes>
+        <exclude>*-tests.jar</exclude>
+      </excludes>
+    </fileSet>
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>../dekaf-redshift-test-db/target</directory>
+      <includes>
+        <include>dekaf-*.jar</include>
+      </includes>
+      <excludes>
+        <exclude>*-tests.jar</exclude>
+      </excludes>
+    </fileSet>
+
   </fileSets>
 
 </assembly>

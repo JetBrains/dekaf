@@ -20,6 +20,9 @@
       <module fileurl="file://$PROJECT_DIR$/dekaf-postgres/dekaf-postgres.iml" filepath="$PROJECT_DIR$/dekaf-postgres/dekaf-postgres.iml" group="01 Postgres" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-postgres-test-db/dekaf-postgres-test-db.iml" filepath="$PROJECT_DIR$/dekaf-postgres-test-db/dekaf-postgres-test-db.iml" group="01 Postgres" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-postgres-tests/dekaf-postgres-tests.iml" filepath="$PROJECT_DIR$/dekaf-postgres-tests/dekaf-postgres-tests.iml" group="01 Postgres" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-redshift/dekaf-redshift.iml" filepath="$PROJECT_DIR$/dekaf-redshift/dekaf-redshift.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-redshift-test-db/dekaf-redshift-test-db.iml" filepath="$PROJECT_DIR$/dekaf-redshift-test-db/dekaf-redshift-test-db.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-redshift-tests/dekaf-redshift-tests.iml" filepath="$PROJECT_DIR$/dekaf-redshift-tests/dekaf-redshift-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-single/dekaf-single.iml" filepath="$PROJECT_DIR$/dekaf-single/dekaf-single.iml" group="70 All-containing JARs" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-single-test-db/dekaf-single-test-db.iml" filepath="$PROJECT_DIR$/dekaf-single-test-db/dekaf-single-test-db.iml" group="70 All-containing JARs" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-sqlite/dekaf-sqlite.iml" filepath="$PROJECT_DIR$/dekaf-sqlite/dekaf-sqlite.iml" />
