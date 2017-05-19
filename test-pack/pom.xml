@@ -313,6 +313,12 @@
       <artifactId>jconn4</artifactId>
       <version>7.0.7</version>
     </dependency>
+    <dependency>
+      <groupId>com.amazon.redshift</groupId>
+      <artifactId>redshift-jdbc42</artifactId>
+      <version>1.2.1.1001</version>
+      <scope>test</scope>
+    </dependency>
 
   </dependencies>
 
