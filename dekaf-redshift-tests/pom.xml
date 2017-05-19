@@ -10,13 +10,6 @@
     <version>2.0.0-SNAPSHOT</version>
   </parent>
 
-  <repositories>
-    <repository>
-      <id>redshift</id>
-      <url>http://redshift-maven-repository.s3-website-us-east-1.amazonaws.com/release</url>
-    </repository>
-  </repositories>
-
   <artifactId>dekaf-redshift-tests</artifactId>
   <name>Dekaf Redshift Integration Tests</name>
   <version>2.0.0-SNAPSHOT</version>

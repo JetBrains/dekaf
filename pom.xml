@@ -74,6 +74,11 @@
       <name>repo.labs.intellij.net-releases</name>
       <url>http://repo.labs.intellij.net/thirdparty</url>
     </repository>
+    <repository>
+      <id>redshift</id>
+      <name>Redshift Repository</name>
+      <url>http://redshift-maven-repository.s3-website-us-east-1.amazonaws.com/release</url>
+    </repository>
   </repositories>
 
   <build>
