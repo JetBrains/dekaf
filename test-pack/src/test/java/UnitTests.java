@@ -20,7 +20,6 @@ import org.junit.runners.Suite;
     SybaseJdbcUnitTests.class,
     MysqlJdbcUnitTests.class,
     H2dbJdbcUnitTests.class,
-    SqliteJdbcUnitTests.class,
-    RedshiftJdbcUnitTests.class
+    SqliteJdbcUnitTests.class
 })
 public class UnitTests {}
