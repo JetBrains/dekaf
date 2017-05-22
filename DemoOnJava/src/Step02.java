@@ -13,6 +13,8 @@ public final class Step02 {
 
     public static void main(String[] args) {
 
+        System.out.println(Step02.class.getSimpleName());
+
         // Obtain a database facade
         DBFacade facade = DekafMaster.provider.provide(Consts.connectionString);
 

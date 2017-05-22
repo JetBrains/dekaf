@@ -12,6 +12,8 @@ object Step02 {
     @JvmStatic
     fun main(args : Array<String>) {
 
+        System.out.println(this.javaClass.simpleName)
+
         // Obtain a database facade
         val facade = DekafMaster.provider.provide(connectionString)
 
