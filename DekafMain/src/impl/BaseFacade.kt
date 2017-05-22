@@ -158,7 +158,7 @@ internal open class BaseFacade: DBFacade {
     }
 
     private fun openSession(): BaseSession {
-        val interSession = inter.openSession(null, null, null)
+        val interSession = inter.openSession()
         val session = BaseSession(this, interSession)
         sessions += session
         return session

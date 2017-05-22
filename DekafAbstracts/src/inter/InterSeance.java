@@ -1,6 +1,7 @@
 package org.jetbrains.dekaf.inter;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 
@@ -19,8 +20,8 @@ public interface InterSeance {
 
     ////// CURSORS \\\\\\
 
-    @NotNull
-    InterCursor openCursor(byte parameter);
+    @Nullable
+    InterCursor openCursor(byte parameter, @NotNull InterCursorLayout layout);
 
 
     ////// CLOSING \\\\\\

@@ -3,13 +3,15 @@
 
 package org.jetbrains.dekaf.assertions
 
-import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.fail
+import kotlin.reflect.KClass
 
 
 /// ASPECT MARKERS \\\
 
-sealed class KoAssertAspect
+sealed class KoAssertAspect {
+    override fun toString(): String = this.javaClass.simpleName
+}
 
 object IsNull         : KoAssertAspect()
 object IsNotNull      : KoAssertAspect()
@@ -25,11 +27,13 @@ object IsNotEmpty     : KoAssertAspect()
 /// ANY \\\
 
 infix fun Any?.expected(aspect: IsNull) {
-    assertNull(this)
+    if (this != null) fail("Got \"$this\" when expected null")
 }
 
-infix fun<A> A?.expected(aspect: IsNotNull): A {
-    assertNull(this)
+inline infix fun<reified A:Any> A?.expected(aspect: IsNotNull): A {
+    if (this == null) {
+        fail("Got null when expected a non-null instance of ${A::class.java.simpleName}")
+    }
     return this!!
 }
 
@@ -58,10 +62,29 @@ infix fun<A:Any> A?.expectedNotSameAs(value: A?): A? {
     return this
 }
 
-infix fun<A> Any?.expectedClass(expectedClass: java.lang.Class<A>): A {
+infix fun<A> Any?.expectedClass(expectedClass: java.lang.Class<out A>): A {
     if (this != null) {
         val actualClass = this.javaClass
         if (expectedClass.isAssignableFrom(actualClass)) {
+            @Suppress("unchecked_cast")
+            return this as A
+        }
+        else {
+            val message = "Got an instance of ${actualClass.simpleName} when expected one of ${expectedClass.simpleName} (the value: \"$this\")"
+            fail(message)
+            throw RuntimeException() // never reached, just for compiler
+        }
+    }
+    else {
+        fail("Got null when expected an instance of ${expectedClass.simpleName}")
+        throw RuntimeException() // never reached, just for compiler
+    }
+}
+
+infix fun<A:Any> Any?.expectedClass(expectedClass: KClass<out A>): A {
+    if (this != null) {
+        val actualClass: KClass<out Any> = this::class
+        if (actualClass == expectedClass || expectedClass.java.isAssignableFrom(actualClass.java)) {
             @Suppress("unchecked_cast")
             return this as A
         }

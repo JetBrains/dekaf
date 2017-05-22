@@ -38,9 +38,6 @@ public interface InterFacade extends ImplementationAccessibleService {
 
     ////// SESSIONS \\\\\\
 
-    @NotNull
-    InterSession openSession(@Nullable String databaseName,
-                             @Nullable String userName,
-                             @Nullable String password);
+    InterSession openSession();
 
 }

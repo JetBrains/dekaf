@@ -7,7 +7,6 @@ import org.jetbrains.dekaf.core.ConnectionParameterCategory;
 import org.jetbrains.dekaf.core.ImplementationAccessibleService;
 import org.jetbrains.dekaf.exceptions.DBConnectionException;
 import org.jetbrains.dekaf.inter.InterFacade;
-import org.jetbrains.dekaf.inter.InterSession;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -134,9 +133,7 @@ final class JdbcFacade implements InterFacade {
 
 
     @Override
-    public @NotNull InterSession openSession(final @Nullable String databaseName,
-                                             final @Nullable String userName,
-                                             final @Nullable String password) {
+    public JdbcSession openSession() {
         Connection connection = obtainConnection();
         JdbcSession session = new JdbcSession(this, connection);
         sessions.add(session);

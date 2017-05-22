@@ -2,14 +2,17 @@ package org.jetbrains.dekaf.jdbc;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.dekaf.exceptions.DBFetchingException;
 import org.jetbrains.dekaf.exceptions.DBParameterSettingException;
-import org.jetbrains.dekaf.inter.InterCursor;
+import org.jetbrains.dekaf.inter.InterCursorLayout;
 import org.jetbrains.dekaf.inter.InterSeance;
 import org.jetbrains.dekaf.inter.InterTask;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -18,16 +21,18 @@ final class JdbcSeance implements InterSeance {
     @NotNull
     private final JdbcSession session;
 
+    @NotNull
+    private final List<JdbcCursor> cursors = new ArrayList<>();
+
     @Nullable
     private InterTask task;
 
     @Nullable
     private PreparedStatement statement;
 
-    @Nullable
-    private ResultSet primaryResultSet;
-
     private int affectedRows;
+    private boolean returnedResultSet;
+
 
 
     JdbcSeance(final @NotNull JdbcSession session) {
@@ -36,8 +41,9 @@ final class JdbcSeance implements InterSeance {
 
 
     @Override
-    public void prepare(final InterTask task) {
+    public synchronized void prepare(final InterTask task) {
         if (this.task != null) throw new IllegalStateException("The seance is already prepared");
+        clearExecutionState();
         this.task = task;
         String text = task.text;
         try {
@@ -62,7 +68,7 @@ final class JdbcSeance implements InterSeance {
     }
 
     @Override
-    public void assignParameters(final Object[] parameters) {
+    public synchronized void assignParameters(final Object[] parameters) {
         if (parameters == null) return;
         if (statement == null) throw new DBParameterSettingException("Statement is not prepared yet");
 
@@ -73,22 +79,26 @@ final class JdbcSeance implements InterSeance {
             }
             catch (SQLException e) {
                 String message = "Cannot assign parameter " + (i + 1) + ": " + e.getMessage();
-                throw new DBParameterSettingException(message, e, task != null ? task.text : "(no statement text)");
+                throw new DBParameterSettingException(message, e, getStatementText());
             }
         }
     }
 
     @Override
-    public void execute() {
+    public synchronized void execute() {
+        clearExecutionState();
+
+        if (task == null) throw new IllegalStateException("Task is not prepared");
         try {
             switch (task.kind) {
                 case TASK_COMMAND:
                 case TASK_ROUTINE:
+                    if (statement == null) throw new IllegalStateException("JDBC statement for a routine is not prepared");
                     affectedRows = statement.executeUpdate();
                     break;
                 case TASK_QUERY:
-                    primaryResultSet = statement.executeQuery();
-                    // TODO close the result set if it contains no data
+                    if (statement == null) throw new IllegalStateException("JDBC statement for a query is not prepared");
+                    returnedResultSet = statement.execute();
                     break;
                 case TASK_JDBC_METADATA:
                     // TODO implement
@@ -103,43 +113,75 @@ final class JdbcSeance implements InterSeance {
     }
 
     @Override
-    public int getAffectedRowsCount() {
+    public synchronized int getAffectedRowsCount() {
         return affectedRows;
     }
 
     @Override
-    public @NotNull InterCursor openCursor(final byte parameter) {
-        return null;
+    public synchronized @Nullable JdbcCursor openCursor(final byte parameter,
+                                                        final @NotNull InterCursorLayout layout) {
+        return parameter == 0
+                ? openReturnedCursor(layout)
+                : openParameterCursor(parameter, layout);
+    }
+
+    private @Nullable JdbcCursor openReturnedCursor(final @NotNull InterCursorLayout layout) {
+        if (returnedResultSet && statement != null) {
+            ResultSet rset;
+            try {
+                rset = statement.getResultSet();
+            }
+            catch (SQLException e) {
+                String msg = "Failed to obtain JDBC result set: " + e.getMessage();
+                throw new DBFetchingException(msg, e, getStatementText());
+            }
+            JdbcCursor cursor = new JdbcCursor(this, layout, rset);
+            cursors.add(cursor);
+            return cursor;
+        }
+        else {
+            return null;
+        }
+    }
+
+    private @Nullable JdbcCursor openParameterCursor(final byte parameter,
+                                                     final @NotNull InterCursorLayout layout) {
+        return null; // TODO
     }
 
     @Override
-    public void close() {
-        if (primaryResultSet != null) closePrimaryResultSet();
+    public synchronized void close() {
+        closeCursors();
         if (statement != null) closeStatement();
         task = null;
     }
 
+    private void clearExecutionState() {
+        closeCursors();
+        returnedResultSet = true;
+        affectedRows = 0;
+    }
+
     private void closeStatement() {
-        try {
-            statement.close();
-        }
-        catch (SQLException e) {
-            // TODO log it somehow
-        }
-        finally {
-            statement = null;
+        JdbcUtil.close(statement);
+        statement = null;
+    }
+
+    private  void closeCursors() {
+        JdbcCursor[] cursorsToClose = this.cursors.toArray(new JdbcCursor[0]);
+        cursors.clear();
+        for (int i = cursorsToClose.length-1; i >= 0; i--) {
+            cursorsToClose[i].close();
         }
     }
 
-    private void closePrimaryResultSet() {
-        try {
-            primaryResultSet.close();
-        }
-        catch (SQLException e) {
-            // TODO log it somehow
-        }
-        finally {
-            primaryResultSet = null;
-        }
+    synchronized void cursorClosed(JdbcCursor cursor) {
+        cursors.remove(cursor);
     }
+
+    @Nullable
+    String getStatementText() {
+        return task != null ? task.text : null;
+    }
+
 }

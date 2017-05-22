@@ -1,7 +1,6 @@
 package org.jetbrains.dekaf.jdbc;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dekaf.inter.InterSeance;
 import org.jetbrains.dekaf.inter.InterSession;
 
 import java.sql.Connection;
@@ -79,7 +78,7 @@ final class JdbcSession implements InterSession {
     /// SEANCES \\\
 
     @Override
-    public synchronized @NotNull InterSeance openSeance() {
+    public synchronized @NotNull JdbcSeance openSeance() {
         JdbcSeance seance = new JdbcSeance(this);
         seances.add(seance);
         return seance;

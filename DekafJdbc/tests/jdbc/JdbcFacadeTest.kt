@@ -5,7 +5,7 @@ package org.jetbrains.dekaf.jdbc;
 import org.jetbrains.dekaf.assertions.IsFalse
 import org.jetbrains.dekaf.assertions.IsTrue
 import org.jetbrains.dekaf.assertions.expected
-import org.jetbrains.dekaf.jdbc.H2mem.h2facade
+import org.jetbrains.dekaf.jdbc.H2mem.hmFacade
 import org.junit.jupiter.api.Test
 
 
@@ -13,52 +13,52 @@ class JdbcFacadeTest {
 
     @Test
     fun activate() {
-        h2facade.activate()
-        h2facade.isActive expected IsTrue
-        h2facade.deactivate()
-        h2facade.isActive expected IsFalse
+        hmFacade.activate()
+        hmFacade.isActive expected IsTrue
+        hmFacade.deactivate()
+        hmFacade.isActive expected IsFalse
     }
 
     @Test
     fun obtainConnection() {
-        h2facade.activate()
-        val connection = h2facade.obtainConnection()
+        hmFacade.activate()
+        val connection = hmFacade.obtainConnection()
         connection.isClosed expected IsFalse
         connection.close()
     }
 
     @Test
     fun openSession_closeSession() {
-        h2facade.activate()
+        hmFacade.activate()
 
-        h2facade.countSessions() expected 0
+        hmFacade.countSessions() expected 0
 
-        val session1 = h2facade.openSession(null,null,null)
-        val session2 = h2facade.openSession(null,null,null)
+        val session1 = hmFacade.openSession()
+        val session2 = hmFacade.openSession()
 
-        h2facade.countSessions() expected 2
+        hmFacade.countSessions() expected 2
 
         session1.close()
         session2.close()
 
-        h2facade.countSessions() expected 0
+        hmFacade.countSessions() expected 0
     }
 
     @Test
     fun openSession_deactivate() {
-        h2facade.activate()
+        hmFacade.activate()
 
-        h2facade.countSessions() expected 0
+        hmFacade.countSessions() expected 0
 
-        h2facade.openSession(null,null,null)
-        h2facade.openSession(null,null,null)
-        h2facade.openSession(null,null,null)
+        hmFacade.openSession()
+        hmFacade.openSession()
+        hmFacade.openSession()
 
-        h2facade.countSessions() expected 3
+        hmFacade.countSessions() expected 3
 
-        h2facade.deactivate()
+        hmFacade.deactivate()
 
-        h2facade.countSessions() expected 0
+        hmFacade.countSessions() expected 0
     }
 
 

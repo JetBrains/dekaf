@@ -15,12 +15,12 @@ public enum InterRowKind {
     /**
      * One column in the row.
      */
-    ROW_COLUMN,
+    ROW_ONE_VALUE,
 
     /**
      * Several columns in the row.
      */
-    ROW_COLUMNS,
+    ROW_CORTEGE,
 
     /**
      * A map entry, when the query layout is {@link InterResultKind#RES_MAP}

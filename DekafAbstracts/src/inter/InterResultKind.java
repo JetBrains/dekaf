@@ -15,12 +15,12 @@ public enum InterResultKind {
     /**
      * Just one row.
      */
-    RES_SINGLE,
+    RES_ONE_ROW,
 
     /**
      * Array of rows.
      */
-    RES_ROWS,
+    RES_TABLE,
 
     /**
      * Map.
