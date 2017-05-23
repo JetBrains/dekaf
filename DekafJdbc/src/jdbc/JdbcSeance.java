@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.exceptions.DBFetchingException;
 import org.jetbrains.dekaf.exceptions.DBParameterSettingException;
-import org.jetbrains.dekaf.inter.InterCursorLayout;
+import org.jetbrains.dekaf.inter.InterLayout;
 import org.jetbrains.dekaf.inter.InterSeance;
 import org.jetbrains.dekaf.inter.InterTask;
 
@@ -119,13 +119,13 @@ final class JdbcSeance implements InterSeance {
 
     @Override
     public synchronized @Nullable JdbcCursor openCursor(final byte parameter,
-                                                        final @NotNull InterCursorLayout layout) {
+                                                        final @NotNull InterLayout layout) {
         return parameter == 0
                 ? openReturnedCursor(layout)
                 : openParameterCursor(parameter, layout);
     }
 
-    private @Nullable JdbcCursor openReturnedCursor(final @NotNull InterCursorLayout layout) {
+    private @Nullable JdbcCursor openReturnedCursor(final @NotNull InterLayout layout) {
         if (returnedResultSet && statement != null) {
             ResultSet rset;
             try {
@@ -145,7 +145,7 @@ final class JdbcSeance implements InterSeance {
     }
 
     private @Nullable JdbcCursor openParameterCursor(final byte parameter,
-                                                     final @NotNull InterCursorLayout layout) {
+                                                     final @NotNull InterLayout layout) {
         return null; // TODO
     }
 

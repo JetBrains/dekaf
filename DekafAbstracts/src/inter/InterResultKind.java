@@ -28,6 +28,11 @@ public enum InterResultKind {
     RES_MAP,
 
     /**
+     * Whole result is the array of primitives.
+     */
+    RES_PRIMITIVE_ARRAY,
+
+    /**
      * Text, i.e. CSV format.
      */
     RES_TEXT

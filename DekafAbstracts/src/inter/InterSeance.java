@@ -21,7 +21,7 @@ public interface InterSeance {
     ////// CURSORS \\\\\\
 
     @Nullable
-    InterCursor openCursor(byte parameter, @NotNull InterCursorLayout layout);
+    InterCursor openCursor(byte parameter, @NotNull InterLayout layout);
 
 
     ////// CLOSING \\\\\\

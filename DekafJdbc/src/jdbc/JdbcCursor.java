@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.exceptions.DBFetchingException;
 import org.jetbrains.dekaf.inter.InterCursor;
-import org.jetbrains.dekaf.inter.InterCursorLayout;
+import org.jetbrains.dekaf.inter.InterLayout;
 
 import java.io.Serializable;
 import java.sql.ResultSet;
@@ -16,7 +16,7 @@ class JdbcCursor implements InterCursor {
 
     private final @NotNull JdbcSeance seance;
 
-    private final @NotNull InterCursorLayout layout;
+    private final @NotNull InterLayout layout;
 
     private @Nullable ResultSet rset;
 
@@ -29,7 +29,7 @@ class JdbcCursor implements InterCursor {
 
 
     JdbcCursor(final @NotNull JdbcSeance seance,
-               final @NotNull InterCursorLayout layout,
+               final @NotNull InterLayout layout,
                final @Nullable ResultSet rset) {
         this.seance = seance;
         this.layout = layout;
@@ -40,11 +40,11 @@ class JdbcCursor implements InterCursor {
     @Override
     public synchronized @Nullable Serializable retrievePortion() {
         if (!active || rset == null) return null;
-        switch (layout.resultLayout) {
+        switch (layout.resultKind) {
             case RES_EXISTENCE: return retrieveExistence();
             case RES_ONE_ROW: return retrieveOneRow();
             case RES_TABLE: return retrieveTable();
-            default: throw new IllegalStateException("Unknown how to retrieve a " + layout.resultLayout);
+            default: throw new IllegalStateException("Unknown how to retrieve a " + layout.resultKind);
         }
     }
 
@@ -68,11 +68,11 @@ class JdbcCursor implements InterCursor {
     private Serializable fetchRow() {
         boolean ok = moveNext();
         if (ok) {
-            switch (layout.rowLayout) {
+            switch (layout.rowKind) {
                 case ROW_ONE_VALUE: return fetchOneValue();
                 case ROW_CORTEGE: return fetchCortege();
                 case ROW_NONE: return null;
-                default: throw new IllegalStateException("Unknown how to fetch a " + layout.rowLayout);
+                default: throw new IllegalStateException("Unknown how to fetch a " + layout.rowKind);
             }
         }
         else {
