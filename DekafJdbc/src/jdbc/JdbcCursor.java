@@ -47,6 +47,10 @@ class JdbcCursor implements InterCursor {
         this.active = rset != null;
     }
 
+    void setPortionSize(final int portionSize) {
+        this.portionSize = portionSize;
+    }
+
     @Override
     public synchronized @Nullable Serializable retrievePortion() {
         if (!active || rset == null) return null;
@@ -55,6 +59,7 @@ class JdbcCursor implements InterCursor {
             case RES_EXISTENCE: return retrieveExistence();
             case RES_ONE_ROW: return retrieveOneRow();
             case RES_TABLE: return retrieveTable();
+            case RES_PRIMITIVE_ARRAY: return retrievePrimitiveArray();
             default: throw new IllegalStateException("Unknown how to retrieve a " + layout.resultKind);
         }
     }
@@ -161,8 +166,33 @@ class JdbcCursor implements InterCursor {
         return row;
     }
 
-    private Serializable retrieveTable() {
-        return null; // TODO
+    @Nullable
+    private Serializable[] retrieveTable() {
+        Class<?> rowClass = null;
+        Object array = null;
+
+        int k = 0;
+        while (k < portionSize) {
+            Serializable row = fetchRow();
+            if (row == null) break;
+            if (array == null) {
+                rowClass = row.getClass();
+                array = Array.newInstance(rowClass, portionSize);
+            }
+            Array.set(array, k, row);
+            k++;
+        }
+
+        if (k == 0) return null; // no more data
+
+        if (k < portionSize) {
+            Object arrayWithSpaces = array;
+            array = Array.newInstance(rowClass, k);
+            //noinspection SuspiciousSystemArraycopy
+            System.arraycopy(arrayWithSpaces, 0, array, 0, k);
+        }
+
+        return (Serializable[]) array;
     }
 
     @Nullable
@@ -199,6 +229,7 @@ class JdbcCursor implements InterCursor {
 
     @Nullable
     private Serializable fetchPrimitives() {
+        assert layout.baseClass.isPrimitive();
         Object row = Array.newInstance(layout.baseClass, fieldCount);
         for (int i = 0; i < fieldCount; i++) {
             Object value = getOneValue(i);
@@ -207,13 +238,38 @@ class JdbcCursor implements InterCursor {
         return (Serializable) row;
     }
 
+    private Serializable retrievePrimitiveArray() {
+        assert layout.baseClass.isPrimitive();
+        Object array = Array.newInstance(layout.baseClass, portionSize);
+
+        int k = 0;
+        while (k < portionSize) {
+            boolean ok = moveNext();
+            if (!ok) break;
+            Serializable value = getOneValue(0);
+            Array.set(array, k, value);
+            k++;
+        }
+
+        if (k == 0) return null; // no more data
+
+        if (k < portionSize) {
+            Object arrayWithSpaces = array;
+            array = Array.newInstance(layout.baseClass, k);
+            //noinspection SuspiciousSystemArraycopy
+            System.arraycopy(arrayWithSpaces, 0, array, 0, k);
+        }
+
+        return (Serializable) array;
+    }
+
 
     @Nullable
     private Serializable getOneValue(int fieldIndex) {
         int columnIndex = indexMapping[fieldIndex];
         try {
             //noinspection ConstantConditions
-            return (Serializable) getters[0].getValue(rset, columnIndex);
+            return (Serializable) getters[fieldIndex].getValue(rset, columnIndex);
         }
         catch (SQLException e) {
             throw new DBFetchingException(e, seance.getStatementText());

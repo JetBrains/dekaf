@@ -40,6 +40,7 @@ internal object H2mem {
         }
     }
 
+    @JvmStatic
     fun hmInSessionDo(block: (JdbcSession) -> Unit) {
         hmFacade.activate()
         val session = hmFacade.openSession()
