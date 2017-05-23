@@ -24,14 +24,9 @@ public enum InterRowKind {
     ROW_PRIMITIVES,
 
     /**
-     * A row is an array of objects of the same type.
+     * A row is an array of objects.
      */
     ROW_OBJECTS,
-
-    /**
-     * A row is an array when elements are objects of different type.
-     */
-    ROW_CORTEGE,
 
     /**
      * A map entry, when the query layout is {@link InterResultKind#RES_MAP}.

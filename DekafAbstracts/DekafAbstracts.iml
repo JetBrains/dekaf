@@ -12,5 +12,6 @@
     <orderEntry type="library" scope="TEST" name="kotlin" level="project" />
     <orderEntry type="library" scope="TEST" name="testing5" level="project" />
     <orderEntry type="module" module-name="KoExpectations" scope="TEST" />
+    <orderEntry type="library" scope="TEST" name="testingAssertJ" level="project" />
   </component>
 </module>

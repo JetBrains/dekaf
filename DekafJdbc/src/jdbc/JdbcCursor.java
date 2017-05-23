@@ -7,6 +7,7 @@ import org.jetbrains.dekaf.inter.InterCursor;
 import org.jetbrains.dekaf.inter.InterLayout;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -33,6 +34,7 @@ class JdbcCursor implements InterCursor {
     private int fieldCount = 0;
 
     private int[] indexMapping;
+    private JdbcValueGetter<?>[] getters;
 
 
 
@@ -59,7 +61,7 @@ class JdbcCursor implements InterCursor {
 
     private void setupOfNecessary() {
         if (layout.resultKind == RES_EXISTENCE) return;
-        if (columnCount == 0 || fieldCount == 0 || indexMapping == null) setup();
+        if (columnCount == 0 || fieldCount == 0 || indexMapping == null || getters == null) setup();
     }
 
     private void setup() {
@@ -67,33 +69,31 @@ class JdbcCursor implements InterCursor {
             ResultSetMetaData md = rset.getMetaData();
             columnCount = md.getColumnCount();
 
+            int n;
             switch (layout.rowKind) {
                 case ROW_NONE:
-                    fieldCount = 0;
+                    n = 0;
                     break;
                 case ROW_ONE_VALUE:
-                    fieldCount = 1;
+                    n = 1;
                     break;
                 case ROW_MAP_ENTRY:
-                    fieldCount = 2;
+                    n = 2;
                     break;
-                case ROW_OBJECTS:
-                case ROW_PRIMITIVES:
-                    fieldCount = layout.columnNames != null
-                            ? layout.columnNames.length
-                            : columnCount;
-                    break;
-                case ROW_CORTEGE:
-                    fieldCount = layout.cortegeClasses != null
+                default:
+                    n = layout.cortegeClasses != null
                             ? layout.cortegeClasses.length
                             : layout.columnNames != null
                                 ? layout.columnNames.length
                                 : columnCount;
             }
+            fieldCount = n;
 
             if (layout.columnNames != null) {
-
-                int n = layout.columnNames.length;
+                if (n != layout.columnNames.length) {
+                    String msg = "Something goes wrong: n=" + n + " but we have " + layout.columnNames.length + " columns";
+                    throw new IllegalStateException(msg);
+                }
                 indexMapping = new int[n];
                 Map<String,Integer> names = getColumnNames(md);
                 for (int i = 0; i < n; i++) {
@@ -103,11 +103,26 @@ class JdbcCursor implements InterCursor {
                 }
             }
             else {
-                int n = fieldCount;
                 indexMapping = new int[n];
                 for (int i = 0; i < n; i++) {
                     indexMapping[i] = i+1;
                 }
+            }
+
+            getters = new JdbcValueGetter[n];
+            for (int i = 0; i < n; i++) {
+                int index = indexMapping[i];
+                if (index > columnCount) {
+                    String message = "Query returned too few columns";
+                    throw new DBFetchingException(message, seance.getStatementText());
+                }
+                int jdbcType = md.getColumnType(index);
+                Class<?> desiredClass = layout.cortegeClasses != null
+                        ? layout.cortegeClasses[i]
+                        : layout.baseClass;
+                assert desiredClass != null;
+                JdbcValueGetter<?> getter = JdbcValueGetters.of(jdbcType, desiredClass);
+                getters[i] = getter;
             }
 
         }
@@ -155,10 +170,10 @@ class JdbcCursor implements InterCursor {
         boolean ok = moveNext();
         if (ok) {
             switch (layout.rowKind) {
+                case ROW_NONE: return null;
                 case ROW_ONE_VALUE: return fetchOneValue();
                 case ROW_OBJECTS: return fetchObjects();
-                case ROW_CORTEGE: return fetchCortege();
-                case ROW_NONE: return null;
+                case ROW_PRIMITIVES: return fetchPrimitives();
                 default: throw new IllegalStateException("Unknown how to fetch a " + layout.rowKind);
             }
         }
@@ -169,25 +184,43 @@ class JdbcCursor implements InterCursor {
 
     @Nullable
     private Serializable fetchOneValue() {
-        // TODO
+        return getOneValue(0);
+    }
+
+    @Nullable
+    private Serializable[] fetchObjects() {
+        Serializable[] row = (Serializable[]) Array.newInstance(layout.baseClass, fieldCount);
+        for (int i = 0; i < fieldCount; i++) {
+            Serializable value = getOneValue(i);
+            row[i] = value;
+        }
+        return row;
+    }
+
+    @Nullable
+    private Serializable fetchPrimitives() {
+        Object row = Array.newInstance(layout.baseClass, fieldCount);
+        for (int i = 0; i < fieldCount; i++) {
+            Object value = getOneValue(i);
+            Array.set(row, i, value);
+        }
+        return (Serializable) row;
+    }
+
+
+    @Nullable
+    private Serializable getOneValue(int fieldIndex) {
+        int columnIndex = indexMapping[fieldIndex];
         try {
-            return (Serializable) rset.getObject(1);
+            //noinspection ConstantConditions
+            return (Serializable) getters[0].getValue(rset, columnIndex);
         }
         catch (SQLException e) {
             throw new DBFetchingException(e, seance.getStatementText());
         }
     }
 
-    @Nullable
-    private Serializable[] fetchObjects() {
-        return null; // TODO
-    }
-
-    @Nullable
-    private Serializable[] fetchCortege() {
-        return null; // TODO
-    }
-
+    
     private boolean moveNext() {
         try {
             boolean ok = rset.next();
