@@ -65,7 +65,7 @@ infix fun<A:Any> A?.expectedNotSameAs(value: A?): A? {
 infix fun<A> Any?.expectedClass(expectedClass: java.lang.Class<out A>): A {
     if (this != null) {
         val actualClass = this.javaClass
-        if (expectedClass.isAssignableFrom(actualClass)) {
+        if (actualClass == expectedClass || expectedClass.isAssignableFrom(actualClass)) {
             @Suppress("unchecked_cast")
             return this as A
         }
@@ -99,6 +99,31 @@ infix fun<A:Any> Any?.expectedClass(expectedClass: KClass<out A>): A {
         throw RuntimeException() // never reached, just for compiler
     }
 }
+
+infix fun<E> Any?.expectedArrayOfClass(expectedElementClass: java.lang.Class<out E>): Array<E> {
+    if (this != null) {
+        val actualClass = this.javaClass
+        if (!actualClass.isArray) {
+            fail("Got an instance of ${actualClass.simpleName} when expected an array of ${expectedElementClass.simpleName}")
+            throw RuntimeException() // never reached, just for compiler
+        }
+
+        val actualElementClass = actualClass.componentType
+        if (expectedElementClass.isAssignableFrom(actualElementClass)) {
+            @Suppress("unchecked_cast")
+            return this as Array<E>
+        }
+        else {
+            fail("Got an array of ${actualElementClass.simpleName} when expected an array of ${expectedElementClass.simpleName}")
+            throw RuntimeException() // never reached, just for compiler
+        }
+    }
+    else {
+        fail("Got null when expected an array of ${expectedElementClass.simpleName}")
+        throw RuntimeException() // never reached, just for compiler
+    }
+}
+
 
 
 

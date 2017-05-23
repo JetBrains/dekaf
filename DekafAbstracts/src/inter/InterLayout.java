@@ -89,8 +89,13 @@ public final class InterLayout implements Serializable {
             assert Serializable.class.isAssignableFrom(baseClass)
                     : "The base class must be serializable: " + baseClass.getSimpleName();
         }
+        if (rowKind == InterRowKind.ROW_CORTEGE) {
+            assert cortegeClasses != null : "Cortege classes must be specified (here is null)";
+            assert cortegeClasses.length > 0 : "Cortege classes must be specified (here is an empty array)";
+        }
         if (cortegeClasses != null) {
             for (Class elementClass : cortegeClasses) {
+                //noinspection unchecked
                 assert this.baseClass.isAssignableFrom(elementClass)
                         : "A cortege element class must extend/implement the base one: " + elementClass.getSimpleName();
                 assert Serializable.class.isAssignableFrom(elementClass)

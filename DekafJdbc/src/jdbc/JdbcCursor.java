@@ -8,7 +8,12 @@ import org.jetbrains.dekaf.inter.InterLayout;
 
 import java.io.Serializable;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.TreeMap;
+
+import static org.jetbrains.dekaf.inter.InterResultKind.RES_EXISTENCE;
 
 
 
@@ -24,7 +29,10 @@ class JdbcCursor implements InterCursor {
 
     private int portionSize = 100;
 
+    private int columnCount = 0;
+    private int fieldCount = 0;
 
+    private int[] indexMapping;
 
 
 
@@ -40,11 +48,89 @@ class JdbcCursor implements InterCursor {
     @Override
     public synchronized @Nullable Serializable retrievePortion() {
         if (!active || rset == null) return null;
+        setupOfNecessary();
         switch (layout.resultKind) {
             case RES_EXISTENCE: return retrieveExistence();
             case RES_ONE_ROW: return retrieveOneRow();
             case RES_TABLE: return retrieveTable();
             default: throw new IllegalStateException("Unknown how to retrieve a " + layout.resultKind);
+        }
+    }
+
+    private void setupOfNecessary() {
+        if (layout.resultKind == RES_EXISTENCE) return;
+        if (columnCount == 0 || fieldCount == 0 || indexMapping == null) setup();
+    }
+
+    private void setup() {
+        try {
+            ResultSetMetaData md = rset.getMetaData();
+            columnCount = md.getColumnCount();
+
+            switch (layout.rowKind) {
+                case ROW_NONE:
+                    fieldCount = 0;
+                    break;
+                case ROW_ONE_VALUE:
+                    fieldCount = 1;
+                    break;
+                case ROW_MAP_ENTRY:
+                    fieldCount = 2;
+                    break;
+                case ROW_OBJECTS:
+                case ROW_PRIMITIVES:
+                    fieldCount = layout.columnNames != null
+                            ? layout.columnNames.length
+                            : columnCount;
+                    break;
+                case ROW_CORTEGE:
+                    fieldCount = layout.cortegeClasses != null
+                            ? layout.cortegeClasses.length
+                            : layout.columnNames != null
+                                ? layout.columnNames.length
+                                : columnCount;
+            }
+
+            if (layout.columnNames != null) {
+
+                int n = layout.columnNames.length;
+                indexMapping = new int[n];
+                Map<String,Integer> names = getColumnNames(md);
+                for (int i = 0; i < n; i++) {
+                    String name = layout.columnNames[i];
+                    Integer index = names.get(name);
+                    indexMapping[i] = index != null ? index.intValue() : Integer.MIN_VALUE;
+                }
+            }
+            else {
+                int n = fieldCount;
+                indexMapping = new int[n];
+                for (int i = 0; i < n; i++) {
+                    indexMapping[i] = i+1;
+                }
+            }
+
+        }
+        catch (SQLException e) {
+            columnCount = fieldCount = 0;
+            indexMapping = null;
+            throw new DBFetchingException("Failed to get metadata: "+e.getMessage(), e, seance.getStatementText());
+        }
+    }
+
+    @NotNull
+    private Map<String,Integer> getColumnNames(final @NotNull ResultSetMetaData md) {
+        try {
+            int n = md.getColumnCount();
+            Map<String,Integer> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+            for (int k = 1; k <= n; k++) {
+                String name = md.getColumnName(k);
+                if (name != null && name.length() > 0) map.put(name, k);
+            }
+            return map;
+        }
+        catch (SQLException e) {
+            throw new DBFetchingException("Failed to get metadata: "+e.getMessage(), e, seance.getStatementText());
         }
     }
 
@@ -70,6 +156,7 @@ class JdbcCursor implements InterCursor {
         if (ok) {
             switch (layout.rowKind) {
                 case ROW_ONE_VALUE: return fetchOneValue();
+                case ROW_OBJECTS: return fetchObjects();
                 case ROW_CORTEGE: return fetchCortege();
                 case ROW_NONE: return null;
                 default: throw new IllegalStateException("Unknown how to fetch a " + layout.rowKind);
@@ -89,6 +176,11 @@ class JdbcCursor implements InterCursor {
         catch (SQLException e) {
             throw new DBFetchingException(e, seance.getStatementText());
         }
+    }
+
+    @Nullable
+    private Serializable[] fetchObjects() {
+        return null; // TODO
     }
 
     @Nullable

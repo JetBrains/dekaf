@@ -5,7 +5,10 @@ import org.jetbrains.dekaf.H2db
 
 internal object H2mem {
 
+    @JvmStatic
     val provider = JdbcProvider()
+
+    @JvmStatic
     val hmFacade = JdbcFacade(provider, H2db.RDBMS, SpecificForH2db())
 
     init {
@@ -13,6 +16,7 @@ internal object H2mem {
     }
 
 
+    @JvmStatic
     fun hmPerformCommand(command: String) {
         val connection = hmFacade.obtainConnection()
         connection.use { connection ->
@@ -23,6 +27,18 @@ internal object H2mem {
         }
     }
 
+
+    @JvmStatic
+    fun<R> hmInSession(block: (JdbcSession) -> R): R {
+        hmFacade.activate()
+        val session = hmFacade.openSession()
+        try {
+            return block(session)
+        }
+        finally {
+            session.close()
+        }
+    }
 
     fun hmInSessionDo(block: (JdbcSession) -> Unit) {
         hmFacade.activate()
