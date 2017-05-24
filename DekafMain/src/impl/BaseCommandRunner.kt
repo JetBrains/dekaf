@@ -8,11 +8,11 @@ import org.jetbrains.dekaf.inter.InterTask
 
 internal class BaseCommandRunner: BaseRunner, DBCommandRunner {
 
-    constructor(session: BaseSession, inter: InterSeance, text: String) : super(session, inter, text)
+    internal constructor(session: BaseSession, interSeance: InterSeance, text: String) : super(session, interSeance, text)
 
     override fun prepare() {
         val task = InterTask(TASK_COMMAND, text)
-        inter.prepare(task)
+        interSeance.prepare(task)
     }
 
     override fun withParams(vararg params: Any?): BaseCommandRunner {
@@ -21,10 +21,10 @@ internal class BaseCommandRunner: BaseRunner, DBCommandRunner {
     }
 
     override fun run(): BaseCommandRunner {
-        inter.execute()
+        interSeance.execute()
         return this
     }
 
     override val affectedRowsCount: Int
-        get() = inter.affectedRowsCount
+        get() = interSeance.affectedRowsCount
 }

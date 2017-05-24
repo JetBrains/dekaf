@@ -8,14 +8,19 @@ import java.io.Serializable;
 
 public interface InterCursor {
 
-    ////// RETRIEVING DATA \\\\\\
+    /// SETTING UP \\\
+
+    public void setPortionSize(final int portionSize);
+
+
+    /// RETRIEVING DATA \\\
 
     @Nullable
     Serializable retrievePortion();
 
 
 
-    ////// CLOSING \\\\\\
+    /// CLOSING \\\
 
     void close();
 

@@ -47,7 +47,7 @@ class JdbcCursor implements InterCursor {
         this.active = rset != null;
     }
 
-    void setPortionSize(final int portionSize) {
+    public void setPortionSize(final int portionSize) {
         this.portionSize = portionSize;
     }
 

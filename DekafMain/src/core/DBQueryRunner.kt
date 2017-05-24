@@ -4,7 +4,7 @@ package org.jetbrains.dekaf.core
 /**
  * @author Leonid Bushuev
  */
-interface DBQueryRunner<S> : ImplementationAccessibleService {
+interface DBQueryRunner<T> : ImplementationAccessibleService {
 
     /**
      * Assigns query parameters.
@@ -12,7 +12,7 @@ interface DBQueryRunner<S> : ImplementationAccessibleService {
      * *
      * @return itself.
      */
-    fun withParams(vararg params: Any): DBQueryRunner<S>
+    fun withParams(vararg params: Any): DBQueryRunner<T>
 
     /**
      * Switches to pack mode.
@@ -24,13 +24,13 @@ interface DBQueryRunner<S> : ImplementationAccessibleService {
      * @see .run
      * @see .nextPack
      */
-    fun packBy(rowsPerPack: Int): DBQueryRunner<S>
+    fun packBy(rowsPerPack: Int): DBQueryRunner<T>
 
     /**
      * Performs the query and fetches the resulting cursor and returns the fetched result.
      * @return fetch result.
      */
-    fun run(): S
+    fun run(): T?
 
     /**
      * Fetches and returns the next pack if is in the pack mode.
@@ -38,6 +38,6 @@ interface DBQueryRunner<S> : ImplementationAccessibleService {
      * *
      * @see .packBy
      */
-    fun nextPack(): S
+    fun nextPack(): T?
 
 }

@@ -6,7 +6,7 @@ import org.jetbrains.dekaf.core.DBFacade;
 
 
 /**
- * Step 01: Run a SQL command.
+ * Step 03: Run a SQL command.
  */
 public final class Step03 {
 

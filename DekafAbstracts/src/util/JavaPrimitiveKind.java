@@ -11,7 +11,8 @@ public enum JavaPrimitiveKind {
     JAVA_INT    (int.class),
     JAVA_LONG   (long.class),
     JAVA_FLOAT  (float.class),
-    JAVA_DOUBLE (double.class);
+    JAVA_DOUBLE (double.class),
+    JAVA_CHAR   (char.class);
 
     /**
      * The primitive class.
