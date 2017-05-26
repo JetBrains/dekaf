@@ -1,3 +1,4 @@
+@file:JvmName("ClassExt")
 package org.jetbrains.dekaf.util
 
 import java.lang.reflect.Constructor
