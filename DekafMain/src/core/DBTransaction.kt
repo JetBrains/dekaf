@@ -16,6 +16,9 @@ interface DBTransaction {
 
     fun <S> query(query: SqlQuery<S>): DBQueryRunner<S>
 
+    fun <T> query(queryText: String, layout: QueryResultLayout<T>): DBQueryRunner<T>
+
+    @Deprecated("To be dropped")
     fun <S> query(queryText: String, layout: ResultLayout<S>): DBQueryRunner<S>
 
     fun script(script: SqlScript): DBScriptRunner

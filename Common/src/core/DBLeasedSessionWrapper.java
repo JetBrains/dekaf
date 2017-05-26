@@ -120,6 +120,13 @@ class DBLeasedSessionWrapper implements DBLeasedSession {
     return myOriginalSession.query(query);
   }
 
+  @NotNull
+  @Override
+  public <S> DBQueryRunner<S> query(@NotNull final String queryText,
+                                    @NotNull final QueryResultLayout<S> layout) {
+    throw new RuntimeException("Not implemented");
+  }
+
   @Override
   @NotNull
   public synchronized <S> DBQueryRunner<S> query(@NotNull final String queryText,

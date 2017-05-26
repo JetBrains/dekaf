@@ -4,6 +4,8 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Array;
+
 import static java.lang.String.format;
 
 
@@ -15,6 +17,11 @@ import static java.lang.String.format;
  **/
 public abstract class Objects {
 
+
+  @NotNull @SuppressWarnings("unchecked")
+  public static <E> E[] arrayOf(@NotNull final Class<E> elementClass, int length) {
+    return (E[]) Array.newInstance(elementClass, length);
+  }
 
   @Contract("_,!null->!null; _,null->null") @SuppressWarnings("unchecked")
   public static <C> C castTo(@NotNull final Class<C> clazz, @Nullable final Object object)
@@ -34,6 +41,21 @@ public abstract class Objects {
     }
     else {
       return null;
+    }
+  }
+
+
+  @NotNull @SuppressWarnings("unchecked")
+  public static <E> E[] castToArrayOf(@NotNull final Class<E> elementClass, @NotNull final Object object)
+      throws ClassCastException
+  {
+    Class<?> objectClass = object.getClass();
+    if (objectClass.isArray()) {
+      // should we check every element?
+      return (E[]) object;
+    }
+    else {
+      throw new ClassCastException("Atemmpted to cast a "+objectClass.getSimpleName()+" to an array of "+elementClass.getSimpleName());
     }
   }
 

@@ -18,14 +18,24 @@ inline fun <reified I> getClassIfExists(className: String): Class<I>? {
 }
 
 
-fun <I> Class<out I>.getDefaultConstructor(): Constructor<I> {
+fun <O> Class<out O>.getDefaultConstructor(): Constructor<O> {
     val constructors = this.declaredConstructors
     for (c in constructors) {
         if (c.parameters.isEmpty()) {
             c.isAccessible = true
             @Suppress("UNCHECKED_CAST")
-            return c as Constructor<I>
+            return c as Constructor<O>
         }
     }
     throw IllegalArgumentException("Class ${this.name} has no default constructor")
+}
+
+
+fun <O> Constructor<out O>.instantiate(): O {
+    try {
+        return this.newInstance(*kotlin.emptyArray())
+    }
+    catch(e: Exception) {
+        throw IllegalStateException("Failed to create an instance using constructor $this: ${e.message}", e)
+    }
 }

@@ -2,7 +2,12 @@ package demo.java;
 
 import org.jetbrains.dekaf.DekafMaster;
 import org.jetbrains.dekaf.core.DBFacade;
+import org.jetbrains.dekaf.core.QueryResultLayout;
 
+import java.util.List;
+
+import static org.jetbrains.dekaf.core.QueryLayouts.listOf;
+import static org.jetbrains.dekaf.core.QueryLayouts.structOf;
 
 
 
@@ -27,7 +32,7 @@ public final class Step04 {
         char    sex;
         boolean married;
 
-        public String toString() { return id + '/' + name + '/' + sex + '/' + married; }
+        public String toString() { return id + "/" + name + "/" + sex + "/" + married; }
     }
 
     public static void main(String[] args) {
@@ -39,9 +44,10 @@ public final class Step04 {
         facade.connect();
 
         // Query a list of Person
+        QueryResultLayout<List<Person>> layout = listOf(structOf(Person.class));
         facade.inTransactionDo(tran -> {
-            //List<Person> people = tran.query(queryText, listOf(structOf(Person.class))).run();
-            //for (Person person : people) System.out.println(person);
+            List<Person> people = tran.query(queryText, layout).run();
+            for (Person person : people) System.out.println(person);
         });
 
         // Disconnect

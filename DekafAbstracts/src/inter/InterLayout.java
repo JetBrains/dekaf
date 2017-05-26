@@ -46,7 +46,7 @@ public final class InterLayout implements Serializable {
      * the base class is the common base class of objects.
      */
     @NotNull
-    public final Class baseClass;
+    public final Class<? extends Serializable> baseClass;
 
     /**
      * The names mapping.
@@ -81,7 +81,7 @@ public final class InterLayout implements Serializable {
                         ? Boolean.class
                         : resultKind == InterResultKind.RES_TEXT
                             ? String.class
-                            : Object.class;
+                            : Serializable.class;
         this.columnNames = columnNames;
         this.cortegeClasses = cortegeClasses;
 

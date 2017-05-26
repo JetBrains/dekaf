@@ -101,6 +101,14 @@ internal open class BaseSession: DBLeasedSession {
         TODO("not implemented yet")
     }
 
+    override fun <T> query(queryText: String, layout: QueryResultLayout<T>): DBQueryRunner<T> {
+        val interSeance = inter.openSeance()
+        val runner = BaseQueryRunner(this, interSeance, queryText, layout)
+        runners.add(runner)
+        runner.prepare()
+        return runner
+    }
+
     override fun <S> query(queryText: String, layout: ResultLayout<S>): DBQueryRunner<S> {
         TODO("not implemented yet")
     }

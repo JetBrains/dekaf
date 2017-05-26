@@ -131,6 +131,12 @@ public class BaseSession implements DBSession, DBLeasedSession, DBTransaction  {
     return queryRunner;
   }
 
+  @NotNull
+  @Override
+  public <S> DBQueryRunner<S> query(@NotNull final String queryText,
+                                    @NotNull final QueryResultLayout<S> layout) {
+    throw new RuntimeException("Not implemented");
+  }
 
   @NotNull
   @Override
