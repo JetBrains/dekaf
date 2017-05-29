@@ -1,34 +1,27 @@
-//@file:JvmName("QueryLayouts")
+@file:JvmName("QueryLayouts")
 package org.jetbrains.dekaf.core
 
 
 
-object QueryLayouts {
+/// RESULT LAYOUT \\\
 
-    /// RESULT LAYOUT \\\
+fun layoutExistence(): QueryResultLayout<Boolean> = QueryResultExistenceLayout()
 
-    @JvmStatic
-    fun existence(): QueryResultLayout<Boolean> = QueryResultExistenceLayout()
+fun<V> layoutSingleValueOf(valueClass: Class<V>): QueryResultLayout<V> = QueryResultOneRowLayout(rowValueOf(valueClass))
+inline fun<reified V> layoutSingleValueOf(): QueryResultLayout<V> = layoutSingleValueOf(V::class.java)
 
-    @JvmStatic
-    fun<R> arrayOf(row: QueryRowLayout<R>): QueryResultLayout<Array<out R>> = QueryResultArrayLayout(row)
+fun<R> layoutArrayOf(row: QueryRowLayout<R>): QueryResultLayout<Array<out R>> = QueryResultArrayLayout(row)
 
-    @JvmStatic
-    fun<R> listOf(row: QueryRowLayout<R>): QueryResultLayout<List<R>> = QueryResultListLayout(row)
-
-    
-
-
-    /// ROW LAYOUTS \\\
-
-    @JvmStatic
-    fun<V> valueOf(valueClass: Class<V>): QueryRowLayout<V> = QueryRowOneValueLayout(valueClass)
-    inline fun<reified V> valueOf(): QueryRowLayout<V> = valueOf(V::class.java)
-
-    @JvmStatic
-    fun<R> structOf(cortegeClass: Class<R>): QueryRowLayout<R> = QueryRowStructLayout(cortegeClass)
-    inline fun<reified R> structOf(): QueryRowLayout<R> = structOf(R::class.java)
+fun<R> layoutListOf(row: QueryRowLayout<R>): QueryResultLayout<List<R>> = QueryResultListLayout(row)
 
 
 
-}
+/// ROW LAYOUTS \\\
+
+fun<V> rowValueOf(valueClass: Class<V>): QueryRowLayout<V> = QueryRowOneValueLayout(valueClass)
+inline fun<reified V> rowValueOf(): QueryRowLayout<V> = rowValueOf(V::class.java)
+
+fun<R> rowStructOf(cortegeClass: Class<R>): QueryRowLayout<R> = QueryRowStructLayout(cortegeClass)
+inline fun<reified R> rowStructOf(): QueryRowLayout<R> = rowStructOf(R::class.java)
+
+

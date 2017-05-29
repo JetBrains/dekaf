@@ -52,7 +52,12 @@ class QueryResultExistenceLayout: QueryResultLayout<Boolean>() {
         }
 
         override fun add(portion: Any) {
-            existence = true
+            when (portion) {
+                is Boolean -> existence = portion
+                is Number -> existence = portion.toInt() > 0
+                is Array<*> -> existence = portion.isNotEmpty()
+                is Collection<*> -> existence = portion.isNotEmpty()
+            }
         }
 
         override fun build(): Boolean? = existence

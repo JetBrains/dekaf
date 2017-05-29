@@ -13,6 +13,7 @@
     <orderEntry type="module" module-name="DekafAbstracts" exported="" />
     <orderEntry type="library" name="annotations" level="project" />
     <orderEntry type="library" exported="" name="kotlin" level="project" />
+    <orderEntry type="module" module-name="DekafJdbc" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="testing5" level="project" />
     <orderEntry type="module" module-name="KoExpectations" scope="TEST" />
   </component>

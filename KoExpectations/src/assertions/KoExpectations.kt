@@ -3,7 +3,7 @@
 
 package org.jetbrains.dekaf.assertions
 
-import org.junit.jupiter.api.Assertions.fail
+import org.opentest4j.AssertionFailedError
 import kotlin.reflect.KClass
 
 
@@ -32,22 +32,22 @@ infix fun Any?.expected(aspect: IsNull) {
 
 inline infix fun<reified A:Any> A?.expected(aspect: IsNotNull): A {
     if (this == null) {
-        fail("Got null when expected a non-null instance of ${A::class.java.simpleName}")
+        fail("Got null when expected a non-null instance of ${A::class.java.displayName}")
     }
-    return this!!
+    return this
 }
 
 infix fun<A> A?.expected(value: A): A {
     assert(value !is KoAssertAspect) {"Wrong resolving!"}
-    if (this == null) fail("Got null when expected $value")
-    if (this != value) fail("Got $this when expected $value")
-    return this!!
+    if (this == null) failDiff(null, value)
+    if (this != value) failDiff(this, value)
+    return this
 }
 
 infix fun<A> A?.expectedSameAs(value: A): A {
-    if (this == null) fail("Got null when expected $value")
+    if (this == null) failDiff(null, value)
     if (this !== value) fail("Got $this when expected the reference to $value")
-    return this!!
+    return this
 }
 
 infix fun<A:Any> A?.expectedNotSameAs(value: A?): A? {
@@ -55,7 +55,7 @@ infix fun<A:Any> A?.expectedNotSameAs(value: A?): A? {
         this == null && value == null -> fail("Got two nulls when expected two different instances")
         this == null                  -> return null
         this === value                -> {
-            val message = "Got references to the same object \"$this\" when expected two different instances of class ${this.javaClass.simpleName}"
+            val message = "Got references to the same object \"$this\" when expected two different instances of class ${this.javaClass.displayName}"
             fail(message)
         }
     }
@@ -70,14 +70,12 @@ infix fun<A> Any?.expectedClass(expectedClass: java.lang.Class<out A>): A {
             return this as A
         }
         else {
-            val message = "Got an instance of ${actualClass.simpleName} when expected one of ${expectedClass.simpleName} (the value: \"$this\")"
+            val message = "Got an instance of ${actualClass.displayName} when expected one of ${expectedClass.displayName} (the value: \"$this\")"
             fail(message)
-            throw RuntimeException() // never reached, just for compiler
         }
     }
     else {
-        fail("Got null when expected an instance of ${expectedClass.simpleName}")
-        throw RuntimeException() // never reached, just for compiler
+        fail("Got null when expected an instance of ${expectedClass.displayName}")
     }
 }
 
@@ -89,14 +87,12 @@ infix fun<A:Any> Any?.expectedClass(expectedClass: KClass<out A>): A {
             return this as A
         }
         else {
-            val message = "Got an instance of ${actualClass.simpleName} when expected one of ${expectedClass.simpleName} (the value: \"$this\")"
+            val message = "Got an instance of ${actualClass.displayName} when expected one of ${expectedClass.displayName} (the value: \"$this\")"
             fail(message)
-            throw RuntimeException() // never reached, just for compiler
         }
     }
     else {
-        fail("Got null when expected an instance of ${expectedClass.simpleName}")
-        throw RuntimeException() // never reached, just for compiler
+        fail("Got null when expected an instance of ${expectedClass.displayName}")
     }
 }
 
@@ -104,8 +100,7 @@ infix fun<E> Any?.expectedArrayOfClass(expectedElementClass: java.lang.Class<out
     if (this != null) {
         val actualClass = this.javaClass
         if (!actualClass.isArray) {
-            fail("Got an instance of ${actualClass.simpleName} when expected an array of ${expectedElementClass.simpleName}")
-            throw RuntimeException() // never reached, just for compiler
+            fail("Got an instance of ${actualClass.displayName} when expected an array of ${expectedElementClass.displayName}")
         }
 
         val actualElementClass = actualClass.componentType
@@ -114,29 +109,33 @@ infix fun<E> Any?.expectedArrayOfClass(expectedElementClass: java.lang.Class<out
             return this as Array<E>
         }
         else {
-            fail("Got an array of ${actualElementClass.simpleName} when expected an array of ${expectedElementClass.simpleName}")
-            throw RuntimeException() // never reached, just for compiler
+            fail("Got an array of ${actualElementClass.displayName} when expected an array of ${expectedElementClass.displayName}")
         }
     }
     else {
-        fail("Got null when expected an array of ${expectedElementClass.simpleName}")
-        throw RuntimeException() // never reached, just for compiler
+        fail("Got null when expected an array of ${expectedElementClass.displayName}")
     }
 }
 
+
+val KClass<*>.displayName: String
+        get() = if (".kotlin." in this.java.name) this.java.name else this.java.simpleName
+
+val Class<*>.displayName: String
+        get() = if (".kotlin." in this.name) this.name else this.simpleName
 
 
 
 /// BOOLEAN \\\
 
 infix fun Boolean?.expected(aspect: IsTrue) {
-    if (this == null) fail("Got null when expected True")
-    if (this != true) fail("Got $this when expected True")
+    if (this == null) failDiff("Got null when expected True", null, true)
+    if (this != true) failDiff("Got $this when expected True", this, true)
 }
 
 infix fun Boolean?.expected(aspect: IsFalse) {
-    if (this == null) fail("Got null when expected False")
-    if (this != false) fail("Got $this when expected False")
+    if (this == null) failDiff("Got null when expected False", null, false)
+    if (this != false) failDiff("Got $this when expected False", this, false)
 }
 
 infix fun Boolean?.expected(aspect: IsFalseOrNull) {
@@ -152,12 +151,12 @@ infix fun CharSequence?.expected(aspect: IsEmptyOrNull) {
 
 infix fun CharSequence?.expected(aspect: IsEmpty) {
     if (this == null) fail("Got null when expected an empty string")
-    if (this!!.isNotEmpty()) fail("Got $this when expected an empty string or null")
+    if (this.isNotEmpty()) fail("Got $this when expected an empty string or null")
 }
 
 infix fun CharSequence?.expected(aspect: IsNotEmpty) {
     if (this == null) fail("Got null when expected a non-empty string")
-    if (this!!.isEmpty()) fail("Got an empty string when expected a non-empty one")
+    if (this.isEmpty()) fail("Got an empty string when expected a non-empty one")
 }
 
 
@@ -165,12 +164,11 @@ infix fun CharSequence?.expected(aspect: IsNotEmpty) {
 
 infix fun<E,C:Collection<E>> C?.expected(aspect: IsNotEmpty): C {
     if (this != null) {
-        if (this.isEmpty()) fail("Got an empty ${this.javaClass.simpleName} when expected a non-empty one")
+        if (this.isEmpty()) fail("Got an empty ${this.javaClass.displayName} when expected a non-empty one")
         return this
     }
     else {
         fail("Got null when expected a non-empty collection")
-        throw RuntimeException() // never reached, just for compiler
     }
 }
 
@@ -187,10 +185,65 @@ infix fun<E,C:Collection<E>> C?.expected(aspect: IsEmpty): C {
     }
     else {
         fail("Got null when expected an empty collection")
-        throw RuntimeException() // never reached, just for compiler
     }
 }
 
+infix fun<E> Array<out E>?.expected(array: Array<out E>) {
+    if (this == null || this.isEmpty()) fail("Got ${this.displayString()} when expected ${array.displayString()}")
+    val n1 = this.size
+    val n2 = array.size
+    if (n1 != n2) failDiff("Arrays have different sizes: got ${this.displayString()} when expected ${array.displayString()}", this, array)
+    var d = false
+    for (i in 0..n1-1) if (this[i] != array[i]) { d = true; break }
+    if (d) failDiff("Arrays are different: got ${this.displayString()} when expected ${array.displayString()}", this, array)
+}
+
+infix fun<E> List<E>?.expected(list: List<out E>) {
+    if (this == null || this.isEmpty()) fail("Got ${this.displayString()} when expected ${list.displayString()}")
+    val n1 = this.size
+    val n2 = list.size
+    if (n1 != n2) failDiff("Lists have different sizes: got ${this.displayString()} when expected ${list.displayString()}", this, list)
+    var d = false
+    for (i in 0..n1-1) if (this[i] != list[i]) { d = true; break }
+    if (d) failDiff("Lists are different: got ${this.displayString()} when expected ${list.displayString()}", this, list)
+}
+
+
+
+///  AUXILIARY FUNCTIONS \\\
+
+private fun Array<*>?.displayString():String {
+    if (this == null) return "null"
+    val n = this.size
+    if (n == 0) return "an empty array"
+    return this.joinToString(separator = ",", prefix = "[", postfix = "]")
+}
+
+private fun List<*>?.displayString():String {
+    if (this == null) return "null"
+    val n = this.size
+    if (n == 0) return "an empty list"
+    return this.joinToString(separator = ",", prefix = "[", postfix = "]")
+}
+
+private fun Set<*>?.displayString():String {
+    if (this == null) return "null"
+    val n = this.size
+    if (n == 0) return "an empty set"
+    return this.joinToString(separator = ",", prefix = "{", postfix = "}")
+}
+
+
+
+
+fun fail(message: String): Nothing =
+        throw AssertionFailedError(message)
+
+fun failDiff(actual: Any?, expected: Any?): Nothing =
+        throw AssertionFailedError("Got $actual when expected $expected", actual, expected)
+
+fun failDiff(message: String, actual: Any?, expected: Any?): Nothing =
+        throw AssertionFailedError(message, expected, actual)
 
 
 

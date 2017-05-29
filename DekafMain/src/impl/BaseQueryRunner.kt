@@ -51,8 +51,8 @@ internal class BaseQueryRunner<T>: BaseRunner, DBQueryRunner<T> {
         interSeance.execute()
         ensureOpenedCursor()
         val cursor = interCursor ?: return null
-        var portion: Any? = cursor.retrievePortion() ?: return null
         val builder = layout.makeBuilder()
+        var portion: Any? = cursor.retrievePortion()
         while (portion != null) {
             builder.add(portion)
             portion = cursor.retrievePortion()

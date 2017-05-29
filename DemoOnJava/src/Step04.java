@@ -6,8 +6,8 @@ import org.jetbrains.dekaf.core.QueryResultLayout;
 
 import java.util.List;
 
-import static org.jetbrains.dekaf.core.QueryLayouts.listOf;
-import static org.jetbrains.dekaf.core.QueryLayouts.structOf;
+import static org.jetbrains.dekaf.core.QueryLayouts.layoutListOf;
+import static org.jetbrains.dekaf.core.QueryLayouts.rowStructOf;
 
 
 
@@ -44,9 +44,9 @@ public final class Step04 {
         facade.connect();
 
         // Query a list of Person
-        QueryResultLayout<List<Person>> layout = listOf(structOf(Person.class));
+        QueryResultLayout<? extends List<? extends Person>> layout = layoutListOf(rowStructOf(Person.class));
         facade.inTransactionDo(tran -> {
-            List<Person> people = tran.query(queryText, layout).run();
+            List<? extends Person> people = tran.query(queryText, layout).run();
             for (Person person : people) System.out.println(person);
         });
 
