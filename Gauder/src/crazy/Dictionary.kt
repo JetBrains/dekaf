@@ -10,7 +10,8 @@ class Dictionary {
 
     lateinit var dir: Path
 
-    val nouns = TreeSet<String>(String.CASE_INSENSITIVE_ORDER)
+    val nouns      = TreeSet<String>(String.CASE_INSENSITIVE_ORDER)
+    val adjectives = TreeSet<String>(String.CASE_INSENSITIVE_ORDER)
 
     fun init(dirPath: String) {
         dir = Paths.get(dirPath)
@@ -18,6 +19,7 @@ class Dictionary {
         assert(Files.isDirectory(dir)) { "Dictionary path $dir is not a directory" }
 
         loadWords("nouns", nouns)
+        loadWords("adjectives", adjectives)
     }
 
     private fun loadWords(name: String, collection: MutableCollection<String>) {
@@ -26,7 +28,7 @@ class Dictionary {
         assert(Files.exists(file)) { "Dictionary file $fileName doesn't exist" }
         assert(Files.isRegularFile(file)) { "Dictionary file $fileName is not a text file" }
 
-        Files.lines(file)
+        Files.lines(file, Charsets.UTF_8)
              .map { it.trim() }
              .filter { it.length >= 2 }
              .forEach { collection.add(it) }

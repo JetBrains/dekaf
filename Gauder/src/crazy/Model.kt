@@ -30,6 +30,8 @@ class Model {
 
         val columns = ArrayList<Column>()
 
+        fun columnByName(name: String) = columns.firstOrNull { it.name == name }
+
     }
 
 
@@ -72,6 +74,8 @@ class Model {
             }
         }
 
+        val columnNames:    List<String>  get() = columns.map { it.name }
+        val columnNamesStr: String        get() = columns.joinToString(separator = ",") { it.name }
     }
 
 

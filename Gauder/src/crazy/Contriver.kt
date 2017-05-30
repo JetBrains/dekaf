@@ -16,10 +16,10 @@ class Contriver (
 ) {
 
     val topTableNumber = 10
-    val inheritedTableNumber = 20
-    val detailTableNumber = 20
+    val inheritedTableNumber = 25
+    val detailTableNumber = 25
     val auxiliaryColumnsMinNumber = 1
-    val auxiliaryColumnsMaxNumber = 10
+    val auxiliaryColumnsMaxNumber = 9
 
     private val random = Random(System.nanoTime() * System.currentTimeMillis())
 
@@ -32,6 +32,7 @@ class Contriver (
     fun invent() {
 
         inventTopTables()
+        inventInheritedTables()
         inventDetailTables()
         report()
 
@@ -72,6 +73,39 @@ class Contriver (
         key.columns.add(column)
     }
 
+    private fun inventInheritedTables() {
+        val tables = ArrayList<Model.Table>(topTableNumber + inheritedTableNumber)
+        tables.addAll(model.majors.filter{it is Model.Table}.map{it as Model.Table})
+
+        for (k in 1..inheritedTableNumber) {
+            // make a table
+            val f1 = random.nextDouble()
+            val adjective = dictionary.adjectives.filter{it.length <= 15}.selectOne(f1)
+            val f2 = random.nextDouble()
+            val baseTable = tables.filter{it.primaryKey != null}.selectOne(f2)
+            val tableName = adjective + '_' + baseTable.name
+            if (tableName.length > 30) continue
+            val table = model.Table()
+            table.baseTable = baseTable
+            table.name = tableName
+            table.abb = tableName.abb()
+
+            val key = model.Key(table, primary = true)
+
+            // copy primary key columns of the base table
+            for (bc in baseTable.primaryKey!!.columns) {
+                val column = bc.copy(table, isPrimary = true)
+                key.columns.add(column)
+            }
+
+            // auxiliary columns
+            inventTableAuxiliaryColumns(table)
+
+            // ok
+            tables.add(table)
+        }
+    }
+
     private fun inventDetailTables() {
         val tables = ArrayList<Model.Table>(topTableNumber + detailTableNumber)
         tables.addAll(model.majors.filter{it is Model.Table}.map{it as Model.Table})
@@ -81,29 +115,34 @@ class Contriver (
             val f1 = random.nextDouble()
             val word = dictionary.nouns.filter{it !in primaryNouns && it.length <= 10}.selectOne(f1)
             val f2 = random.nextDouble()
-            val baseTable = tables.filter{it.primaryKey != null}.selectOne(f2)
-            val tableName = baseTable.name + '_' + word
+            val parentTable = tables.filter{it.primaryKey != null}.selectOne(f2)
+            val tableName = parentTable.name + '_' + word
+            val abb = word.abb()
             if (tableName.length > 30) continue
             if (tableName in usedNouns) continue
             val table = model.Table()
-            table.baseTable = baseTable
+            table.parentTable = parentTable
             table.name = tableName
+            table.abb = abb
 
             val key = model.Key(table, primary = true)
 
-            // copy primary key columns of a base table
-            for (bc in baseTable.primaryKey!!.columns) {
-                val column = bc.copy(table, isPrimary = true)
+            // copy primary key columns of the parent table
+            for (pc in parentTable.primaryKey!!.columns) {
+                val column = pc.copy(table, isPrimary = true)
                 key.columns.add(column)
             }
 
             // add one more primary key column
             val x = inventColumn(Inspiration.secondaryColumns)
-            val xColumn = model.Column(table, x.first, x.second, true, true)
+            val xColumn = model.Column(table, abb + '_' + x.first, x.second, true, true)
             key.columns.add(xColumn)
 
             // auxiliary columns
             inventTableAuxiliaryColumns(table)
+
+            // ok
+            tables.add(table)
         }
 
     }
@@ -118,7 +157,9 @@ class Contriver (
             val noun = dictionary.nouns.filter { it !in primaryNouns && it.length >= 4 }.selectOne(f1)
             val type = adjustDataType(Inspiration.auxiliaryTypes.selectOne(f2))
             val mandatory = (type.contains("number") || type.contains("char")) && f3 <= 0.4
-            val column = model.Column(table, table.abb+'_'+noun, type, mandatory)
+            val columnName = table.abb + '_' + noun
+            if (table.columnByName(columnName) != null) continue
+            val column = model.Column(table, columnName, type, mandatory)
         }
     }
 
