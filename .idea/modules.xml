@@ -10,6 +10,7 @@
       <module fileurl="file://$PROJECT_DIR$/DekafMain/DekafMain.iml" filepath="$PROJECT_DIR$/DekafMain/DekafMain.iml" group="Dekaf" />
       <module fileurl="file://$PROJECT_DIR$/DemoOnJava/DemoOnJava.iml" filepath="$PROJECT_DIR$/DemoOnJava/DemoOnJava.iml" group="Demo" />
       <module fileurl="file://$PROJECT_DIR$/DemoOnKotlin/DemoOnKotlin.iml" filepath="$PROJECT_DIR$/DemoOnKotlin/DemoOnKotlin.iml" group="Demo" />
+      <module fileurl="file://$PROJECT_DIR$/Gauder/Gauder.iml" filepath="$PROJECT_DIR$/Gauder/Gauder.iml" group="Demo" />
       <module fileurl="file://$PROJECT_DIR$/Jdbc/Jdbc.iml" filepath="$PROJECT_DIR$/Jdbc/Jdbc.iml" group="Old" />
       <module fileurl="file://$PROJECT_DIR$/JunitExtension/JunitExtension.iml" filepath="$PROJECT_DIR$/JunitExtension/JunitExtension.iml" group="Old" />
       <module fileurl="file://$PROJECT_DIR$/KoExpectations/KoExpectations.iml" filepath="$PROJECT_DIR$/KoExpectations/KoExpectations.iml" group="Testing" />
