@@ -9,15 +9,24 @@ class Model {
     var counter: Int = 0
 
     val majors = ArrayList<Major>()
-    
+
 
     /// MATTER \\\
 
     abstract inner class Matter {
 
-        val priority: Int = ++counter
-        var name:     String = "__no_name__"
+        val priority:  Int                 = ++counter
+        val nameWords: MutableList<String> = ArrayList<String>(4)
 
+        val name:       String  get() = if (nameWords.isNotEmpty()) nameWords.joinToString("_") else "__no_name__"
+        val nameLength: Int     get() = nameWords.sumBy { it.length } + (if (nameWords.size >= 2) nameWords.size-1 else 0)
+
+        fun adjustName() {
+            if (nameWords.size > 1 && nameLength > 30) {
+                for (i in nameWords.size-1 downTo 1) nameWords.removeAt(i)
+                nameWords.add(priority.toString())
+            }
+        }
     }
 
 
@@ -32,17 +41,24 @@ class Model {
 
         fun columnByName(name: String) = columns.firstOrNull { it.name == name }
 
+        fun drop() {
+            majors.remove(this)
+        }
     }
 
 
     inner class Table: LikeTable() {
 
-        var primaryWord: String? = null
-        var abb:         String? = null
+        var primaryWord:      String? = null
+        var abb:              String? = null
 
-        var baseTable:   Table? = null
-        var parentTable: Table? = null
-        var primaryKey:  Key?   = null
+        var baseTable:        Table? = null
+        var parentTable:      Table? = null
+        var primaryKey:       Key?   = null
+
+        var alternativeKeys = ArrayList<Key>()
+        var indices         = ArrayList<Key>()
+        var foreignKeys     = ArrayList<ForeignKey>()
 
         val isTop       get() = baseTable == null && parentTable == null
         val isInherited get() = baseTable != null
@@ -79,6 +95,23 @@ class Model {
     }
 
 
+    inner class ForeignKey: Matter {
+
+        val table     : Table
+        val masterKey : Key
+        val columns   = ArrayList<Column>()
+
+        var cascade   : Boolean
+
+        constructor(table: Table, masterKey: Key, cascade: Boolean = false) : super() {
+            this.table = table
+            this.masterKey = masterKey
+            table.foreignKeys.add(this)
+            this.cascade = cascade
+        }
+    }
+
+
     inner class Column: Matter {
 
         val table       : LikeTable
@@ -87,9 +120,9 @@ class Model {
         var isMandatory : Boolean = false
         var isPrimary   : Boolean = false
 
-        constructor(table: LikeTable, name: String, dataType: String, isMandatory: Boolean = false, isPrimary: Boolean = false) : super() {
+        constructor(table: LikeTable, nameWords: Collection<String>, dataType: String, isMandatory: Boolean = false, isPrimary: Boolean = false) : super() {
             this.table = table
-            this.name = name
+            this.nameWords.addAll(nameWords)
             this.dataType = dataType
             this.isMandatory = isMandatory || isPrimary
             this.isPrimary = isPrimary
@@ -97,7 +130,11 @@ class Model {
         }
 
         fun copy(table: LikeTable, isPrimary: Boolean = false): Column =
-                Column(table, name, dataType, isMandatory || isPrimary, isPrimary)
+                Column(table, nameWords, dataType, isMandatory || isPrimary, isPrimary)
+
+        fun drop() {
+            table.columns.remove(this)
+        }
     }
 
 

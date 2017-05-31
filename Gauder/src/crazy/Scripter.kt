@@ -1,5 +1,6 @@
 package org.jetbrains.dekaf.crazy
 
+import org.jetbrains.dekaf.util.nameStr
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -48,6 +49,12 @@ class Scripter (
         }
         if (table.primaryKey != null) {
             elements.add("primary key (${table.primaryKey!!.columnNamesStr})")
+        }
+        for (fk in table.foreignKeys) {
+            var phrase = "foreign key (${fk.columns.nameStr}) references ${fk.masterKey.table.name}"
+            if (fk.cascade) phrase = "$phrase on delete cascade"
+            if (fk.name != "__no_name__") phrase = "constraint ${fk.name} $phrase"
+            elements.add(phrase)
         }
         return elements
     }

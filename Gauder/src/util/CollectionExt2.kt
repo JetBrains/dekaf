@@ -1,5 +1,7 @@
 package org.jetbrains.dekaf.util
 
+import org.jetbrains.dekaf.crazy.Model
+
 
 fun<O> Iterable<O>.selectOne(fortune: Double): O {
     return this.toList().selectOne(fortune)
@@ -15,3 +17,7 @@ fun<O> List<O>.selectOne(fortune: Double): O {
     return this[index]
 }
 
+
+val Iterable<Model.Matter>.names get() = this.map { it.name }
+
+val Iterable<Model.Matter>.nameStr get() = this.joinToString(separator = ",") { it.name }
