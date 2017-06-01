@@ -16,11 +16,13 @@ class Contriver (
 ) {
 
     val topTableNumber = 25
-    val inheritedTableNumber = 25
+    val inheritedTableNumber = 30
     val detailTableNumber = 25
-    val mmTableNumber = 20
+    val mmTableNumber = 25
     val auxiliaryColumnsMinNumber = 1
     val auxiliaryColumnsMaxNumber = 9
+    val viewsNumber1 = 100
+
 
     private val random = Random(System.nanoTime() * System.currentTimeMillis())
 
@@ -36,6 +38,7 @@ class Contriver (
         inventInheritedTables()
         inventDetailTables()
         inventManyToManyTables()
+        inventViews1()
         report()
 
     }
@@ -52,7 +55,7 @@ class Contriver (
                 usedNouns.add(abb)
                 table.primaryWord = noun
                 table.abb = noun.abb()
-                table.nameWords.add(noun)
+                table.addNameWord(noun)
                 tables.add(table)
             }
             catch (e: Exception) {
@@ -87,9 +90,8 @@ class Contriver (
             val baseTable = tables.filter{it.primaryKey != null}.selectOne(f2)
             val table = model.Table()
             table.baseTable = baseTable
-            table.nameWords.add(adjective)
-            table.nameWords.addAll(baseTable.nameWords)
-            table.adjustName()
+            table.addNameWord(adjective)
+            table.addNameWords(baseTable.nameWords)
             table.abb = table.name.abb()
             if (table.name.length > 30) { table.drop(); continue }
 
@@ -124,9 +126,8 @@ class Contriver (
             val parentTable = tables.filter{it.primaryKey != null}.selectOne(f2)
             val table = model.Table()
             table.parentTable = parentTable
-            table.nameWords.addAll(parentTable.nameWords)
-            table.nameWords.add(word)
-            table.adjustName()
+            table.setNameWords(parentTable.nameWords)
+            table.addNameWord(word)
             table.abb = word.abb()
             if (table.name.length > 30) { table.drop(); continue }
 
@@ -171,8 +172,7 @@ class Contriver (
             for (word in tab2.nameWords) if (word !in nameWords) nameWords.add(word)
 
             val table = model.Table()
-            table.nameWords.addAll(nameWords)
-            table.adjustName()
+            table.setNameWords(nameWords)
             val fk1 = model.ForeignKey(table, pk1)
             val fk2 = model.ForeignKey(table, pk2)
 
@@ -219,6 +219,28 @@ class Contriver (
         if (t.contains("(V)")) t = t.replace("V", "${random.nextInt(60) + 11}")
         if (t.contains("(W)")) t = t.replace("W", "${random.nextInt(160) + 21}")
         return t
+    }
+
+
+    private fun inventViews1() {
+        val tables = model.majors.filter{it is Model.Table && it.baseTable != null && it.nameLength <= 26}.map{it as Model.Table}
+
+        for (k in 1..viewsNumber1) {
+            val f = random.nextDouble()
+            val table2 = tables.selectOne(f)
+            val table1 = table2.baseTable ?: continue
+            val view = model.View()
+            view.setNameWords(table2.nameWords)
+            view.addNameWord(k.toString())
+
+            val text = """|create view ${view.name} as
+                          |select *
+                          |from ${table1.name} natural join ${table2.name}
+                          |order by 1,2
+                       """.trimMargin()
+            view.text = text.trim() + '\n'
+        }
+
     }
 
 

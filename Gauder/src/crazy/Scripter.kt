@@ -1,5 +1,6 @@
 package org.jetbrains.dekaf.crazy
 
+import org.jetbrains.dekaf.util.lastCharacter
 import org.jetbrains.dekaf.util.nameStr
 import java.nio.file.Files
 import java.nio.file.Path
@@ -18,7 +19,8 @@ class Scripter (
         for (major in model.majors) {
             val stmt = when (major) {
                 is Model.Table -> generateTable(major)
-                else           -> null
+                is Model.View  -> generateView(major)
+                else           -> throw RuntimeException("Unknown how to generate $major")
             }
             if (stmt != null) script.add(stmt.toString())
         }
@@ -57,6 +59,13 @@ class Scripter (
             elements.add(phrase)
         }
         return elements
+    }
+
+
+    fun generateView(view: Model.View): CharSequence? {
+        var text = view.text
+        if (text.lastCharacter != '\n') text += '\n'
+        return text
     }
 
 

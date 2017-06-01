@@ -11,22 +11,60 @@ class Model {
     val majors = ArrayList<Major>()
 
 
+
     /// MATTER \\\
 
     abstract inner class Matter {
 
-        val priority:  Int                 = ++counter
-        val nameWords: MutableList<String> = ArrayList<String>(4)
+        val priority:  Int = ++counter
 
-        val name:       String  get() = if (nameWords.isNotEmpty()) nameWords.joinToString("_") else "__no_name__"
-        val nameLength: Int     get() = nameWords.sumBy { it.length } + (if (nameWords.size >= 2) nameWords.size-1 else 0)
+        private val nameWords_: MutableList<String> = ArrayList<String>(4)
+        private var name_     : String              = "__no_name__"
 
-        fun adjustName() {
-            if (nameWords.size > 1 && nameLength > 30) {
-                for (i in nameWords.size-1 downTo 1) nameWords.removeAt(i)
-                nameWords.add(priority.toString())
-            }
+        val nameWords:  List<String>   get() = nameWords_
+        val name:       String         get() = name_
+        val hasName:    Boolean        get() = nameWords_.isNotEmpty()
+        val nameLength: Int            get() = name_.length
+
+        fun addNameWord(word: String) {
+            nameWords_.add(word)
+            adjustName()
         }
+
+        fun addNameWords(words: Iterable<String>) {
+            for (word in words) nameWords_.add(word)
+            adjustName()
+        }
+
+        fun setNameWords(words: Iterable<String>) {
+            nameWords_.clear()
+            for (word in words) nameWords_.add(word)
+            adjustName()
+        }
+
+        fun clearName() {
+            nameWords_.clear()
+            adjustName()
+        }
+
+        private fun adjustName() {
+            if (nameWords_.isEmpty()) {
+                this.name_ = "__no_name__"
+                return
+            }
+
+            var name: String
+            var n = nameWords.size
+            do {
+                name = nameWords_.joinToString(separator = "_", limit = n, truncated = "")
+                if (name.endsWith('_')) name = name.substring(0, name.length-1) // workaround the bug KT-182489
+                n--
+            } while (n > 0 && name.length > 30)
+
+            this.name_ = name
+        }
+
+        override fun toString() = "${this.javaClass.simpleName.toLowerCase()} $name"
     }
 
 
@@ -112,6 +150,18 @@ class Model {
     }
 
 
+    inner class View: LikeTable {
+
+        var text: String
+
+        constructor(nameWords: Iterable<String> = emptyList(), text: String = "select 1") : super() {
+            this.setNameWords(nameWords)
+            this.text = text
+            majors.add(this)
+        }
+    }
+
+
     inner class Column: Matter {
 
         val table       : LikeTable
@@ -120,9 +170,9 @@ class Model {
         var isMandatory : Boolean = false
         var isPrimary   : Boolean = false
 
-        constructor(table: LikeTable, nameWords: Collection<String>, dataType: String, isMandatory: Boolean = false, isPrimary: Boolean = false) : super() {
+        constructor(table: LikeTable, nameWords: Iterable<String>, dataType: String, isMandatory: Boolean = false, isPrimary: Boolean = false) : super() {
             this.table = table
-            this.nameWords.addAll(nameWords)
+            this.setNameWords(nameWords)
             this.dataType = dataType
             this.isMandatory = isMandatory || isPrimary
             this.isPrimary = isPrimary

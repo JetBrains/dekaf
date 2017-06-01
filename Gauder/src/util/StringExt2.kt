@@ -15,3 +15,14 @@ fun CharSequence.abb(length: Int = 3): String {
 
 fun Char.isVowel(): Boolean =
     this in "AEIOUYaeiouyАЕЁИОУЫЭЮЯаеёиоуыэюя"
+
+
+val CharSequence?.lastCharacter: Char
+    get() {
+        if (this != null) {
+            val n = this.length
+            if (n > 0) return this[n-1]
+        }
+
+        return '\u0000'
+    }
