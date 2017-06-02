@@ -161,6 +161,17 @@ class Model {
         }
     }
 
+    inner class Package : Major {
+
+        var text1: String? = null
+        var text2: String? = null
+
+        constructor(nameWords: Iterable<String> = emptyList()) : super() {
+            this.setNameWords(nameWords)
+            majors.add(this)
+        }
+    }
+
 
     inner class Column: Matter {
 
@@ -177,6 +188,13 @@ class Model {
             this.isMandatory = isMandatory || isPrimary
             this.isPrimary = isPrimary
             table.columns.add(this)
+        }
+
+        fun formalType(): String {
+            var s = dataType
+            val p = s.indexOf('(')
+            if (p > 0) s = s.substring(0,p).trim()
+            return s
         }
 
         fun copy(table: LikeTable, isPrimary: Boolean = false): Column =

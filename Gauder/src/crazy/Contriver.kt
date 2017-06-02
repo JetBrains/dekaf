@@ -15,13 +15,17 @@ class Contriver (
 
 ) {
 
-    val topTableNumber = 25
-    val inheritedTableNumber = 30
-    val detailTableNumber = 25
-    val mmTableNumber = 25
+    val topTableNumber = 500
+    val inheritedTableNumber = 240
+    val detailTableNumber = 250
+    val mmTableNumber = 250
     val auxiliaryColumnsMinNumber = 1
-    val auxiliaryColumnsMaxNumber = 9
-    val viewsNumber1 = 100
+    val auxiliaryColumnsMaxNumber = 39
+    val viewsNumber1 = 1100
+    val packsNumber1 = 1100
+    val hacksNumber = 2100
+    val hacksProcNumberMin = 10
+    val hacksProcNumberMax = 60
 
 
     private val random = Random(System.nanoTime() * System.currentTimeMillis())
@@ -39,6 +43,8 @@ class Contriver (
         inventDetailTables()
         inventManyToManyTables()
         inventViews1()
+        inventPacks1()
+        inventPacks2()
         report()
 
     }
@@ -241,6 +247,87 @@ class Contriver (
             view.text = text.trim() + '\n'
         }
 
+    }
+
+
+    private fun inventPacks1() {
+        val tables = model.majors.filter{it is Model.Table && it.primaryKey != null && it.nameLength <= 22}.map{it as Model.Table}
+
+        for ((index, table) in tables.withIndex()) {
+            if (index >= packsNumber1) break
+
+            val prima = table.primaryKey!!
+            val primaColumns = prima.columns
+            val otherColumns = table.columns.minus(prima.columns)
+
+            val pack = model.Package(table.nameWords)
+            pack.addNameWord("working")
+
+            val keySpec = primaColumns.joinToString { it.name + ' ' + it.formalType() }
+            val specCreate = "procedure createOne($keySpec);"
+
+            val specProcedures = ArrayList<String>()
+            for (column in otherColumns) {
+                val spec = "procedure set_${column.name} ($keySpec, ${column.name} ${column.formalType()});"
+                specProcedures.add(spec)
+            }
+
+            val text1 = """|create package ${pack.name} as
+                           |
+                           |$specCreate
+                           |
+                           |${specProcedures.joinToString("\n")}
+                           |
+                           |end ${pack.name};
+                           |""".trimMargin()
+
+            pack.text1 = text1
+        }
+    }
+
+
+    private fun inventPacks2() {
+        val tables = model.majors.filter{it is Model.Table && !it.isTop && it.primaryKey != null && it.nameLength <= 22}.map{it as Model.Table}
+
+        val usedPackNames = HashSet<String>()
+
+        for (k in 1..hacksNumber) {
+            val table = tables.selectOne(random.nextDouble())
+
+            val prima = table.primaryKey!!
+            val primaColumns = prima.columns
+            val otherColumns = table.columns.minus(prima.columns)
+
+            val pack = model.Package(table.nameWords)
+            pack.addNameWord("hacking")
+            if (pack.name in usedPackNames) pack.addNameWord(k.toString())
+            usedPackNames.add(pack.name)
+
+            val keySpec = primaColumns.joinToString { it.name + ' ' + it.formalType() }
+
+            val usedProcNames = HashSet<String>()
+
+            val hackProcedures = ArrayList<String>()
+            val n = hacksProcNumberMin + ((hacksProcNumberMax-hacksProcNumberMin) * random.nextFloat()).toInt()
+            for (h in 1..hacksProcNumberMin) {
+                val column = otherColumns.selectOne(random.nextDouble())
+                val verb = dictionary.verbs.selectOne(random.nextDouble())
+                val procName = "${verb}_${column.name}"
+                if (procName in usedProcNames) continue
+                usedProcNames.add(procName)
+                val spec = "procedure $procName ($keySpec, ${column.name} ${column.formalType()});"
+                hackProcedures.add(spec)
+            }
+
+            val text1 = """|create package ${pack.name} as
+                           |
+                           |${hackProcedures.joinToString("\n")}
+                           |
+                           |end ${pack.name};
+                           |""".trimMargin()
+
+            pack.text1 = text1
+        }
     }
 
 

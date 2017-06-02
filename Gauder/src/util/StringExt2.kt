@@ -26,3 +26,16 @@ val CharSequence?.lastCharacter: Char
 
         return '\u0000'
     }
+
+
+val String.capitalized: String
+    get() {
+        if (this.isEmpty()) return this
+        val c1 = this[0]
+        if (c1.isLowerCase()) {
+            return c1.toUpperCase() + this.substring(1)
+        }
+        else {
+            return this
+        }
+    }

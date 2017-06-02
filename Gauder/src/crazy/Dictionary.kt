@@ -12,6 +12,8 @@ class Dictionary {
 
     val nouns      = TreeSet<String>(String.CASE_INSENSITIVE_ORDER)
     val adjectives = TreeSet<String>(String.CASE_INSENSITIVE_ORDER)
+    val verbs      = TreeSet<String>(String.CASE_INSENSITIVE_ORDER)
+
 
     fun init(dirPath: String) {
         dir = Paths.get(dirPath)
@@ -20,6 +22,7 @@ class Dictionary {
 
         loadWords("nouns", nouns)
         loadWords("adjectives", adjectives)
+        loadWords("verbs", verbs)
     }
 
     private fun loadWords(name: String, collection: MutableCollection<String>) {

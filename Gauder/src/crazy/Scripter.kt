@@ -18,9 +18,10 @@ class Scripter (
         val script = ArrayList<String>()
         for (major in model.majors) {
             val stmt = when (major) {
-                is Model.Table -> generateTable(major)
-                is Model.View  -> generateView(major)
-                else           -> throw RuntimeException("Unknown how to generate $major")
+                is Model.Table   -> generateTable(major)
+                is Model.View    -> generateView(major)
+                is Model.Package -> generatePackage(major)
+                else             -> throw RuntimeException("Unknown how to generate $major")
             }
             if (stmt != null) script.add(stmt.toString())
         }
@@ -66,6 +67,12 @@ class Scripter (
         var text = view.text
         if (text.lastCharacter != '\n') text += '\n'
         return text
+    }
+
+    fun generatePackage(p: Model.Package): CharSequence? {
+        var text1 = p.text1
+        if (text1.lastCharacter != '\n') text1 += '\n'
+        return text1 // TODO text2
     }
 
 
