@@ -11,7 +11,7 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
+import java.util.*;
 
 import static org.jetbrains.dekaf.util.Objects.castTo;
 
@@ -73,12 +73,24 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
   private Driver getDriverFromJavaDriverManager(final @NotNull String connectionString) {
     tryToLoadDriverIfNeeded();
     try {
-      return DriverManager.getDriver(connectionString);
+      List<Driver> drivers = Collections.list(DriverManager.getDrivers());
+      Comparator<Driver> comparator = getDriverComparator();
+      if (comparator != null) Collections.sort(drivers, comparator);
+      return getSuitableDriver(connectionString, drivers);
     }
     catch (SQLException sqle) {
       throw getExceptionRecognizer().recognizeException(sqle,
                                                     "DriverManager.getDriver for: " + connectionString);
     }
+  }
+
+  @NotNull
+  private Driver getSuitableDriver(@NotNull String connectionString,
+                                   @NotNull List<Driver> drivers) throws SQLException {
+    for (Driver driver : drivers) {
+      if (driver.acceptsURL(connectionString)) return driver;
+    }
+    throw new SQLException("No suitable driver", "08001");
   }
 
   protected void tryToLoadDriverIfNeeded() {
@@ -98,6 +110,11 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
 
   @Nullable
   protected abstract Driver loadDriver();
+
+  @Nullable
+  protected Comparator<Driver> getDriverComparator() {
+    return null;
+  }
 
 
   protected boolean whetherApplicableDriverAlreadyRegistered(@NotNull final String connectionString) {

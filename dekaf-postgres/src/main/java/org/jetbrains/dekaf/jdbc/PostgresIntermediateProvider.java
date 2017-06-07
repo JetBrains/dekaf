@@ -8,6 +8,7 @@ import org.jetbrains.dekaf.exceptions.DBInitializationException;
 import org.jetbrains.dekaf.exceptions.DBPreparingException;
 
 import java.sql.Driver;
+import java.util.Comparator;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
@@ -110,4 +111,18 @@ public class PostgresIntermediateProvider extends JdbcIntermediateRdbmsProvider 
     return PostgresExceptionRecognizer.INSTANCE;
   }
 
+  @Nullable
+  @Override
+  protected Comparator<Driver> getDriverComparator() {
+    return new Comparator<Driver>() {
+      @Override
+      public int compare(Driver firstDriver, Driver secondDriver) {
+        String firstDriverName = firstDriver.getClass().getName();
+        String secondDriverName = secondDriver.getClass().getName();
+        return firstDriverName.contains("postgres") ? -1 :
+               secondDriverName.contains("postgres") ? 1 :
+               0;
+      }
+    };
+  }
 }
