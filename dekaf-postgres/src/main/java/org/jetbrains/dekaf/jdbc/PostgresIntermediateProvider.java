@@ -29,7 +29,7 @@ public class PostgresIntermediateProvider extends JdbcIntermediateRdbmsProvider 
           Pattern.compile("^jdbc:postgresql://.+$");
 
   static final String POSTGRES_CONNECTION_STRING_EXAMPLE =
-          "jdbc:postgresql:///";
+          "jdbc:postgresql:///?OpenSourceSubProtocolOverride=true";
 
   private static final String POSTGRES_DRIVER_CLASS_NAME =
           "org.postgresql.Driver";
