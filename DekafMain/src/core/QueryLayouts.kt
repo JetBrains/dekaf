@@ -10,6 +10,12 @@ fun layoutExistence(): QueryResultLayout<Boolean> = QueryResultExistenceLayout()
 fun<V> layoutSingleValueOf(valueClass: Class<V>): QueryResultLayout<V> = QueryResultOneRowLayout(rowValueOf(valueClass))
 inline fun<reified V> layoutSingleValueOf(): QueryResultLayout<V> = layoutSingleValueOf(V::class.java)
 
+fun layoutArrayOfShort(): QueryResultLayout<ShortArray> = QueryResultArrayOfShortLayout()
+
+fun layoutArrayOfInt(): QueryResultLayout<IntArray> = QueryResultArrayOfIntLayout()
+
+fun layoutArrayOfLong(): QueryResultLayout<LongArray> = QueryResultArrayOfLongLayout()
+
 fun<R> layoutArrayOf(row: QueryRowLayout<R>): QueryResultLayout<Array<out R>> = QueryResultArrayLayout(row)
 
 fun<R> layoutListOf(row: QueryRowLayout<R>): QueryResultLayout<List<R>> = QueryResultListLayout(row)

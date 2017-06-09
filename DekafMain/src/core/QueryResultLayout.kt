@@ -3,7 +3,7 @@ package org.jetbrains.dekaf.core
 import org.jetbrains.dekaf.inter.InterLayout
 import org.jetbrains.dekaf.inter.InterResultKind
 import org.jetbrains.dekaf.inter.InterResultKind.*
-import org.jetbrains.dekaf.util.Objects
+import org.jetbrains.dekaf.util.*
 
 
 sealed class QueryResultLayout<T> {
@@ -90,6 +90,75 @@ class QueryResultOneRowLayout<R>(override val row: QueryRowLayout<R>) : QueryRes
     }
 
     override fun makeBuilder() = MyBuilder()
+}
+
+
+class QueryResultArrayOfShortLayout : QueryResultLayout<ShortArray>() {
+    
+    override val interResultKind: InterResultKind = RES_PRIMITIVE_ARRAY
+
+    override val row: QueryRowLayout<*> = QueryRowPrimitiveLayout(JavaPrimitiveKind.JAVA_SHORT)
+
+    /// Result builder \\\
+
+    inner class MyBuilder: Builder() {
+
+        val b = ShortArrayBuilder()
+
+        override fun clear() = b.clear()
+
+        override fun add(portion: Any) = b.addArray(portion as ShortArray)
+
+        override fun build(): ShortArray = b.buildArrayOfShort()
+    }
+
+    override fun makeBuilder(): Builder = MyBuilder()
+}
+
+
+class QueryResultArrayOfIntLayout : QueryResultLayout<IntArray>() {
+
+    override val interResultKind: InterResultKind = RES_PRIMITIVE_ARRAY
+
+    override val row: QueryRowLayout<*> = QueryRowPrimitiveLayout(JavaPrimitiveKind.JAVA_INT)
+
+    /// Result builder \\\
+
+    inner class MyBuilder: Builder() {
+
+        val b = IntArrayBuilder()
+
+        override fun clear() = b.clear()
+
+        override fun add(portion: Any) = b.addArray(portion as IntArray)
+
+        override fun build(): IntArray = b.buildArrayOfInt()
+    }
+
+    override fun makeBuilder(): Builder = MyBuilder()
+}
+
+
+class QueryResultArrayOfLongLayout : QueryResultLayout<LongArray>() {
+
+    override val interResultKind: InterResultKind = RES_PRIMITIVE_ARRAY
+
+    override val row: QueryRowLayout<*> = QueryRowPrimitiveLayout(JavaPrimitiveKind.JAVA_LONG)
+
+    /// Result builder \\\
+
+    inner class MyBuilder: Builder() {
+
+        val b = LongArrayBuilder()
+
+        override fun clear() = b.clear()
+
+        override fun add(portion: Any) = b.addArray(portion as LongArray)
+
+        override fun build(): LongArray = b.buildArrayOfLong()
+    }
+
+    override fun makeBuilder(): Builder = MyBuilder()
 }
 
 

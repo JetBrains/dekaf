@@ -86,7 +86,7 @@ public final class InterLayout implements Serializable {
         this.cortegeClasses = cortegeClasses;
 
         if (baseClass != null) {
-            assert Serializable.class.isAssignableFrom(baseClass)
+            assert baseClass.isPrimitive() || Serializable.class.isAssignableFrom(baseClass)
                     : "The base class must be serializable: " + baseClass.getSimpleName();
         }
         if (cortegeClasses != null) {

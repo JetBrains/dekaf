@@ -209,8 +209,76 @@ infix fun<E> List<E>?.expected(list: List<out E>) {
 }
 
 
+infix fun ByteArray?.expected(array: ByteArray) {
+    if (this == null || this.isEmpty()) fail("Got ${this.displayString()} when expected ${array.displayString()}")
+    val n1 = this.size
+    val n2 = array.size
+    if (n1 != n2) failDiff("Arrays have different sizes: got ${this.displayString()} when expected ${array.displayString()}", this, array)
+    var d = false
+    for (i in 0..n1-1) if (this[i] != array[i]) { d = true; break }
+    if (d) failDiff("Arrays are different: got ${this.displayString()} when expected ${array.displayString()}", this, array)
+}
+
+infix fun ShortArray?.expected(array: ShortArray) {
+    if (this == null || this.isEmpty()) fail("Got ${this.displayString()} when expected ${array.displayString()}")
+    val n1 = this.size
+    val n2 = array.size
+    if (n1 != n2) failDiff("Arrays have different sizes: got ${this.displayString()} when expected ${array.displayString()}", this, array)
+    var d = false
+    for (i in 0..n1-1) if (this[i] != array[i]) { d = true; break }
+    if (d) failDiff("Arrays are different: got ${this.displayString()} when expected ${array.displayString()}", this, array)
+}
+
+infix fun IntArray?.expected(array: IntArray) {
+    if (this == null || this.isEmpty()) fail("Got ${this.displayString()} when expected ${array.displayString()}")
+    val n1 = this.size
+    val n2 = array.size
+    if (n1 != n2) failDiff("Arrays have different sizes: got ${this.displayString()} when expected ${array.displayString()}", this, array)
+    var d = false
+    for (i in 0..n1-1) if (this[i] != array[i]) { d = true; break }
+    if (d) failDiff("Arrays are different: got ${this.displayString()} when expected ${array.displayString()}", this, array)
+}
+
+infix fun LongArray?.expected(array: LongArray) {
+    if (this == null || this.isEmpty()) fail("Got ${this.displayString()} when expected ${array.displayString()}")
+    val n1 = this.size
+    val n2 = array.size
+    if (n1 != n2) failDiff("Arrays have different sizes: got ${this.displayString()} when expected ${array.displayString()}", this, array)
+    var d = false
+    for (i in 0..n1-1) if (this[i] != array[i]) { d = true; break }
+    if (d) failDiff("Arrays are different: got ${this.displayString()} when expected ${array.displayString()}", this, array)
+}
+
 
 ///  AUXILIARY FUNCTIONS \\\
+
+private fun ByteArray?.displayString():String {
+    if (this == null) return "null"
+    val n = this.size
+    if (n == 0) return "an empty array"
+    return this.joinToString(separator = ",", prefix = "[", postfix = "]")
+}
+
+private fun ShortArray?.displayString():String {
+    if (this == null) return "null"
+    val n = this.size
+    if (n == 0) return "an empty array"
+    return this.joinToString(separator = ",", prefix = "[", postfix = "]")
+}
+
+private fun IntArray?.displayString():String {
+    if (this == null) return "null"
+    val n = this.size
+    if (n == 0) return "an empty array"
+    return this.joinToString(separator = ",", prefix = "[", postfix = "]")
+}
+
+private fun LongArray?.displayString():String {
+    if (this == null) return "null"
+    val n = this.size
+    if (n == 0) return "an empty array"
+    return this.joinToString(separator = ",", prefix = "[", postfix = "]")
+}
 
 private fun Array<*>?.displayString():String {
     if (this == null) return "null"

@@ -47,6 +47,20 @@ class QueryRowExistenceLayout: QueryRowLayout<Boolean>()
 }
 
 
+class QueryRowPrimitiveLayout(val primitiveKind: JavaPrimitiveKind): QueryRowLayout<Any>()
+{
+    override val rowClass: Class<Any>
+        get() = primitiveKind.primitiveClass
+
+    override fun interRowKind(): InterRowKind = InterRowKind.ROW_ONE_VALUE
+
+    override fun interBaseComponentClass(): Class<*> = primitiveKind.primitiveClass
+
+    override fun transform(a: Any): Nothing =
+            throw IllegalStateException("The method QueryRowPrimitiveLayout.transform() must be never called")
+}
+
+
 class QueryRowOneValueLayout<V>
 (
     val valueClass: Class<V>
