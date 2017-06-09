@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 
@@ -87,6 +88,15 @@ public final class ArrayBuilder<E> {
         HashSet<E> set = new HashSet<>(count);
         for (E[] array : arrays) set.addAll(Arrays.asList(array));
         return set;
+    }
+
+
+    public void forEach(final @NotNull Consumer<E> consumer) {
+        for (E[] array : arrays) {
+            for (E element : array) {
+                consumer.accept(element);
+            }
+        }
     }
 
 

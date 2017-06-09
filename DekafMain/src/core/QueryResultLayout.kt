@@ -4,6 +4,8 @@ import org.jetbrains.dekaf.inter.InterLayout
 import org.jetbrains.dekaf.inter.InterResultKind
 import org.jetbrains.dekaf.inter.InterResultKind.*
 import org.jetbrains.dekaf.util.*
+import java.util.*
+import kotlin.collections.HashMap
 
 
 sealed class QueryResultLayout<T> {
@@ -218,6 +220,35 @@ class QueryResultSetLayout<R>(override val row: QueryRowLayout<R>) : QueryResult
         override fun add(portion: Any) = b.addArray(portion as Array<out Any?>) { row.transform(it!!) }
 
         override fun build(): Set<R> = b.buildSet()
+    }
+
+    override fun makeBuilder() = MyBuilder()
+}
+
+
+class QueryResultMapLayout<K,V>(val keyClass: Class<K>, val valueClass: Class<V>) : QueryResultLayout<Map<K,V>>() {
+
+    override val interResultKind = RES_TABLE
+
+    override val row = QueryRowMapEntryLayout(keyClass, valueClass)
+
+    /// Result builder \\\
+
+    inner class MyBuilder: Builder() {
+
+        var b = ArrayBuilder<SerializableMapEntry<K,V>>(SerializableMapEntry::class.java as Class<SerializableMapEntry<K,V>>)
+
+        override fun clear() = b.clear()
+
+        override fun add(portion: Any) = b.addArray(portion as Array<out Any?>) { row.transform(it!!) }
+
+        override fun build(): Map<K,V> {
+            val n = b.size()
+            if (n == 0) return Collections.emptyMap<K,V>()
+            val map = HashMap<K,V>(n)
+            b.forEach { map.put(it.key, it.value) }
+            return map
+        }
     }
 
     override fun makeBuilder() = MyBuilder()

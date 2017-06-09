@@ -230,4 +230,42 @@ class LayoutsTest {
         result expected setOf<Number>(1111,2222,3333)
     }
 
+    @Test
+    fun map_basic() {
+        val layout = layoutMapOf<Long,String>()
+        val queryText = """|select id, name
+                           |from table
+                           |     (
+                           |        id bigint = (11,22,33),
+                           |        name varchar(6) = ('Masha','Dasha','Glasha')
+                           |     )
+                         """.trimMargin()
+        val result: Map<Long,String>? = db.inTransaction { tran ->
+            tran.query(queryText, layout).run()
+        }
+
+        result expected IsNotNull
+        result!!
+        result expected mapOf(11L to "Masha", 22L to "Dasha", 33L to "Glasha")
+    }
+
+    @Test
+    fun map_duplicates() {
+        val layout = layoutMapOf<Long,String>()
+        val queryText = """|select id, name
+                           |from table
+                           |     (
+                           |        id bigint = (11,22,22,33),
+                           |        name varchar(6) = ('Masha','Dasha','Dasha','Glasha')
+                           |     )
+                         """.trimMargin()
+        val result: Map<Long,String>? = db.inTransaction { tran ->
+            tran.query(queryText, layout).run()
+        }
+
+        result expected IsNotNull
+        result!!
+        result expected mapOf(11L to "Masha", 22L to "Dasha", 33L to "Glasha")
+    }
+
 }

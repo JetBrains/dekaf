@@ -4,6 +4,7 @@ import org.jetbrains.dekaf.inter.InterRowKind
 import org.jetbrains.dekaf.util.JavaPrimitiveKind
 import org.jetbrains.dekaf.util.Objects.castTo
 import org.jetbrains.dekaf.util.Objects.castToArrayOf
+import org.jetbrains.dekaf.util.SerializableMapEntry
 import org.jetbrains.dekaf.util.getDefaultConstructor
 import org.jetbrains.dekaf.util.instantiate
 import java.lang.reflect.Constructor
@@ -138,6 +139,32 @@ class QueryRowStructLayout<R> : QueryRowLayout<R>
             }
         }
         return struct
+    }
+
+}
+
+
+class QueryRowMapEntryLayout<K,V> : QueryRowLayout<SerializableMapEntry<*,*>>
+{
+    val keyClass: Class<K>
+    val valueClass: Class<V>
+
+    constructor(keyClass: Class<K>, valueClass: Class<V>) {
+        this.keyClass = keyClass
+        this.valueClass = valueClass
+    }
+
+    override fun interRowKind() = InterRowKind.ROW_MAP_ENTRY
+
+    override val rowClass: Class<SerializableMapEntry<*,*>>
+        get() = SerializableMapEntry::class.java
+
+    override fun interComponentClasses() = arrayOf(keyClass, valueClass)
+
+    override fun transform(a: Any): SerializableMapEntry<K,V> {
+        @Suppress("UNCHECKED_CAST")
+        val entry = a as SerializableMapEntry<K,V>
+        return entry
     }
 
 }

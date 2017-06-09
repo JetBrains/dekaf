@@ -29,7 +29,8 @@ public enum InterRowKind {
     ROW_OBJECTS,
 
     /**
-     * A map entry, when the query layout is {@link InterResultKind#RES_MAP}.
+     * A map entry.
+     * @see org.jetbrains.dekaf.util.SerializableMapEntry
      */
     ROW_MAP_ENTRY
 

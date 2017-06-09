@@ -2,7 +2,6 @@
 package org.jetbrains.dekaf.core
 
 
-
 /// RESULT LAYOUT \\\
 
 fun layoutExistence(): QueryResultLayout<Boolean> = QueryResultExistenceLayout()
@@ -21,6 +20,9 @@ fun<R> layoutArrayOf(row: QueryRowLayout<R>): QueryResultLayout<Array<out R>> = 
 fun<R> layoutListOf(row: QueryRowLayout<R>): QueryResultLayout<List<R>> = QueryResultListLayout(row)
 
 fun<R> layoutSetOf(row: QueryRowLayout<R>): QueryResultLayout<Set<R>> = QueryResultSetLayout(row)
+
+fun<K,V> layoutMapOf(keyClass: Class<K>, valueClass: Class<V>): QueryResultLayout<Map<K,V>> = QueryResultMapLayout(keyClass, valueClass)
+inline fun<reified K, reified V> layoutMapOf(): QueryResultLayout<Map<K,V>> = layoutMapOf(K::class.java, V::class.java)
 
 
 

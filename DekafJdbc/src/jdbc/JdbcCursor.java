@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.exceptions.DBFetchingException;
 import org.jetbrains.dekaf.inter.InterCursor;
 import org.jetbrains.dekaf.inter.InterLayout;
+import org.jetbrains.dekaf.util.SerializableMapEntry;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -204,6 +205,7 @@ class JdbcCursor implements InterCursor {
                 case ROW_ONE_VALUE: return fetchOneValue();
                 case ROW_OBJECTS: return fetchObjects();
                 case ROW_PRIMITIVES: return fetchPrimitives();
+                case ROW_MAP_ENTRY: return fetchMapEntry();
                 default: throw new IllegalStateException("Unknown how to fetch a " + layout.rowKind);
             }
         }
@@ -263,6 +265,18 @@ class JdbcCursor implements InterCursor {
         return (Serializable) array;
     }
 
+
+    @Nullable
+    private SerializableMapEntry fetchMapEntry() {
+        Serializable key = getOneValue(0);
+        Serializable value = getOneValue(1);
+        if (key == null || value == null) return null;
+
+        @SuppressWarnings("unchecked")
+        SerializableMapEntry entry = new SerializableMapEntry(key, value);
+
+        return entry;
+    }
 
     @Nullable
     private Serializable getOneValue(int fieldIndex) {
