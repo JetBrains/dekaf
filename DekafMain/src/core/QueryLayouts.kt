@@ -20,6 +20,8 @@ fun<R> layoutArrayOf(row: QueryRowLayout<R>): QueryResultLayout<Array<out R>> = 
 
 fun<R> layoutListOf(row: QueryRowLayout<R>): QueryResultLayout<List<R>> = QueryResultListLayout(row)
 
+fun<R> layoutSetOf(row: QueryRowLayout<R>): QueryResultLayout<Set<R>> = QueryResultSetLayout(row)
+
 
 
 /// ROW LAYOUTS \\\

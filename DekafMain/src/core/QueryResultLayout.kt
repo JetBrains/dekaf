@@ -170,24 +170,13 @@ class QueryResultArrayLayout<R>(override val row: QueryRowLayout<R>) : QueryResu
 
     inner class MyBuilder: Builder() {
 
-        val list = ArrayList<R>()
+        val b = ArrayBuilder<R>(row.rowClass)
 
-        override fun clear() {
-            list.clear()
-        }
+        override fun clear() = b.clear()
 
-        override fun add(portion: Any) {
-            val array: Array<out Any?> = portion as Array<out Any?>
-            for (a in array) {
-                if (a == null) break
-                val r = row.transform(a)
-                list.add(r)
-            }
-        }
+        override fun add(portion: Any) = b.addArray(portion as Array<out Any?>) { row.transform(it!!) }
 
-        override fun build(): Array<out R> {
-            return list.toArray(Objects.arrayOf(row.rowClass, 0))
-        }
+        override fun build(): Array<out R> = b.buildArray()
     }
 
     override fun makeBuilder() = MyBuilder()
@@ -202,27 +191,34 @@ class QueryResultListLayout<R>(override val row: QueryRowLayout<R>) : QueryResul
 
     inner class MyBuilder: Builder() {
 
-        var list = ArrayList<R>()
+        var b = ArrayBuilder<R>(row.rowClass)
 
-        override fun clear() {
-            list = ArrayList<R>()
-        }
+        override fun clear() = b.clear()
 
-        override fun add(portion: Any) {
-            val array: Array<out Any?> = portion as Array<out Any?>
-            for (a in array) {
-                if (a == null) break
-                val r = row.transform(a)
-                list.add(r)
-            }
-        }
+        override fun add(portion: Any) = b.addArray(portion as Array<out Any?>) { row.transform(it!!) }
 
-        override fun build(): List<R> {
-            return list
-        }
+        override fun build(): List<R> = b.buildList()
     }
 
     override fun makeBuilder() = MyBuilder()
 }
 
+class QueryResultSetLayout<R>(override val row: QueryRowLayout<R>) : QueryResultLayout<Set<R>>() {
 
+    override val interResultKind = RES_TABLE
+
+    /// Result builder \\\
+
+    inner class MyBuilder: Builder() {
+
+        var b = ArrayBuilder<R>(row.rowClass)
+
+        override fun clear() = b.clear()
+
+        override fun add(portion: Any) = b.addArray(portion as Array<out Any?>) { row.transform(it!!) }
+
+        override fun build(): Set<R> = b.buildSet()
+    }
+
+    override fun makeBuilder() = MyBuilder()
+}

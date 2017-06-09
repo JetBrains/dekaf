@@ -23,11 +23,6 @@ public enum InterResultKind {
     RES_TABLE,
 
     /**
-     * Map.
-     */
-    RES_MAP,
-
-    /**
      * Whole result is the array of primitives.
      */
     RES_PRIMITIVE_ARRAY,

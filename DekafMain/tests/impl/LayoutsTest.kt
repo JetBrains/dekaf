@@ -204,4 +204,30 @@ class LayoutsTest {
         result expected listOf<Number>(1234,5678,9012)
     }
 
+    @Test
+    fun setOfNumber() {
+        val layout = layoutSetOf(rowValueOf<Number>())
+        val queryText = "select * from table (nr int=(1234,5678,9012)) order by 1"
+        val result: Set<Number>? = db.inTransaction { tran ->
+            tran.query(queryText, layout).run()
+        }
+
+        result expected IsNotNull
+        result!!
+        result expected setOf<Number>(1234,5678,9012)
+    }
+
+    @Test
+    fun setOfNumber_duplicates() {
+        val layout = layoutSetOf(rowValueOf<Number>())
+        val queryText = "select * from table (nr int=(1111,2222,1111,3333,2222)) order by 1"
+        val result: Set<Number>? = db.inTransaction { tran ->
+            tran.query(queryText, layout).run()
+        }
+
+        result expected IsNotNull
+        result!!
+        result expected setOf<Number>(1111,2222,3333)
+    }
+
 }

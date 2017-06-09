@@ -4,8 +4,9 @@ import org.jetbrains.dekaf.DekafMaster;
 import org.jetbrains.dekaf.core.DBFacade;
 import org.jetbrains.dekaf.core.QueryResultLayout;
 
-import static org.jetbrains.dekaf.core.QueryLayouts.layoutArrayOfInt;
-import static org.jetbrains.dekaf.core.QueryLayouts.layoutArrayOfLong;
+import java.util.Set;
+
+import static org.jetbrains.dekaf.core.QueryLayouts.*;
 
 
 
@@ -30,7 +31,7 @@ public final class Step05 {
         DBFacade facade = DekafMaster.provider.provide(Consts.connectionString);
         facade.connect();
 
-        // Query an array of int
+        // Query an array of primitive int
         QueryResultLayout<int[]> layout1 = layoutArrayOfInt();
         facade.inTransactionDo(tran -> {
             int[] identifiers = tran.query(queryText, layout1).run();
@@ -38,12 +39,19 @@ public final class Step05 {
             System.out.println("");
         });
 
-        // Query an array of long
+        // Query an array of primitive long
         QueryResultLayout<long[]> layout2 = layoutArrayOfLong();
         facade.inTransactionDo(tran -> {
             long[] identifiers = tran.query(queryText, layout2).run();
             for (int i = 0; i < identifiers.length; i++) System.out.print(identifiers[i] + "  ");
             System.out.println("");
+        });
+
+        // Query a set of Long
+        QueryResultLayout<Set<Long>> layout3 = layoutSetOf(rowValueOf(Long.class));
+        facade.inTransactionDo(tran -> {
+            Set<Long> identifiers = tran.query(queryText, layout3).run();
+            System.out.println(identifiers);
         });
 
         // Disconnect
