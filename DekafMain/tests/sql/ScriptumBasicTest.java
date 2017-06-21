@@ -1,11 +1,11 @@
 package org.jetbrains.dekaf.sql;
 
 
-import org.jetbrains.dekaf.core.Layouts;
-import org.jetbrains.dekaf.junitft.FineRunner;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+
+import org.jetbrains.dekaf.core.QueryLayouts;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -16,13 +16,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-@RunWith(FineRunner.class)
 public class ScriptumBasicTest {
 
   private static Scriptum myScriptum;
 
 
-  @BeforeClass
+  @BeforeAll
   public static void setUp() {
     myScriptum = Scriptum.of(ScriptumBasicTest.class);
   }
@@ -63,7 +62,7 @@ public class ScriptumBasicTest {
   }
 
   protected void check_TheCommand(final String queryName) {
-    SqlQuery<Character> query = myScriptum.query(queryName, Layouts.singleOf(Character.class));
+    SqlQuery<Character> query = myScriptum.query(queryName, QueryLayouts.layoutSingleValueOf(Character.class));
     assertThat(query.mySourceText).isEqualTo("The Command");
   }
 

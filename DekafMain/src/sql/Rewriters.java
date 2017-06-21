@@ -9,12 +9,12 @@ import java.util.function.Function;
 
 
 /**
- * @author Leonid Bushuev from JetBrains
+ * @author Leonid Bushuev
  **/
 public class Rewriters {
 
   public static Function<String,String> replace(@NotNull final String what, @NotNull final String with) {
-    return arg -> StringsKt.replace(arg, what, with, false);
+    return arg -> StringsKt.replace(arg, what, with, false);  // TODO don't use StringsKt.replace here
   }
 
   public static Function<String,String> replace(@NotNull final Map<String,String> map) {

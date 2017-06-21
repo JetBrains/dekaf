@@ -8,9 +8,7 @@ import java.util.Arrays;
 
 
 
-/**
- * @author Leonid Bushuev from JetBrains
- */
+@Deprecated
 public final class RowLayout<R> implements Serializable {
 
   /**

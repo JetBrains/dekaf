@@ -1,10 +1,8 @@
 package org.jetbrains.dekaf.sql;
 
-import org.jetbrains.dekaf.junitft.FineRunner;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+
+
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,8 +11,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-@FixMethodOrder(MethodSorters.JVM)
-@RunWith(FineRunner.class)
 public class SqlScriptTest {
 
 

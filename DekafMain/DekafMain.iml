@@ -7,6 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" packagePrefix="org.jetbrains.dekaf" />
       <sourceFolder url="file://$MODULE_DIR$/sql" type="java-resource" relativeOutputPath="org.jetbrains.dekaf" />
       <sourceFolder url="file://$MODULE_DIR$/kotlinhack" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/tests-sql" type="java-test-resource" relativeOutputPath="org.jetbrains.dekaf" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -16,5 +17,7 @@
     <orderEntry type="module" module-name="DekafJdbc" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="testing5" level="project" />
     <orderEntry type="module" module-name="KoExpectations" scope="TEST" />
+    <orderEntry type="module" module-name="JunitExtension" scope="TEST" />
+    <orderEntry type="library" scope="TEST" name="testingAssertJ" level="project" />
   </component>
 </module>

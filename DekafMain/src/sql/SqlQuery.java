@@ -2,7 +2,7 @@ package org.jetbrains.dekaf.sql;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.dekaf.core.ResultLayout;
+import org.jetbrains.dekaf.core.QueryResultLayout;
 
 import java.util.function.Function;
 
@@ -20,7 +20,7 @@ public class SqlQuery<S> extends SqlStatement {
   //// STATE \\\\
 
   @NotNull
-  private final ResultLayout<S> myLayout;
+  private final QueryResultLayout<S> myLayout;
 
   private transient String myDisplayName;
 
@@ -29,13 +29,13 @@ public class SqlQuery<S> extends SqlStatement {
 
 
   public SqlQuery(@NotNull final TextFragment sourceFragment,
-                  @NotNull final ResultLayout<S> layout) {
+                  @NotNull final QueryResultLayout<S> layout) {
     super(sourceFragment);
     this.myLayout = layout;
   }
 
   public SqlQuery(@NotNull final String sourceText,
-                  @NotNull final ResultLayout<S> layout) {
+                  @NotNull final QueryResultLayout<S> layout) {
     super(sourceText);
     this.myLayout = layout;
   }
@@ -44,7 +44,8 @@ public class SqlQuery<S> extends SqlStatement {
                   @NotNull final String sourceText,
                   @Nullable final String name,
                   @NotNull final String description,
-                  @NotNull final ResultLayout<S> layout, final String displayName) {
+                  @NotNull final QueryResultLayout<S> layout,
+                  final String displayName) {
     super(row, sourceText, name, description);
     myLayout = layout;
     this.myDisplayName = displayName;
@@ -94,7 +95,7 @@ public class SqlQuery<S> extends SqlStatement {
 
 
   @NotNull
-  public ResultLayout<S> getLayout() {
+  public QueryResultLayout<S> getLayout() {
     return myLayout;
   }
 

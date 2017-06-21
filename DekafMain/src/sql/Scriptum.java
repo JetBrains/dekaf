@@ -2,7 +2,7 @@ package org.jetbrains.dekaf.sql;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.dekaf.core.ResultLayout;
+import org.jetbrains.dekaf.core.QueryResultLayout;
 import org.jetbrains.dekaf.util.StringExt;
 
 import java.util.ArrayList;
@@ -194,7 +194,7 @@ public final class Scriptum {
 
   @NotNull
   public final <S> SqlQuery<S> query(@NotNull final String name,
-                                     @NotNull final ResultLayout<S> layout) {
+                                     @NotNull final QueryResultLayout<S> layout) {
     TextFileFragment fragment = getText(name);
     fragment = stripSingleStatement(fragment);
     final SqlQuery<S> query = new SqlQuery<S>(fragment, layout);

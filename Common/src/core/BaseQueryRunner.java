@@ -35,7 +35,7 @@ public class BaseQueryRunner<S> implements DBQueryRunner<S>, BaseSeanceRunner {
 
 
   protected BaseQueryRunner(@NotNull final IntegralIntermediateSeance interSeance,
-                            @NotNull final ResultLayout<S> resultLayout) {
+                            @NotNull final QueryResultLayout<S> resultLayout) {
     myInterSeance = interSeance;
     myResultLayout = resultLayout;
   }

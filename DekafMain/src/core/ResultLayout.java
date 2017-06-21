@@ -7,9 +7,7 @@ import java.util.List;
 
 
 
-/**
- * @author Leonid Bushuev from JetBrains
- */
+@Deprecated
 public final class ResultLayout<T> implements Serializable {
 
   //// INNER DECLARATIONS \\\\

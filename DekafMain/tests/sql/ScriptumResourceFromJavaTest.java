@@ -1,9 +1,7 @@
 package org.jetbrains.dekaf.sql;
 
-import org.jetbrains.dekaf.junitft.FineRunner;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,13 +10,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-@RunWith(FineRunner.class)
 public class ScriptumResourceFromJavaTest {
 
 
   private static ScriptumResourceFromJava myResource;
 
-  @BeforeClass
+  @BeforeAll
   public static void setUpClass() {
     myResource =
           new ScriptumResourceFromJava(ScriptumResourceFromJavaTest.class.getClassLoader(),

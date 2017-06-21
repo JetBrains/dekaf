@@ -126,7 +126,7 @@ public class BaseSession implements DBSession, DBLeasedSession, DBTransaction  {
   public synchronized <S> BaseQueryRunner<S> query(@NotNull final SqlQuery<S> query) {
     final IntegralIntermediateSeance interSeance =
             myInterSession.openSeance(query.getSourceText(), null);
-    BaseQueryRunner<S> queryRunner = new BaseQueryRunner<>(interSeance, query.getLayout());
+    BaseQueryRunner<S> queryRunner = new BaseQueryRunner<S>(interSeance, query.getLayout());
     myRunners.add(queryRunner);
     return queryRunner;
   }

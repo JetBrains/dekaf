@@ -1,6 +1,6 @@
 package org.jetbrains.dekaf.sql;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,7 +21,8 @@ public class RewritersTest {
   @Test
   public void replace_1_same() {
     String str = "ABCDE";
-    assertThat(Rewriters.replace("YYY","TTT").apply(str)).isSameAs(str);
+    String result = Rewriters.replace("YYY", "TTT").apply(str);
+    assertThat(result).isSameAs(str);
   }
 
   @Test
