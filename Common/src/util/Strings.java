@@ -17,53 +17,6 @@ import java.util.regex.Pattern;
 @SuppressWarnings("SpellCheckingInspection")
 public abstract class Strings {
 
-  @SuppressWarnings({"StringEquality", "SimplifiableIfStatement"})
-  public static boolean eq(final String str1, final String str2) {
-    if (str1 == str2) return true;
-    if (str1 == null || str2 == null) return false;
-    return str1.equals(str2);
-  }
-
-  @SuppressWarnings({"StringEquality", "SimplifiableIfStatement"})
-  public static boolean eq(final String str1, final String str2, final boolean caseSensitive) {
-    if (str1 == str2) return true;
-    if (str1 == null || str2 == null) return false;
-    return caseSensitive ? str1.equals(str2) : str1.equalsIgnoreCase(str2);
-  }
-
-
-  @NotNull
-  public static String ensureStartsWith(@NotNull final String str, final char c) {
-    if (str.length() == 0) {
-      return Character.toString(c);
-    }
-    else {
-      char c1 = str.charAt(0);
-      if (c1 == c) return str;
-      else return c + str;
-    }
-  }
-
-
-  @NotNull
-  public static String ensureEndsWith(@NotNull final String str, final char c) {
-    final int n = str.length();
-    if (n > 0 && str.charAt(n - 1) == c) {
-      return str;
-    }
-    else {
-      return str + c;
-    }
-  }
-
-
-  @NotNull
-  public static String removeEnding(@NotNull final String str, @NotNull final String ending) {
-    int n = str.length(),
-        m = ending.length();
-    if (n > m && str.endsWith(ending)) return str.substring(0, n-m);
-    else return str;
-  }
 
 
   @NotNull
@@ -151,38 +104,5 @@ public abstract class Strings {
     return string == null ? null : string.toLowerCase();
   }
 
-
-  @Contract("!null->!null; null->null")
-  public static String minimizeSpaces(@Nullable final String string) {
-    if (string == null) return null;
-    String s = string.trim();
-    if (s.isEmpty()) return "";
-
-    Matcher m = SEVERAL_SPACES.matcher(s);
-    return m.replaceAll(" ");
-  }
-
-  private static final Pattern SEVERAL_SPACES =
-          Pattern.compile("[ \\s\\t\\r\\n]{2,}");
-
-  /**
-   * Returns the last part of the string. Parts deleimited with the specificed <tt>delimiter</tt>.
-   * @param string     the string.
-   * @param delimiter  the parts delimiter.
-   * @return           the last part;
-   *                   or the whole string if the <tt>delimiter</tt> doesn't present in the string.
-   */
-  @Contract("!null,_->!null; null,_->null")
-  public static String lastPart(@Nullable final String string, final char delimiter) {
-    if (string == null) return null;
-
-    int pos = string.lastIndexOf(delimiter);
-    if (pos >= 0) {
-      return string.substring(pos+1);
-    }
-    else {
-      return string;
-    }
-  }
 
 }

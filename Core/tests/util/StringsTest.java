@@ -18,70 +18,6 @@ import static org.jetbrains.dekaf.util.Strings.*;
 @SuppressWarnings("SpellCheckingInspection")
 public class StringsTest {
 
-  //// eq \\\\
-
-  @Test
-  public void eq_eq() {
-    boolean ok = eq("A" + "BC", "AB" + "C");
-    assertThat(ok).isTrue();
-  }
-
-  @Test
-  public void eq_not_eq() {
-    boolean ok = eq("XXX", "YYY");
-    assertThat(ok).isFalse();
-  }
-
-  @Test
-  public void eq_nulls() {
-    boolean ok = eq(null, null);
-    assertThat(ok).isTrue();
-  }
-
-  @Test
-  public void eq_null_1() {
-    boolean ok = eq(null, "ZZZ");
-    assertThat(ok).isFalse();
-  }
-
-  @Test
-  public void eq_null_2() {
-    boolean ok = eq("ZZZ", null);
-    assertThat(ok).isFalse();
-  }
-
-
-  //// ensureStartsWith and ensureEndsWith \\\\
-
-  @Test
-  public void ensureStartsWith_basic() {
-    assertThat(ensureStartsWith("AAAA", 'C')).isEqualTo("CAAAA");
-    assertThat(ensureStartsWith("CAAAA", 'C')).isEqualTo("CAAAA");
-    assertThat(ensureStartsWith("", 'C')).isEqualTo("C");
-  }
-
-  @Test
-  public void ensureStartsWith_dontMakeNewInstanceIfAlreadyStarts() {
-    final String str = "CAAA";
-    final String ensured = ensureStartsWith(str, 'C');
-    assertThat(ensured).isSameAs(str);
-  }
-
-  @Test
-  public void ensureEndsWith_basic() {
-    assertThat(ensureEndsWith("AAAA", 'C')).isEqualTo("AAAAC");
-    assertThat(ensureEndsWith("AAAAC", 'C')).isEqualTo("AAAAC");
-    assertThat(ensureEndsWith("", 'C')).isEqualTo("C");
-  }
-
-  @Test
-  public void ensureEndsWith_dontMakeNewInstanceIfAlreadyEnds() {
-    final String str = "AAAC";
-    final String ensured = ensureEndsWith(str, 'C');
-    assertThat(ensured).isSameAs(str);
-  }
-
-
   //// matches \\\\
 
   @Test
@@ -133,28 +69,5 @@ public class StringsTest {
     assertThat(lower("xxx")).isSameAs("xxx");
   }
 
-
-  //// last part \\\\
-
-  @Test
-  public void lastPart_basic() {
-    assertThat(lastPart("aaa.bbb.ccc", '.')).isEqualTo("ccc");
-    assertThat(lastPart("dddd", '.')).isEqualTo("dddd");
-    assertThat(lastPart("", '.')).isEqualTo("");
-
-    assertThat(lastPart(null, '.')).isNull();
-  }
-
-  @Test
-  public void lastPart_same() {
-    final String s = "dddd";
-    assertThat(lastPart(s, '.')).isSameAs(s);
-  }
-
-  @Test
-  public void lastPart_delimiterAtTheEnd() {
-    final String s = "word/";
-    assertThat(lastPart(s, '/')).isEqualTo("");
-  }
 
 }
