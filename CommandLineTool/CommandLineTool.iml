@@ -10,7 +10,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Common" />
-    <orderEntry type="module" module-name="Core" />
     <orderEntry type="module" module-name="Jdbc" />
   </component>
 </module>

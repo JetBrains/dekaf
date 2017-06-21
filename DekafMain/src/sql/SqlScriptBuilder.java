@@ -1,13 +1,12 @@
 package org.jetbrains.dekaf.sql;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.dekaf.util.StringExt;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static org.jetbrains.dekaf.util.Strings.rtrim;
 
 
 
@@ -120,7 +119,7 @@ public class SqlScriptBuilder {
       if (row.equals("/")) break;
     }
 
-    String plText = rtrim(walker.getText().substring(begin.offset, position));
+      String plText = StringExt.rtrim(walker.getText().substring(begin.offset, position));
     SqlCommand command = new SqlCommand(plText, begin.row, null);
     myStatements.add(command);
   }
@@ -135,7 +134,8 @@ public class SqlScriptBuilder {
     final TextPointer begin = walker.getPointer();
     final Matcher matcher = walker.skipToPattern(SQL_END_MARKER);
 
-    final String sqlText = rtrim(walker.getText().substring(begin.offset, walker.getOffset()));
+      final String sqlText = StringExt.rtrim(walker.getText()
+                                                   .substring(begin.offset, walker.getOffset()));
     SqlCommand command = new SqlCommand(sqlText, begin.row, null);
     myStatements.add(command);
 

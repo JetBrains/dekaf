@@ -67,28 +67,6 @@ public abstract class Strings {
 
 
   @NotNull
-  public static String rtrim(@NotNull final String str) {
-    int n = str.length();
-    int k = n;
-    while (k > 0) {
-      if (Character.isWhitespace(str.charAt(k - 1))) {
-        k--;
-      }
-      else {
-        break;
-      }
-    }
-
-    if (k == n) {
-      return str;
-    }
-    else {
-      return str.substring(0, k);
-    }
-  }
-
-
-  @NotNull
   public static String replace(@NotNull final String where, @NotNull final String what, @NotNull final String with) {
     // TODO make my own implementation, because Java's one is so slow
     return where.replace(what, with);

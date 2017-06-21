@@ -1,7 +1,7 @@
 package org.jetbrains.dekaf.sql;
 
+import kotlin.text.StringsKt;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dekaf.util.Strings;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -14,7 +14,7 @@ import java.util.function.Function;
 public class Rewriters {
 
   public static Function<String,String> replace(@NotNull final String what, @NotNull final String with) {
-    return arg -> Strings.replace(arg, what, with);
+    return arg -> StringsKt.replace(arg, what, with, false);
   }
 
   public static Function<String,String> replace(@NotNull final Map<String,String> map) {

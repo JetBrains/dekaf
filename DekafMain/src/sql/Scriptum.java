@@ -3,13 +3,13 @@ package org.jetbrains.dekaf.sql;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.core.ResultLayout;
+import org.jetbrains.dekaf.util.StringExt;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.jetbrains.dekaf.util.Strings.eq;
-import static org.jetbrains.dekaf.util.Strings.rtrim;
+import static org.jetbrains.dekaf.util.StringExt.eq;
 
 
 
@@ -227,7 +227,7 @@ public final class Scriptum {
     if (m.find()) {
       int n = fragment.text.length();
       n -= m.group(1).length();
-      final String text = rtrim(fragment.text.substring(0, n));
+      final String text = StringExt.rtrim(fragment.text.substring(0, n));
       return new TextFileFragment(text,
                                   fragment.getTextName(),
                                   fragment.row, fragment.pos,

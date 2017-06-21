@@ -1,6 +1,8 @@
 @file:JvmName("StringExt")
 package org.jetbrains.dekaf.util
 
+import java.util.regex.Pattern
+
 
 fun CharSequence.field(number: Int, delimiter: Char, default: String = ""): String {
     when {
@@ -64,3 +66,32 @@ fun CharSequence.countOf(char: Char): Int {
 }
 
 
+fun String.rtrim(): String {
+    val n = length
+    var k = n
+    while (k > 0) {
+        if (Character.isWhitespace(this[k - 1])) k--
+        else break
+    }
+
+    return if (k == n) this else substring(0, k)
+}
+
+
+@Deprecated("use ==")
+fun eq(str1: String?, str2: String?): Boolean = str1 == str2
+
+@Deprecated("use something else")
+fun eq(str1: String?, str2: String?, caseSensitive: Boolean): Boolean =
+        str1 === str2 || str1 != null && str2 != null && if (caseSensitive) String.CASE_INSENSITIVE_ORDER.compare(str1,str2) == 0
+                                                         else str1 == str2
+
+fun minimizeSpaces(string: String): String {
+    val s = string.trim { it <= ' ' }
+    if (s.isEmpty()) return ""
+
+    val m = SEVERAL_SPACES_PATTERN.matcher(s)
+    return m.replaceAll(" ")
+}
+
+private val SEVERAL_SPACES_PATTERN = Pattern.compile("[ \\s\\t\\r\\n]{2,}")

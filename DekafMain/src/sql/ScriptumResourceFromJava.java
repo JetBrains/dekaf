@@ -1,7 +1,7 @@
 package org.jetbrains.dekaf.sql;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dekaf.util.Strings;
+import org.jetbrains.dekaf.util.StringExt;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -36,7 +36,7 @@ final class ScriptumResourceFromJava extends ScriptumResource {
                            @NotNull final String resourcePath) {
     myClassLoader = classLoader;
     myResourcePath = resourcePath;
-    myFileName = Strings.lastPart(resourcePath, '/');
+    myFileName = StringExt.lastField(resourcePath, '/');
   }
 
 
@@ -87,7 +87,7 @@ final class ScriptumResourceFromJava extends ScriptumResource {
       row++;
 
       if (line == null) break;
-      line = Strings.rtrim(line);
+        line = StringExt.rtrim(line);
       Matcher m = SECTION_HEADER_PATTERN.matcher(line);
       if (m.matches()) {
         // first save the previous text
@@ -112,14 +112,14 @@ final class ScriptumResourceFromJava extends ScriptumResource {
   @SuppressWarnings("ConstantConditions")
   @NotNull
   private String normalizeName(final Matcher m) {
-    return Strings.minimizeSpaces(m.group(1)).replace(" + ", "+");
+    return StringExt.minimizeSpaces(m.group(1)).replace(" + ", "+");
   }
 
   private void putTheText(final ArrayList<TextFileFragment> fragments,
                           final StringBuilder buf,
                           final int row,
                           final String name) {
-    String text = Strings.rtrim(buf.toString());
+      String text = StringExt.rtrim(buf.toString());
     TextFileFragment fragment = new TextFileFragment(text, myFileName, row, 1, name);
     fragments.add(fragment);
   }
