@@ -59,8 +59,6 @@ def jtdsVersion         = "1.2.8"
 
 project(':DekafAbstracts') {
 
-
-
     dependencies {
         compile     name: "annotations-$annotationsVersion"
         testCompile name: "junit-platform-commons-$junit5Version"
@@ -74,6 +72,27 @@ project(':DekafAbstracts') {
     }
 
 }
+
+
+project(':DekafJdbc') {
+
+    dependencies {
+        compile project(':DekafAbstracts')
+        testCompile name: "h2-$h2dbVersion"
+        testCompile name: "junit-platform-commons-$junit5Version"
+        testCompile name: "junit-platform-engine-$junit5Version"
+        testCompile name: "junit-platform-suite-api-$junit5Version"
+        testCompile name: "junit-platform-launcher-$junit5Version"
+        testCompile name: "junit-jupiter-api-$junitJupiterVersion"
+        testCompile name: "junit-jupiter-engine-$junitJupiterVersion"
+        testCompile name: "junit-jupiter-params-$junitJupiterVersion"
+        testCompile name: "assertj-core-$assertJVersion"
+    }
+
+}
+
+
+
 
 repositories {
     mavenCentral()
@@ -129,6 +148,10 @@ dependencies {
          "org.assertj:assertj-core:$assertJVersion:sources",
          "org.assertj:assertj-core:$assertJVersion:javadoc",
 
+         "com.h2database:h2:$h2dbVersion",
+         "com.h2database:h2:$h2dbVersion:sources",
+         "com.h2database:h2:$h2dbVersion:javadoc",
+
          "junit:junit:$junitVersion",
          "junit:junit:$junitVersion:sources",
          "junit:junit:$junitVersion:javadoc",
@@ -136,10 +159,7 @@ dependencies {
          "org.mockito:mockito-core:$mockitoVersion:sources",
          "org.mockito:mockito-core:$mockitoVersion:javadoc"
 
-    jdbc "com.h2database:h2:$h2dbVersion",
-         "com.h2database:h2:$h2dbVersion:sources",
-         "com.h2database:h2:$h2dbVersion:javadoc",
-         "org.postgresql:postgresql:$postgresVersion",
+    jdbc "org.postgresql:postgresql:$postgresVersion",
          "org.postgresql:postgresql:$postgresVersion:sources",
          "org.postgresql:postgresql:$postgresVersion:javadoc",
          "mysql:mysql-connector-java:$mysqlVersion",
