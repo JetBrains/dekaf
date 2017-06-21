@@ -2,7 +2,8 @@ package org.jetbrains.dekaf.sql;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.dekaf.util.StringOperator;
+
+import java.util.function.Function;
 
 
 
@@ -103,7 +104,7 @@ public abstract class SqlStatement {
   //// MANIPULATION AND MUTATION \\\\
 
   @NotNull
-  public abstract SqlStatement rewrite(@NotNull final StringOperator operator);
+  public abstract SqlStatement rewrite(@NotNull final Function<String,String> operator);
 
 
 

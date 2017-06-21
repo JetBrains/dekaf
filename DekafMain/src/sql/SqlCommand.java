@@ -2,7 +2,8 @@ package org.jetbrains.dekaf.sql;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.dekaf.util.StringOperator;
+
+import java.util.function.Function;
 
 
 
@@ -37,7 +38,7 @@ public class SqlCommand extends SqlStatement {
 
   @NotNull
   @Override
-  public SqlCommand rewrite(@NotNull final StringOperator operator) {
+  public SqlCommand rewrite(@NotNull final Function<String,String> operator) {
     String transformedSourceTex = operator.apply(mySourceText);
     return new SqlCommand(myRow, transformedSourceTex, myName, myDescription);
   }

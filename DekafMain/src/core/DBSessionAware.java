@@ -1,7 +1,7 @@
 package org.jetbrains.dekaf.core;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dekaf.util.Function;
+import java.util.function.Function;
 
 import java.util.function.Consumer;
 

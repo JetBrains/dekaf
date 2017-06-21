@@ -7,7 +7,7 @@ import org.jetbrains.dekaf.intermediate.IntegralIntermediateSession;
 import org.jetbrains.dekaf.sql.SqlCommand;
 import org.jetbrains.dekaf.sql.SqlQuery;
 import org.jetbrains.dekaf.sql.SqlScript;
-import org.jetbrains.dekaf.util.Function;
+import java.util.function.Function;
 import org.jetbrains.dekaf.util.Objects;
 
 import java.util.LinkedList;

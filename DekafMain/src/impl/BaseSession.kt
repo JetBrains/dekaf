@@ -5,7 +5,7 @@ import org.jetbrains.dekaf.inter.InterSession
 import org.jetbrains.dekaf.sql.SqlCommand
 import org.jetbrains.dekaf.sql.SqlQuery
 import org.jetbrains.dekaf.sql.SqlScript
-import org.jetbrains.dekaf.util.Function
+import java.util.function.Function
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.function.Consumer
 

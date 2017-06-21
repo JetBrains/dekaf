@@ -6,7 +6,7 @@ import org.jetbrains.dekaf.Rdbms;
 import org.jetbrains.dekaf.exceptions.DBIsNotConnected;
 import org.jetbrains.dekaf.intermediate.IntegralIntermediateFacade;
 import org.jetbrains.dekaf.intermediate.IntegralIntermediateSession;
-import org.jetbrains.dekaf.util.Function;
+import java.util.function.Function;
 
 import java.util.function.Consumer;
 

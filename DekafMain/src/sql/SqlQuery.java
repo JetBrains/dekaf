@@ -3,7 +3,8 @@ package org.jetbrains.dekaf.sql;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.core.ResultLayout;
-import org.jetbrains.dekaf.util.StringOperator;
+
+import java.util.function.Function;
 
 
 
@@ -75,7 +76,7 @@ public class SqlQuery<S> extends SqlStatement {
 
   @NotNull
   @Override
-  public SqlQuery<S> rewrite(@NotNull final StringOperator operator) {
+  public SqlQuery<S> rewrite(@NotNull final Function<String,String> operator) {
     String transformedSourceText = operator.apply(mySourceText);
     return new SqlQuery<S>(
         myRow,

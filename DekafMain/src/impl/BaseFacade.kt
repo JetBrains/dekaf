@@ -6,7 +6,7 @@ import org.jetbrains.dekaf.core.DBFacade
 import org.jetbrains.dekaf.core.DBSession
 import org.jetbrains.dekaf.core.DBTransaction
 import org.jetbrains.dekaf.inter.InterFacade
-import org.jetbrains.dekaf.util.Function
+import java.util.function.Function
 import java.lang.IllegalStateException
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.function.Consumer
