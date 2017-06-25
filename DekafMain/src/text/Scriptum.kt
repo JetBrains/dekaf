@@ -183,7 +183,7 @@ private constructor
         var fragment = getText(name)
         fragment = stripSingleStatement(fragment)
         val query = SqlQuery(fragment, layout)
-        query.displayName = fragment.fragmentName
+        query.displayName = fragment.fragmentName ?: "<unnamed>"
         return query
     }
 
