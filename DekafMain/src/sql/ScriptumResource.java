@@ -2,10 +2,11 @@ package org.jetbrains.dekaf.sql;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.dekaf.util.Collects;
 
 import java.util.Map;
 import java.util.TreeMap;
+
+import static org.jetbrains.dekaf.util.Collects.collectionToString;
 
 
 
@@ -72,11 +73,11 @@ abstract class ScriptumResource {
       }
       else {
         String msg = "No such fragment with name: " + name + '\n' +
-                     Collects.collectionToString(myFragmentsMap.keySet(),
-                                                 ", ",
-                                                 "There are fragments: ",
-                                                 ".",
-                                                 "This resource is empty");
+                     collectionToString(myFragmentsMap.keySet(),
+                                        ", ",
+                                        "There are fragments: ",
+                                        ".",
+                                        "This resource is empty");
         throw new IllegalArgumentException(msg);
       }
     }

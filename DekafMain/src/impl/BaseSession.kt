@@ -109,10 +109,6 @@ internal open class BaseSession: DBLeasedSession {
         return runner
     }
 
-    override fun <S> query(queryText: String, layout: ResultLayout<S>): DBQueryRunner<S> {
-        TODO("not implemented yet")
-    }
-
     override fun script(script: SqlScript): DBScriptRunner {
         TODO("not implemented yet")
     }
