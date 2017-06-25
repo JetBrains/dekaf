@@ -121,8 +121,8 @@ public class SqlScriptBuilder {
       if (row.equals("/")) break;
     }
 
-      String plText = StringExt.rtrim(walker.getText().substring(begin.offset, position));
-    SqlCommand command = new SqlCommand(plText, begin.row, null);
+      String plText = StringExt.rtrim(walker.getText().substring(begin.getOffset(), position));
+    SqlCommand command = new SqlCommand(plText, begin.getRow(), null);
     myStatements.add(command);
   }
 
@@ -137,8 +137,8 @@ public class SqlScriptBuilder {
     final Matcher matcher = walker.skipToPattern(SQL_END_MARKER);
 
       final String sqlText = StringExt.rtrim(walker.getText()
-                                                   .substring(begin.offset, walker.getOffset()));
-    SqlCommand command = new SqlCommand(sqlText, begin.row, null);
+                                                   .substring(begin.getOffset(), walker.getOffset()));
+    SqlCommand command = new SqlCommand(sqlText, begin.getRow(), null);
     myStatements.add(command);
 
     if (matcher != null) {

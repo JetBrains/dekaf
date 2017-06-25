@@ -47,8 +47,8 @@ public abstract class SqlStatement {
   //// CONSTRUCTORS \\\\
 
   protected SqlStatement(@NotNull TextFragment sourceFragment) {
-    mySourceText = sourceFragment.text;
-    myRow = sourceFragment.row;
+    mySourceText = sourceFragment.getText();
+    myRow = sourceFragment.getRow();
 
     final String mainDescriptionPart;
     if (sourceFragment instanceof TextFileFragment) {
@@ -56,12 +56,12 @@ public abstract class SqlStatement {
       String name = f.getFragmentName();
       myName = name;
       if (name == null) name = "SQL fragment";
-      mainDescriptionPart = name + " from " + f.getTextName() + ':' + f.row + ':' + f.pos;
+      mainDescriptionPart = name + " from " + f.getTextName() + ':' + f.getRow() + ':' + f.getPos();
     }
     else {
       //noinspection UnnecessaryLocalVariable
       TextFragment f = sourceFragment;
-      mainDescriptionPart = "SQL statement from " + f.getTextName() + ':' + f.row + ':' + f.pos;
+      mainDescriptionPart = "SQL statement from " + f.getTextName() + ':' + f.getRow() + ':' + f.getPos();
       myName = null;
     }
 

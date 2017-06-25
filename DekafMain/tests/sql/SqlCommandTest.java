@@ -13,7 +13,7 @@ public class SqlCommandTest {
   @Test
   public void rewrite_basic() {
     SqlCommand cmd1 = new SqlCommand("AAA BBB CCC", 33, "name");
-    SqlCommand cmd2 = cmd1.rewrite(Rewriters.replace("BBB", "XXX"));
+    SqlCommand cmd2 = cmd1.rewrite(Rewriters.INSTANCE.replace("BBB", "XXX"));
 
     assertThat(cmd2.getSourceText()).isEqualTo("AAA XXX CCC");
 
