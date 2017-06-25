@@ -6,3 +6,6 @@ include 'DekafMain'
 
 include 'KoExpectations'
 include 'UnitTests'
+
+include 'DemoOnJava'
+include 'DemoOnKotlin'

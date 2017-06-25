@@ -248,7 +248,46 @@ project(':UnitTests') {
 }
 
 
+project(':DemoOnJava') {
 
+    dependencies {
+        compile project(':DekafAbstracts')
+        compile project(':DekafMain')
+        compile name: "h2-$h2dbVersion"
+    }
+
+}
+
+
+project(':DemoOnKotlin') {
+
+    apply plugin: 'kotlin'
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = []
+            }
+            kotlin {
+                srcDirs = ['src']
+            }
+            resources {
+                srcDirs = []
+            }
+        }
+    }
+
+    dependencies {
+        compile project(':DekafAbstracts')
+        compile project(':DekafMain')
+        compile name: "h2-$h2dbVersion"
+        compile name: "kotlin-stdlib-$kotlinVersion"
+        compile name: "kotlin-stdlib-common-$kotlinVersion"
+        compile name: "kotlin-stdlib-jre7-$kotlinVersion"
+        compile name: "kotlin-stdlib-jre8-$kotlinVersion"
+    }
+
+}
 
 
 
