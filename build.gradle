@@ -1,3 +1,17 @@
+buildscript {
+    ext.kotlin_version = '1.1.2-3'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.2-3"
+    }
+}
+
+
+
 subprojects {
 
     apply plugin: 'java'
@@ -40,7 +54,7 @@ subprojects {
 }
 
 
-def kotlinVersion       = "1.1.2-3"
+def kotlinVersion       = '1.1.2-3'
 def annotationsVersion  = "15.0"
 
 def junit5Version       = "1.0.0-M4"
@@ -90,6 +104,150 @@ project(':DekafJdbc') {
     }
 
 }
+
+
+project(':DekafMain') {
+
+    apply plugin: 'kotlin'
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = []
+            }
+            kotlin {
+                srcDirs = ['src']
+            }
+            resources {
+                srcDirs = []
+            }
+        }
+        test {
+            java {
+                srcDirs = []
+            }
+            kotlin {
+                srcDirs = ['tests']
+            }
+            resources {
+                srcDirs = ['tests-sql']
+            }
+        }
+    }
+
+    dependencies {
+        compile project(':DekafAbstracts')
+        compile name: "kotlin-stdlib-$kotlinVersion"
+        compile name: "kotlin-stdlib-common-$kotlinVersion"
+        compile name: "kotlin-stdlib-jre7-$kotlinVersion"
+        compile name: "kotlin-stdlib-jre8-$kotlinVersion"
+        compile name: "kotlin-reflect-$kotlinVersion"
+        testCompile project(':KoExpectations')
+        testCompile name: "h2-$h2dbVersion"
+        testCompile name: "junit-platform-commons-$junit5Version"
+        testCompile name: "junit-platform-engine-$junit5Version"
+        testCompile name: "junit-platform-suite-api-$junit5Version"
+        testCompile name: "junit-platform-launcher-$junit5Version"
+        testCompile name: "junit-jupiter-api-$junitJupiterVersion"
+        testCompile name: "junit-jupiter-engine-$junitJupiterVersion"
+        testCompile name: "junit-jupiter-params-$junitJupiterVersion"
+        testCompile name: "assertj-core-$assertJVersion"
+    }
+
+                      
+}
+
+
+project(':KoExpectations') {
+
+    apply plugin: 'kotlin'
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = []
+            }
+            kotlin {
+                srcDirs = ['src']
+            }
+            resources {
+                srcDirs = []
+            }
+        }
+    }
+
+    dependencies {
+        compile name: "kotlin-stdlib-$kotlinVersion"
+        compile name: "kotlin-stdlib-common-$kotlinVersion"
+        compile name: "kotlin-stdlib-jre7-$kotlinVersion"
+        compile name: "kotlin-stdlib-jre8-$kotlinVersion"
+        compile name: "kotlin-reflect-$kotlinVersion"
+        compile name: "junit-platform-commons-$junit5Version"
+        compile name: "junit-platform-engine-$junit5Version"
+        compile name: "junit-platform-suite-api-$junit5Version"
+        compile name: "junit-platform-launcher-$junit5Version"
+        compile name: "junit-jupiter-api-$junitJupiterVersion"
+        compile name: "junit-jupiter-engine-$junitJupiterVersion"
+        compile name: "junit-jupiter-params-$junitJupiterVersion"
+        compile name: "assertj-core-$assertJVersion"
+        compile name: "opentest4j-1.0.0-M2"
+    }
+                      
+}
+
+
+project(':UnitTests') {
+
+    apply plugin: 'kotlin'
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = []
+            }
+            kotlin {
+                srcDirs = []
+            }
+            resources {
+                srcDirs = []
+            }
+        }
+        test {
+            java {
+                srcDirs = []
+            }
+            kotlin {
+                srcDirs = ['tests']
+            }
+            resources {
+                srcDirs = []
+            }
+        }
+    }
+
+    dependencies {
+        testCompile project(':DekafAbstracts')
+        testCompile project(':DekafJdbc')
+        testCompile project(':DekafMain')
+        testCompile project(':KoExpectations')
+        testCompile name: "kotlin-stdlib-$kotlinVersion"
+        testCompile name: "kotlin-stdlib-common-$kotlinVersion"
+        testCompile name: "kotlin-stdlib-jre7-$kotlinVersion"
+        testCompile name: "kotlin-stdlib-jre8-$kotlinVersion"
+        testCompile name: "kotlin-reflect-$kotlinVersion"
+        testCompile name: "junit-platform-commons-$junit5Version"
+        testCompile name: "junit-platform-engine-$junit5Version"
+        testCompile name: "junit-platform-suite-api-$junit5Version"
+        testCompile name: "junit-platform-launcher-$junit5Version"
+        testCompile name: "junit-jupiter-api-$junitJupiterVersion"
+        testCompile name: "junit-jupiter-engine-$junitJupiterVersion"
+        testCompile name: "junit-jupiter-params-$junitJupiterVersion"
+        testCompile name: "assertj-core-$assertJVersion"
+    }
+
+}
+
+
 
 
 
