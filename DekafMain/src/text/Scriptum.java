@@ -1,8 +1,12 @@
-package org.jetbrains.dekaf.sql;
+package org.jetbrains.dekaf.text;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.core.QueryResultLayout;
+import org.jetbrains.dekaf.sql.SqlCommand;
+import org.jetbrains.dekaf.sql.SqlQuery;
+import org.jetbrains.dekaf.sql.SqlScript;
+import org.jetbrains.dekaf.sql.SqlScriptBuilder;
 import org.jetbrains.dekaf.util.StringExt;
 
 import java.util.ArrayList;

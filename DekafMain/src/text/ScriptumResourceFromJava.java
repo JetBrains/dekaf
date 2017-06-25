@@ -1,4 +1,4 @@
-package org.jetbrains.dekaf.sql;
+package org.jetbrains.dekaf.text;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.util.StringExt;

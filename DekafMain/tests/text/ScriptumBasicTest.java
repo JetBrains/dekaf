@@ -1,9 +1,13 @@
-package org.jetbrains.dekaf.sql;
+package org.jetbrains.dekaf.text;
 
 
 
 
 import org.jetbrains.dekaf.core.QueryLayouts;
+import org.jetbrains.dekaf.sql.SqlCommand;
+import org.jetbrains.dekaf.sql.SqlQuery;
+import org.jetbrains.dekaf.sql.SqlScript;
+import org.jetbrains.dekaf.sql.SqlStatement;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -63,7 +67,7 @@ public class ScriptumBasicTest {
 
   protected void check_TheCommand(final String queryName) {
     SqlQuery<Character> query = myScriptum.query(queryName, QueryLayouts.layoutSingleValueOf(Character.class));
-    assertThat(query.mySourceText).isEqualTo("The Command");
+    assertThat(query.getSourceText()).isEqualTo("The Command");
   }
 
   @Test
@@ -72,14 +76,14 @@ public class ScriptumBasicTest {
             Scriptum.dialectOf(myScriptum, "Oracle");
 
     SqlCommand command = scriptumForOracle.command("TheCommand");
-    assertThat(command.mySourceText).isEqualTo("The Oracle Command");
+    assertThat(command.getSourceText()).isEqualTo("The Oracle Command");
   }
 
 
   @Test
   public void basicCommand() {
     SqlCommand command = myScriptum.command("BasicCommand");
-    assertThat(command.mySourceText)
+    assertThat(command.getSourceText())
             .startsWith("insert")
             .endsWith("values (1,2,3)");
   }

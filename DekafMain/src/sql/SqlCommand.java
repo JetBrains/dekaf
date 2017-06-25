@@ -2,6 +2,7 @@ package org.jetbrains.dekaf.sql;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.dekaf.text.TextFragment;
 
 import java.util.function.Function;
 

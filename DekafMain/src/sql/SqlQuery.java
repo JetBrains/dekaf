@@ -3,6 +3,7 @@ package org.jetbrains.dekaf.sql;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.core.QueryResultLayout;
+import org.jetbrains.dekaf.text.TextFragment;
 
 import java.util.function.Function;
 
@@ -51,7 +52,7 @@ public class SqlQuery<S> extends SqlStatement {
     this.myDisplayName = displayName;
   }
 
-  protected void setDisplayName(final String displayName) {
+  public void setDisplayName(final String displayName) {
     this.myDisplayName = displayName;
   }
 

@@ -1,4 +1,4 @@
-package org.jetbrains.dekaf.sql;
+package org.jetbrains.dekaf.text;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,7 +38,7 @@ public class TextFileFragment extends TextFragment {
 
   @NotNull
   @Override
-  protected String getTextName() {
+  public String getTextName() {
     return myFileName;
   }
 

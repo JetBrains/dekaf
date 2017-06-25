@@ -1,4 +1,4 @@
-package org.jetbrains.dekaf.sql;
+package org.jetbrains.dekaf.text;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

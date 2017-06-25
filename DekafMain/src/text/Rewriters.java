@@ -1,4 +1,4 @@
-package org.jetbrains.dekaf.sql;
+package org.jetbrains.dekaf.text;
 
 import kotlin.text.StringsKt;
 import org.jetbrains.annotations.NotNull;

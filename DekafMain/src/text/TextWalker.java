@@ -1,4 +1,4 @@
-package org.jetbrains.dekaf.sql;
+package org.jetbrains.dekaf.text;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * Text with a position pointer. Also counts line numbers.
  * @author Leonid Bushuev from JetBrains
  */
-final class TextWalker implements Cloneable {
+public final class TextWalker implements Cloneable {
 
   @NotNull
   private final String myText;
@@ -41,7 +41,7 @@ final class TextWalker implements Cloneable {
 
 
 
-  TextWalker(@NotNull final String text) {
+  public TextWalker(@NotNull final String text) {
     myText = text;
     myLength = myText.length();
     myChar = myLength > 0 ? myText.charAt(0) : '\0';

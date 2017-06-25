@@ -1,6 +1,8 @@
 package org.jetbrains.dekaf.sql;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.dekaf.text.TextPointer;
+import org.jetbrains.dekaf.text.TextWalker;
 import org.jetbrains.dekaf.util.StringExt;
 
 import java.util.ArrayList;

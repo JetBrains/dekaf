@@ -1,4 +1,4 @@
-package org.jetbrains.dekaf.sql;
+package org.jetbrains.dekaf.text;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -17,12 +17,12 @@ public class TextFragment implements Comparable<TextFragment>, Serializable {
   /**
    * Row number, starts with 1.
    */
-  final int row;
+  public final int row;
 
   /**
    * Number of the position inside the row, starts with 1.
    */
-  final int pos;
+  public final int pos;
 
 
   /**
@@ -39,7 +39,7 @@ public class TextFragment implements Comparable<TextFragment>, Serializable {
 
 
   @NotNull
-  protected String getTextName() {
+  public String getTextName() {
     return "SQL";
   }
 

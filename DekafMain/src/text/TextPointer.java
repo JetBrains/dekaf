@@ -1,27 +1,27 @@
-package org.jetbrains.dekaf.sql;
+package org.jetbrains.dekaf.text;
 
 /**
  * @author Leonid Bushuev from JetBrains
  */
-final class TextPointer {
+public final class TextPointer {
 
   /**
    * Offset from the beginning of the text.
    */
-  final int offset;
+  public final int offset;
 
   /**
    * Row number, starts with 1.
    */
-  final int row;
+  public final int row;
 
   /**
    * Number of positions inside the row, starts with 1.
    */
-  final int pos;
+  public final int pos;
 
 
-  TextPointer(int offset, int row, int pos) {
+  public TextPointer(int offset, int row, int pos) {
     this.offset = offset;
     this.row = row;
     this.pos = pos;

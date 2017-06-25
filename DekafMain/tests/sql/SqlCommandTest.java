@@ -1,6 +1,7 @@
 package org.jetbrains.dekaf.sql;
 
 
+import org.jetbrains.dekaf.text.Rewriters;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
