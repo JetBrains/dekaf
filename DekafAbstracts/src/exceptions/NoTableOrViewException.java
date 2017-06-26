@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 
 /**
- * @author Leonid Bushuev from JetBrains
+ * @author Leonid Bushuev
  */
 public class NoTableOrViewException extends DBException {
 

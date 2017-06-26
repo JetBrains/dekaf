@@ -5,11 +5,9 @@ import org.jetbrains.dekaf.sql.SqlCommand
 import org.jetbrains.dekaf.sql.SqlQuery
 import org.jetbrains.dekaf.sql.SqlScript
 import org.jetbrains.dekaf.sql.SqlScriptBuilder
-import org.jetbrains.dekaf.util.*
-
-import java.util.ArrayList
+import org.jetbrains.dekaf.util.rtrim
+import java.util.*
 import java.util.regex.Pattern
-
 
 
 /**
@@ -31,6 +29,7 @@ private constructor
 
     companion object {
 
+        @JvmStatic
         fun of(clazz: Class<*>): Scriptum {
             val classLoader = clazz.classLoader
             val className = clazz.name
@@ -40,6 +39,7 @@ private constructor
             return of(classLoader, resourceName)
         }
 
+        @JvmStatic
         fun of(clazz: Class<*>, name: String): Scriptum {
             val classLoader = clazz.classLoader
             val packageName = clazz.`package`.name
@@ -51,6 +51,7 @@ private constructor
             return of(classLoader, resourceName)
         }
 
+        @JvmStatic
         fun dialectOf(clazz: Class<*>, dialect: String?): Scriptum {
             val classLoader = clazz.classLoader
             val className = clazz.name
@@ -80,6 +81,7 @@ private constructor
             return Scriptum(resources, dialect)
         }
 
+        @JvmStatic
         fun dialectOf(parentScriptum: Scriptum, dialect: String?): Scriptum {
             if (parentScriptum.myDialect == dialect) {
                 return parentScriptum
@@ -90,6 +92,7 @@ private constructor
         }
 
 
+        @JvmStatic
         fun of(classLoader: ClassLoader, resourceName: String): Scriptum {
             val sr = ArrayList<ScriptumResource>(2)
             val exists = classLoader.getResource(resourceName) != null
@@ -106,9 +109,9 @@ private constructor
             return Scriptum(resources, null)
         }
 
+        @JvmStatic
         private val STRIP_SINGLE_STATEMENT_PATTERN =
-                Pattern.compile("""((;\s*)+|(\n/\s*\n?)+)$""",
-                                Pattern.DOTALL)
+                Pattern.compile("""((;\s*)+|(\n/\s*\n?)+)$""", Pattern.DOTALL)
     }
 
 

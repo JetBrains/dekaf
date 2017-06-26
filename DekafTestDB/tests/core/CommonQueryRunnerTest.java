@@ -55,19 +55,19 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
   @Test
   public void query_existence_0 () {
     String queryText = "select 1 from "+(isOracle ? "dual" : "X1")+" where 1 is null";
-    SqlQuery<Boolean> q = new SqlQuery<Boolean>(queryText, existence());
+    SqlQuery<Boolean> q = new SqlQuery<Boolean>(queryText, Layouts.existence());
     final Boolean b = query(q);
-    assertThat(b).isNotNull()
-                 .isFalse();
+    Assertions.assertThat(b).isNotNull()
+              .isFalse();
   }
 
   @Test
   public void query_existence_1() {
     String queryText = "select 1 "+(isOracle ? "from dual" : "");
-    SqlQuery<Boolean> q = new SqlQuery<Boolean>(queryText, existence());
+    SqlQuery<Boolean> q = new SqlQuery<Boolean>(queryText, Layouts.existence());
     final Boolean b = query(q);
-    assertThat(b).isNotNull()
-                 .isTrue();
+    Assertions.assertThat(b).isNotNull()
+              .isTrue();
   }
 
   @Test
@@ -75,13 +75,13 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
     final String queryText =
         "select 127 as B, 32767 as S, 2147483647 as I, 9223372036854775807 as L from X1";
     final SqlQuery<PrimitiveNumbers> query =
-        new SqlQuery<PrimitiveNumbers>(queryText, rowOf(structOf(PrimitiveNumbers.class)));
+        new SqlQuery<PrimitiveNumbers>(queryText, Layouts.rowOf(Layouts.structOf(PrimitiveNumbers.class)));
     PrimitiveNumbers pn = query(query);
 
-    assertThat(pn.B).isEqualTo((byte)127);
-    assertThat(pn.S).isEqualTo((short)32767);
-    assertThat(pn.I).isEqualTo(2147483647);
-    assertThat(pn.L).isEqualTo(9223372036854775807L);
+    Assertions.assertThat(pn.B).isEqualTo((byte)127);
+    Assertions.assertThat(pn.S).isEqualTo((short)32767);
+    Assertions.assertThat(pn.I).isEqualTo(2147483647);
+    Assertions.assertThat(pn.L).isEqualTo(9223372036854775807L);
   }
 
   @Test
@@ -89,13 +89,13 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
     final String queryText =
         "select -128 as B, -32768 as S, -2147483648 as I, -9223372036854775808 as L from X1";
     final SqlQuery<PrimitiveNumbers> query =
-        new SqlQuery<PrimitiveNumbers>(queryText, rowOf(structOf(PrimitiveNumbers.class)));
+        new SqlQuery<PrimitiveNumbers>(queryText, Layouts.rowOf(Layouts.structOf(PrimitiveNumbers.class)));
     PrimitiveNumbers pn = query(query);
 
-    assertThat(pn.B).isEqualTo((byte)-128);
-    assertThat(pn.S).isEqualTo((short)-32768);
-    assertThat(pn.I).isEqualTo(-2147483648);
-    assertThat(pn.L).isEqualTo(-9223372036854775808L);
+    Assertions.assertThat(pn.B).isEqualTo((byte)-128);
+    Assertions.assertThat(pn.S).isEqualTo((short)-32768);
+    Assertions.assertThat(pn.I).isEqualTo(-2147483648);
+    Assertions.assertThat(pn.L).isEqualTo(-9223372036854775808L);
   }
 
   @Test
@@ -103,13 +103,13 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
     final String queryText =
         "select 127 as B, 32767 as S, 2147483647 as I, 9223372036854775807 as L from X1";
     final SqlQuery<BoxedNumbers> query =
-        new SqlQuery<BoxedNumbers>(queryText, rowOf(structOf(BoxedNumbers.class)));
+        new SqlQuery<BoxedNumbers>(queryText, Layouts.rowOf(Layouts.structOf(BoxedNumbers.class)));
     BoxedNumbers bn = query(query);
 
-    assertThat(bn.B).isEqualTo((byte) 127);
-    assertThat(bn.S).isEqualTo((short)32767);
-    assertThat(bn.I).isEqualTo(2147483647);
-    assertThat(bn.L).isEqualTo(9223372036854775807L);
+    Assertions.assertThat(bn.B).isEqualTo((byte) 127);
+    Assertions.assertThat(bn.S).isEqualTo((short)32767);
+    Assertions.assertThat(bn.I).isEqualTo(2147483647);
+    Assertions.assertThat(bn.L).isEqualTo(9223372036854775807L);
   }
 
 
@@ -118,18 +118,18 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
     final String queryText =
         "select 127 as B, 32767 as S, 2147483647 as I, 9223372036854775807 as L from X1";
     final SqlQuery<Object[]> query =
-        new SqlQuery<Object[]>(queryText, rowOf(rawArray()));
+        new SqlQuery<Object[]>(queryText, Layouts.rowOf(Layouts.rawArray()));
     final Object[] numbers = query(query);
 
-    assertThat(numbers).hasSize(4);
-    assertThat(numbers[0]).isInstanceOf(Number.class);
-    assertThat(numbers[1]).isInstanceOf(Number.class);
-    assertThat(numbers[2]).isInstanceOf(Number.class);
-    assertThat(numbers[3]).isInstanceOf(Number.class);
-    assertThat(((Number)numbers[0]).intValue()).isEqualTo(127);
-    assertThat(((Number)numbers[1]).intValue()).isEqualTo(32767);
-    assertThat(((Number)numbers[2]).intValue()).isEqualTo(2147483647);
-    assertThat(((Number)numbers[3]).longValue()).isEqualTo(9223372036854775807L);
+    Assertions.assertThat(numbers).hasSize(4);
+    Assertions.assertThat(numbers[0]).isInstanceOf(Number.class);
+    Assertions.assertThat(numbers[1]).isInstanceOf(Number.class);
+    Assertions.assertThat(numbers[2]).isInstanceOf(Number.class);
+    Assertions.assertThat(numbers[3]).isInstanceOf(Number.class);
+    Assertions.assertThat(((Number)numbers[0]).intValue()).isEqualTo(127);
+    Assertions.assertThat(((Number)numbers[1]).intValue()).isEqualTo(32767);
+    Assertions.assertThat(((Number)numbers[2]).intValue()).isEqualTo(2147483647);
+    Assertions.assertThat(((Number)numbers[3]).longValue()).isEqualTo(9223372036854775807L);
   }
 
   @Test
@@ -137,16 +137,16 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
     final String queryText =
         "select 'C', 'String' from X1";
     final SqlQuery<Object[]> query =
-        new SqlQuery<Object[]>(queryText, rowOf(rawArray()));
+        new SqlQuery<Object[]>(queryText, Layouts.rowOf(Layouts.rawArray()));
     final Object[] strings = query(query);
 
-    assertThat(strings).hasSize(2);
+    Assertions.assertThat(strings).hasSize(2);
 
-    assertThat(strings[0]).isInstanceOf(String.class);
-    assertThat(strings[1]).isInstanceOf(String.class);
+    Assertions.assertThat(strings[0]).isInstanceOf(String.class);
+    Assertions.assertThat(strings[1]).isInstanceOf(String.class);
 
-    assertThat(strings[0]).isEqualTo("C");
-    assertThat(strings[1]).isEqualTo("String");
+    Assertions.assertThat(strings[0]).isEqualTo("C");
+    Assertions.assertThat(strings[1]).isEqualTo("String");
   }
 
 
@@ -164,15 +164,15 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
         "select NOW as javaDate, NOW as sqlDate, NOW as sqlTimestamp, NOW as sqlTime";
     if (isOracle) queryText += " from dual";
     SqlQuery<CalendarValues> query =
-        new SqlQuery<CalendarValues>(queryText, rowOf(structOf(CalendarValues.class)))
+        new SqlQuery<CalendarValues>(queryText, Layouts.rowOf(Layouts.structOf(CalendarValues.class)))
           .rewrite(Rewriters.replace("NOW", sqlNow()));
 
     CalendarValues cv = query(query);
 
-    assertThat(cv.javaDate)    .isExactlyInstanceOf(java.util.Date.class);
-    assertThat(cv.sqlDate)     .isExactlyInstanceOf(java.sql.Date.class);
-    assertThat(cv.sqlTimestamp).isExactlyInstanceOf(java.sql.Timestamp.class);
-    assertThat(cv.sqlTime)     .isExactlyInstanceOf(java.sql.Time.class);
+    Assertions.assertThat(cv.javaDate).isExactlyInstanceOf(java.util.Date.class);
+    Assertions.assertThat(cv.sqlDate).isExactlyInstanceOf(java.sql.Date.class);
+    Assertions.assertThat(cv.sqlTimestamp).isExactlyInstanceOf(java.sql.Timestamp.class);
+    Assertions.assertThat(cv.sqlTime).isExactlyInstanceOf(java.sql.Time.class);
   }
 
   @Test
@@ -181,7 +181,7 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
         queryCalendarValuesFromParameters();
     if (isOracle) queryText += " from dual";
     SqlQuery<CalendarValues> query =
-        new SqlQuery<CalendarValues>(queryText, rowOf(structOf(CalendarValues.class)));
+        new SqlQuery<CalendarValues>(queryText, Layouts.rowOf(Layouts.structOf(CalendarValues.class)));
 
     CalendarValues cv = query(query,
                               new java.sql.Timestamp(System.currentTimeMillis()),
@@ -191,10 +191,10 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
                               new java.sql.Time(System.currentTimeMillis())*/
     );
 
-    assertThat(cv.javaDate)    .isExactlyInstanceOf(java.util.Date.class);
-    assertThat(cv.sqlDate)     .isExactlyInstanceOf(java.sql.Date.class);
-    assertThat(cv.sqlTimestamp).isExactlyInstanceOf(java.sql.Timestamp.class);
-    assertThat(cv.sqlTime)     .isExactlyInstanceOf(java.sql.Time.class);
+    Assertions.assertThat(cv.javaDate).isExactlyInstanceOf(java.util.Date.class);
+    Assertions.assertThat(cv.sqlDate).isExactlyInstanceOf(java.sql.Date.class);
+    Assertions.assertThat(cv.sqlTimestamp).isExactlyInstanceOf(java.sql.Timestamp.class);
+    Assertions.assertThat(cv.sqlTime).isExactlyInstanceOf(java.sql.Time.class);
   }
 
   @NotNull
@@ -213,28 +213,29 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
   public void query_1000_values() {
     List<Integer> values =
         DB.inTransaction(tran ->
-            tran.query("select X from X1000 order by 1", listOf(oneOf(Integer.class))).run()
+            tran.query("select X from X1000 order by 1", Layouts.listOf(Layouts.oneOf(Integer.class))).run()
         );
-    assertThat(values).isNotNull()
-                      .hasSize(1000)
-                      .contains(1,2,3,4,998,999,1000);
+    Assertions.assertThat(values).isNotNull()
+              .hasSize(1000)
+              .contains(1,2,3,4,998,999,1000);
   }
 
 
   @Test
   public void query_1000000_values() {
     List<Integer> values =
-        DB.inTransaction(tran -> tran.query("select X from X1000000 order by 1", listOf(oneOf(Integer.class))).run());
-    assertThat(values).isNotNull()
-                      .hasSize(1000000)
-                      .contains(1,2,3,4,999998,999999,1000000);
+        DB.inTransaction(tran -> tran.query("select X from X1000000 order by 1", Layouts.listOf(
+                Layouts.oneOf(Integer.class))).run());
+    Assertions.assertThat(values).isNotNull()
+              .hasSize(1000000)
+              .contains(1,2,3,4,999998,999999,1000000);
   }
 
 
   @Test
   public void access_metadata() {
     final SqlQuery<List<Number>> query =
-        new SqlQuery<List<Number>>("select X from X1000", listOf(oneOf(Number.class)));
+        new SqlQuery<List<Number>>("select X from X1000", Layouts.listOf(Layouts.oneOf(Number.class)));
 
     DB.inSessionDo(session -> {
 
@@ -243,7 +244,7 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
         ResultSetMetaData md =
             qr.getSpecificService(ResultSetMetaData.class,
                                   ImplementationAccessibleService.Names.JDBC_METADATA);
-        assertThat(md).isNotNull();
+        Assertions.assertThat(md).isNotNull();
 
         String columnName = null;
         try {
@@ -252,7 +253,7 @@ public class CommonQueryRunnerTest extends CommonIntegrationCase {
         catch (SQLException e) {
           throw new RuntimeException(e.getMessage(), e);
         }
-        assertThat(columnName).isEqualToIgnoringCase("X");
+        Assertions.assertThat(columnName).isEqualToIgnoringCase("X");
 
     });
   }

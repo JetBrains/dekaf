@@ -1,7 +1,7 @@
 package org.jetbrains.dekaf.core;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dekaf.sql.Scriptum;
+import org.jetbrains.dekaf.text.Scriptum;
 
 
 

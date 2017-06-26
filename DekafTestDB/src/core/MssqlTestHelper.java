@@ -1,8 +1,8 @@
 package org.jetbrains.dekaf.core;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dekaf.sql.Scriptum;
-import org.jetbrains.dekaf.sql.TextFileFragment;
+import org.jetbrains.dekaf.text.Scriptum;
+import org.jetbrains.dekaf.text.TextFileFragment;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -39,7 +39,7 @@ public class MssqlTestHelper extends BaseTestHelper<DBFacade> {
         try {
           conn.setAutoCommit(true);
           Statement stmt = conn.createStatement();
-          stmt.execute(x1.text);
+          stmt.execute(x1.getText());
           stmt.close();
         }
         catch (SQLException e) {

@@ -3,7 +3,11 @@ package org.jetbrains.dekaf.core;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.exceptions.DBProtectionException;
 import org.jetbrains.dekaf.exceptions.NoTableOrViewException;
-import org.jetbrains.dekaf.sql.*;
+import org.jetbrains.dekaf.sql.SqlCommand;
+import org.jetbrains.dekaf.sql.SqlQuery;
+import org.jetbrains.dekaf.sql.SqlScript;
+import org.jetbrains.dekaf.sql.SqlScriptBuilder;
+import org.jetbrains.dekaf.text.Scriptum;
 import org.jetbrains.dekaf.util.Collects;
 
 import java.util.Arrays;
@@ -12,7 +16,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import static java.lang.String.format;
-import static org.jetbrains.dekaf.core.Layouts.*;
+import static org.jetbrains.dekaf.core.QueryLayouts.*;
 
 
 
@@ -125,7 +129,7 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
                                        @NotNull final String metaQueryName,
                                        final Object... params) {
     final SqlQuery<List<String>> metaQuery =
-        scriptum.query(metaQueryName, listOf(oneOf(String.class)));
+        scriptum.query(metaQueryName, layoutListOf(rowStructOf(String.class)));
 
     db.inSessionDo(session -> {
 
@@ -154,7 +158,7 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
     final String queryText = "select count(*) from " + tableName;
 
     try {
-      return transaction.query(queryText, singleOf(Integer.class)).run();
+      return transaction.query(queryText, layoutSingleValueOf(Integer.class)).run();
     }
     catch (NoTableOrViewException ntv) {
       return Integer.MIN_VALUE;

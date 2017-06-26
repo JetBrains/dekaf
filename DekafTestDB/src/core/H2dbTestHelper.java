@@ -1,22 +1,22 @@
 package org.jetbrains.dekaf.core;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dekaf.sql.Scriptum;
+import org.jetbrains.dekaf.text.Scriptum;
 
 
 
 /**
  * @author Leonid Bushuev from JetBrains
  **/
-public class SqliteTestHelper extends BaseTestHelper<DBFacade> {
+public class H2dbTestHelper extends BaseTestHelper<DBFacade> {
 
-  public SqliteTestHelper(@NotNull final DBFacade db) {
-    super(db, Scriptum.of(SqliteTestHelper.class));
+  public H2dbTestHelper(@NotNull final DBFacade db) {
+    super(db, Scriptum.of(H2dbTestHelper.class));
   }
 
   @Override
   public void prepareX1() {
-    performCommand("create view X1 as select 1");
+    performCommand("create or replace view X1 as select 1 as X from dual");
   }
 
   @Override

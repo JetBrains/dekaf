@@ -1,8 +1,8 @@
 package org.jetbrains.dekaf.core;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dekaf.Sqlite;
 import org.jetbrains.dekaf.Rdbms;
+import org.jetbrains.dekaf.Sqlite;
 
 import java.util.Collections;
 import java.util.Set;

@@ -2,7 +2,7 @@ package org.jetbrains.dekaf.core;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.exceptions.UnknownDBException;
-import org.jetbrains.dekaf.sql.Scriptum;
+import org.jetbrains.dekaf.text.Scriptum;
 
 import java.sql.*;
 import java.util.ArrayList;

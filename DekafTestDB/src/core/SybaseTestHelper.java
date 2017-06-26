@@ -1,8 +1,10 @@
 package org.jetbrains.dekaf.core;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dekaf.sql.Scriptum;
 import org.jetbrains.dekaf.sql.SqlQuery;
+import org.jetbrains.dekaf.text.Scriptum;
+
+import static org.jetbrains.dekaf.core.QueryLayouts.layoutExistence;
 
 
 
@@ -17,7 +19,7 @@ public class SybaseTestHelper extends BaseTestHelper<DBFacade> {
 
 
   private final SqlQuery<Boolean> myTableOrViewExistenceQuery =
-      scriptum.query("TableOrViewExistence", Layouts.existence());
+      scriptum.query("TableOrViewExistence", layoutExistence());
 
 
   private boolean tableExists(@NotNull final String name) {
