@@ -31,6 +31,8 @@ internal open class BaseFacade: DBFacade {
 
     private var prima: BaseSession? = null
 
+    private var connectionInfo_: ConnectionInfo? = null
+
 
     /// INITIALIZATION \\\
 
@@ -52,6 +54,7 @@ internal open class BaseFacade: DBFacade {
     override fun connect() {
         inter.activate()
         prima = leaseSession()
+        connectionInfo_ = inter.getConnectionInfo()
         connected = true
     }
 
@@ -107,7 +110,7 @@ internal open class BaseFacade: DBFacade {
         get() = connected
 
     override val connectionInfo: ConnectionInfo
-        get() = TODO("not implemented yet")
+        get() = connectionInfo_ ?: throw IllegalStateException("The connection info is not obtained")
 
     override fun <I : Any?> getSpecificService(serviceClass: Class<I>, serviceName: String): I? {
         TODO("not implemented yet")

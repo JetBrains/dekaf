@@ -8,10 +8,15 @@ import java.util.regex.Pattern;
 
 
 
-final class SpecificForOracle extends Specific {
+final class SpecificForMssql extends Specific {
 
+    /**
+     * <p>
+     * See <a href="https://msdn.microsoft.com/en-us/library/ms378428(v=sql.110).aspx">MS SQL: Building the Connection URL</a>
+     * </p>
+     */
     private static final Pattern CONNECTION_STRING_PATTERN =
-            Pattern.compile("^jdbc:oracle:(oci|thin):.*@.+$", Pattern.CASE_INSENSITIVE);
+            Pattern.compile("^jdbc:sqlserver:.+$", Pattern.CASE_INSENSITIVE);
 
 
 
@@ -22,7 +27,7 @@ final class SpecificForOracle extends Specific {
 
     @Override
     protected String getDriverClassName() {
-        return "oracle.jdbc.driver.OracleDriver";
+        return "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     }
 
 
@@ -36,9 +41,8 @@ final class SpecificForOracle extends Specific {
 
     @SuppressWarnings("SpellCheckingInspection")
     private static final String CONNECTION_INFO_QUERY =
-            "select sys_context('userenv', 'db_name') as database_name,      \n" +
-            "       sys_context('userenv', 'current_schema') as schema_name, \n" +
-            "       user as user_name                                        \n" +
-            "from dual                                                       \n";
+            "select db_name(), schema_name(), original_login()";
+
+
 
 }

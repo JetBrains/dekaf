@@ -3,6 +3,7 @@ package org.jetbrains.dekaf.jdbc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.Rdbms;
+import org.jetbrains.dekaf.core.ConnectionInfo;
 import org.jetbrains.dekaf.core.ConnectionParameterCategory;
 import org.jetbrains.dekaf.core.ImplementationAccessibleService;
 import org.jetbrains.dekaf.exceptions.DBConnectionException;
@@ -44,6 +45,8 @@ final class JdbcFacade implements InterFacade {
 
     @NotNull
     private final ArrayList<JdbcSession> sessions = new ArrayList<>();
+
+    private ConnectionInfo connectionInfo = null;
 
 
     JdbcFacade(final @Nullable JdbcProvider provider,
@@ -98,8 +101,9 @@ final class JdbcFacade implements InterFacade {
             JdbcSimpleDataSource ds = new JdbcSimpleDataSource(connectionString, properties, driver);
             dataSource = ds;
         }
-        if (!active) {
+        if (!active || connectionInfo == null) {
             active = true;
+            obtainConnectionInfo();
         }
     }
 
@@ -126,6 +130,21 @@ final class JdbcFacade implements InterFacade {
         for (int i = sessionsToClose.length-1; i >= 0; i--) {
             sessionsToClose[i].close();
         }
+    }
+
+    private void obtainConnectionInfo() {
+        Connection connection = obtainConnection();
+        try {
+            connectionInfo = specific.obtainConnectionInfo(connection);
+        }
+        finally {
+            JdbcUtil.close(connection);
+        }
+    }
+
+    @Override
+    public ConnectionInfo getConnectionInfo() {
+        return connectionInfo;
     }
 
 

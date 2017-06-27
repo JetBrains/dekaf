@@ -1,9 +1,6 @@
 package org.jetbrains.dekaf.jdbc;
 
-import org.jetbrains.dekaf.H2db;
-import org.jetbrains.dekaf.Oracle;
-import org.jetbrains.dekaf.Postgres;
-import org.jetbrains.dekaf.Rdbms;
+import org.jetbrains.dekaf.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,9 +11,12 @@ import static java.util.Collections.unmodifiableMap;
 
 enum JdbcDescriptor {
 
+    JDBC_H2(H2db.RDBMS, new SpecificForH2db()),
     JDBC_POSTGRES(Postgres.RDBMS, new SpecificForPostgres()),
     JDBC_ORACLE(Oracle.RDBMS, new SpecificForOracle()),
-    JDBC_H2(H2db.RDBMS, new SpecificForH2db());
+    JDBC_MSSQL(Mssql.RDBMS, new SpecificForMssql()),
+    JDBC_SYBASE(Sybase.RDBMS, new SpecificForSybase()),
+    JDBC_SQLITE(Sqlite.RDBMS, new SpecificForSqlite());
 
     final Rdbms    rdbms;
     final Specific specific;

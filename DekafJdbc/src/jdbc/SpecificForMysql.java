@@ -8,10 +8,10 @@ import java.util.regex.Pattern;
 
 
 
-final class SpecificForOracle extends Specific {
+final class SpecificForMysql extends Specific {
 
     private static final Pattern CONNECTION_STRING_PATTERN =
-            Pattern.compile("^jdbc:oracle:(oci|thin):.*@.+$", Pattern.CASE_INSENSITIVE);
+            Pattern.compile("^jdbc:mysql://.+$", Pattern.CASE_INSENSITIVE);
 
 
 
@@ -22,7 +22,7 @@ final class SpecificForOracle extends Specific {
 
     @Override
     protected String getDriverClassName() {
-        return "oracle.jdbc.driver.OracleDriver";
+        return "com.mysql.jdbc.Driver";
     }
 
 
@@ -36,9 +36,8 @@ final class SpecificForOracle extends Specific {
 
     @SuppressWarnings("SpellCheckingInspection")
     private static final String CONNECTION_INFO_QUERY =
-            "select sys_context('userenv', 'db_name') as database_name,      \n" +
-            "       sys_context('userenv', 'current_schema') as schema_name, \n" +
-            "       user as user_name                                        \n" +
-            "from dual                                                       \n";
+            "select database(), schema(), left(user(),instr(concat(user(),'@'),'@')-1)";
+
+
 
 }

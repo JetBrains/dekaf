@@ -3,6 +3,7 @@ package org.jetbrains.dekaf.inter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.Rdbms;
+import org.jetbrains.dekaf.core.ConnectionInfo;
 import org.jetbrains.dekaf.core.ConnectionParameterCategory;
 import org.jetbrains.dekaf.core.ImplementationAccessibleService;
 
@@ -39,5 +40,10 @@ public interface InterFacade extends ImplementationAccessibleService {
     ////// SESSIONS \\\\\\
 
     InterSession openSession();
+
+
+    ////// OTHER \\\\\\
+
+    ConnectionInfo getConnectionInfo();
 
 }
