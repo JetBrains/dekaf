@@ -28,7 +28,10 @@ internal class BaseQueryRunner<T>: BaseRunner, DBQueryRunner<T> {
     }
 
     override fun withParams(vararg params: Any?): BaseQueryRunner<T> {
-        TODO("BaseQueryRunner.withParams(): not implemented yet")
+        if (params.isNotEmpty()) {
+            interSeance.assignParameters(params)
+        }
+        return this
     }
 
     override fun packBy(rowsPerPack: Int): DBQueryRunner<T> {
@@ -71,6 +74,6 @@ internal class BaseQueryRunner<T>: BaseRunner, DBQueryRunner<T> {
     }
 
     override fun <I : Any?> getSpecificService(serviceClass: Class<I>, serviceName: String): I? {
-        TODO("not implemented yet")
+        return interSeance.getSpecificService(serviceClass, serviceName)
     }
 }

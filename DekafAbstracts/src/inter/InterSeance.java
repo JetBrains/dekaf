@@ -2,10 +2,11 @@ package org.jetbrains.dekaf.inter;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.dekaf.core.ImplementationAccessibleService;
 
 
 
-public interface InterSeance {
+public interface InterSeance extends ImplementationAccessibleService {
 
     ////// EXECUTION \\\\\\
 

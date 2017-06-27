@@ -7,12 +7,15 @@ import org.jetbrains.dekaf.exceptions.DBParameterSettingException;
 import org.jetbrains.dekaf.inter.InterLayout;
 import org.jetbrains.dekaf.inter.InterSeance;
 import org.jetbrains.dekaf.inter.InterTask;
+import org.jetbrains.dekaf.util.Objects;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.jetbrains.dekaf.util.Objects.castTo;
 
 
 
@@ -184,4 +187,20 @@ final class JdbcSeance implements InterSeance {
         return task != null ? task.text : null;
     }
 
+
+    /// OTHER \\\
+
+    @Override
+    public <I> @Nullable I getSpecificService(@NotNull final Class<I> serviceClass,
+                                              @NotNull final String serviceName)
+            throws ClassCastException
+    {
+        switch (serviceName) {
+            case Names.INTERMEDIATE_SERVICE: return castTo(serviceClass, this);
+            case Names.JDBC_CONNECTION: return castTo(serviceClass, session.connection);
+            case Names.JDBC_STATEMENT: return castTo(serviceClass, statement);
+            case Names.JDBC_RESULT_SET: return castTo(serviceClass, returnedResultSet);
+            default: throw new IllegalArgumentException("JdbcSeance has no "+serviceName);
+        }
+    }
 }

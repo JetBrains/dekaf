@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Allows to access implementation specific services.
  *
- * @author Leonid Bushuev from JetBrains
+ * @author Leonid Bushuev
  **/
 public interface ImplementationAccessibleService {
 

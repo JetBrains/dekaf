@@ -1,10 +1,11 @@
 package org.jetbrains.dekaf.inter;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.dekaf.core.ImplementationAccessibleService;
 
 
 
-public interface InterSession {
+public interface InterSession extends ImplementationAccessibleService {
 
     ////// TRANSACTIONS \\\\\\
 

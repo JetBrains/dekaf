@@ -98,7 +98,7 @@ internal open class BaseSession: DBLeasedSession {
     }
 
     override fun <S> query(query: SqlQuery<S>): DBQueryRunner<S> {
-        TODO("not implemented yet")
+        return query(query.sourceText, query.layout)
     }
 
     override fun <T> query(queryText: String, layout: QueryResultLayout<T>): DBQueryRunner<T> {
@@ -126,9 +126,9 @@ internal open class BaseSession: DBLeasedSession {
         facade.sessionClosed(this)
     }
 
-    override fun <I : Any?> getSpecificService(serviceClass: Class<I>, serviceName: String): I? {
-        TODO("not implemented yet")
-    }
+    override fun <I : Any?> getSpecificService(serviceClass: Class<I>, serviceName: String): I? =
+        inter.getSpecificService(serviceClass, serviceName)
+    
 
 
     /// OTHER \\\

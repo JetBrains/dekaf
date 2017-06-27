@@ -1,11 +1,16 @@
 package org.jetbrains.dekaf.jdbc;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.dekaf.exceptions.UnknownDBException;
 import org.jetbrains.dekaf.inter.InterSession;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import static org.jetbrains.dekaf.util.Objects.castTo;
 
 
 
@@ -117,5 +122,31 @@ final class JdbcSession implements InterSession {
         JdbcUtil.close(connection);
         closed = true;
         facade.sessionClosed(this);
+    }
+
+
+    /// OTHER \\\
+
+
+    @Override
+    public <I> @Nullable I getSpecificService(@NotNull final Class<I> serviceClass,
+                                              @NotNull final String serviceName)
+            throws ClassCastException
+    {
+        switch (serviceName) {
+            case Names.INTERMEDIATE_SERVICE: return castTo(serviceClass, this);
+            case Names.JDBC_CONNECTION: return castTo(serviceClass, connection);
+            case Names.JDBC_METADATA: return castTo(serviceClass, getConnectionMetadata());
+            default: throw new IllegalArgumentException("JdbcSeance has no "+serviceName);
+        }
+    }
+
+    private DatabaseMetaData getConnectionMetadata() {
+        try {
+            return connection.getMetaData();
+        }
+        catch (SQLException sqle) {
+            throw new UnknownDBException(sqle, "Connection.getMetaData()");
+        }
     }
 }

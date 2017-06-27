@@ -112,9 +112,8 @@ internal open class BaseFacade: DBFacade {
     override val connectionInfo: ConnectionInfo
         get() = connectionInfo_ ?: throw IllegalStateException("The connection info is not obtained")
 
-    override fun <I : Any?> getSpecificService(serviceClass: Class<I>, serviceName: String): I? {
-        TODO("not implemented yet")
-    }
+    override fun <I : Any?> getSpecificService(serviceClass: Class<I>, serviceName: String): I? =
+        inter.getSpecificService(serviceClass, serviceName)
 
     override fun <R : Any?> inTransaction(operation: Function<DBTransaction, R>): R {
         val session = openSession()
