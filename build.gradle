@@ -158,6 +158,59 @@ project(':DekafMain') {
 }
 
 
+project(':DekafTestDB') {
+
+    apply plugin: 'kotlin'
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = []
+            }
+            kotlin {
+                srcDirs = ['src']
+            }
+            resources {
+                srcDirs = ['sql']
+            }
+        }
+        test {
+            java {
+                srcDirs = []
+            }
+            kotlin {
+                srcDirs = ['tests']
+            }
+            resources {
+                srcDirs = []
+            }
+        }
+    }
+
+    dependencies {
+        compile project(':DekafAbstracts')
+        compile project(':DekafMain')
+        compile name: "kotlin-stdlib-$kotlinVersion"
+        compile name: "kotlin-stdlib-common-$kotlinVersion"
+        compile name: "kotlin-stdlib-jre7-$kotlinVersion"
+        compile name: "kotlin-stdlib-jre8-$kotlinVersion"
+        compile name: "kotlin-reflect-$kotlinVersion"
+        testCompile project(':KoExpectations')
+        testCompile name: "h2-$h2dbVersion"
+        testCompile name: "junit-platform-commons-$junit5Version"
+        testCompile name: "junit-platform-engine-$junit5Version"
+        testCompile name: "junit-platform-suite-api-$junit5Version"
+        testCompile name: "junit-platform-launcher-$junit5Version"
+        testCompile name: "junit-jupiter-api-$junitJupiterVersion"
+        testCompile name: "junit-jupiter-engine-$junitJupiterVersion"
+        testCompile name: "junit-jupiter-params-$junitJupiterVersion"
+        testCompile name: "assertj-core-$assertJVersion"
+    }
+
+
+}
+
+
 project(':KoExpectations') {
 
     apply plugin: 'kotlin'
