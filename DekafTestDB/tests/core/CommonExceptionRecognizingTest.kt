@@ -12,11 +12,15 @@ import org.junit.jupiter.api.Test
  */
 class CommonExceptionRecognizingTest : CommonIntegrationCase() {
 
-    @BeforeAll
-    @Throws(Exception::class)
-    fun setUp() {
-        DB.connect()
+    companion object {
+
+        @BeforeAll @JvmStatic
+        fun setUp() {
+            DB.connect()
+        }
+
     }
+
 
     @Test
     fun recognize_NoTableOrView() {

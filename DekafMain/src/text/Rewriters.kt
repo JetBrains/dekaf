@@ -8,12 +8,14 @@ import java.util.function.Function
  */
 object Rewriters {
 
+    @JvmStatic
     fun replace(what: String, with: String): Function<String, String> {
         return Function { arg ->
             arg.replace(what, with, false)   // TODO don't use StringsKt.replace here - it violates the rule
         }
     }
 
+    @JvmStatic
     fun replace(map: Map<String, String>): Function<String, String> {
         return Function { arg ->
             if (map.isEmpty()) {

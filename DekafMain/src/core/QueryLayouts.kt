@@ -15,6 +15,8 @@ fun layoutArrayOfInt(): QueryResultLayout<IntArray> = QueryResultArrayOfIntLayou
 
 fun layoutArrayOfLong(): QueryResultLayout<LongArray> = QueryResultArrayOfLongLayout()
 
+fun<R> layoutOneRowOf(row: QueryRowLayout<R>): QueryResultLayout<R> = QueryResultOneRowLayout(row)
+
 fun<R> layoutArrayOf(row: QueryRowLayout<R>): QueryResultLayout<Array<out R>> = QueryResultArrayLayout(row)
 
 fun<R> layoutListOf(row: QueryRowLayout<R>): QueryResultLayout<List<R>> = QueryResultListLayout(row)
@@ -34,4 +36,6 @@ inline fun<reified V> rowValueOf(): QueryRowLayout<V> = rowValueOf(V::class.java
 fun<R> rowStructOf(cortegeClass: Class<R>): QueryRowLayout<R> = QueryRowStructLayout(cortegeClass)
 inline fun<reified R> rowStructOf(): QueryRowLayout<R> = rowStructOf(R::class.java)
 
+fun<E> rowArrayOf(baseElementClass: Class<E>): QueryRowLayout<Array<out E?>> = QueryRowArrayOfValuesLayout<E>(baseElementClass)
+inline fun<reified E> rowArrayOf(): QueryRowLayout<Array<out E?>> = rowArrayOf(E::class.java)
 

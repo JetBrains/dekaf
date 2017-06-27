@@ -14,12 +14,12 @@ abstract class CommonIntegrationCase {
     companion object {
 
         @JvmStatic
-        protected lateinit var DB: DBFacade
+        lateinit var DB: DBFacade
 
         @JvmStatic
-        protected lateinit var TH: DBTestHelper
+        lateinit var TH: DBTestHelper
 
-        @BeforeAll
+        @BeforeAll @JvmStatic
         fun setupTestDB() {
             System.setProperty("java.awt.headless", "true")
             DB = TestDB.DB

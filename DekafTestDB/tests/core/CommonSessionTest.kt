@@ -13,10 +13,13 @@ import java.sql.SQLException
  */
 abstract class CommonSessionTest : CommonIntegrationCase() {
 
-    @BeforeAll
-    @Throws(Exception::class)
-    fun connect() {
-        DB.connect()
+    companion object {
+
+        @BeforeAll @JvmStatic
+        fun setUp() {
+            DB.connect()
+        }
+
     }
 
 

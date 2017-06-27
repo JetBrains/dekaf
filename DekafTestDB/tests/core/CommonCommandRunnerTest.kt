@@ -11,10 +11,13 @@ import org.junit.jupiter.api.Test
  */
 class CommonCommandRunnerTest : CommonIntegrationCase() {
 
-    @BeforeAll
-    @Throws(Exception::class)
-    fun setUp() {
-        DB.connect()
+    companion object {
+
+        @BeforeAll @JvmStatic
+        fun setUp() {
+            DB.connect()
+        }
+        
     }
 
 
