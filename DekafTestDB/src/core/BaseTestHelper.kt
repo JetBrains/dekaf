@@ -9,22 +9,25 @@ import org.jetbrains.dekaf.text.Scriptum
 import org.jetbrains.dekaf.util.chopBy
 import java.lang.String.format
 import java.util.*
+import kotlin.reflect.KClass
 
 
 /**
  * @author Leonid Bushuev from JetBrains
  */
-abstract class BaseTestHelper<F : DBFacade> : DBTestHelper {
+abstract class BaseTestHelper : DBTestHelper {
 
-    protected val db: F
+    protected val db: DBFacade
 
     protected val scriptum: Scriptum
 
     protected val schemasNotToZap: MutableSet<String> = TreeSet(String.CASE_INSENSITIVE_ORDER)
 
 
+    protected constructor(db: DBFacade, helperClass: KClass<out BaseTestHelper>)
+        : this(db, Scriptum.of(helperClass))
 
-    protected constructor(db: F, scriptum: Scriptum) {
+    protected constructor(db: DBFacade, scriptum: Scriptum) {
         this.db = db
         this.scriptum = scriptum
 

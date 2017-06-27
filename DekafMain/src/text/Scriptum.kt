@@ -8,6 +8,7 @@ import org.jetbrains.dekaf.sql.SqlScriptBuilder
 import org.jetbrains.dekaf.util.rtrim
 import java.util.*
 import java.util.regex.Pattern
+import kotlin.reflect.KClass
 
 
 /**
@@ -28,6 +29,12 @@ private constructor
     ////// INITIALIZATION \\\\\\
 
     companion object {
+
+        @JvmStatic
+        inline fun <reified K> of(): Scriptum = of(K::class.java)
+
+        @JvmStatic
+        fun of(clazz: KClass<*>): Scriptum = of(clazz.java)
 
         @JvmStatic
         fun of(clazz: Class<*>): Scriptum {
