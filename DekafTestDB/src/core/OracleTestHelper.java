@@ -14,11 +14,11 @@ public class OracleTestHelper extends BaseTestHelper<DBFacade> {
 
   public OracleTestHelper(@NotNull final DBFacade db) {
     super(db, Scriptum.of(OracleTestHelper.class));
-    schemasNotToZap.clear();
+    getSchemasNotToZap().clear();
     //noinspection SpellCheckingInspection
-    schemasNotToZap.addAll(Arrays.asList("SYS", "SYSTEM", "SYSMAN", "PUBLIC", "CTXSYS", "DBSNMP",
-                                         "APPQOSSYS", "EXFSYS", "ORACLE_OCM", "OUTLN", "WMSYS",
-                                         "XDB", "BENCHMARK"));
+    getSchemasNotToZap().addAll(Arrays.asList("SYS", "SYSTEM", "SYSMAN", "PUBLIC", "CTXSYS", "DBSNMP",
+                                              "APPQOSSYS", "EXFSYS", "ORACLE_OCM", "OUTLN", "WMSYS",
+                                              "XDB", "BENCHMARK"));
   }
 
   @NotNull
@@ -34,12 +34,12 @@ public class OracleTestHelper extends BaseTestHelper<DBFacade> {
 
   @Override
   public void prepareX1000() {
-    performCommand(scriptum, "X1000");
+    performCommand(getScriptum(), "X1000");
   }
 
   @Override
   public void prepareX1000000() {
     prepareX1000();
-    performCommand(scriptum, "X1000000");
+    performCommand(getScriptum(), "X1000000");
   }
 }

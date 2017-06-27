@@ -27,7 +27,7 @@ internal class BaseQueryRunner<T>: BaseRunner, DBQueryRunner<T> {
         interSeance.prepare(task)
     }
 
-    override fun withParams(vararg params: Any): DBQueryRunner<T> {
+    override fun withParams(vararg params: Any?): BaseQueryRunner<T> {
         TODO("BaseQueryRunner.withParams(): not implemented yet")
     }
 

@@ -17,7 +17,7 @@ public class MssqlTestHelper extends BaseTestHelper<DBFacade> {
 
   public MssqlTestHelper(@NotNull final DBFacade db) {
     super(db, Scriptum.of(MssqlTestHelper.class));
-    schemasNotToZap.add("sys");
+    getSchemasNotToZap().add("sys");
   }
 
 
@@ -30,8 +30,8 @@ public class MssqlTestHelper extends BaseTestHelper<DBFacade> {
 
   @Override
   public void prepareX1() {
-    final TextFileFragment x1 = scriptum.getText("X1");
-    db.inSessionDo(session -> {
+    final TextFileFragment x1 = getScriptum().getText("X1");
+    getDb().inSessionDo(session -> {
         Connection conn =
           session.getSpecificService(Connection.class,
                                      ImplementationAccessibleService.Names.JDBC_CONNECTION);
@@ -53,14 +53,14 @@ public class MssqlTestHelper extends BaseTestHelper<DBFacade> {
 
   @Override
   public void prepareX1000() {
-    performCommand(scriptum, "X10");
-    performCommand(scriptum, "X1000");
+    performCommand(getScriptum(), "X10");
+    performCommand(getScriptum(), "X1000");
   }
 
   @Override
   public void prepareX1000000() {
     prepareX1000();
-    performCommand(scriptum, "X1000000");
+    performCommand(getScriptum(), "X1000000");
   }
 
 

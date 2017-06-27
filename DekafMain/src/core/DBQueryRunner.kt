@@ -8,11 +8,11 @@ interface DBQueryRunner<T> : ImplementationAccessibleService {
 
     /**
      * Assigns query parameters.
+     *
      * @param params parameters, one for each '?' sign in the query.
-     * *
      * @return itself.
      */
-    fun withParams(vararg params: Any): DBQueryRunner<T>
+    fun withParams(vararg params: Any?): DBQueryRunner<T>
 
     /**
      * Switches to pack mode.

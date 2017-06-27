@@ -115,7 +115,7 @@ interface DBTestHelper {
      */
     fun performMetaQueryCommands(scriptum: Scriptum,
                                  metaQueryName: String,
-                                 vararg params: Any)
+                                 vararg params: Any?)
 
     /**
      * Counts rows in a table or view.

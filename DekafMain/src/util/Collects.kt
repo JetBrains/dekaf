@@ -44,30 +44,6 @@ fun arrayToString(array: Array<*>?, delimiter: String): String {
     }
 }
 
-@Suppress("UNCHECKED_CAST")
-fun <T> splitArrayPer(array: Array<T>, limitPerPack: Int): Array<Array<T>> {
-    val n = array.size
-    val arrayType = array.javaClass
-
-    var m = n / limitPerPack
-    val r = n % limitPerPack
-    if (r > 0) m++
-
-
-    val packs = java.lang.reflect.Array.newInstance(arrayType, m) as Array<Array<T>>
-
-    var k = 0
-    var i = 0
-    while (i < m && k < n) {
-        val end = Math.min(k + limitPerPack, n)
-        packs[i] = Arrays.copyOfRange<T>(array, k, end)
-        i++
-        k += limitPerPack
-    }
-
-    return packs
-}
-
 
 @JvmOverloads
 fun collectionToString(collection: Iterable<*>?,

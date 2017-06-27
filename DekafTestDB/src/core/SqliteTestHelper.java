@@ -21,12 +21,12 @@ public class SqliteTestHelper extends BaseTestHelper<DBFacade> {
 
   @Override
   public void prepareX1000() {
-    performCommand(scriptum, "X1000");
+    performCommand(getScriptum(), "X1000");
   }
 
   @Override
   public void prepareX1000000() {
     prepareX1000();
-    performCommand(scriptum, "X1000000");
+    performCommand(getScriptum(), "X1000000");
   }
 }

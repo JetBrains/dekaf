@@ -12,7 +12,7 @@ public class PostgresTestHelper extends BaseTestHelper<DBFacade> {
 
   public PostgresTestHelper(@NotNull final DBFacade db) {
     super(db, Scriptum.of(PostgresTestHelper.class));
-    schemasNotToZap.add("pg_catalog");
+    getSchemasNotToZap().add("pg_catalog");
   }
 
 
@@ -23,18 +23,18 @@ public class PostgresTestHelper extends BaseTestHelper<DBFacade> {
 
   @Override
   public void prepareX1000() {
-    performCommand(scriptum, "X1000");
+    performCommand(getScriptum(), "X1000");
   }
 
   @Override
   public void prepareX1000000() {
-    performCommand(scriptum, "X1000000");
+    performCommand(getScriptum(), "X1000000");
   }
 
   @Override
   protected void zapSchemaInternally(final ConnectionInfo connectionInfo) {
-    ConnectionInfo info = db.getConnectionInfo();
-    if (info.serverVersion.isOrGreater(9, 1)) performMetaQueryCommands(scriptum, "ZapExtensionsMetaQuery");
-    performMetaQueryCommands(scriptum, "ZapSchemaMetaQuery");
+    ConnectionInfo info = getDb().getConnectionInfo();
+    if (info.serverVersion.isOrGreater(9, 1)) performMetaQueryCommands(getScriptum(), "ZapExtensionsMetaQuery");
+    performMetaQueryCommands(getScriptum(), "ZapSchemaMetaQuery");
   }
 }

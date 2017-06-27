@@ -19,11 +19,11 @@ public class SybaseTestHelper extends BaseTestHelper<DBFacade> {
 
 
   private final SqlQuery<Boolean> myTableOrViewExistenceQuery =
-      scriptum.query("TableOrViewExistence", layoutExistence());
+      getScriptum().query("TableOrViewExistence", layoutExistence());
 
 
   private boolean tableExists(@NotNull final String name) {
-    return db.inSession(session ->
+    return getDb().inSession(session ->
            session.query(myTableOrViewExistenceQuery).withParams(name).run()
     );
   }
@@ -40,13 +40,13 @@ public class SybaseTestHelper extends BaseTestHelper<DBFacade> {
   @Override
   public void prepareX1() {
     if (tableExists("X1")) return;
-    performScript(scriptum, "X1");
+    performScript(getScriptum(), "X1");
   }
 
 
   public void prepareX10() {
     if (tableExists("X10")) return;
-    performScript(scriptum, "X10");
+    performScript(getScriptum(), "X10");
   }
 
 
@@ -54,30 +54,30 @@ public class SybaseTestHelper extends BaseTestHelper<DBFacade> {
   public void prepareX1000() {
     if (tableExists("X1000")) return;
     prepareX10();
-    performScript(scriptum, "X1000");
+    performScript(getScriptum(), "X1000");
   }
 
   @Override
   public void prepareX1000000() {
     if (tableExists("X1000000")) return;
     prepareX1000();
-    performCommand(scriptum, "X1000000");
+    performCommand(getScriptum(), "X1000000");
   }
 
 
   @Override
-  protected void ensureNoTableOrView4(final Object[] params) {
+  protected void ensureNoTableOrView4(final String[] names) {
     // Unfortunately, Sybase provides no way to easy drop tables.
     // We have to drop foreign keys first.
-    performMetaQueryCommands(scriptum, "EnsureNoForeignKeysMetaQuery", params);
-    performMetaQueryCommands(scriptum, "EnsureNoTableOrViewMetaQuery", params);
+    performMetaQueryCommands(getScriptum(), "EnsureNoForeignKeysMetaQuery", names);
+    performMetaQueryCommands(getScriptum(), "EnsureNoTableOrViewMetaQuery", names);
   }
 
   @Override
   protected void zapSchemaInternally(final ConnectionInfo connectionInfo) {
     // Unfortunately, Sybase provides no way to easy drop tables.
     // We have to drop foreign keys first.
-    performMetaQueryCommands(scriptum, "ZapForeignKeysMetaQuery");
-    performMetaQueryCommands(scriptum, "ZapSchemaMetaQuery");
+    performMetaQueryCommands(getScriptum(), "ZapForeignKeysMetaQuery");
+    performMetaQueryCommands(getScriptum(), "ZapSchemaMetaQuery");
   }
 }

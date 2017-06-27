@@ -3,6 +3,7 @@
 
 package org.jetbrains.dekaf.assertions
 
+import org.junit.jupiter.api.Assertions
 import org.opentest4j.AssertionFailedError
 import kotlin.reflect.KClass
 
@@ -314,7 +315,11 @@ fun failDiff(message: String, actual: Any?, expected: Any?): Nothing =
         throw AssertionFailedError(message, expected, actual)
 
 
+/// EXCEPTIONS \\\
 
+inline fun <reified E: Exception> expectedException(crossinline block: () -> Unit) {
+    Assertions.assertThrows(E::class.java) { block.invoke() }
+}
 
 
 

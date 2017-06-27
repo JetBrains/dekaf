@@ -26,13 +26,13 @@ public class UnknownDBTestHelper extends BaseTestHelper<DBFacade> {
 
   private void initVariablesIfNeeded() {
     if (!initialized) {
-      assert db.isConnected() : "Expected that is connected to DB";
+      assert getDb().isConnected() : "Expected that is connected to DB";
       initVariables();
     }
   }
 
   private void initVariables() {
-    ConnectionInfo info = db.getConnectionInfo();
+    ConnectionInfo info = getDb().getConnectionInfo();
     isOracle = info.rdbmsName.startsWith("Oracle");
     isDB2 = info.rdbmsName.startsWith("DB2");
     isHsql = info.rdbmsName.startsWith("HSQL");
@@ -52,14 +52,14 @@ public class UnknownDBTestHelper extends BaseTestHelper<DBFacade> {
 
   @Override
   public void prepareX1000() {
-    performCommand(scriptum, "X10");
-    performCommand(scriptum, "X1000");
+    performCommand(getScriptum(), "X10");
+    performCommand(getScriptum(), "X1000");
   }
 
   @Override
   public void prepareX1000000() {
     prepareX1000();
-    performCommand(scriptum, "X1000000");
+    performCommand(getScriptum(), "X1000000");
   }
 
   @NotNull
@@ -74,13 +74,13 @@ public class UnknownDBTestHelper extends BaseTestHelper<DBFacade> {
   public void ensureNoTableOrView(final String... names) {
     final String[] tableTypes = new String[] {"TABLE","VIEW"};
 
-    final ConnectionInfo connectionInfo = db.getConnectionInfo();
+    final ConnectionInfo connectionInfo = getDb().getConnectionInfo();
     if (connectionInfo.databaseName == null)
       throw new IllegalStateException("Cannot clean schema when the database name is unknown");
     if (connectionInfo.schemaName == null)
       throw new IllegalStateException("Cannot clean schema when the schema name is unknown");
 
-    db.inSessionDo(session -> {
+    getDb().inSessionDo(session -> {
 
         for (String name : names) {
           zapTables(session, connectionInfo, name, tableTypes);
@@ -91,13 +91,13 @@ public class UnknownDBTestHelper extends BaseTestHelper<DBFacade> {
 
   @Override
   public void zapSchema() {
-    final ConnectionInfo connectionInfo = db.getConnectionInfo();
+    final ConnectionInfo connectionInfo = getDb().getConnectionInfo();
     if (connectionInfo.databaseName == null)
       throw new IllegalStateException("Cannot clean schema when the database name is unknown");
     if (connectionInfo.schemaName == null)
       throw new IllegalStateException("Cannot clean schema when the schema name is unknown");
 
-    db.inSessionDo(session -> {
+    getDb().inSessionDo(session -> {
 
         zapTables(session, connectionInfo, "%", null);
 

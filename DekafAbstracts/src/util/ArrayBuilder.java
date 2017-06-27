@@ -2,10 +2,11 @@ package org.jetbrains.dekaf.util;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import static org.jetbrains.dekaf.util.ArrayUtil.createArrayOf;
 
 
 
@@ -36,7 +37,7 @@ public final class ArrayBuilder<E> {
         if (array == null) return;
         int n = array.length;
         if (n == 0) return;
-        E[] array2 = createArray(n);
+        E[] array2 = createTheArray(n);
         for (int i = 0; i < n; i++) array2[i] = transform.apply(array[i]);
         arrays.add(array2);
         count += n;
@@ -47,7 +48,7 @@ public final class ArrayBuilder<E> {
     public E[] buildArray() {
         int n = arrays.size();
         switch (n) {
-            case 0:  return createArray(0);
+            case 0:  return createTheArray(0);
             case 1:  return arrays.get(0);
             default: return buildTheArray();
         }
@@ -55,7 +56,7 @@ public final class ArrayBuilder<E> {
 
     @NotNull
     private E[] buildTheArray() {
-        final E[] array = createArray(count);
+        final E[] array = createTheArray(count);
         int p = 0;
         for (E[] a : arrays) {
             int n = a.length;
@@ -65,9 +66,8 @@ public final class ArrayBuilder<E> {
         return array;
     }
 
-    @SuppressWarnings("unchecked")
-    private E[] createArray(int length) {
-        return (E[]) Array.newInstance(elementClass, length);
+    private E[] createTheArray(int length) {
+        return createArrayOf(elementClass, length);
     }
 
 

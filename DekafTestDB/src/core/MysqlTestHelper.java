@@ -12,8 +12,8 @@ public class MysqlTestHelper extends BaseTestHelper<DBFacade> {
 
   public MysqlTestHelper(@NotNull final DBFacade db) {
     super(db, Scriptum.of(MysqlTestHelper.class));
-    schemasNotToZap.add("performance_schema");
-    schemasNotToZap.add("mysql");
+    getSchemasNotToZap().add("performance_schema");
+    getSchemasNotToZap().add("mysql");
   }
 
 
@@ -24,31 +24,31 @@ public class MysqlTestHelper extends BaseTestHelper<DBFacade> {
 
   @Override
   public void prepareX1000() {
-    performCommand(scriptum, "X10");
-    performCommand(scriptum, "X1000");
+    performCommand(getScriptum(), "X10");
+    performCommand(getScriptum(), "X1000");
   }
 
   @Override
   public void prepareX1000000() {
     prepareX1000();
-    performCommand(scriptum, "X1000000");
+    performCommand(getScriptum(), "X1000000");
   }
 
 
   @Override
-  protected void ensureNoTableOrView4(final Object[] params) {
+  protected void ensureNoTableOrView4(final String[] names) {
     // Unfortunately, MS SQL provides no way to easy drop tables.
     // We have to drop foreign keys first.
-    performMetaQueryCommands(scriptum, "EnsureNoForeignKeysMetaQuery", params);
-    performMetaQueryCommands(scriptum, "EnsureNoTableOrViewMetaQuery", params);
+    performMetaQueryCommands(getScriptum(), "EnsureNoForeignKeysMetaQuery", names);
+    performMetaQueryCommands(getScriptum(), "EnsureNoTableOrViewMetaQuery", names);
   }
 
   @Override
   protected void zapSchemaInternally(final ConnectionInfo connectionInfo) {
     // Unfortunately, MS SQL provides no way to easy drop tables.
     // We have to drop foreign keys first.
-    performMetaQueryCommands(scriptum, "ZapForeignKeysMetaQuery");
-    performMetaQueryCommands(scriptum, "ZapSchemaMetaQuery");
+    performMetaQueryCommands(getScriptum(), "ZapForeignKeysMetaQuery");
+    performMetaQueryCommands(getScriptum(), "ZapSchemaMetaQuery");
   }
 
 }
