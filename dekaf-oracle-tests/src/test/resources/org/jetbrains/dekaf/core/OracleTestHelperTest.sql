@@ -47,7 +47,7 @@ select distinct owner
 /
 
 create materialized view schemas
-    refresh complete
+    refresh complete with rowid
 as
 select owner as name
   from owners
@@ -59,7 +59,7 @@ select owner as name
 
 create table One
 (
-    digit number(1)
+    digit char(1)
 )
 /
 
@@ -67,7 +67,7 @@ create materialized view One
     on prebuilt table
     refresh complete
 as
-select cast(1 as number(1)) as digit
+select cast('1' as char(1)) as digit
 from dual
 /
 

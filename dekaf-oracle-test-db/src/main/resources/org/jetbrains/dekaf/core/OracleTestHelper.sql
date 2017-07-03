@@ -86,11 +86,11 @@ begin
     union all
     select 'drop materialized view "'||mview_name||'"' as cmd,
            5 as ord, rnum
-      from ( select mview_name, object_id as rnum
+      from ( select mview_name, nvl(object_id,999999999999999999) as rnum
              from sys.user_mviews M,
                   sys.user_objects O
-             where M.mview_name = O.object_name
-               and O.object_type = 'MATERIALIZED VIEW' )
+             where M.mview_name = O.object_name (+)
+               and 'MATERIALIZED VIEW' = O.object_type (+) )
     union all
     select 'drop view "'||view_name||'"' as cmd,
            6 as ord, rnum
@@ -126,7 +126,8 @@ begin
   select count(1)
     into toRecycle
     from user_objects
-    where object_type in ('TABLE','SEQUENCE');
+    where object_type in ('TABLE','SEQUENCE')
+      and (object_name like 'BIN$%$_' or object_name like 'MLOG$#_%' escape '#' or object_name like 'ISEQ$$#_%' escape '#');
   --
   if toRecycle >= 1 then
     execute immediate 'purge recyclebin';
