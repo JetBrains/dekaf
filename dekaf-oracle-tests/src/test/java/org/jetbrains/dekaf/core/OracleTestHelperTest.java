@@ -80,9 +80,9 @@ public class OracleTestHelperTest extends CommonIntegrationCase {
 
 
   @Test
-  public void zap_mater_view() {
+  public void zap_mater_view_1() {
     // create function and operator
-    TH.performScript(ourScriptum, "CreateMaterView");
+    TH.performScript(ourScriptum, "CreateMaterView1");
 
     // ensure that we can detect a materialized view
     assertThat(objectExists("X_ORDER_STAT")).isTrue();
@@ -92,6 +92,40 @@ public class OracleTestHelperTest extends CommonIntegrationCase {
 
     // verify
     assertThat(objectExists("X_ORDER_STAT")).isFalse();
+  }
+
+
+  @Test
+  public void zap_mater_view_dependence() {
+    // create function and operator
+    TH.performScript(ourScriptum, "CreateMaterViewDependence");
+
+    // ensure that we can detect a materialized view
+    assertThat(objectExists("OWNERS")).isTrue();
+    assertThat(objectExists("SCHEMAS")).isTrue();
+
+    // zap it
+    TH.zapSchema();
+
+    // verify
+    assertThat(objectExists("OWNERS")).isFalse();
+    assertThat(objectExists("SCHEMAS")).isFalse();
+  }
+
+
+  @Test
+  public void zap_mater_view_prebuilt() {
+    // create function and operator
+    TH.performScript(ourScriptum, "CreateMaterViewPrebuilt");
+
+    // ensure that we can detect a materialized view
+    assertThat(objectExists("ONE")).isTrue();
+
+    // zap it
+    TH.zapSchema();
+
+    // verify
+    assertThat(objectExists("ONE")).isFalse();
   }
 
 

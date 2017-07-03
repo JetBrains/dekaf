@@ -13,7 +13,7 @@ create operator EQ_OP binding (varchar, varchar) return number using EQ_F
 /
 
 
----- CreateMaterView ----
+---- CreateMaterView1 ----
 
 create table X_Order
 (
@@ -34,6 +34,41 @@ create materialized view X_Order_Stat
   select City_Id, count(*)
     from X_Order
     group by City_Id
+/
+
+
+---- CreateMaterViewDependence ----
+
+create materialized view owners
+    refresh complete
+as
+select distinct owner
+  from sys.all_objects
+/
+
+create materialized view schemas
+    refresh complete
+as
+select owner as name
+  from owners
+  where owner not in ('SYS','SYSTEM','PUBLIC','XDB','CTXSYS','EXFSYS','WMSYS','DBSNMP')
+/
+
+
+---- CreateMaterViewPrebuilt ----
+
+create table One
+(
+    digit number(1)
+)
+/
+
+create materialized view One
+    on prebuilt table
+    refresh complete
+as
+select cast(1 as number(1)) as digit
+from dual
 /
 
 

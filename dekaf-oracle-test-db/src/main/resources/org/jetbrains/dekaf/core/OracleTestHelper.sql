@@ -82,13 +82,15 @@ begin
       where object_type = 'TABLE'
         and object_name not like 'BIN$%$_'
         and object_name not like 'MLOG$#_%' escape '#'
-        and object_name not in (select mview_name from sys.user_mviews)
+        and object_name not in (select mview_name from sys.user_mviews where build_mode != 'PREBUILT')
     union all
     select 'drop materialized view "'||mview_name||'"' as cmd,
            5 as ord, rnum
-      from sys.user_mviews
-        natural join
-        (select object_name as view_name, object_id as rnum from sys.user_objects where object_type = 'MATERIALIZED VIEW')
+      from ( select mview_name, object_id as rnum
+             from sys.user_mviews M,
+                  sys.user_objects O
+             where M.mview_name = O.object_name
+               and O.object_type = 'MATERIALIZED VIEW' )
     union all
     select 'drop view "'||view_name||'"' as cmd,
            6 as ord, rnum
