@@ -2,6 +2,8 @@ package org.jetbrains.dekaf.text
 
 import java.util.function.Function
 
+import org.jetbrains.dekaf.util.*
+
 
 /**
  * @author Leonid Bushuev
@@ -11,7 +13,7 @@ object Rewriters {
     @JvmStatic
     fun replace(what: String, with: String): Function<String, String> {
         return Function { arg ->
-            arg.replace(what, with, false)   // TODO don't use StringsKt.replace here - it violates the rule
+            arg.replace(what, with)   // don't use StringsKt.replace here - it violates the rule
         }
     }
 

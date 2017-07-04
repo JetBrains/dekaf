@@ -1,11 +1,33 @@
 package org.jetbrains.dekaf.util
 
 import org.jetbrains.dekaf.assertions.expected
+import org.jetbrains.dekaf.assertions.expectedSameAs
 import org.junit.jupiter.api.Test
 
 
 class StringExtTest {
 
+    @Test
+    fun replace_nothing() {
+        val origin = "Some string where nothing to replace"
+        val result = origin.replace(what = "unexistent", with = "impossible")
+
+        result expectedSameAs origin
+    }
+
+    @Test
+    fun replace_basic() {
+        val result = "A simple simple string".replace(what = "simple", with = "complex")
+        result expected "A complex complex string"
+    }
+
+    @Test
+    fun replace_specialCase() {
+        val result = "000000000000".replace(what = "0000", with = "1230")
+        result expected "123012301230"
+    }
+
+    
     @Test
     fun field_positive() {
         val string = "A___A:B___B:C___C"

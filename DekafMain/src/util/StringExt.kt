@@ -4,6 +4,36 @@ package org.jetbrains.dekaf.util
 import java.util.regex.Pattern
 
 
+/**
+ * Replaces *what* with *with*.
+ *
+ * As distinct from the Kotlin's function replace, it doesn't change the string
+ * when the pattern is not found.
+ *
+ * @param what what to replace.
+ * @param with what to substitute.
+ */
+fun String.replace(what: String, with: String): String {
+    val m = what.length
+    if (m == 0) throw IllegalArgumentException("The string pattern must not be empty")
+
+    val n = this.length
+    if (n < m) return this
+
+    var p = this.indexOf(what)
+    if (p < 0) return this
+
+    val s = with.length
+    val b = StringBuilder(this)
+    while (p >= 0) {
+        b.replace(p, p+m, with)
+        p = b.indexOf(what, p+s)
+    }
+
+    return b.toString()
+}
+
+
 fun CharSequence.field(number: Int, delimiter: Char, default: String = ""): String {
     when {
         this.isEmpty() -> {
