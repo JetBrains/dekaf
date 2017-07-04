@@ -17,14 +17,19 @@ interface DBQueryRunner<T> : ImplementationAccessibleService {
     /**
      * Switches to pack mode.
      * In this mode, call to the [.run] methods returns the first pack only.
+     *
      * @param rowsPerPack rows per pack.
-     * *
      * @return itself.
-     * *
      * @see .run
      * @see .nextPack
      */
     fun packBy(rowsPerPack: Int): DBQueryRunner<T>
+
+    /**
+     * Executes the query and opens the cursor, but don't fetch it.
+     * @return itself.
+     */
+    fun execute(): DBQueryRunner<T>
 
     /**
      * Performs the query and fetches the resulting cursor and returns the fetched result.

@@ -3,6 +3,8 @@ package org.jetbrains.dekaf.core
 import org.assertj.core.api.Assertions
 import org.jetbrains.dekaf.CommonIntegrationCase
 import org.jetbrains.dekaf.Oracle
+import org.jetbrains.dekaf.assertions.IsNotNull
+import org.jetbrains.dekaf.assertions.expected
 import org.jetbrains.dekaf.sql.SqlQuery
 import org.jetbrains.dekaf.text.Rewriters
 import org.junit.jupiter.api.BeforeAll
@@ -208,26 +210,26 @@ class CommonQueryRunnerTest : CommonIntegrationCase() {
 
     @Test
     fun access_metadata() {
-        val query = SqlQuery("select X from X1000", layoutListOf(rowValueOf(Number::class.java)))
+        val query = SqlQuery("select 123456789 as X", layoutListOf(rowValueOf(Number::class.java)))
 
         CommonIntegrationCase.DB.inSessionDo { session ->
 
-            val qr = session.query(query).packBy(10)
-            qr.run()
+            val qr = session.query(query).packBy(10).execute()
             val md = qr.getSpecificService(ResultSetMetaData::class.java,
                                            ImplementationAccessibleService.Names.JDBC_METADATA)
-            Assertions.assertThat(md).isNotNull()
 
-            var columnName: String?
+            md expected IsNotNull
+            md!!
+
+            val columnName: String?
             try {
-                columnName = md!!.getColumnName(1)
+                columnName = md.getColumnName(1)
             }
             catch (e: SQLException) {
                 throw RuntimeException(e.message, e)
             }
 
             Assertions.assertThat(columnName).isEqualToIgnoringCase("X")
-
         }
     }
 

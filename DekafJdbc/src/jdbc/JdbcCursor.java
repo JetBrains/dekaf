@@ -3,6 +3,7 @@ package org.jetbrains.dekaf.jdbc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.exceptions.DBFetchingException;
+import org.jetbrains.dekaf.exceptions.UnknownDBException;
 import org.jetbrains.dekaf.inter.InterCursor;
 import org.jetbrains.dekaf.inter.InterLayout;
 import org.jetbrains.dekaf.util.SerializableMapEntry;
@@ -16,6 +17,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import static org.jetbrains.dekaf.inter.InterResultKind.RES_EXISTENCE;
+import static org.jetbrains.dekaf.util.Objects.castTo;
 
 
 
@@ -72,7 +74,8 @@ class JdbcCursor implements InterCursor {
 
     private void setup() {
         try {
-            ResultSetMetaData md = rset.getMetaData();
+            assert rset != null;
+            ResultSetMetaData md = getMetaData(rset);
             columnCount = md.getColumnCount();
 
             int n;
@@ -293,6 +296,7 @@ class JdbcCursor implements InterCursor {
     
     private boolean moveNext() {
         try {
+            assert rset != null;
             boolean ok = rset.next();
             if (!ok) close();
             return ok;
@@ -312,5 +316,30 @@ class JdbcCursor implements InterCursor {
             active = false;
         }
     }
-    
+
+    /// OTHER \\\
+
+    @Override
+    public <I> @Nullable I getSpecificService(@NotNull final Class<I> serviceClass,
+                                              @NotNull final String serviceName)
+            throws ClassCastException
+    {
+        switch (serviceName) {
+            case Names.INTERMEDIATE_SERVICE: return castTo(serviceClass, this);
+            case Names.JDBC_RESULT_SET: return castTo(serviceClass, rset);
+            case Names.JDBC_METADATA: return rset != null ? castTo(serviceClass, getMetaData(rset)) : null;
+            default: throw new IllegalArgumentException("JdbcSeance has no "+serviceName);
+        }
+    }
+
+    @NotNull
+    private static ResultSetMetaData getMetaData(final @NotNull ResultSet rset) {
+        try {
+            return rset.getMetaData();
+        }
+        catch (SQLException sqle) {
+            throw new UnknownDBException(sqle, "ResultSet.getMetaData()");
+        }
+    }
+
 }

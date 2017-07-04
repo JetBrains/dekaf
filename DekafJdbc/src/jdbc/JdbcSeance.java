@@ -199,7 +199,6 @@ final class JdbcSeance implements InterSeance {
             case Names.INTERMEDIATE_SERVICE: return castTo(serviceClass, this);
             case Names.JDBC_CONNECTION: return castTo(serviceClass, session.connection);
             case Names.JDBC_STATEMENT: return castTo(serviceClass, statement);
-            case Names.JDBC_RESULT_SET: return castTo(serviceClass, returnedResultSet);
             default: throw new IllegalArgumentException("JdbcSeance has no "+serviceName);
         }
     }
