@@ -1,3 +1,5 @@
+@file:Suppress("platform_class_mapped_to_kotlin")
+
 package org.jetbrains.dekaf.core
 
 import org.assertj.core.api.Assertions
@@ -9,8 +11,14 @@ import org.jetbrains.dekaf.sql.SqlQuery
 import org.jetbrains.dekaf.text.Rewriters
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import java.lang.Number
 import java.sql.ResultSetMetaData
 import java.sql.SQLException
+import kotlin.Any
+import kotlin.Long
+import kotlin.RuntimeException
+import kotlin.String
+import kotlin.Suppress
 
 
 /**
@@ -34,21 +42,6 @@ class CommonQueryRunnerTest : CommonIntegrationCase() {
     }
 
 
-    class PrimitiveNumbers {
-        internal var B: Byte = 0
-        internal var S: Short = 0
-        internal var I: Int = 0
-        internal var L: Long = 0
-    }
-
-    class BoxedNumbers {
-        internal var B: Byte? = null
-        internal var S: Short? = null
-        internal var I: Int? = null
-        internal var L: Long? = null
-    }
-
-
     @Test
     fun query_existence_0() {
         val queryText = "select 1 from " + (if (isOracle) "dual" else "X1") + " where 1 is null"
@@ -68,12 +61,29 @@ class CommonQueryRunnerTest : CommonIntegrationCase() {
     }
 
     @Test
+    fun query_primitive_numbers_basic() {
+        val queryText = "select 1 as B, 2 as S, 3 as I, 4 as L"
+        val layout = layoutOneRowOf(rowStructOf(PrimitiveNumbers::class.java))
+        val query = SqlQuery(queryText, layout)
+        val pn = query(query)
+
+        pn!!
+
+        Assertions.assertThat(pn.B).isEqualTo(1.toByte())
+        Assertions.assertThat(pn.S).isEqualTo(2.toShort())
+        Assertions.assertThat(pn.I).isEqualTo(3)
+        Assertions.assertThat(pn.L).isEqualTo(4L)
+    }
+
+    @Test
     fun query_primitive_numbers_positive() {
-        val queryText = "select 127 as B, 32767 as S, 2147483647 as I, 9223372036854775807 as L from X1"
+        val queryText = "select 127 as B, 32767 as S, 2147483647 as I, 9223372036854775807 as L"
         val query = SqlQuery(queryText, layoutOneRowOf(rowStructOf(PrimitiveNumbers::class.java)))
         val pn = query(query)
 
-        Assertions.assertThat(pn!!.B).isEqualTo(127.toByte())
+        pn!!
+
+        Assertions.assertThat(pn.B).isEqualTo(127.toByte())
         Assertions.assertThat(pn.S).isEqualTo(32767.toShort())
         Assertions.assertThat(pn.I).isEqualTo(2147483647)
         Assertions.assertThat(pn.L).isEqualTo(9223372036854775807L)
@@ -81,7 +91,7 @@ class CommonQueryRunnerTest : CommonIntegrationCase() {
 
     @Test
     fun query_primitive_numbers_negative() {
-        val queryText = "select -128 as B, -32768 as S, -2147483648 as I, -9223372036854775808 as L from X1"
+        val queryText = "select -128 as B, -32768 as S, -2147483648 as I, -9223372036854775808 as L"
         val query = SqlQuery(queryText, layoutOneRowOf(rowStructOf(PrimitiveNumbers::class.java)))
         val pn = query(query)
 
@@ -107,18 +117,20 @@ class CommonQueryRunnerTest : CommonIntegrationCase() {
     @Test
     fun query_raw_numbers() {
         val queryText = "select 127 as B, 32767 as S, 2147483647 as I, 9223372036854775807 as L from X1"
-        val query = SqlQuery(queryText, layoutOneRowOf(rowArrayOf<Any>()))
+        val query = SqlQuery(queryText, layoutOneRowOf(rowArrayOf<Number>()))
         val numbers = query(query)
 
+        numbers!!
+
         Assertions.assertThat(numbers).hasSize(4)
-        Assertions.assertThat(numbers!![0]).isInstanceOf(Number::class.java)
+        Assertions.assertThat(numbers[0]).isInstanceOf(Number::class.java)
         Assertions.assertThat(numbers[1]).isInstanceOf(Number::class.java)
         Assertions.assertThat(numbers[2]).isInstanceOf(Number::class.java)
         Assertions.assertThat(numbers[3]).isInstanceOf(Number::class.java)
-        Assertions.assertThat((numbers[0] as Number).toInt()).isEqualTo(127)
-        Assertions.assertThat((numbers[1] as Number).toInt()).isEqualTo(32767)
-        Assertions.assertThat((numbers[2] as Number).toInt()).isEqualTo(2147483647)
-        Assertions.assertThat((numbers[3] as Number).toLong()).isEqualTo(9223372036854775807L)
+        Assertions.assertThat((numbers[0] as Number).intValue()).isEqualTo(127)
+        Assertions.assertThat((numbers[1] as Number).intValue()).isEqualTo(32767)
+        Assertions.assertThat((numbers[2] as Number).intValue()).isEqualTo(2147483647)
+        Assertions.assertThat((numbers[3] as Number).longValue()).isEqualTo(9223372036854775807L)
     }
 
     @Test
@@ -127,21 +139,15 @@ class CommonQueryRunnerTest : CommonIntegrationCase() {
         val query = SqlQuery(queryText, layoutOneRowOf(rowArrayOf<Any>()))
         val strings = query(query)
 
+        strings!!
+
         Assertions.assertThat(strings).hasSize(2)
 
-        Assertions.assertThat(strings!![0]).isInstanceOf(String::class.java)
+        Assertions.assertThat(strings[0]).isInstanceOf(String::class.java)
         Assertions.assertThat(strings[1]).isInstanceOf(String::class.java)
 
         Assertions.assertThat(strings[0]).isEqualTo("C")
         Assertions.assertThat(strings[1]).isEqualTo("String")
-    }
-
-
-    protected class CalendarValues {
-        var javaDate: java.util.Date? = null
-        var sqlDate: java.sql.Date? = null
-        var sqlTimestamp: java.sql.Timestamp? = null
-        var sqlTime: java.sql.Time? = null
     }
 
 
@@ -192,19 +198,19 @@ class CommonQueryRunnerTest : CommonIntegrationCase() {
 
     @Test
     fun query_1000_values() {
-        val values = CommonIntegrationCase.DB.inTransaction<List<Int>> { tran -> tran.query("select X from X1000 order by 1", layoutListOf(rowValueOf(Int::class.java))).run() }
+        val values = CommonIntegrationCase.DB.inTransaction<List<Integer>> { tran -> tran.query("select X from X1000 order by 1", layoutListOf(rowValueOf(Integer::class.java))).run() }
         Assertions.assertThat(values).isNotNull
                 .hasSize(1000)
-                .contains(1, 2, 3, 4, 998, 999, 1000)
+                .contains(Integer(1), Integer(2), Integer(3), Integer(998), Integer(999), Integer(1000))
     }
 
 
     @Test
     fun query_1000000_values() {
-        val values = CommonIntegrationCase.DB.inTransaction<List<Int>> { tran -> tran.query("select X from X1000000 order by 1", layoutListOf(rowValueOf(Int::class.java))).run() }
+        val values = CommonIntegrationCase.DB.inTransaction<List<Integer>> { tran -> tran.query("select X from X1000000 order by 1", layoutListOf(rowValueOf(Integer::class.java))).run() }
         Assertions.assertThat(values).isNotNull
                 .hasSize(1000000)
-                .contains(1, 2, 3, 4, 999998, 999999, 1000000)
+                .contains(Integer(1), Integer(2), Integer(3), Integer(999998), Integer(999999), Integer(1000000))
     }
 
 

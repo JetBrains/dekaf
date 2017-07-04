@@ -6,6 +6,7 @@ import org.jetbrains.dekaf.exceptions.DBFetchingException;
 import org.jetbrains.dekaf.exceptions.UnknownDBException;
 import org.jetbrains.dekaf.inter.InterCursor;
 import org.jetbrains.dekaf.inter.InterLayout;
+import org.jetbrains.dekaf.util.ArrayUtil;
 import org.jetbrains.dekaf.util.SerializableMapEntry;
 
 import java.io.Serializable;
@@ -223,8 +224,8 @@ class JdbcCursor implements InterCursor {
     }
 
     @Nullable
-    private Serializable[] fetchObjects() {
-        Serializable[] row = (Serializable[]) Array.newInstance(layout.baseClass, fieldCount);
+    private Object[] fetchObjects() {
+        Object[] row = ArrayUtil.createArrayOf(layout.baseClass, fieldCount);
         for (int i = 0; i < fieldCount; i++) {
             Serializable value = getOneValue(i);
             row[i] = value;

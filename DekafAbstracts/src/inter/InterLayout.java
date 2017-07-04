@@ -85,18 +85,21 @@ public final class InterLayout implements Serializable {
         this.columnNames = columnNames;
         this.cortegeClasses = cortegeClasses;
 
-        if (baseClass != null) {
-            assert baseClass.isPrimitive() || Serializable.class.isAssignableFrom(baseClass)
-                    : "The base class must be serializable: " + baseClass.getSimpleName();
-        }
+        //if (baseClass != null) {
+        //    assert baseClass.isPrimitive() || Serializable.class.isAssignableFrom(baseClass) || Externalizable.class.isAssignableFrom(baseClass)
+        //            : "The base class must be serializable: " + baseClass.getSimpleName();
+        //}
         if (cortegeClasses != null) {
             assert cortegeClasses.length > 0 : "Cortege classes must be specified (here is an empty array)";
             for (Class elementClass : cortegeClasses) {
-                //noinspection unchecked
-                assert this.baseClass.isAssignableFrom(elementClass)
-                        : "A cortege element class must extend/implement the base one: " + elementClass.getSimpleName();
-                assert Serializable.class.isAssignableFrom(elementClass)
-                        : "A cortege element class must be serializable: " + elementClass.getSimpleName();
+                if (!elementClass.isPrimitive()) {
+                    //noinspection unchecked
+                    assert this.baseClass.isAssignableFrom(elementClass)
+                            : "A cortege element class must extend/implement the base one: " + elementClass
+                            .getName();
+                    assert Serializable.class.isAssignableFrom(elementClass)
+                            : "A cortege element class must be serializable: " + elementClass.getName();
+                }
             }
         }
     }

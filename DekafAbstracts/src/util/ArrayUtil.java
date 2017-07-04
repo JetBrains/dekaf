@@ -69,8 +69,13 @@ public abstract class ArrayUtil {
 
 
     @NotNull @SuppressWarnings("unchecked")
-    static <E> Class<E[]> getArrayClass(final @NotNull E[] array) {
+    public static <E> Class<E[]> getArrayClass(final @NotNull E[] array) {
         return (Class<E[]>) array.getClass();
+    }
+
+    @NotNull
+    public static <E> Class<E[]> getArrayClass(final @NotNull Class<E> elementClass) {
+        return getArrayClass(createArrayOf(elementClass, 0));
     }
 
     @NotNull @SuppressWarnings("unchecked")

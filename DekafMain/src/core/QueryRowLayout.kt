@@ -1,12 +1,9 @@
 package org.jetbrains.dekaf.core
 
 import org.jetbrains.dekaf.inter.InterRowKind
-import org.jetbrains.dekaf.util.JavaPrimitiveKind
+import org.jetbrains.dekaf.util.*
 import org.jetbrains.dekaf.util.Objects.castTo
 import org.jetbrains.dekaf.util.Objects.castToArrayOf
-import org.jetbrains.dekaf.util.SerializableMapEntry
-import org.jetbrains.dekaf.util.getDefaultConstructor
-import org.jetbrains.dekaf.util.instantiate
 import java.lang.reflect.Constructor
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
@@ -85,11 +82,9 @@ class QueryRowArrayOfValuesLayout<E>
 )
     : QueryRowLayout<Array<out E?>>()
 {
-    @Suppress("unchecked_cast")
-    override val rowClass: Class<Array<out E?>>
-        get() = Array<out Any?>::class.java as Class<Array<out E?>>
+    override val rowClass: Class<Array<out E?>> = ArrayUtil.getArrayClass(componentClass)
 
-    override fun interRowKind(): InterRowKind = InterRowKind.ROW_ONE_VALUE
+    override fun interRowKind(): InterRowKind = InterRowKind.ROW_OBJECTS
 
     override fun interBaseComponentClass(): Class<*> = componentClass
 
