@@ -84,7 +84,7 @@ abstract class CommonSessionTest : CommonIntegrationCase() {
 
             assertThat(md).isNotNull()
 
-            var driverName: String? = null
+            var driverName: String?
             try {
                 driverName = md!!.driverName
             }

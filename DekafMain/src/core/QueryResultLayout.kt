@@ -236,6 +236,7 @@ class QueryResultMapLayout<K,V>(val keyClass: Class<K>, val valueClass: Class<V>
 
     inner class MyBuilder: Builder() {
 
+        @Suppress("unchecked_cast")
         var b = ArrayBuilder<SerializableMapEntry<K,V>>(SerializableMapEntry::class.java as Class<SerializableMapEntry<K,V>>)
 
         override fun clear() = b.clear()

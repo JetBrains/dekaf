@@ -85,6 +85,7 @@ class QueryRowArrayOfValuesLayout<E>
 )
     : QueryRowLayout<Array<out E?>>()
 {
+    @Suppress("unchecked_cast")
     override val rowClass: Class<Array<out E?>>
         get() = Array<out Any?>::class.java as Class<Array<out E?>>
 

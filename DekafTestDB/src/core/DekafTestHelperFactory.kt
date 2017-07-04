@@ -22,16 +22,16 @@ object DekafTestHelperFactory : DBTestHelperFactory {
     override fun supportRdbms(): Set<Rdbms> = supportedRdbms
 
 
-    override fun createTestHelperFor(db: DBFacade): DBTestHelper =
-            when (db.rdbms()) {
-                H2db.RDBMS     -> H2dbTestHelper(db)
-                Postgres.RDBMS -> PostgresTestHelper(db)
-                Oracle.RDBMS   -> OracleTestHelper(db)
-                Mssql.RDBMS    -> MssqlTestHelper(db)
-                Sybase.RDBMS   -> SybaseTestHelper(db)
-                Mysql.RDBMS    -> MysqlTestHelper(db)
-                Sqlite.RDBMS   -> SqliteTestHelper(db)
-                else           -> UnknownDBTestHelper(db)
+    override fun createTestHelperFor(facade: DBFacade): DBTestHelper =
+            when (facade.rdbms()) {
+                H2db.RDBMS     -> H2dbTestHelper(facade)
+                Postgres.RDBMS -> PostgresTestHelper(facade)
+                Oracle.RDBMS   -> OracleTestHelper(facade)
+                Mssql.RDBMS    -> MssqlTestHelper(facade)
+                Sybase.RDBMS   -> SybaseTestHelper(facade)
+                Mysql.RDBMS    -> MysqlTestHelper(facade)
+                Sqlite.RDBMS   -> SqliteTestHelper(facade)
+                else           -> UnknownDBTestHelper(facade)
             }
 
 }

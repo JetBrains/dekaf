@@ -38,7 +38,7 @@ fun arrayToString(array: Array<*>?, delimiter: String): String {
         else -> {
             val b = StringBuilder()
             b.append(array[0].toString())
-            for (i in 1..n - 1) b.append(delimiter).append(array!![i])
+            for (i in 1..n - 1) b.append(delimiter).append(array[i])
             return b.toString()
         }
     }

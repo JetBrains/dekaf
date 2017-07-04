@@ -9,12 +9,13 @@ import java.sql.SQLException
 
 
 /**
- * @author Leonid Bushuev from JetBrains
+ * @author Leonid Bushuev
  */
 class CommonPrimaryTest : CommonIntegrationCase() {
 
     @Test
     fun connect() {
+        @Suppress("senseless_comparison")
         assert(DB != null)
 
         DB.connect()
@@ -32,8 +33,6 @@ class CommonPrimaryTest : CommonIntegrationCase() {
 
     @Test
     fun disconnect() {
-        assert(DB != null)
-
         DB.disconnect()
         assertThat(DB.isConnected).isFalse
     }
@@ -109,8 +108,6 @@ class CommonPrimaryTest : CommonIntegrationCase() {
 
     @Test
     fun ping() {
-        assert(DB != null)
-
         DB.connect()
 
         val session = DB.leaseSession()
@@ -123,8 +120,6 @@ class CommonPrimaryTest : CommonIntegrationCase() {
 
     @Test
     fun select_1_in_session() {
-        assert(DB != null)
-
         DB.connect()
         DB.inSessionDo { session ->
 
@@ -139,8 +134,6 @@ class CommonPrimaryTest : CommonIntegrationCase() {
 
     @Test
     fun select_1_in_transaction() {
-        assert(DB != null)
-
         DB.connect()
         DB.inTransactionDo { tran ->
 

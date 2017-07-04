@@ -2,6 +2,7 @@ package demo.kotlin
 
 import org.jetbrains.dekaf.DekafMaster
 import org.jetbrains.dekaf.core.DBTransaction
+import org.jetbrains.dekaf.core.layoutSingleValueOf
 
 
 /**
@@ -25,6 +26,7 @@ object Step02 {
         facade.inTransactionDo { tran: DBTransaction ->
 
             // do something inside this tran
+            tran.query("select 1", layoutSingleValueOf<String>()).run()
 
         }
 
@@ -38,6 +40,7 @@ object Step02 {
             session.inTransactionDo { tran ->
 
                 // do something inside this tran
+                tran.query("select 1", layoutSingleValueOf<String>()).run()
 
             }
 

@@ -28,6 +28,7 @@ abstract class CommonIntegrationCase {
 
         @AfterAll
         fun disconnectFromTestDB() {
+            @Suppress("senseless_comparison")
             if (DB != null) {
                 TestDB.disconnect()
             }

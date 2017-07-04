@@ -199,7 +199,7 @@ infix fun<E> Array<out E>?.expected(array: Array<out E>) {
     if (d) failDiff("Arrays are different: got ${this.displayString()} when expected ${array.displayString()}", this, array)
 }
 
-infix fun<E> List<E>?.expected(list: List<out E>) {
+infix fun<E> List<E>?.expected(list: List<E>) {
     if (this == null || this.isEmpty()) fail("Got ${this.displayString()} when expected ${list.displayString()}")
     val n1 = this.size
     val n2 = list.size

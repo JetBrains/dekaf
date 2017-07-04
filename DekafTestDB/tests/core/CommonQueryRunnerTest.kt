@@ -218,7 +218,7 @@ class CommonQueryRunnerTest : CommonIntegrationCase() {
                                            ImplementationAccessibleService.Names.JDBC_METADATA)
             Assertions.assertThat(md).isNotNull()
 
-            var columnName: String? = null
+            var columnName: String?
             try {
                 columnName = md!!.getColumnName(1)
             }
