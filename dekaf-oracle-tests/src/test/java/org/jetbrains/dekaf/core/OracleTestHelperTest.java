@@ -80,6 +80,22 @@ public class OracleTestHelperTest extends CommonIntegrationCase {
 
 
   @Test
+  public void zap_mater_log() {
+    // create function and operator
+    TH.performScript(ourScriptum, "CreateMaterLog");
+
+    // ensure that the table exists
+    assertThat(objectExists("WORK_TABLE")).isTrue();
+
+    // zap it
+    TH.zapSchema();
+
+    // verify (no table with materialized log)
+    assertThat(objectExists("WORK_TABLE")).isFalse();
+  }
+
+
+  @Test
   public void zap_mater_view_1() {
     // create function and operator
     TH.performScript(ourScriptum, "CreateMaterView1");

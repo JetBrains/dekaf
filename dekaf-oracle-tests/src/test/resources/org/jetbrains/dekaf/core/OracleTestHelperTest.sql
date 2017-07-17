@@ -13,6 +13,19 @@ create operator EQ_OP binding (varchar, varchar) return number using EQ_F
 /
 
 
+---- CreateMaterLog ----
+
+create table Work_Table
+(
+    Id number(9) primary key,
+    Name varchar(26) not null
+)
+/
+
+create materialized view log on Work_Table
+    with (Name), rowid
+/
+
 ---- CreateMaterView1 ----
 
 create table X_Order
