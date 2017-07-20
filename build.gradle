@@ -64,7 +64,7 @@ def assertJVersion      = "3.8.0"
 def junitVersion        = "4.11"
 def mockitoVersion      = "2.0.7-beta"
 
-def h2dbVersion         = "1.4.187"
+def h2dbVersion         = "1.4.196"
 def postgresVersion     = "9.4-1201-jdbc4"
 def mysqlVersion        = "6.0.6"
 def microsoftVersion    = "6.1.5.jre8-preview"
