@@ -59,7 +59,7 @@ def annotationsVersion  = "15.0"
 
 def junit5Version       = "1.0.0-M6"
 def junitJupiterVersion = "5.0.0-M6"
-def assertJVersion      = "1.6.0"
+def assertJVersion      = "3.8.0"
 
 def junitVersion        = "4.11"
 def mockitoVersion      = "2.0.7-beta"

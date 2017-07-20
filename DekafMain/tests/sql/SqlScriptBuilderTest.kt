@@ -1,9 +1,8 @@
 package org.jetbrains.dekaf.sql
 
 
-import org.junit.jupiter.api.Test
-
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
 
 
 /**
@@ -17,7 +16,7 @@ class SqlScriptBuilderTest {
         val commandText = "select * from dual"
         val script = build(commandText)
 
-        assertThat(script.hasStatements()).isTrue
+        assertThat(script.hasStatements()).isTrue()
         assertThat(script.statements).hasSize(1)
         val statement = script.statements[0]
         assertThat(statement.sourceText).isEqualTo(commandText)
@@ -87,7 +86,7 @@ class SqlScriptBuilderTest {
                 "from my_table      \n"
         val script = build(text)
 
-        assertThat(script.hasStatements()).isTrue
+        assertThat(script.hasStatements()).isTrue()
         assertThat(script.count()).isEqualTo(1)
         val queryText = script.statements[0].sourceText
         assertThat(queryText).contains("--+index(i)")

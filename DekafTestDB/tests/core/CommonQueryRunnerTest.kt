@@ -47,8 +47,8 @@ class CommonQueryRunnerTest : CommonIntegrationCase() {
         val queryText = "select 1 from " + (if (isOracle) "dual" else "X1") + " where 1 is null"
         val q = SqlQuery(queryText, layoutExistence())
         val b = query(q)
-        Assertions.assertThat(b).isNotNull
-                .isFalse
+        Assertions.assertThat(b).isNotNull()
+                                .isFalse()
     }
 
     @Test
@@ -56,8 +56,8 @@ class CommonQueryRunnerTest : CommonIntegrationCase() {
         val queryText = "select 1 " + if (isOracle) "from dual" else ""
         val q = SqlQuery(queryText, layoutExistence())
         val b = query(q)
-        Assertions.assertThat(b).isNotNull
-                .isTrue
+        Assertions.assertThat(b).isNotNull()
+                                .isTrue()
     }
 
     @Test

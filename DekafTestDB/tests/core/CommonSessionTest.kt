@@ -92,7 +92,7 @@ abstract class CommonSessionTest : CommonIntegrationCase() {
                 throw RuntimeException(e.message, e)
             }
 
-            assertThat(driverName).isNotNull
+            assertThat(driverName).isNotNull()
 
         }
     }

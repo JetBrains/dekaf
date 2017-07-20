@@ -1,15 +1,10 @@
 package org.jetbrains.dekaf.text
 
 
-import org.jetbrains.dekaf.core.*
-import org.jetbrains.dekaf.sql.SqlCommand
-import org.jetbrains.dekaf.sql.SqlQuery
-import org.jetbrains.dekaf.sql.SqlScript
-import org.jetbrains.dekaf.sql.SqlStatement
+import org.assertj.core.api.Assertions.assertThat
+import org.jetbrains.dekaf.core.layoutSingleValueOf
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
-
-import org.assertj.core.api.Assertions.assertThat
 
 
 /**
@@ -133,7 +128,7 @@ class ScriptumBasicTest {
     fun fileWithOneCommand_text() {
         val scriptum1 = Scriptum.of(ScriptumBasicTest::class.java, "FileWithOneCommand")
         val text = scriptum1.getText("TheCommand")
-        assertThat(text).isNotNull
+        assertThat(text).isNotNull()
         assertThat(text.text).contains("select something", "from some_table")
     }
 
@@ -141,7 +136,7 @@ class ScriptumBasicTest {
     fun fileWithOneCommand_script() {
         val scriptum1 = Scriptum.of(ScriptumBasicTest::class.java, "FileWithOneCommand")
         val script = scriptum1.script("TheCommand")
-        assertThat(script).isNotNull
+        assertThat(script).isNotNull()
         assertThat(script.count()).isEqualTo(1)
 
         val statements = script.statements

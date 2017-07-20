@@ -20,7 +20,7 @@ class CommonPrimaryTest : CommonIntegrationCase() {
         assert(DB != null)
 
         DB.connect()
-        assertThat(DB.isConnected).isTrue
+        assertThat(DB.isConnected).isTrue()
 
         val info = DB.connectionInfo
         println("Connection info:")
@@ -35,7 +35,7 @@ class CommonPrimaryTest : CommonIntegrationCase() {
     @Test
     fun disconnect() {
         DB.disconnect()
-        assertThat(DB.isConnected).isFalse
+        assertThat(DB.isConnected).isFalse()
     }
 
     @Test
@@ -82,28 +82,28 @@ class CommonPrimaryTest : CommonIntegrationCase() {
     fun getConnectionInfo_rdbms() {
         DB.connect()
         val info = DB.connectionInfo
-        assertThat(info.rdbmsName).isNotEmpty
+        assertThat(info.rdbmsName).isNotEmpty()
     }
 
     @Test
     fun getConnectionInfo_database() {
         DB.connect()
         val info = DB.connectionInfo
-        assertThat(info.databaseName).isNotEmpty
+        assertThat(info.databaseName).isNotEmpty()
     }
 
     @Test
     fun getConnectionInfo_schema() {
         DB.connect()
         val info = DB.connectionInfo
-        assertThat(info.schemaName).isNotEmpty
+        assertThat(info.schemaName).isNotEmpty()
     }
 
     @Test @Disabled
     fun getConnectionInfo_user() {
         DB.connect()
         val info = DB.connectionInfo
-        assertThat(info.userName).isNotEmpty
+        assertThat(info.userName).isNotEmpty()
     }
 
 
