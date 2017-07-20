@@ -54,31 +54,31 @@ subprojects {
 }
 
 
-def kotlinVersion       = '1.1.3-2'
-def annotationsVersion  = "15.0"
+def kotlinVersion        = '1.1.3-2'
+def annotationsVersion   = "15.0"
 
-def junit5Version       = "1.0.0-M6"
-def junitJupiterVersion = "5.0.0-M6"
-def assertJVersion      = "3.8.0"
+def junitPlatformVersion = "1.0.0-M6"
+def junitJupiterVersion  = "5.0.0-M6"
+def assertJVersion       = "3.8.0"
 
-def junitVersion        = "4.11"
-def mockitoVersion      = "2.0.7-beta"
+def junitVersion         = "4.11"
+def mockitoVersion       = "2.0.7-beta"
 
-def h2dbVersion         = "1.4.196"
-def postgresVersion     = "9.4-1201-jdbc4"
-def mysqlVersion        = "6.0.6"
-def microsoftVersion    = "6.1.5.jre8-preview"
-def jtdsVersion         = "1.2.8"
+def h2dbVersion          = "1.4.196"
+def postgresVersion      = "9.4-1201-jdbc4"
+def mysqlVersion         = "6.0.6"
+def microsoftVersion     = "6.1.5.jre8-preview"
+def jtdsVersion          = "1.2.8"
 
 
 project(':DekafAbstracts') {
 
     dependencies {
         compile     name: "annotations-$annotationsVersion"
-        testCompile name: "junit-platform-commons-$junit5Version"
-        testCompile name: "junit-platform-engine-$junit5Version"
-        testCompile name: "junit-platform-suite-api-$junit5Version"
-        testCompile name: "junit-platform-launcher-$junit5Version"
+        testCompile name: "junit-platform-commons-$junitPlatformVersion"
+        testCompile name: "junit-platform-engine-$junitPlatformVersion"
+        testCompile name: "junit-platform-suite-api-$junitPlatformVersion"
+        testCompile name: "junit-platform-launcher-$junitPlatformVersion"
         testCompile name: "junit-jupiter-api-$junitJupiterVersion"
         testCompile name: "junit-jupiter-engine-$junitJupiterVersion"
         testCompile name: "junit-jupiter-params-$junitJupiterVersion"
@@ -93,10 +93,10 @@ project(':DekafJdbc') {
     dependencies {
         compile project(':DekafAbstracts')
         testCompile name: "h2-$h2dbVersion"
-        testCompile name: "junit-platform-commons-$junit5Version"
-        testCompile name: "junit-platform-engine-$junit5Version"
-        testCompile name: "junit-platform-suite-api-$junit5Version"
-        testCompile name: "junit-platform-launcher-$junit5Version"
+        testCompile name: "junit-platform-commons-$junitPlatformVersion"
+        testCompile name: "junit-platform-engine-$junitPlatformVersion"
+        testCompile name: "junit-platform-suite-api-$junitPlatformVersion"
+        testCompile name: "junit-platform-launcher-$junitPlatformVersion"
         testCompile name: "junit-jupiter-api-$junitJupiterVersion"
         testCompile name: "junit-jupiter-engine-$junitJupiterVersion"
         testCompile name: "junit-jupiter-params-$junitJupiterVersion"
@@ -144,10 +144,10 @@ project(':DekafMain') {
         compile name: "kotlin-reflect-$kotlinVersion"
         testCompile project(':KoExpectations')
         testCompile name: "h2-$h2dbVersion"
-        testCompile name: "junit-platform-commons-$junit5Version"
-        testCompile name: "junit-platform-engine-$junit5Version"
-        testCompile name: "junit-platform-suite-api-$junit5Version"
-        testCompile name: "junit-platform-launcher-$junit5Version"
+        testCompile name: "junit-platform-commons-$junitPlatformVersion"
+        testCompile name: "junit-platform-engine-$junitPlatformVersion"
+        testCompile name: "junit-platform-suite-api-$junitPlatformVersion"
+        testCompile name: "junit-platform-launcher-$junitPlatformVersion"
         testCompile name: "junit-jupiter-api-$junitJupiterVersion"
         testCompile name: "junit-jupiter-engine-$junitJupiterVersion"
         testCompile name: "junit-jupiter-params-$junitJupiterVersion"
@@ -197,10 +197,10 @@ project(':DekafTestDB') {
         compile name: "kotlin-reflect-$kotlinVersion"
         testCompile project(':KoExpectations')
         testCompile name: "h2-$h2dbVersion"
-        testCompile name: "junit-platform-commons-$junit5Version"
-        testCompile name: "junit-platform-engine-$junit5Version"
-        testCompile name: "junit-platform-suite-api-$junit5Version"
-        testCompile name: "junit-platform-launcher-$junit5Version"
+        testCompile name: "junit-platform-commons-$junitPlatformVersion"
+        testCompile name: "junit-platform-engine-$junitPlatformVersion"
+        testCompile name: "junit-platform-suite-api-$junitPlatformVersion"
+        testCompile name: "junit-platform-launcher-$junitPlatformVersion"
         testCompile name: "junit-jupiter-api-$junitJupiterVersion"
         testCompile name: "junit-jupiter-engine-$junitJupiterVersion"
         testCompile name: "junit-jupiter-params-$junitJupiterVersion"
@@ -235,10 +235,10 @@ project(':KoExpectations') {
         compile name: "kotlin-stdlib-jre7-$kotlinVersion"
         compile name: "kotlin-stdlib-jre8-$kotlinVersion"
         compile name: "kotlin-reflect-$kotlinVersion"
-        compile name: "junit-platform-commons-$junit5Version"
-        compile name: "junit-platform-engine-$junit5Version"
-        compile name: "junit-platform-suite-api-$junit5Version"
-        compile name: "junit-platform-launcher-$junit5Version"
+        compile name: "junit-platform-commons-$junitPlatformVersion"
+        compile name: "junit-platform-engine-$junitPlatformVersion"
+        compile name: "junit-platform-suite-api-$junitPlatformVersion"
+        compile name: "junit-platform-launcher-$junitPlatformVersion"
         compile name: "junit-jupiter-api-$junitJupiterVersion"
         compile name: "junit-jupiter-engine-$junitJupiterVersion"
         compile name: "junit-jupiter-params-$junitJupiterVersion"
@@ -288,10 +288,10 @@ project(':UnitTests') {
         testCompile name: "kotlin-stdlib-jre7-$kotlinVersion"
         testCompile name: "kotlin-stdlib-jre8-$kotlinVersion"
         testCompile name: "kotlin-reflect-$kotlinVersion"
-        testCompile name: "junit-platform-commons-$junit5Version"
-        testCompile name: "junit-platform-engine-$junit5Version"
-        testCompile name: "junit-platform-suite-api-$junit5Version"
-        testCompile name: "junit-platform-launcher-$junit5Version"
+        testCompile name: "junit-platform-commons-$junitPlatformVersion"
+        testCompile name: "junit-platform-engine-$junitPlatformVersion"
+        testCompile name: "junit-platform-suite-api-$junitPlatformVersion"
+        testCompile name: "junit-platform-launcher-$junitPlatformVersion"
         testCompile name: "junit-jupiter-api-$junitJupiterVersion"
         testCompile name: "junit-jupiter-engine-$junitJupiterVersion"
         testCompile name: "junit-jupiter-params-$junitJupiterVersion"
@@ -373,18 +373,18 @@ dependencies {
         "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion:sources",
         "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion:javadoc"
 
-    test "org.junit.platform:junit-platform-commons:$junit5Version",
-         "org.junit.platform:junit-platform-commons:$junit5Version:sources",
-         "org.junit.platform:junit-platform-commons:$junit5Version:javadoc",
-         "org.junit.platform:junit-platform-engine:$junit5Version",
-         "org.junit.platform:junit-platform-engine:$junit5Version:sources",
-         "org.junit.platform:junit-platform-engine:$junit5Version:javadoc",
-         "org.junit.platform:junit-platform-suite-api:$junit5Version",
-         "org.junit.platform:junit-platform-suite-api:$junit5Version:sources",
-         "org.junit.platform:junit-platform-suite-api:$junit5Version:javadoc",
-         "org.junit.platform:junit-platform-launcher:$junit5Version",
-         "org.junit.platform:junit-platform-launcher:$junit5Version:sources",
-         "org.junit.platform:junit-platform-launcher:$junit5Version:javadoc",
+    test "org.junit.platform:junit-platform-commons:$junitPlatformVersion",
+         "org.junit.platform:junit-platform-commons:$junitPlatformVersion:sources",
+         "org.junit.platform:junit-platform-commons:$junitPlatformVersion:javadoc",
+         "org.junit.platform:junit-platform-engine:$junitPlatformVersion",
+         "org.junit.platform:junit-platform-engine:$junitPlatformVersion:sources",
+         "org.junit.platform:junit-platform-engine:$junitPlatformVersion:javadoc",
+         "org.junit.platform:junit-platform-suite-api:$junitPlatformVersion",
+         "org.junit.platform:junit-platform-suite-api:$junitPlatformVersion:sources",
+         "org.junit.platform:junit-platform-suite-api:$junitPlatformVersion:javadoc",
+         "org.junit.platform:junit-platform-launcher:$junitPlatformVersion",
+         "org.junit.platform:junit-platform-launcher:$junitPlatformVersion:sources",
+         "org.junit.platform:junit-platform-launcher:$junitPlatformVersion:javadoc",
          "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion",
          "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion:sources",
          "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion:javadoc",
