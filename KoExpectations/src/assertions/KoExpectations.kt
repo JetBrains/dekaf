@@ -309,7 +309,7 @@ fun fail(message: String): Nothing =
         throw AssertionFailedError(message)
 
 fun failDiff(actual: Any?, expected: Any?): Nothing =
-        throw AssertionFailedError("Got $actual when expected $expected", actual, expected)
+        throw AssertionFailedError("Got $actual when expected $expected", expected, actual)
 
 fun failDiff(message: String, actual: Any?, expected: Any?): Nothing =
         throw AssertionFailedError(message, expected, actual)

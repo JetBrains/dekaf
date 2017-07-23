@@ -6,6 +6,8 @@ public final class AllExamples {
         Step01.main(args);
         Step02.main(args);
         Step03.main(args);
+        Step04.main(args);
+        Step05.main(args);
     }
 
 }

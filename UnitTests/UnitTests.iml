@@ -11,6 +11,8 @@
     <orderEntry type="module" module-name="DekafJdbc" />
     <orderEntry type="module" module-name="DekafMain" />
     <orderEntry type="module" module-name="DekafTestDB" />
+    <orderEntry type="module" module-name="DemoOnJava" />
+    <orderEntry type="module" module-name="DemoOnKotlin" />
     <orderEntry type="library" scope="TEST" name="testing5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="h2" level="project" />
   </component>
