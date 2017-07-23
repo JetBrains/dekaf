@@ -1,13 +1,16 @@
 package org.jetbrains.dekaf.impl
 
-import org.jetbrains.dekaf.core.*
+import org.jetbrains.dekaf.core.DBLeasedSession
+import org.jetbrains.dekaf.core.DBScriptRunner
+import org.jetbrains.dekaf.core.DBTransaction
+import org.jetbrains.dekaf.core.QueryResultLayout
 import org.jetbrains.dekaf.inter.InterSession
 import org.jetbrains.dekaf.sql.SqlCommand
 import org.jetbrains.dekaf.sql.SqlQuery
 import org.jetbrains.dekaf.sql.SqlScript
-import java.util.function.Function
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.function.Consumer
+import java.util.function.Function
 
 
 internal open class BaseSession: DBLeasedSession {
@@ -84,33 +87,33 @@ internal open class BaseSession: DBLeasedSession {
 
     /// RUNNERS \\\
 
-    override fun command(command: SqlCommand): DBCommandRunner {
+    override fun command(command: SqlCommand): BaseCommandRunner {
         val commandText = command.sourceText
         return command(commandText)
     }
 
-    override fun command(commandText: String): DBCommandRunner {
+    override fun command(commandText: String): BaseCommandRunner {
         val interSeance = inter.openSeance()
         val runner = BaseCommandRunner(this, interSeance, commandText)
         runners.add(runner)
-        runner.prepare()
         return runner
     }
 
-    override fun <S> query(query: SqlQuery<S>): DBQueryRunner<S> {
+    override fun <S> query(query: SqlQuery<S>): BaseQueryRunner<S> {
         return query(query.sourceText, query.layout)
     }
 
-    override fun <T> query(queryText: String, layout: QueryResultLayout<T>): DBQueryRunner<T> {
+    override fun <T> query(queryText: String, layout: QueryResultLayout<T>): BaseQueryRunner<T> {
         val interSeance = inter.openSeance()
         val runner = BaseQueryRunner(this, interSeance, queryText, layout)
         runners.add(runner)
-        runner.prepare()
         return runner
     }
 
     override fun script(script: SqlScript): DBScriptRunner {
-        TODO("not implemented yet")
+        val scriptRunner = BaseScriptRunner(this, script)
+        runners.add(scriptRunner)
+        return scriptRunner
     }
 
     override fun ping(): Int {

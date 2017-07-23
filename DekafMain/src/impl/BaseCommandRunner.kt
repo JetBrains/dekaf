@@ -6,13 +6,14 @@ import org.jetbrains.dekaf.inter.InterSeance
 import org.jetbrains.dekaf.inter.InterTask
 
 
-internal class BaseCommandRunner: BaseRunner, DBCommandRunner {
+internal class BaseCommandRunner: BaseStatementRunner, DBCommandRunner {
 
     internal constructor(session: BaseSession, interSeance: InterSeance, text: String) : super(session, interSeance, text)
 
     override fun prepare() {
         val task = InterTask(TASK_COMMAND, text)
         interSeance.prepare(task)
+        prepared = true
     }
 
     override fun withParams(vararg params: Any?): BaseCommandRunner {
@@ -21,6 +22,7 @@ internal class BaseCommandRunner: BaseRunner, DBCommandRunner {
     }
 
     override fun run(): BaseCommandRunner {
+        if (!prepared) prepare()
         interSeance.execute()
         return this
     }

@@ -2,7 +2,6 @@ package org.jetbrains.dekaf.core
 
 import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.dekaf.CommonIntegrationCase
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.sql.DatabaseMetaData
 import java.sql.Driver
@@ -97,13 +96,6 @@ class CommonPrimaryTest : CommonIntegrationCase() {
         DB.connect()
         val info = DB.connectionInfo
         assertThat(info.schemaName).isNotEmpty()
-    }
-
-    @Test @Disabled
-    fun getConnectionInfo_user() {
-        DB.connect()
-        val info = DB.connectionInfo
-        assertThat(info.userName).isNotEmpty()
     }
 
 

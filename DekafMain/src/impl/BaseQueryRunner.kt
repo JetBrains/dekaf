@@ -10,13 +10,12 @@ import org.jetbrains.dekaf.inter.InterTask
 import org.jetbrains.dekaf.util.Objects.castTo
 
 
-internal class BaseQueryRunner<T>: BaseRunner, DBQueryRunner<T> {
+internal class BaseQueryRunner<T>: BaseStatementRunner, DBQueryRunner<T> {
 
     private val layout: QueryResultLayout<T>
     private var portionSize: Int = 100
 
     private var interCursor: InterCursor? = null
-    private var prepared = false
     private var executed = false
 
 
@@ -36,9 +35,7 @@ internal class BaseQueryRunner<T>: BaseRunner, DBQueryRunner<T> {
         closeCursor()
         executed = false
 
-        if (params.isNotEmpty()) {
-            interSeance.assignParameters(params)
-        }
+        super.withParams(*params)
 
         return this
     }

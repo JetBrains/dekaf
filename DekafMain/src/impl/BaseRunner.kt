@@ -5,28 +5,50 @@ import org.jetbrains.dekaf.inter.InterSeance
 
 internal abstract class BaseRunner {
 
-    val session: BaseSession
+    protected val session: BaseSession
 
-    val interSeance: InterSeance
-
-    val text: String
-
-
-    constructor(session: BaseSession, inter: InterSeance, text: String) {
+    constructor(session: BaseSession) {
         this.session = session
-        this.interSeance = inter
+    }
+
+    abstract fun close()
+}
+
+
+internal abstract class BaseStatementRunner : BaseRunner {
+
+    protected val interSeance: InterSeance
+
+    protected val text: String
+
+    protected var prepared = false
+
+    constructor(session: BaseSession, interSeance: InterSeance, text: String)
+            : super(session)
+    {
+        this.interSeance = interSeance
         this.text = text
     }
 
-    abstract fun prepare()
 
+    abstract fun prepare()
+    
     open fun withParams(vararg params: Any?): BaseRunner {
-        interSeance.assignParameters(params)
+        if (!prepared) {
+            prepare()
+        }
+        if (params.isNotEmpty()) {
+            interSeance.assignParameters(params)
+        }
         return this
     }
 
-    fun close() {
+    abstract fun run(): Any?
+
+    override fun close() {
+        prepared = false
         interSeance.close()
         session.runnerClosed(this)
     }
+
 }
