@@ -107,7 +107,7 @@ abstract class BaseTestHelper : DBTestHelper {
     override fun performMetaQueryCommands(scriptum: Scriptum,
                                           metaQueryName: String,
                                           vararg params: Any?) {
-        val metaQuery = scriptum.query(metaQueryName, layoutListOf(rowStructOf(String::class.java)))
+        val metaQuery = scriptum.query(metaQueryName, layoutListOf(rowValueOf(String::class.java)))
 
         db.inSessionDo { session ->
             val commands = session.query(metaQuery).withParams(*params).run()
