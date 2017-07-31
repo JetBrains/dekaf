@@ -97,7 +97,7 @@ with Objects as ( select type collate database_default as kind,
                          create_date
                   from sys.objects
                   where schema_id = schema_id()
-                    and type collate database_default in ('U','V','P','FN','IF','SN')
+                    and type collate database_default in ('U','V','P','FN','IF','SO','SN')
                     and parent_object_id = 0
                     and not is_ms_shipped = 1),
      Kinds as ( select 'U' as kind, 'table' as word
@@ -109,6 +109,8 @@ with Objects as ( select type collate database_default as kind,
                 select 'FN' as kind, 'function' as word
                 union all
                 select 'IF' as kind, 'function' as word
+                union all
+                select 'SO' as kind, 'sequence' as word
                 union all
                 select 'SN' as kind, 'synonym' as word ),
      Drop_FK as ( select 'alter table ' + quotename(T.name) + ' drop constraint ' + quotename(rtrim(F.name)) as cmd,
