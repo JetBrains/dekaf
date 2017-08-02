@@ -51,6 +51,10 @@
           <option name="KEEP_SIMPLE_LAMBDAS_IN_ONE_LINE" value="true" />
           <option name="KEEP_SIMPLE_CLASSES_IN_ONE_LINE" value="true" />
           <option name="KEEP_MULTIPLE_EXPRESSIONS_IN_ONE_LINE" value="true" />
+          <indentOptions>
+            <option name="CONTINUATION_INDENT_SIZE" value="4" />
+            <option name="USE_RELATIVE_INDENTS" value="true" />
+          </indentOptions>
         </codeStyleSettings>
         <codeStyleSettings language="XML">
           <indentOptions>
