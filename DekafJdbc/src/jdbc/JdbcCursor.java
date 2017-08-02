@@ -109,7 +109,7 @@ class JdbcCursor implements InterCursor {
                 for (int i = 0; i < n; i++) {
                     String name = layout.columnNames[i];
                     Integer index = names.get(name);
-                    indexMapping[i] = index != null ? index.intValue() : Integer.MIN_VALUE;
+                    indexMapping[i] = index != null ? index : Integer.MIN_VALUE;
                 }
             }
             else {

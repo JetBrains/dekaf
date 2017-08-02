@@ -42,8 +42,8 @@ public final class Version implements Comparable<Version>, Serializable {
    * @see #of(int...)
    */
   public static Version of(@NotNull final String string) {
-    ArrayList<Integer> b = new ArrayList<Integer>(5);
-    final String[] substrings = string.split("[\\.\\,\\-_ ]");
+    ArrayList<Integer> b = new ArrayList<>(5);
+    final String[] substrings = string.split("[.,\\-_ ]");
     for (String ss : substrings) {
       String ss2 = ss.trim();
       if (ss2.isEmpty()) continue;
@@ -159,7 +159,7 @@ public final class Version implements Comparable<Version>, Serializable {
   }
 
   private static int compare(final int x, final int y) {
-    return x < y ? -1 : x > y ? +1 : 0;
+    return Integer.compare(x, y);
   }
 
   /**

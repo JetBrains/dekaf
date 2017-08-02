@@ -13,8 +13,8 @@ import java.sql.SQLException;
  */
 public abstract class JdbcValueGetter<V> {
 
-  @Nullable
-  abstract V getValue(@NotNull ResultSet rset, int index)
-          throws SQLException;
+    @Nullable
+    abstract V getValue(@NotNull ResultSet rset, int index)
+            throws SQLException;
 
 }

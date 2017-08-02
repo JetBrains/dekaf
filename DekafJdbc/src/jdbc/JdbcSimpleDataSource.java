@@ -24,118 +24,126 @@ import static java.lang.String.format;
 public class JdbcSimpleDataSource implements DataSource, ImplementationAccessibleService {
 
 
-  ////// STATE \\\\\\
+    ////// STATE \\\\\\
 
-  @NotNull
-  private final String myConnectionString;
+    @NotNull
+    private final String myConnectionString;
 
-  @NotNull
-  private final Properties myConnectionProperties;
+    @NotNull
+    private final Properties myConnectionProperties;
 
-  @NotNull
-  private final Driver myDriver;
+    @NotNull
+    private final Driver myDriver;
 
-  @Nullable
-  private PrintWriter myLogWriter;
-
-
-  ////// CONSTRUCTORS \\\\\\
-
-  public JdbcSimpleDataSource(@NotNull final String connectionString,
-                              @Nullable final Properties connectionProperties,
-                              @NotNull final Driver driver) {
-    myConnectionString = connectionString;
-    myConnectionProperties = cloneProperties(connectionProperties);
-    myDriver = driver;
-  }
+    @Nullable
+    private PrintWriter myLogWriter;
 
 
-  public void setConnectionProperty(@NotNull final String name, @Nullable final String value) {
-    if (value != null) {
-      myConnectionProperties.setProperty(name, value);
+    ////// CONSTRUCTORS \\\\\\
+
+    public JdbcSimpleDataSource(@NotNull final String connectionString,
+                                @Nullable final Properties connectionProperties,
+                                @NotNull final Driver driver) {
+        myConnectionString = connectionString;
+        myConnectionProperties = cloneProperties(connectionProperties);
+        myDriver = driver;
     }
-    else {
-      myConnectionProperties.remove(name);
+
+
+    public void setConnectionProperty(@NotNull final String name, @Nullable final String value) {
+        if (value != null) {
+            myConnectionProperties.setProperty(name, value);
+        }
+        else {
+            myConnectionProperties.remove(name);
+        }
     }
-  }
 
 
-  @NotNull
-  private static Properties cloneProperties(final @Nullable Properties properties) {
-    Properties p = new Properties();
-    if (properties != null) p.putAll(properties);
-    return p;
-  }
-
-
-  ////// IMPLEMENTATION \\\\\\
-
-  @Override
-  public Connection getConnection() throws SQLException {
-    return myDriver.connect(myConnectionString, myConnectionProperties);
-  }
-
-  @Override
-  public Connection getConnection(final String username, final String password) {
-    throw new IllegalArgumentException("JdbcSimpleDataSource.getConnection(username, password) is not supported. You can pass credentials via connection string or via connection properties.");
-  }
-
-  @Nullable
-  @Override
-  public PrintWriter getLogWriter() {
-    return myLogWriter;
-  }
-
-  @Override
-  public void setLogWriter(@Nullable final PrintWriter writer) {
-    myLogWriter = writer;
-  }
-
-  @Override
-  public void setLoginTimeout(final int seconds) {
-    // TODO implement JdbcSimpleDataSource.setLoginTimeout
-    throw new RuntimeException("The JdbcSimpleDataSource.setLoginTimeout has not been implemented yet.");
-  }
-
-  @Override
-  public int getLoginTimeout() {
-    // TODO implement JdbcSimpleDataSource.getLoginTimeout
-    throw new RuntimeException("The JdbcSimpleDataSource.getLoginTimeout has not been implemented yet.");
-  }
-
-
-  @NotNull
-  @Override @SuppressWarnings("unchecked")
-  public <T> T unwrap(@SuppressWarnings("SpellCheckingInspection") final Class<T> iface) {
-    if (iface.isAssignableFrom(JdbcSimpleDataSource.class)) {
-      return (T) this;
+    @NotNull
+    private static Properties cloneProperties(final @Nullable Properties properties) {
+        Properties p = new Properties();
+        if (properties != null) p.putAll(properties);
+        return p;
     }
-    else {
-      throw new IllegalArgumentException(format("%s is not a wrapper for %s", JdbcSimpleDataSource.class.getSimpleName(), iface.getName()));
+
+
+    ////// IMPLEMENTATION \\\\\\
+
+    @Override
+    public Connection getConnection() throws SQLException {
+        return myDriver.connect(myConnectionString, myConnectionProperties);
     }
-  }
 
-  @Override
-  public boolean isWrapperFor(@SuppressWarnings("SpellCheckingInspection") final Class<?> iface) throws SQLException {
-    return iface.isAssignableFrom(JdbcSimpleDataSource.class);
-  }
-
-  @Nullable
-  @Override
-  public <I> I getSpecificService(@NotNull final Class<I> serviceClass,
-                                  @NotNull final String serviceName) throws ClassCastException {
-    if (serviceName.equalsIgnoreCase(Names.JDBC_DRIVER)) {
-      return Objects.castTo(serviceClass, myDriver);
+    @Override
+    public Connection getConnection(final String username, final String password) {
+        throw new IllegalArgumentException(
+                "JdbcSimpleDataSource.getConnection(username, password) is not supported. You can pass credentials via connection string or via connection properties.");
     }
-    else {
-      return null;
+
+    @Nullable
+    @Override
+    public PrintWriter getLogWriter() {
+        return myLogWriter;
     }
-  }
+
+    @Override
+    public void setLogWriter(@Nullable final PrintWriter writer) {
+        myLogWriter = writer;
+    }
+
+    @Override
+    public void setLoginTimeout(final int seconds) {
+        // TODO implement JdbcSimpleDataSource.setLoginTimeout
+        throw new RuntimeException(
+                "The JdbcSimpleDataSource.setLoginTimeout has not been implemented yet.");
+    }
+
+    @Override
+    public int getLoginTimeout() {
+        // TODO implement JdbcSimpleDataSource.getLoginTimeout
+        throw new RuntimeException(
+                "The JdbcSimpleDataSource.getLoginTimeout has not been implemented yet.");
+    }
 
 
-  ////// NOT-SUPPORTED STUFF \\\\\\
+    @NotNull
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T unwrap(@SuppressWarnings("SpellCheckingInspection") final Class<T> iface) {
+        if (iface.isAssignableFrom(JdbcSimpleDataSource.class)) {
+            return (T) this;
+        }
+        else {
+            throw new IllegalArgumentException(format("%s is not a wrapper for %s",
+                                                      JdbcSimpleDataSource.class.getSimpleName(),
+                                                      iface.getName()));
+        }
+    }
 
-  public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-    throw new SQLFeatureNotSupportedException("The JdbcSimpleDataSource.getParentLogger is not supported by Dekaf 2.0.");
-  }
+    @Override
+    public boolean isWrapperFor(@SuppressWarnings("SpellCheckingInspection") final Class<?> iface) throws
+                                                                                                   SQLException {
+        return iface.isAssignableFrom(JdbcSimpleDataSource.class);
+    }
+
+    @Nullable
+    @Override
+    public <I> I getSpecificService(@NotNull final Class<I> serviceClass,
+                                    @NotNull final String serviceName) throws ClassCastException {
+        if (serviceName.equalsIgnoreCase(Names.JDBC_DRIVER)) {
+            return Objects.castTo(serviceClass, myDriver);
+        }
+        else {
+            return null;
+        }
+    }
+
+
+    ////// NOT-SUPPORTED STUFF \\\\\\
+
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        throw new SQLFeatureNotSupportedException(
+                "The JdbcSimpleDataSource.getParentLogger is not supported by Dekaf 2.0.");
+    }
 }

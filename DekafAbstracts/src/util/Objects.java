@@ -48,7 +48,7 @@ public abstract class Objects {
       return (E[]) object;
     }
     else {
-      throw new ClassCastException("Atemmpted to cast a "+objectClass.getSimpleName()+" to an array of "+elementClass.getSimpleName());
+      throw new ClassCastException("Attempted to cast a "+objectClass.getSimpleName()+" to an array of "+elementClass.getSimpleName());
     }
   }
 

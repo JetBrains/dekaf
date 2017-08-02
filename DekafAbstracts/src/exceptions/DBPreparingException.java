@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 
 /**
- * Throws when a problem of a SQL command or query initialization error occured.
+ * Throws when a problem of a SQL command or query initialization error occurred.
  *
  * @author Leonid Bushuev from JetBrains
  */

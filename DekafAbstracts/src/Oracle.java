@@ -5,9 +5,9 @@ package org.jetbrains.dekaf;
  */
 public abstract class Oracle {
 
-  /**
-   * Oracle RDBMS marker.
-   */
-  public static final Rdbms RDBMS = Rdbms.of("ORACLE");
+    /**
+     * Oracle RDBMS marker.
+     */
+    public static final Rdbms RDBMS = Rdbms.of("ORACLE");
 
 }

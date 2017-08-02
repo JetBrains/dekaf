@@ -36,7 +36,7 @@ final class JdbcFacade implements InterFacade {
     private String connectionString;
 
     @NotNull
-    private Properties properties;
+    final private Properties properties = new Properties();
 
     @Nullable
     private DataSource dataSource;
@@ -56,7 +56,6 @@ final class JdbcFacade implements InterFacade {
         this.rdbms = rdbms;
         this.specific = specific;
         this.connectionString = null;
-        this.properties = new Properties();
     }
 
 

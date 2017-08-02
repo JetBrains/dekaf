@@ -11,7 +11,7 @@ public interface InterCursor extends ImplementationAccessibleService {
 
     /// SETTING UP \\\
 
-    public void setPortionSize(final int portionSize);
+    void setPortionSize(final int portionSize);
 
 
     /// RETRIEVING DATA \\\

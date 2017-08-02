@@ -7,9 +7,9 @@ package org.jetbrains.dekaf;
  */
 public abstract class Postgres {
 
-  /**
-   * PostgreSQL RDBMS marker.
-   */
-  public final static Rdbms RDBMS = Rdbms.of("POSTGRES");
+    /**
+     * PostgreSQL RDBMS marker.
+     */
+    public final static Rdbms RDBMS = Rdbms.of("POSTGRES");
 
 }

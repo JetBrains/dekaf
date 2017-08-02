@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 import java.io.*
 
 
-class RdbmsTest {
+class RdbmsTest2 {
 
     @Test
     fun dedulplicate_on_create() {

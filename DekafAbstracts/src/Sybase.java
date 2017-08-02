@@ -7,9 +7,9 @@ package org.jetbrains.dekaf;
  */
 public abstract class Sybase {
 
-  /**
-   * Sybase ASE RDBMS marker.
-   */
-  public final static Rdbms RDBMS = Rdbms.of("SYBASE");
+    /**
+     * Sybase ASE RDBMS marker.
+     */
+    public final static Rdbms RDBMS = Rdbms.of("SYBASE");
 
 }

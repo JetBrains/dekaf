@@ -92,7 +92,7 @@ public final class InterLayout implements Serializable {
         if (cortegeClasses != null) {
             assert cortegeClasses.length > 0 : "Cortege classes must be specified (here is an empty array)";
             for (Class elementClass : cortegeClasses) {
-                if (!elementClass.isPrimitive()) {
+                if (elementClass != null && !elementClass.isPrimitive()) {
                     //noinspection unchecked
                     assert this.baseClass.isAssignableFrom(elementClass)
                             : "A cortege element class must extend/implement the base one: " + elementClass

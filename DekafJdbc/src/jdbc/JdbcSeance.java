@@ -7,7 +7,6 @@ import org.jetbrains.dekaf.exceptions.DBParameterSettingException;
 import org.jetbrains.dekaf.inter.InterLayout;
 import org.jetbrains.dekaf.inter.InterSeance;
 import org.jetbrains.dekaf.inter.InterTask;
-import org.jetbrains.dekaf.util.Objects;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

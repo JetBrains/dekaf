@@ -7,9 +7,9 @@ package org.jetbrains.dekaf;
  */
 public abstract class Sqlite {
 
-  /**
-   * Sqlite RDBMS marker.
-   */
-  public final static Rdbms RDBMS = Rdbms.of("SQLITE");
+    /**
+     * Sqlite RDBMS marker.
+     */
+    public final static Rdbms RDBMS = Rdbms.of("SQLITE");
 
 }

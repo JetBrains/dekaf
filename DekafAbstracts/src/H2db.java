@@ -7,9 +7,9 @@ package org.jetbrains.dekaf;
  */
 public abstract class H2db {
 
-  /**
-   * H2 RDBMS marker.
-   */
-  public final static Rdbms RDBMS = Rdbms.of("H2");
+    /**
+     * H2 RDBMS marker.
+     */
+    public final static Rdbms RDBMS = Rdbms.of("H2");
 
 }

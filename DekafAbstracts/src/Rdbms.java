@@ -19,86 +19,88 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class Rdbms implements Serializable {
 
-  //// STATE \\\\
+    /// STATE \\\
 
 
-  /**
-   * A unique short code that is used when
-   * the RDBMS type is serialized/deserialized.
-   */
-  @NotNull
-  public final String code;
+    /**
+     * A unique short code that is used when
+     * the RDBMS type is serialized/deserialized.
+     */
+    @NotNull
+    public final String code;
 
 
 
-  //// METHODS \\\\
+    /// METHODS \\\
 
 
-  public static Rdbms of(@NotNull final String code) {
-    String theCode = code.intern();
-    Rdbms newRdbms = new Rdbms(theCode);
-    Rdbms oldRdbms = RdbmsMarkersCache.cache.putIfAbsent(theCode, newRdbms);
-    return oldRdbms != null ? oldRdbms : newRdbms;
-  }
+    public static Rdbms of(@NotNull final String code) {
+        String theCode = code.intern();
+        Rdbms newRdbms = new Rdbms(theCode);
+        Rdbms oldRdbms = RdbmsMarkersCache.cache.putIfAbsent(theCode, newRdbms);
+        return oldRdbms != null ? oldRdbms : newRdbms;
+    }
 
 
-  private Rdbms(@NotNull final String code) {
-    this.code = code.intern();
-  }
+    private Rdbms(@NotNull final String code) {
+        this.code = code.intern();
+    }
 
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-    Rdbms that = (Rdbms)o;
+        Rdbms that = (Rdbms)o;
 
-    return this.code.equals(that.code);
-  }
-
-
-  @Override
-  public int hashCode() {
-    return code.hashCode();
-  }
+        return this.code.equals(that.code);
+    }
 
 
-  @Override
-  public String toString() {
-    return code;
-  }
+    @Override
+    public int hashCode() {
+        return code.hashCode();
+    }
 
 
-  //// SERIALIZATION \\\\
+    @Override
+    public String toString() {
+        return code;
+    }
 
 
-  @SuppressWarnings("unused")
-  private Object writeReplace() {
-    return new RdbmsProxy(code);
-  }
+    /// SERIALIZATION \\\
+
+
+    @SuppressWarnings("unused")
+    private Object writeReplace() {
+        return new RdbmsProxy(code);
+    }
 
 }
 
 
+/// SERIALIZATION PROXY \\\
+
 class RdbmsProxy implements Serializable {
 
-  private final String code;
+    private final String code;
 
-  RdbmsProxy(final String code) {
-    this.code = code;
-  }
+    RdbmsProxy(final String code) {
+        this.code = code;
+    }
 
-  Object readResolve() {
-    return Rdbms.of(code);
-  }
+    Object readResolve() {
+        return Rdbms.of(code);
+    }
 
 }
 
 
 abstract class RdbmsMarkersCache {
 
-  static final ConcurrentHashMap<String,Rdbms> cache = new ConcurrentHashMap<>();
+    static final ConcurrentHashMap<String,Rdbms> cache = new ConcurrentHashMap<>();
 
 }
 
