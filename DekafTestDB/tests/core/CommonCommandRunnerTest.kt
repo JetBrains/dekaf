@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 
 
 /**
- * @author Leonid Bushuev from JetBrains
+ * @author Leonid Bushuev
  */
 class CommonCommandRunnerTest : CommonIntegrationCase() {
 
