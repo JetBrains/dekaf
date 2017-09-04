@@ -100,7 +100,7 @@ public abstract class JdbcIntermediateSeance implements IntegralIntermediateSean
       boolean gotResultSet = myStatement.execute();
       if (gotResultSet)  {
         myDefaultResultSet = mySession.getDefaultResultSet(myStatement);
-        if (!myDefaultResultSet.isClosed()) {
+        if (!JdbcUtil.isClosed(myDefaultResultSet)) {
           mySession.tuneResultSet(myDefaultResultSet, myPackLimit);
           myDefaultResultSetHasRows = myDefaultResultSet.next();  // download first rows
           if (!myDefaultResultSetHasRows) {
