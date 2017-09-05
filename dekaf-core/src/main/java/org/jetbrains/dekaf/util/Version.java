@@ -3,9 +3,7 @@ package org.jetbrains.dekaf.util;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import java.util.*;
 
 
 /**
@@ -30,6 +28,11 @@ import java.util.Arrays;
  * @since 8.1.3.
  */
 public final class Version implements Comparable<Version>, Serializable {
+  private static final Map<String, Integer> SPECIAL_VALUES = new HashMap<String, Integer>();
+  static {
+    SPECIAL_VALUES.put("alpha", -20);
+    SPECIAL_VALUES.put("beta", -10);
+  }
 
   @NotNull
   private final int[] elements;
@@ -43,16 +46,19 @@ public final class Version implements Comparable<Version>, Serializable {
    */
   public static Version of(@NotNull final String string) {
     ArrayList<Integer> b = new ArrayList<Integer>(5);
-    final String[] substrings = string.split("[\\.\\,\\-_ ]");
+    final String[] substrings = string.split("[.,\\-_ ]|(?<=\\d)(?!\\d)|(?<!\\d)(?=\\d)");
     for (String ss : substrings) {
-      String ss2 = ss.trim();
+      String ss2 = ss.trim().toLowerCase(Locale.ENGLISH);
       if (ss2.isEmpty()) continue;
-      try {
-        Integer v = new Integer(ss2);
-        b.add(v);
-      }
-      catch (NumberFormatException e) {
-        break;
+      Integer special = SPECIAL_VALUES.get(ss2);
+      if (special != null) b.add(special);
+      else {
+        try {
+          Integer v = new Integer(ss2);
+          b.add(v);
+        } catch (NumberFormatException e) {
+          break;
+        }
       }
     }
     if (b.isEmpty()) throw new IllegalArgumentException("Failed to parse version \""+string+"\"");

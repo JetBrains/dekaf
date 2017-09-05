@@ -10,7 +10,7 @@ import org.jetbrains.dekaf.intermediate.DBExceptionRecognizer;
 import javax.sql.DataSource;
 import java.sql.Driver;
 import java.util.Properties;
-
+import java.util.regex.Pattern;
 
 
 /**
@@ -42,9 +42,12 @@ public class PostgresIntermediateFacade extends JdbcIntermediateFacade {
   @Override
   public ConnectionInfo obtainConnectionInfoNatively() {
     return getConnectionInfoSmartly(CONNECTION_INFO_QUERY,
-                                    SIMPLE_VERSION_PATTERN, 1,
+                                    ENHANCED_VERSION_PATTERN, 1,
                                     SIMPLE_VERSION_PATTERN, 1);
   }
+
+  protected static final Pattern ENHANCED_VERSION_PATTERN =
+          Pattern.compile("(\\d{1,2}(\\.\\d{1,3}|alpha|beta){1,5})");
 
   @SuppressWarnings("SpellCheckingInspection")
   public static final String CONNECTION_INFO_QUERY =
