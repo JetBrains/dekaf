@@ -198,6 +198,28 @@
 
     <fileSet>
       <outputDirectory>/</outputDirectory>
+      <directory>../dekaf-exasol/target</directory>
+      <includes>
+        <include>*-tests.jar</include>
+      </includes>
+    </fileSet>
+    <!--fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>../dekaf-exasol-test-db/target</directory>
+      <includes>
+        <include>*-tests.jar</include>
+      </includes>
+    </fileSet-->
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>../dekaf-exasol-tests/target</directory>
+      <includes>
+        <include>*-tests.jar</include>
+      </includes>
+    </fileSet>
+
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
       <directory>../dekaf-redshift/target</directory>
       <includes>
         <include>*-tests.jar</include>

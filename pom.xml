@@ -41,6 +41,10 @@
     <module>dekaf-sqlite-test-db</module>
     <module>dekaf-sqlite-tests</module>
 
+    <module>dekaf-exasol</module>
+    <module>dekaf-exasol-test-db</module>
+    <module>dekaf-exasol-tests</module>
+
     <module>dekaf-h2db</module>
     <module>dekaf-h2db-test-db</module>
     <module>dekaf-h2db-tests</module>
@@ -78,6 +82,11 @@
       <id>redshift</id>
       <name>Redshift Repository</name>
       <url>http://redshift-maven-repository.s3-website-us-east-1.amazonaws.com/release</url>
+    </repository>
+    <repository>
+      <id>exasol</id>
+      <name>Redshift Repository</name>
+      <url>https://maven.exasol.com/artifactory/exasol-releases</url>
     </repository>
   </repositories>
 

@@ -21,6 +21,7 @@ import org.junit.runners.Suite;
     MysqlJdbcUnitTests.class,
     H2dbJdbcUnitTests.class,
     //RedshiftJdbcUnitTests.class,
-    SqliteJdbcUnitTests.class
+    SqliteJdbcUnitTests.class,
+    ExasolJdbcUnitTests.class
 })
 public class UnitTests {}

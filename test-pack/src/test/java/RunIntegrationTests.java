@@ -30,6 +30,7 @@ public class RunIntegrationTests {
     ourJdbcSuites.put(Mysql.RDBMS.code, MysqlJdbcIntegrationTests.class);
     ourJdbcSuites.put(H2db.RDBMS.code, H2dbJdbcIntegrationTests.class);
     ourJdbcSuites.put(Sqlite.RDBMS.code, SqliteJdbcIntegrationTests.class);
+    ourJdbcSuites.put(Exasol.RDBMS.code, ExasolJdbcIntegrationTests.class);
     ourJdbcSuites.put(Redshift.RDBMS.code, RedshiftJdbcIntegrationTests.class);
     ourCoreSuites = new TreeMap<String, Class>(String.CASE_INSENSITIVE_ORDER);
     ourCoreSuites.put(Postgres.RDBMS.code, PostgresIntegrationTests.class);
@@ -39,6 +40,7 @@ public class RunIntegrationTests {
     ourCoreSuites.put(Mysql.RDBMS.code, MysqlIntegrationTests.class);
     ourCoreSuites.put(H2db.RDBMS.code, H2dbIntegrationTests.class);
     ourCoreSuites.put(Sqlite.RDBMS.code, SqliteIntegrationTests.class);
+    ourCoreSuites.put(Exasol.RDBMS.code, ExasolIntegrationTests.class);
     ourCoreSuites.put(Redshift.RDBMS.code, RedshiftIntegrationTests.class);
   }
 
