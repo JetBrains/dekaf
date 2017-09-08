@@ -42,6 +42,19 @@ from pg_catalog.pg_extension E
 where E.extnamespace = (select n_id from N)
 ;
 
+
+---- ZapCollationsMetaQuery ----
+with N as ( select min(oid) as n_id
+            from pg_catalog.pg_namespace
+            where nspname = current_schema
+            limit 1 )
+--
+select 'drop collation if exists ' || C.collname || ' cascade' as cmd
+  from pg_catalog.pg_collation C
+  where C.collnamespace = (select n_id from N)
+;
+
+
 ---- ZapSchemaMetaQuery ----
 with N as ( select min(oid) as n_id
             from pg_catalog.pg_namespace

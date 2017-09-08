@@ -30,6 +30,7 @@ public class PostgresTestHelperTest extends CommonIntegrationCase {
     CLASS,
     PROC,
     OPERATOR,
+    COLLATION
   }
 
 
@@ -235,6 +236,12 @@ public class PostgresTestHelperTest extends CommonIntegrationCase {
   @Test
   public void zap_aggreagte_1() {
     test_zap_objects("avg1", Kind.PROC, ourScriptum, "create_aggregate_1");
+  }
+
+  @Test
+  public void zap_collation() {
+    assumeTrue(ver.isOrGreater(9, 1));
+    test_zap_object("my_collation1", Kind.COLLATION, "create collation my_collation1 (locale = utf8)");
   }
 
 

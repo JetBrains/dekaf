@@ -34,6 +34,14 @@ where O.oprnamespace = N.oid
   and O.oprname = ?
 ;
 
+---- existence_of_collation ----
+select 1
+from pg_catalog.pg_collation C,
+     pg_catalog.pg_namespace N
+where C.collnamespace = N.oid
+  and N.nspname = current_schema()
+  and C.collname = ?
+
 
 
 ---- create_mater_view ----

@@ -34,7 +34,10 @@ public class PostgresTestHelper extends BaseTestHelper<DBFacade> {
   @Override
   protected void zapSchemaInternally(final ConnectionInfo connectionInfo) {
     ConnectionInfo info = db.getConnectionInfo();
-    if (info.serverVersion.isOrGreater(9, 1)) performMetaQueryCommands(scriptum, "ZapExtensionsMetaQuery");
+    if (info.serverVersion.isOrGreater(9, 1)) {
+      performMetaQueryCommands(scriptum, "ZapExtensionsMetaQuery");
+      performMetaQueryCommands(scriptum, "ZapCollationsMetaQuery");
+    }
     performMetaQueryCommands(scriptum, "ZapSchemaMetaQuery");
   }
 }
