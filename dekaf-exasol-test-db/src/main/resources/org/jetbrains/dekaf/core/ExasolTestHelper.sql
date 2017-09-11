@@ -30,5 +30,5 @@ select case when object_type = 'VIEW' then 'drop view if exists ' || object_name
             when object_type = 'SCRIPT' then 'drop script if exists ' || object_name
             when object_type = 'CONNECTION' then 'drop connection if exists ' || object_name
             else null end as cmd
-from sys.exa_all_objects
+from sys.exa_all_objects where root_name = current_schema
 ;
