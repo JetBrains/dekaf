@@ -57,12 +57,12 @@ subprojects {
 def kotlinVersion        = '1.1.3-2'
 def annotationsVersion   = "15.0"
 
-def junitPlatformVersion = "1.0.0-M6"
-def junitJupiterVersion  = "5.0.0-M6"
+def junitPlatformVersion = "1.0.0"
+def junitJupiterVersion  = "5.0.0"
 def assertJVersion       = "3.8.0"
 
 def junitVersion         = "4.11"
-def mockitoVersion       = "2.0.7-beta"
+def mockitoVersion       = "2.10.0"
 
 def h2dbVersion          = "1.4.196"
 def postgresVersion      = "9.4-1201-jdbc4"
@@ -243,7 +243,7 @@ project(':KoExpectations') {
         compile name: "junit-jupiter-engine-$junitJupiterVersion"
         compile name: "junit-jupiter-params-$junitJupiterVersion"
         compile name: "assertj-core-$assertJVersion"
-        compile name: "opentest4j-1.0.0-M3"
+        compile name: "opentest4j-1.0.0"
     }
                       
 }
