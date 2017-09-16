@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="All Unit Tests (command line)" type="JetRunConfigurationType" factoryName="Kotlin">
+  <configuration default="false" name="All Basic Tests (command line)" type="JetRunConfigurationType" factoryName="Kotlin">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <option name="MAIN_CLASS_NAME" value="org.jetbrains.dekaf.AllUnitTests" />
     <option name="VM_PARAMETERS" value="-ea -Dtest-db=h2 -Dtest-db-h2=jdbc:h2:mem:default" />
@@ -8,7 +8,7 @@
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <option name="PASS_PARENT_ENVS" value="true" />
-    <module name="UnitTests" />
+    <module name="TestBasic" />
     <envs />
     <method />
   </configuration>

@@ -249,7 +249,7 @@ project(':KoExpectations') {
 }
 
 
-project(':UnitTests') {
+project(':TestBasic') {
 
     apply plugin: 'kotlin'
 

@@ -6,7 +6,7 @@ include 'DekafMain'
 include 'DekafTestDB'
 
 include 'KoExpectations'
-include 'UnitTests'
+include 'TestBasic'
 
 include 'DemoOnJava'
 include 'DemoOnKotlin'

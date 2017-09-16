@@ -14,8 +14,8 @@
       <module fileurl="file://$PROJECT_DIR$/Jdbc/Jdbc.iml" filepath="$PROJECT_DIR$/Jdbc/Jdbc.iml" group="Old" />
       <module fileurl="file://$PROJECT_DIR$/JunitExtension/JunitExtension.iml" filepath="$PROJECT_DIR$/JunitExtension/JunitExtension.iml" group="Old" />
       <module fileurl="file://$PROJECT_DIR$/KoExpectations/KoExpectations.iml" filepath="$PROJECT_DIR$/KoExpectations/KoExpectations.iml" group="Testing" />
+      <module fileurl="file://$PROJECT_DIR$/TestBasic/TestBasic.iml" filepath="$PROJECT_DIR$/TestBasic/TestBasic.iml" group="Testing" />
       <module fileurl="file://$PROJECT_DIR$/Tests/Tests.iml" filepath="$PROJECT_DIR$/Tests/Tests.iml" group="Old" />
-      <module fileurl="file://$PROJECT_DIR$/UnitTests/UnitTests.iml" filepath="$PROJECT_DIR$/UnitTests/UnitTests.iml" group="Testing" />
     </modules>
   </component>
 </project>
