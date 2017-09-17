@@ -7,6 +7,7 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.2-3"
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
     }
 }
 
@@ -60,6 +61,7 @@ def annotationsVersion   = "15.0"
 def junitPlatformVersion = "1.0.0"
 def junitJupiterVersion  = "5.0.0"
 def assertJVersion       = "3.8.0"
+def log4jVersion         = "2.9.0"
 
 def junitVersion         = "4.11"
 def mockitoVersion       = "2.10.0"
@@ -252,6 +254,7 @@ project(':KoExpectations') {
 project(':TestBasic') {
 
     apply plugin: 'kotlin'
+    apply plugin: 'org.junit.platform.gradle.plugin'
 
     sourceSets {
         main {
@@ -283,6 +286,8 @@ project(':TestBasic') {
         testCompile project(':DekafJdbc')
         testCompile project(':DekafMain')
         testCompile project(':KoExpectations')
+        testCompile project(':DemoOnJava')
+        testCompile project(':DemoOnKotlin')
         testCompile name: "kotlin-stdlib-$kotlinVersion"
         testCompile name: "kotlin-stdlib-common-$kotlinVersion"
         testCompile name: "kotlin-stdlib-jre7-$kotlinVersion"
@@ -298,6 +303,94 @@ project(':TestBasic') {
         testCompile name: "assertj-core-$assertJVersion"
     }
 
+    junitPlatform {
+        //platformVersion 1.0
+        //logManager 'org.apache.logging.log4j.jul.LogManager'
+        reportsDir file('build/reports')
+
+        // enableStandardTestTask true
+        // selectors (optional)
+
+        filters {
+            engines {
+                include 'junit-jupiter'
+                exclude 'junit-vintage'
+            }
+        }
+    }
+
+}
+
+
+project(':TestConnection') {
+
+    apply plugin: 'kotlin'
+    //apply plugin: 'org.junit.platform.gradle.plugin'
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = []
+            }
+            kotlin {
+                srcDirs = []
+            }
+            resources {
+                srcDirs = []
+            }
+        }
+        test {
+            java {
+                srcDirs = []
+            }
+            kotlin {
+                srcDirs = ['tests']
+            }
+            resources {
+                srcDirs = []
+            }
+        }
+    }
+
+    dependencies {
+        testCompile project(':DekafAbstracts')
+        testCompile project(':DekafJdbc')
+        testCompile project(':DekafMain')
+        testCompile project(':DekafTestDB')
+        testCompile project(':KoExpectations')
+        testCompile name: "kotlin-stdlib-$kotlinVersion"
+        testCompile name: "kotlin-stdlib-common-$kotlinVersion"
+        testCompile name: "kotlin-stdlib-jre7-$kotlinVersion"
+        testCompile name: "kotlin-stdlib-jre8-$kotlinVersion"
+        testCompile name: "kotlin-reflect-$kotlinVersion"
+        testCompile name: "junit-platform-commons-$junitPlatformVersion"
+        testCompile name: "junit-platform-engine-$junitPlatformVersion"
+        testCompile name: "junit-platform-suite-api-$junitPlatformVersion"
+        testCompile name: "junit-platform-launcher-$junitPlatformVersion"
+        testCompile name: "junit-jupiter-api-$junitJupiterVersion"
+        testCompile name: "junit-jupiter-engine-$junitJupiterVersion"
+        testCompile name: "junit-jupiter-params-$junitJupiterVersion"
+        testCompile name: "assertj-core-$assertJVersion"
+        testCompile name: "h2-$h2dbVersion"
+    }
+
+    /*
+    junitPlatform {
+        //platformVersion 1.0
+        //logManager 'org.apache.logging.log4j.jul.LogManager'
+        reportsDir file('build/reports')
+
+        // enableStandardTestTask true
+        // selectors (optional)
+
+        filters {
+            engines {
+                include 'junit-jupiter'
+                exclude 'junit-vintage'
+            }
+        }
+    }
+    */
 }
 
 
@@ -385,6 +478,9 @@ dependencies {
          "org.junit.platform:junit-platform-launcher:$junitPlatformVersion",
          "org.junit.platform:junit-platform-launcher:$junitPlatformVersion:sources",
          "org.junit.platform:junit-platform-launcher:$junitPlatformVersion:javadoc",
+         "org.junit.platform:junit-platform-console:$junitPlatformVersion",
+         "org.junit.platform:junit-platform-console:$junitPlatformVersion:sources",
+         "org.junit.platform:junit-platform-console:$junitPlatformVersion:javadoc",
          "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion",
          "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion:sources",
          "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion:javadoc",
@@ -397,6 +493,9 @@ dependencies {
          "org.assertj:assertj-core:$assertJVersion",
          "org.assertj:assertj-core:$assertJVersion:sources",
          "org.assertj:assertj-core:$assertJVersion:javadoc",
+         "org.apache.logging.log4j:log4j:$log4jVersion",
+         //"org.apache.logging.log4j:log4j:$log4jVersion:sources",
+         //"org.apache.logging.log4j:log4j:$log4jVersion:javadoc",
 
          "com.h2database:h2:$h2dbVersion",
          "com.h2database:h2:$h2dbVersion:sources",
