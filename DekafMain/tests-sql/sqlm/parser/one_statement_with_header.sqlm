@@ -1,0 +1,4 @@
+---- One_Statement ----
+select light
+from moon
+where phase = 1/4

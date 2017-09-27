@@ -1,0 +1,1 @@
+(file (section1 (script (statement select light \n from moon \n where phase = 1 / 4 \n))))

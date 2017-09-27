@@ -5,9 +5,9 @@
  * In order to re-generate the parser, perfrom the following:
  * <pre>
  *     cd DekafMain/grammar
- *     antlr4 SQLM.g4 -package org.jetbrains.dekaf.parser -o ../parser/org/jetbrains/dekaf/parser/
+ *     antlr4 SQLM.g4 -package org.jetbrains.dekaf.sqlm.parser -o ../parser/org/jetbrains/dekaf/sqlm/parser/
  *     cd -
  * </pre>
  * </p>
  */
-package org.jetbrains.dekaf.parser;
+package org.jetbrains.dekaf.sqlm.parser;

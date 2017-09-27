@@ -6,8 +6,8 @@ grammar SQLM;
 fragment L:     [A-Za-z] ;
 fragment D:     [0-9]    ;
 
-HEAD_LINE:      [-–—][-–—][-–—][-–—]+ ;
-HEAD_ID:        (L|D|'_'|'$')+ ;
+LINE:           [-–—][-–—][-–—][-–—]+ ;
+WORD:           (L|'_'|'$') (L|D|'_'|'$')* ;
 
 DELIM_SEMI:     ('\r'? '\n' [ \t]*)* ';'      [ \t]* '\r'? '\n' ;
 DELIM_SLASH:    ('\r'? '\n' [ \t]*)* '/'      [ \t]* '\r'? '\n' ;
@@ -24,8 +24,8 @@ ANY:            ~[ \t\r\n] .*? ;
 
 
 file
-:       section1 sectionN*
-|       sectionN+
+:       sectionN+
+|       section1 sectionN*
 ;
 
 
@@ -40,7 +40,7 @@ sectionN
 
 
 head
-:       HEAD_LINE HEAD_ID HEAD_LINE NL
+:       LINE WORD LINE NL
 ;
 
 
@@ -57,5 +57,5 @@ delimiter
 
 
 statement
-:       ANY
+:       ( LINE | WORD | ANY | NL ) +
 ;
