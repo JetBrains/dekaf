@@ -57,6 +57,7 @@ subprojects {
 
 def kotlinVersion        = '1.1.3-2'
 def annotationsVersion   = "15.0"
+def antlrVersion         = "4.7"
 
 def junitPlatformVersion = "1.0.0"
 def junitJupiterVersion  = "5.0.0"
@@ -115,7 +116,7 @@ project(':DekafMain') {
     sourceSets {
         main {
             java {
-                srcDirs = []
+                srcDirs = ['parsers']
             }
             kotlin {
                 srcDirs = ['src']
@@ -144,6 +145,7 @@ project(':DekafMain') {
         compile name: "kotlin-stdlib-jre7-$kotlinVersion"
         compile name: "kotlin-stdlib-jre8-$kotlinVersion"
         compile name: "kotlin-reflect-$kotlinVersion"
+        compile name: "antlr4-runtime-$antlrVersion"
         testCompile project(':KoExpectations')
         testCompile name: "h2-$h2dbVersion"
         testCompile name: "junit-platform-commons-$junitPlatformVersion"
@@ -464,7 +466,10 @@ dependencies {
         "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion:javadoc",
         "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
         "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion:sources",
-        "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion:javadoc"
+        "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion:javadoc",
+        "org.antlr:antlr4-runtime:$antlrVersion",
+        "org.antlr:antlr4-runtime:$antlrVersion:sources",
+        "org.antlr:antlr4-runtime:$antlrVersion:javadoc"    
 
     test "org.junit.platform:junit-platform-commons:$junitPlatformVersion",
          "org.junit.platform:junit-platform-commons:$junitPlatformVersion:sources",

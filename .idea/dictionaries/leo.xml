@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="leo">
     <words>
+      <w>antlr</w>
       <w>assertj</w>
       <w>büro</w>
       <w>callables</w>
@@ -38,6 +39,7 @@
       <w>rset</w>
       <w>scriptum</w>
       <w>sqle</w>
+      <w>sqlm</w>
       <w>sqlserver</w>
       <w>struct</w>
       <w>structs</w>
