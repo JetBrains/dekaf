@@ -7,10 +7,13 @@ import org.jetbrains.dekaf.Mysql;
 import org.jetbrains.dekaf.Rdbms;
 import org.jetbrains.dekaf.core.ConnectionInfo;
 import org.jetbrains.dekaf.intermediate.DBExceptionRecognizer;
+import org.jetbrains.dekaf.util.Version;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.Driver;
+import java.sql.SQLException;
 import java.util.Properties;
 
 import static org.jetbrains.dekaf.jdbc.MysqlConsts.FETCH_STRATEGY_AUTO;
@@ -21,8 +24,7 @@ import static org.jetbrains.dekaf.jdbc.MysqlConsts.FETCH_STRATEGY_AUTO;
  * @author Leonid Bushuev from JetBrains
  **/
 public class MysqlIntermediateFacade extends JdbcIntermediateFacade {
-
-
+  private static final String MARIA_DB = "MariaDB";
   @MagicConstant(valuesFromClass = MysqlConsts.class,
                  stringValues = {"FETCH_STRATEGY_AUTO", "FETCH_STRATEGY_ROW", "FETCH_STRATEGY_WHOLE"})
   private byte myFetchStrategy = FETCH_STRATEGY_AUTO;
@@ -50,9 +52,46 @@ public class MysqlIntermediateFacade extends JdbcIntermediateFacade {
 
   @Override
   public ConnectionInfo obtainConnectionInfoNatively() {
-    return getConnectionInfoSmartly(CONNECTION_INFO_QUERY,
-                                    SIMPLE_VERSION_PATTERN, 1,
-                                    SIMPLE_VERSION_PATTERN, 1);
+    String[] env;
+    Version serverVersion = null, driverVersion;
+
+    final JdbcIntermediateSession session = openSession();
+    try {
+      // environment
+      env = session.queryOneRow(CONNECTION_INFO_QUERY, 3, String.class);
+      if (env == null) env = new String[] {null,null,null};
+
+      // versions
+      String rdbmsName, serverVersionStr, driverVersionStr;
+      try {
+        DatabaseMetaData md = session.getConnection().getMetaData();
+        serverVersionStr = md.getDatabaseProductVersion();
+        driverVersionStr = md.getDriverVersion();
+        rdbmsName = md.getDatabaseProductName();
+        if (rdbmsName == null) rdbmsName = session.getConnection().getClass().getName();
+      }
+      catch (SQLException sqle) {
+        throw getExceptionRecognizer().recognizeException(sqle, "getting versions using JDBC metadata");
+      }
+
+      if (rdbmsName.equals("MySQL")) {
+        int pos = serverVersionStr.indexOf(MARIA_DB);
+        if (pos != -1) {
+          serverVersion = extractVersion(serverVersionStr.substring(pos + MARIA_DB.length()), SIMPLE_VERSION_PATTERN, 1);
+          if (serverVersion != Version.ZERO) rdbmsName = MARIA_DB;
+          else serverVersion = null;
+        }
+      }
+
+      if (serverVersion == null) serverVersion = extractVersion(serverVersionStr, SIMPLE_VERSION_PATTERN, 1);
+      driverVersion = extractVersion(driverVersionStr, SIMPLE_VERSION_PATTERN, 1);
+
+      // ok
+      return new ConnectionInfo(rdbmsName, env[0], env[1], env[2], serverVersion, driverVersion);
+    }
+    finally {
+      session.close();
+    }
   }
 
   @SuppressWarnings("SpellCheckingInspection")
