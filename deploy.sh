@@ -4,24 +4,27 @@
 API=https://api.bintray.com
 PACKAGE_DESCRIPTOR=bintray-package.json
 
+PACKAGE=dekaf2
+
 ## Define the following variables:
 ## BT_USER=???
 ## BT_KEY=???
 ## BT_ORG=???
 ## BT_REPO=dekaf
+## VERSION=2.0.0.version
+
+if [ -z "${VERSION}" ]; then VERSION="dev"; fi;
 
 echo BinTray User:         ${BT_USER}
 echo BinTray Organization: ${BT_ORG}
 echo BinTray Repor:        ${BT_REPO}
+echo Package:              ${PACKAGE}
+echo Version:              ${VERSION}
 
 if [ -z "${BT_USER}" ]; then echo "BinTray User Name is not specified :(";    exit -91; fi
 if [ -z "${BT_ORG}"  ]; then echo "BinTray Organization is not specified :("; exit -92; fi
 if [ -z "${BT_REPO}" ]; then echo "BinTray Repository is not specified :(";   exit -93; fi
 if [ -z "${BT_KEY}"  ]; then echo "BinTray API key is not specified :(";      exit -99; fi
-
-
-PACKAGE=dekaf2
-VERSION=2.0.0.313.beta1
 
 CURL="curl -u${BT_USER}:${BT_KEY} -H Content-Type:application/json -H Accept:application/json"
 

@@ -3,10 +3,11 @@
   <component name="BashSupportProjectSettings">
     <option name="globalVariables">
       <set>
+        <option value="BT_KEY" />
         <option value="BT_ORG" />
         <option value="BT_REPO" />
         <option value="BT_USER" />
-        <option value="BT_KEY" />
+        <option value="VERSION" />
       </set>
     </option>
   </component>
