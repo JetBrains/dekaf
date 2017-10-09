@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BashSupportProjectSettings">
+    <option name="globalVariables">
+      <set>
+        <option value="BT_ORG" />
+        <option value="BT_REPO" />
+        <option value="BT_USER" />
+        <option value="BT_KEY" />
+      </set>
+    </option>
+  </component>
+</project>
