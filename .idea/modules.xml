@@ -5,6 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/dekaf.iml" filepath="$PROJECT_DIR$/dekaf.iml" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-core/dekaf-core.iml" filepath="$PROJECT_DIR$/dekaf-core/dekaf-core.iml" group="00 Core" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-core-test-db/dekaf-core-test-db.iml" filepath="$PROJECT_DIR$/dekaf-core-test-db/dekaf-core-test-db.iml" group="00 Core" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-exasol/dekaf-exasol.iml" filepath="$PROJECT_DIR$/dekaf-exasol/dekaf-exasol.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-exasol-test-db/dekaf-exasol-test-db.iml" filepath="$PROJECT_DIR$/dekaf-exasol-test-db/dekaf-exasol-test-db.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-exasol-tests/dekaf-exasol-tests.iml" filepath="$PROJECT_DIR$/dekaf-exasol-tests/dekaf-exasol-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-h2db/dekaf-h2db.iml" filepath="$PROJECT_DIR$/dekaf-h2db/dekaf-h2db.iml" group="11 H2" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-h2db-test-db/dekaf-h2db-test-db.iml" filepath="$PROJECT_DIR$/dekaf-h2db-test-db/dekaf-h2db-test-db.iml" group="11 H2" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-h2db-tests/dekaf-h2db-tests.iml" filepath="$PROJECT_DIR$/dekaf-h2db-tests/dekaf-h2db-tests.iml" group="11 H2" />
