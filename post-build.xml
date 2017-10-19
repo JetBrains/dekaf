@@ -85,6 +85,12 @@
       <param name="excludeJars" value="Z"/>
     </antcall>
 
+    <replace file="dist/dekaf-single.pom" token="2.0.0-SNAPSHOT" value="${ver}"/>
+    <replace file="dist/dekaf-single-test-db.pom" token="2.0.0-SNAPSHOT" value="${ver}"/>
+
+    <move file="dist/dekaf-single.pom" tofile="temp/combined-jars/dekaf-single-${ver}.pom"/>
+    <move file="dist/dekaf-single-test-db.pom" tofile="temp/combined-jars/dekaf-single-test-db-${ver}.pom"/>
+
     <zip basedir="temp/combined-jars" destfile="dist/dekaf-single.zip" compress="false"/>
   </target>
 

@@ -40,8 +40,10 @@ upload_file() {
 
 
 upload_files() {
+  upload_file dekaf-single-${VERSION}.pom
   upload_file dekaf-single-${VERSION}.jar
   upload_file dekaf-single-${VERSION}-sources.jar
+  upload_file dekaf-single-test-db-${VERSION}.pom
   upload_file dekaf-single-test-db-${VERSION}.jar
   upload_file dekaf-single-test-db-${VERSION}-sources.jar
 }
