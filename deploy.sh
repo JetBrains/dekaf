@@ -4,8 +4,6 @@
 API=https://api.bintray.com
 PACKAGE_DESCRIPTOR=bintray-package.json
 
-PACKAGE=dekaf2
-
 ## Define the following variables:
 ## BT_USER=???
 ## BT_KEY=???
@@ -33,21 +31,24 @@ DIR=dist
 
 upload_file() {
   echo "Uploading file $1..."
-  UPLOAD_PARAMETERS="-H X-Bintray-Package:${PACKAGE} -H X-Bintray-Version:${VERSION} -H X-Bintray-Publish:1 -H X-Bintray-Override:1"
-  ${CURL} --write-out %{http_code} -T ${DIR}/$1 ${UPLOAD_PARAMETERS} ${API}/content/${BT_ORG}/${BT_REPO}/$1
+  UPLOAD_PARAMETERS="-H X-Bintray-Package:$2 -H X-Bintray-Version:${VERSION} -H X-Bintray-Publish:1 -H X-Bintray-Override:1"
+  ${CURL} --write-out %{http_code} -T ${DIR}/$1 ${UPLOAD_PARAMETERS} ${API}/content/${BT_ORG}/${BT_REPO}/org/jetbrains/dekaf/$2/${VERSION}/$1
   echo ""
 }
 
 
-upload_files() {
-  upload_file dekaf-single-${VERSION}.pom
-  upload_file dekaf-single-${VERSION}.jar
-  upload_file dekaf-single-${VERSION}-sources.jar
-  upload_file dekaf-single-test-db-${VERSION}.pom
-  upload_file dekaf-single-test-db-${VERSION}.jar
-  upload_file dekaf-single-test-db-${VERSION}-sources.jar
+upload_package() {
+  upload_file  $1-${VERSION}.pom          $1
+  upload_file  $1-${VERSION}.jar          $1
+  upload_file  $1-${VERSION}-sources.jar  $1
 }
 
 
-upload_files
+upload_packages() {
+  upload_package dekaf-single
+  upload_package dekaf-single-test-db
+}
 
+
+upload_packages
+echo "OK"
