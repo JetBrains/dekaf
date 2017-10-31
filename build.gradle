@@ -12,26 +12,9 @@ buildscript {
 }
 
 
-// JAVA MODULES
-configure ([ project(':DekafAbstracts'), project(':DekafJdbc'), project(':DemoOnJava') ]) {
+subprojects {
 
     apply plugin: 'java'
-
-    sourceSets {
-        main {
-            java {
-                srcDirs = ['src']
-            }
-            resources {
-                srcDirs = ['manifest','sql']
-            }
-        }
-        test {
-            java {
-                srcDirs = ['tests']
-            }
-        }
-    }
 
     repositories {
         flatDir {
@@ -55,10 +38,31 @@ configure ([ project(':DekafAbstracts'), project(':DekafJdbc'), project(':DemoOn
 }
 
 
+// JAVA MODULES
+configure ([ project(':DekafAbstracts'), project(':DekafJdbc'), project(':DemoOnJava') ]) {
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = ['src']
+            }
+            resources {
+                srcDirs = ['manifest','sql']
+            }
+        }
+        test {
+            java {
+                srcDirs = ['tests']
+            }
+        }
+    }
+
+}
+
+
 // KOTLIN MODULES
 configure ([ project(':DekafMain'), project(':DekafTestDB'), project(':KoExpectations'), project(':TestBasic'), project(':TestConnection'), project(':DemoOnKotlin') ]) {
 
-    apply plugin: 'java'
     apply plugin: 'kotlin'
 
     sourceSets {
@@ -84,25 +88,6 @@ configure ([ project(':DekafMain'), project(':DekafTestDB'), project(':KoExpecta
                 srcDirs = ['tests-sql']
             }
         }
-    }
-
-    repositories {
-        flatDir {
-            dirs ("$rootProject.projectDir/lib/pro", "$rootProject.projectDir/lib/test")
-        }
-    }
-
-    task testJar(type: Jar, dependsOn: testClasses) {
-        baseName = "${project.archivesBaseName}-tests"
-        from sourceSets.test.output
-    }
-
-    artifacts {
-        archives testJar
-    }
-
-    tasks.withType(Jar) {
-        destinationDir = file("$rootDir/out/jars")
     }
 
 }
@@ -349,6 +334,58 @@ project(':DemoOnKotlin') {
     }
 
 }
+
+
+project (':zipAll') {
+
+    dependencies {
+        compile project(':DekafAbstracts')
+        compile project(':DekafJdbc')
+        compile project(':DekafMain')
+        compile project(':DekafTestDB')
+
+        compile project(':KoExpectations')
+        compile project(':TestBasic')
+        compile project(':TestConnection')
+        compile project(':DemoOnJava')
+        compile project(':DemoOnKotlin')
+
+        testCompile project(':DekafAbstracts')
+        testCompile project(':DekafJdbc')
+        testCompile project(':DekafMain')
+        testCompile project(':DekafTestDB')
+
+        testCompile project(':KoExpectations')
+        testCompile project(':TestBasic')
+        testCompile project(':TestConnection')
+        testCompile project(':DemoOnJava')
+        testCompile project(':DemoOnKotlin')
+    }
+
+
+    task copyDownloadedJars(dependsOn: build, type: Copy) {
+        duplicatesStrategy 'exclude'
+        from configurations.testCompile
+        from configurations.testRuntime
+        into "$rootDir/farm/jars"
+    }
+
+    task copyBuiltJars(dependsOn: build, type: Copy) {
+        from "$rootDir/out/jars"
+        into "$rootDir/farm/jars"
+        exclude {it.file.length() == 261}
+    }
+
+    task zip(dependsOn: [copyDownloadedJars, copyBuiltJars], type: Zip) {
+        destinationDir(file("$rootDir/"))
+        baseName("farm")
+        from "$rootDir/farm/"
+        exclude "build/*"
+        includeEmptyDirs(false)
+    }
+
+}
+
 
 
 repositories {

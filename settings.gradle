@@ -11,3 +11,5 @@ include 'TestConnection'
 
 include 'DemoOnJava'
 include 'DemoOnKotlin'
+
+include 'zipAll'
