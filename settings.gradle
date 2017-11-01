@@ -1,15 +1,21 @@
-rootProject.name = 'Dekaf'
+rootProject.name = 'dekaf'
 
-include 'DekafAbstracts'
-include 'DekafJdbc'
-include 'DekafMain'
-include 'DekafTestDB'
+include 'dekaf-base'
+include 'dekaf-jdbc'
+include 'dekaf-main'
+include 'dekaf-test-db'
 
-include 'KoExpectations'
-include 'TestBasic'
-include 'TestConnection'
+include 'ko-test-util'
 
-include 'DemoOnJava'
-include 'DemoOnKotlin'
+include 'dekaf-base-test'
+include 'dekaf-jdbc-test'
+include 'dekaf-main-test'
+include 'dekaf-test-db-test'
 
-include 'zipAll'
+include 'demo-on-java'
+include 'demo-on-kotlin'
+
+include 'test-basic'
+include 'test-connection'
+
+include 'zip-all'

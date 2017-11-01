@@ -27,10 +27,6 @@ subprojects {
         from sourceSets.test.output
     }
 
-    artifacts {
-        archives testJar
-    }
-
     tasks.withType(Jar) {
         destinationDir = file("$rootDir/out/jars")
     }
@@ -38,8 +34,8 @@ subprojects {
 }
 
 
-// JAVA MODULES
-configure ([ project(':DekafAbstracts'), project(':DekafJdbc'), project(':DemoOnJava') ]) {
+// JAVA PRODUCTION AND DEMO MODULES
+configure ([ project(':dekaf-base'), project(':dekaf-jdbc'), project(':demo-on-java') ]) {
 
     sourceSets {
         main {
@@ -52,7 +48,7 @@ configure ([ project(':DekafAbstracts'), project(':DekafJdbc'), project(':DemoOn
         }
         test {
             java {
-                srcDirs = ['tests']
+                srcDirs = []
             }
         }
     }
@@ -60,8 +56,30 @@ configure ([ project(':DekafAbstracts'), project(':DekafJdbc'), project(':DemoOn
 }
 
 
-// KOTLIN MODULES
-configure ([ project(':DekafMain'), project(':DekafTestDB'), project(':KoExpectations'), project(':TestBasic'), project(':TestConnection'), project(':DemoOnKotlin') ]) {
+// JAVA TEST MODULES
+configure ([ project(':dekaf-base-test'), project(':dekaf-jdbc-test') ]) {
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = ['tests']
+            }
+            resources {
+                srcDirs = ['manifest','tests-sql']
+            }
+        }
+        test {
+            java {
+                srcDirs = []
+            }
+        }
+    }
+
+}
+
+
+// KOTLIN PRODUCTION AND DEMO MODULES
+configure ([ project(':dekaf-main'), project(':dekaf-test-db'), project(':ko-test-util'), project(':demo-on-kotlin') ]) {
 
     apply plugin: 'kotlin'
 
@@ -74,10 +92,32 @@ configure ([ project(':DekafMain'), project(':DekafTestDB'), project(':KoExpecta
                 srcDirs = ['src']
             }
             resources {
-                srcDirs = []
+                srcDirs = ['sql']
             }
         }
         test {
+            java {
+                srcDirs = []
+            }
+            kotlin {
+                srcDirs = []
+            }
+            resources {
+                srcDirs = []
+            }
+        }
+    }
+
+}
+
+
+// KOTLIN TEST MODULES
+configure ([ project(':dekaf-main-test'), project(':dekaf-test-db-test'), project(':test-basic'), project(':test-connection') ]) {
+
+    apply plugin: 'kotlin'
+
+    sourceSets {
+        main {
             java {
                 srcDirs = []
             }
@@ -86,6 +126,17 @@ configure ([ project(':DekafMain'), project(':DekafTestDB'), project(':KoExpecta
             }
             resources {
                 srcDirs = ['tests-sql']
+            }
+        }
+        test {
+            java {
+                srcDirs = []
+            }
+            kotlin {
+                srcDirs = []
+            }
+            resources {
+                srcDirs = []
             }
         }
     }
@@ -113,91 +164,138 @@ def microsoftVersion     = "6.1.5.jre8-preview"
 def jtdsVersion          = "1.2.8"
 
 
-project(':DekafAbstracts') {
+project(':dekaf-base') {
 
     dependencies {
         compile     name: "annotations-$annotationsVersion"
-        testCompile name: "junit-platform-commons-$junitPlatformVersion"
-        testCompile name: "junit-platform-engine-$junitPlatformVersion"
-        testCompile name: "junit-platform-suite-api-$junitPlatformVersion"
-        testCompile name: "junit-platform-launcher-$junitPlatformVersion"
-        testCompile name: "junit-jupiter-api-$junitJupiterVersion"
-        testCompile name: "junit-jupiter-engine-$junitJupiterVersion"
-        testCompile name: "junit-jupiter-params-$junitJupiterVersion"
-        testCompile name: "assertj-core-$assertJVersion"
+    }
+
+}
+
+project(':dekaf-base-test') {
+
+    dependencies {
+        compile project(':dekaf-base')
+        compile name: "annotations-$annotationsVersion"
+        compile name: "junit-platform-commons-$junitPlatformVersion"
+        compile name: "junit-platform-engine-$junitPlatformVersion"
+        compile name: "junit-platform-suite-api-$junitPlatformVersion"
+        compile name: "junit-platform-launcher-$junitPlatformVersion"
+        compile name: "junit-jupiter-api-$junitJupiterVersion"
+        compile name: "junit-jupiter-engine-$junitJupiterVersion"
+        compile name: "junit-jupiter-params-$junitJupiterVersion"
+        compile name: "assertj-core-$assertJVersion"
     }
 
 }
 
 
-project(':DekafJdbc') {
+project(':dekaf-jdbc') {
 
     dependencies {
-        compile project(':DekafAbstracts')
-        testCompile name: "h2-$h2dbVersion"
-        testCompile name: "junit-platform-commons-$junitPlatformVersion"
-        testCompile name: "junit-platform-engine-$junitPlatformVersion"
-        testCompile name: "junit-platform-suite-api-$junitPlatformVersion"
-        testCompile name: "junit-platform-launcher-$junitPlatformVersion"
-        testCompile name: "junit-jupiter-api-$junitJupiterVersion"
-        testCompile name: "junit-jupiter-engine-$junitJupiterVersion"
-        testCompile name: "junit-jupiter-params-$junitJupiterVersion"
-        testCompile name: "assertj-core-$assertJVersion"
+        compile project(':dekaf-base')
+    }
+
+}
+
+project(':dekaf-jdbc-test') {
+
+    dependencies {
+        compile project(':dekaf-base')
+        compile project(':dekaf-jdbc')
+        compile name: "h2-$h2dbVersion"
+        compile name: "junit-platform-commons-$junitPlatformVersion"
+        compile name: "junit-platform-engine-$junitPlatformVersion"
+        compile name: "junit-platform-suite-api-$junitPlatformVersion"
+        compile name: "junit-platform-launcher-$junitPlatformVersion"
+        compile name: "junit-jupiter-api-$junitJupiterVersion"
+        compile name: "junit-jupiter-engine-$junitJupiterVersion"
+        compile name: "junit-jupiter-params-$junitJupiterVersion"
+        compile name: "assertj-core-$assertJVersion"
     }
 
 }
 
 
-project(':DekafMain') {
+project(':dekaf-main') {
 
     dependencies {
-        compile project(':DekafAbstracts')
+        compile project(':dekaf-base')
         compile name: "kotlin-stdlib-$kotlinVersion"
         compile name: "kotlin-stdlib-common-$kotlinVersion"
         compile name: "kotlin-stdlib-jre7-$kotlinVersion"
         compile name: "kotlin-stdlib-jre8-$kotlinVersion"
         compile name: "kotlin-reflect-$kotlinVersion"
-        testCompile project(':KoExpectations')
-        testCompile name: "h2-$h2dbVersion"
-        testCompile name: "junit-platform-commons-$junitPlatformVersion"
-        testCompile name: "junit-platform-engine-$junitPlatformVersion"
-        testCompile name: "junit-platform-suite-api-$junitPlatformVersion"
-        testCompile name: "junit-platform-launcher-$junitPlatformVersion"
-        testCompile name: "junit-jupiter-api-$junitJupiterVersion"
-        testCompile name: "junit-jupiter-engine-$junitJupiterVersion"
-        testCompile name: "junit-jupiter-params-$junitJupiterVersion"
-        testCompile name: "assertj-core-$assertJVersion"
     }
 
 }
 
-
-project(':DekafTestDB') {
+project(':dekaf-main-test') {
 
     dependencies {
-        compile project(':DekafAbstracts')
-        compile project(':DekafMain')
+        compile project(':dekaf-base')
+        compile project(':dekaf-main')
+        compile project(':ko-test-util')
         compile name: "kotlin-stdlib-$kotlinVersion"
         compile name: "kotlin-stdlib-common-$kotlinVersion"
         compile name: "kotlin-stdlib-jre7-$kotlinVersion"
         compile name: "kotlin-stdlib-jre8-$kotlinVersion"
         compile name: "kotlin-reflect-$kotlinVersion"
-        testCompile project(':KoExpectations')
-        testCompile name: "h2-$h2dbVersion"
-        testCompile name: "junit-platform-commons-$junitPlatformVersion"
-        testCompile name: "junit-platform-engine-$junitPlatformVersion"
-        testCompile name: "junit-platform-suite-api-$junitPlatformVersion"
-        testCompile name: "junit-platform-launcher-$junitPlatformVersion"
-        testCompile name: "junit-jupiter-api-$junitJupiterVersion"
-        testCompile name: "junit-jupiter-engine-$junitJupiterVersion"
-        testCompile name: "junit-jupiter-params-$junitJupiterVersion"
-        testCompile name: "assertj-core-$assertJVersion"
+        compile name: "h2-$h2dbVersion"
+        compile name: "junit-platform-commons-$junitPlatformVersion"
+        compile name: "junit-platform-engine-$junitPlatformVersion"
+        compile name: "junit-platform-suite-api-$junitPlatformVersion"
+        compile name: "junit-platform-launcher-$junitPlatformVersion"
+        compile name: "junit-jupiter-api-$junitJupiterVersion"
+        compile name: "junit-jupiter-engine-$junitJupiterVersion"
+        compile name: "junit-jupiter-params-$junitJupiterVersion"
+        compile name: "assertj-core-$assertJVersion"
     }
 
 }
 
 
-project(':KoExpectations') {
+project(':dekaf-test-db') {
+
+    dependencies {
+        compile project(':dekaf-base')
+        compile project(':dekaf-main')
+        compile name: "kotlin-stdlib-$kotlinVersion"
+        compile name: "kotlin-stdlib-common-$kotlinVersion"
+        compile name: "kotlin-stdlib-jre7-$kotlinVersion"
+        compile name: "kotlin-stdlib-jre8-$kotlinVersion"
+        compile name: "kotlin-reflect-$kotlinVersion"
+    }
+
+}
+
+project(':dekaf-test-db-test') {
+
+    dependencies {
+        compile project(':dekaf-base')
+        compile project(':dekaf-main')
+        compile project(':dekaf-test-db')
+        compile project(':ko-test-util')
+        compile name: "kotlin-stdlib-$kotlinVersion"
+        compile name: "kotlin-stdlib-common-$kotlinVersion"
+        compile name: "kotlin-stdlib-jre7-$kotlinVersion"
+        compile name: "kotlin-stdlib-jre8-$kotlinVersion"
+        compile name: "kotlin-reflect-$kotlinVersion"
+        compile name: "h2-$h2dbVersion"
+        compile name: "junit-platform-commons-$junitPlatformVersion"
+        compile name: "junit-platform-engine-$junitPlatformVersion"
+        compile name: "junit-platform-suite-api-$junitPlatformVersion"
+        compile name: "junit-platform-launcher-$junitPlatformVersion"
+        compile name: "junit-jupiter-api-$junitJupiterVersion"
+        compile name: "junit-jupiter-engine-$junitJupiterVersion"
+        compile name: "junit-jupiter-params-$junitJupiterVersion"
+        compile name: "assertj-core-$assertJVersion"
+    }
+
+}
+
+
+project(':ko-test-util') {
 
     dependencies {
         compile name: "kotlin-stdlib-$kotlinVersion"
@@ -219,30 +317,57 @@ project(':KoExpectations') {
 }
 
 
-project(':TestBasic') {
+project(':demo-on-java') {
+
+    dependencies {
+        compile project(':dekaf-base')
+        compile project(':dekaf-main')
+        compile name: "h2-$h2dbVersion"
+    }
+
+}
+
+
+project(':demo-on-kotlin') {
+
+    dependencies {
+        compile project(':dekaf-base')
+        compile project(':dekaf-main')
+        compile name: "h2-$h2dbVersion"
+        compile name: "kotlin-stdlib-$kotlinVersion"
+        compile name: "kotlin-stdlib-common-$kotlinVersion"
+        compile name: "kotlin-stdlib-jre7-$kotlinVersion"
+        compile name: "kotlin-stdlib-jre8-$kotlinVersion"
+    }
+
+}
+
+
+project(':test-basic') {
 
     apply plugin: 'org.junit.platform.gradle.plugin'
 
     dependencies {
-        testCompile project(':DekafAbstracts')
-        testCompile project(':DekafJdbc')
-        testCompile project(':DekafMain')
-        testCompile project(':KoExpectations')
-        testCompile project(':DemoOnJava')
-        testCompile project(':DemoOnKotlin')
-        testCompile name: "kotlin-stdlib-$kotlinVersion"
-        testCompile name: "kotlin-stdlib-common-$kotlinVersion"
-        testCompile name: "kotlin-stdlib-jre7-$kotlinVersion"
-        testCompile name: "kotlin-stdlib-jre8-$kotlinVersion"
-        testCompile name: "kotlin-reflect-$kotlinVersion"
-        testCompile name: "junit-platform-commons-$junitPlatformVersion"
-        testCompile name: "junit-platform-engine-$junitPlatformVersion"
-        testCompile name: "junit-platform-suite-api-$junitPlatformVersion"
-        testCompile name: "junit-platform-launcher-$junitPlatformVersion"
-        testCompile name: "junit-jupiter-api-$junitJupiterVersion"
-        testCompile name: "junit-jupiter-engine-$junitJupiterVersion"
-        testCompile name: "junit-jupiter-params-$junitJupiterVersion"
-        testCompile name: "assertj-core-$assertJVersion"
+        compile project(':demo-on-java')
+        compile project(':demo-on-kotlin')
+        compile project(':dekaf-base-test')
+        compile project(':dekaf-jdbc-test')
+        compile project(':dekaf-main-test')
+        compile project(':ko-test-util')
+        compile name: "kotlin-stdlib-$kotlinVersion"
+        compile name: "kotlin-stdlib-common-$kotlinVersion"
+        compile name: "kotlin-stdlib-jre7-$kotlinVersion"
+        compile name: "kotlin-stdlib-jre8-$kotlinVersion"
+        compile name: "kotlin-reflect-$kotlinVersion"
+        compile name: "h2-$h2dbVersion"
+        compile name: "junit-platform-commons-$junitPlatformVersion"
+        compile name: "junit-platform-engine-$junitPlatformVersion"
+        compile name: "junit-platform-suite-api-$junitPlatformVersion"
+        compile name: "junit-platform-launcher-$junitPlatformVersion"
+        compile name: "junit-jupiter-api-$junitJupiterVersion"
+        compile name: "junit-jupiter-engine-$junitJupiterVersion"
+        compile name: "junit-jupiter-params-$junitJupiterVersion"
+        compile name: "assertj-core-$assertJVersion"
     }
 
     junitPlatform {
@@ -264,30 +389,30 @@ project(':TestBasic') {
 }
 
 
-project(':TestConnection') {
+project(':test-connection') {
 
     //apply plugin: 'org.junit.platform.gradle.plugin'
 
     dependencies {
-        testCompile project(':DekafAbstracts')
-        testCompile project(':DekafJdbc')
-        testCompile project(':DekafMain')
-        testCompile project(':DekafTestDB')
-        testCompile project(':KoExpectations')
-        testCompile name: "kotlin-stdlib-$kotlinVersion"
-        testCompile name: "kotlin-stdlib-common-$kotlinVersion"
-        testCompile name: "kotlin-stdlib-jre7-$kotlinVersion"
-        testCompile name: "kotlin-stdlib-jre8-$kotlinVersion"
-        testCompile name: "kotlin-reflect-$kotlinVersion"
-        testCompile name: "junit-platform-commons-$junitPlatformVersion"
-        testCompile name: "junit-platform-engine-$junitPlatformVersion"
-        testCompile name: "junit-platform-suite-api-$junitPlatformVersion"
-        testCompile name: "junit-platform-launcher-$junitPlatformVersion"
-        testCompile name: "junit-jupiter-api-$junitJupiterVersion"
-        testCompile name: "junit-jupiter-engine-$junitJupiterVersion"
-        testCompile name: "junit-jupiter-params-$junitJupiterVersion"
-        testCompile name: "assertj-core-$assertJVersion"
-        testCompile name: "h2-$h2dbVersion"
+        compile project(':dekaf-base')
+        compile project(':dekaf-jdbc')
+        compile project(':dekaf-main')
+        compile project(':dekaf-test-db')
+        compile project(':ko-test-util')
+        compile name: "kotlin-stdlib-$kotlinVersion"
+        compile name: "kotlin-stdlib-common-$kotlinVersion"
+        compile name: "kotlin-stdlib-jre7-$kotlinVersion"
+        compile name: "kotlin-stdlib-jre8-$kotlinVersion"
+        compile name: "kotlin-reflect-$kotlinVersion"
+        compile name: "junit-platform-commons-$junitPlatformVersion"
+        compile name: "junit-platform-engine-$junitPlatformVersion"
+        compile name: "junit-platform-suite-api-$junitPlatformVersion"
+        compile name: "junit-platform-launcher-$junitPlatformVersion"
+        compile name: "junit-jupiter-api-$junitJupiterVersion"
+        compile name: "junit-jupiter-engine-$junitJupiterVersion"
+        compile name: "junit-jupiter-params-$junitJupiterVersion"
+        compile name: "assertj-core-$assertJVersion"
+        compile name: "h2-$h2dbVersion"
     }
 
     /*
@@ -310,56 +435,26 @@ project(':TestConnection') {
 }
 
 
-project(':DemoOnJava') {
+
+
+project (':zip-all') {
 
     dependencies {
-        compile project(':DekafAbstracts')
-        compile project(':DekafMain')
-        compile name: "h2-$h2dbVersion"
-    }
+        compile project(':dekaf-base')
+        compile project(':dekaf-jdbc')
+        compile project(':dekaf-main')
+        compile project(':dekaf-test-db')
 
-}
+        compile project(':dekaf-base-test')
+        compile project(':dekaf-jdbc-test')
+        compile project(':dekaf-main-test')
+        compile project(':dekaf-test-db-test')
 
-
-project(':DemoOnKotlin') {
-
-    dependencies {
-        compile project(':DekafAbstracts')
-        compile project(':DekafMain')
-        compile name: "h2-$h2dbVersion"
-        compile name: "kotlin-stdlib-$kotlinVersion"
-        compile name: "kotlin-stdlib-common-$kotlinVersion"
-        compile name: "kotlin-stdlib-jre7-$kotlinVersion"
-        compile name: "kotlin-stdlib-jre8-$kotlinVersion"
-    }
-
-}
-
-
-project (':zipAll') {
-
-    dependencies {
-        compile project(':DekafAbstracts')
-        compile project(':DekafJdbc')
-        compile project(':DekafMain')
-        compile project(':DekafTestDB')
-
-        compile project(':KoExpectations')
-        compile project(':TestBasic')
-        compile project(':TestConnection')
-        compile project(':DemoOnJava')
-        compile project(':DemoOnKotlin')
-
-        testCompile project(':DekafAbstracts')
-        testCompile project(':DekafJdbc')
-        testCompile project(':DekafMain')
-        testCompile project(':DekafTestDB')
-
-        testCompile project(':KoExpectations')
-        testCompile project(':TestBasic')
-        testCompile project(':TestConnection')
-        testCompile project(':DemoOnJava')
-        testCompile project(':DemoOnKotlin')
+        compile project(':ko-test-util')
+        compile project(':test-basic')
+        compile project(':test-connection')
+        compile project(':demo-on-java')
+        compile project(':demo-on-kotlin')
     }
 
 

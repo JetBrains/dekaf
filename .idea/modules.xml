@@ -5,18 +5,22 @@
       <module fileurl="file://$PROJECT_DIR$/X-modules/CommandLineTool/CommandLineTool.iml" filepath="$PROJECT_DIR$/X-modules/CommandLineTool/CommandLineTool.iml" group="Old" />
       <module fileurl="file://$PROJECT_DIR$/X-modules/Common/Common.iml" filepath="$PROJECT_DIR$/X-modules/Common/Common.iml" group="Old" />
       <module fileurl="file://$PROJECT_DIR$/X-modules/Core/Core.iml" filepath="$PROJECT_DIR$/X-modules/Core/Core.iml" group="Old" />
-      <module fileurl="file://$PROJECT_DIR$/DekafAbstracts/DekafAbstracts.iml" filepath="$PROJECT_DIR$/DekafAbstracts/DekafAbstracts.iml" group="Dekaf" />
-      <module fileurl="file://$PROJECT_DIR$/DekafJdbc/DekafJdbc.iml" filepath="$PROJECT_DIR$/DekafJdbc/DekafJdbc.iml" group="Dekaf" />
-      <module fileurl="file://$PROJECT_DIR$/DekafMain/DekafMain.iml" filepath="$PROJECT_DIR$/DekafMain/DekafMain.iml" group="Dekaf" />
-      <module fileurl="file://$PROJECT_DIR$/DekafTestDB/DekafTestDB.iml" filepath="$PROJECT_DIR$/DekafTestDB/DekafTestDB.iml" group="Dekaf" />
-      <module fileurl="file://$PROJECT_DIR$/DemoOnJava/DemoOnJava.iml" filepath="$PROJECT_DIR$/DemoOnJava/DemoOnJava.iml" group="Demo" />
-      <module fileurl="file://$PROJECT_DIR$/DemoOnKotlin/DemoOnKotlin.iml" filepath="$PROJECT_DIR$/DemoOnKotlin/DemoOnKotlin.iml" group="Demo" />
       <module fileurl="file://$PROJECT_DIR$/X-modules/Jdbc/Jdbc.iml" filepath="$PROJECT_DIR$/X-modules/Jdbc/Jdbc.iml" group="Old" />
       <module fileurl="file://$PROJECT_DIR$/X-modules/JunitExtension/JunitExtension.iml" filepath="$PROJECT_DIR$/X-modules/JunitExtension/JunitExtension.iml" group="Old" />
-      <module fileurl="file://$PROJECT_DIR$/KoExpectations/KoExpectations.iml" filepath="$PROJECT_DIR$/KoExpectations/KoExpectations.iml" group="Testing" />
-      <module fileurl="file://$PROJECT_DIR$/TestBasic/TestBasic.iml" filepath="$PROJECT_DIR$/TestBasic/TestBasic.iml" group="Testing" />
-      <module fileurl="file://$PROJECT_DIR$/TestConnection/TestConnection.iml" filepath="$PROJECT_DIR$/TestConnection/TestConnection.iml" group="Testing" />
       <module fileurl="file://$PROJECT_DIR$/X-modules/Tests/Tests.iml" filepath="$PROJECT_DIR$/X-modules/Tests/Tests.iml" group="Old" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-base/dekaf-base.iml" filepath="$PROJECT_DIR$/dekaf-base/dekaf-base.iml" group="Dekaf" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-base-test/dekaf-base-test.iml" filepath="$PROJECT_DIR$/dekaf-base-test/dekaf-base-test.iml" group="Dekaf" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-jdbc/dekaf-jdbc.iml" filepath="$PROJECT_DIR$/dekaf-jdbc/dekaf-jdbc.iml" group="Dekaf" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-jdbc-test/dekaf-jdbc-test.iml" filepath="$PROJECT_DIR$/dekaf-jdbc-test/dekaf-jdbc-test.iml" group="Dekaf" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-main/dekaf-main.iml" filepath="$PROJECT_DIR$/dekaf-main/dekaf-main.iml" group="Dekaf" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-main-test/dekaf-main-test.iml" filepath="$PROJECT_DIR$/dekaf-main-test/dekaf-main-test.iml" group="Dekaf" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-test-db/dekaf-test-db.iml" filepath="$PROJECT_DIR$/dekaf-test-db/dekaf-test-db.iml" group="Dekaf" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-test-db-test/dekaf-test-db-test.iml" filepath="$PROJECT_DIR$/dekaf-test-db-test/dekaf-test-db-test.iml" group="Dekaf" />
+      <module fileurl="file://$PROJECT_DIR$/demo-on-java/demo-on-java.iml" filepath="$PROJECT_DIR$/demo-on-java/demo-on-java.iml" group="Demo" />
+      <module fileurl="file://$PROJECT_DIR$/demo-on-kotlin/demo-on-kotlin.iml" filepath="$PROJECT_DIR$/demo-on-kotlin/demo-on-kotlin.iml" group="Demo" />
+      <module fileurl="file://$PROJECT_DIR$/ko-test-util/ko-test-util.iml" filepath="$PROJECT_DIR$/ko-test-util/ko-test-util.iml" group="Testing" />
+      <module fileurl="file://$PROJECT_DIR$/test-basic/test-basic.iml" filepath="$PROJECT_DIR$/test-basic/test-basic.iml" group="Testing" />
+      <module fileurl="file://$PROJECT_DIR$/test-connection/test-connection.iml" filepath="$PROJECT_DIR$/test-connection/test-connection.iml" group="Testing" />
     </modules>
   </component>
 </project>
