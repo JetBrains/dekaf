@@ -2,21 +2,21 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CommandLineTool/CommandLineTool.iml" filepath="$PROJECT_DIR$/CommandLineTool/CommandLineTool.iml" group="Old" />
-      <module fileurl="file://$PROJECT_DIR$/Common/Common.iml" filepath="$PROJECT_DIR$/Common/Common.iml" group="Old" />
-      <module fileurl="file://$PROJECT_DIR$/Core/Core.iml" filepath="$PROJECT_DIR$/Core/Core.iml" group="Old" />
+      <module fileurl="file://$PROJECT_DIR$/X-modules/CommandLineTool/CommandLineTool.iml" filepath="$PROJECT_DIR$/X-modules/CommandLineTool/CommandLineTool.iml" group="Old" />
+      <module fileurl="file://$PROJECT_DIR$/X-modules/Common/Common.iml" filepath="$PROJECT_DIR$/X-modules/Common/Common.iml" group="Old" />
+      <module fileurl="file://$PROJECT_DIR$/X-modules/Core/Core.iml" filepath="$PROJECT_DIR$/X-modules/Core/Core.iml" group="Old" />
       <module fileurl="file://$PROJECT_DIR$/DekafAbstracts/DekafAbstracts.iml" filepath="$PROJECT_DIR$/DekafAbstracts/DekafAbstracts.iml" group="Dekaf" />
       <module fileurl="file://$PROJECT_DIR$/DekafJdbc/DekafJdbc.iml" filepath="$PROJECT_DIR$/DekafJdbc/DekafJdbc.iml" group="Dekaf" />
       <module fileurl="file://$PROJECT_DIR$/DekafMain/DekafMain.iml" filepath="$PROJECT_DIR$/DekafMain/DekafMain.iml" group="Dekaf" />
       <module fileurl="file://$PROJECT_DIR$/DekafTestDB/DekafTestDB.iml" filepath="$PROJECT_DIR$/DekafTestDB/DekafTestDB.iml" group="Dekaf" />
       <module fileurl="file://$PROJECT_DIR$/DemoOnJava/DemoOnJava.iml" filepath="$PROJECT_DIR$/DemoOnJava/DemoOnJava.iml" group="Demo" />
       <module fileurl="file://$PROJECT_DIR$/DemoOnKotlin/DemoOnKotlin.iml" filepath="$PROJECT_DIR$/DemoOnKotlin/DemoOnKotlin.iml" group="Demo" />
-      <module fileurl="file://$PROJECT_DIR$/Jdbc/Jdbc.iml" filepath="$PROJECT_DIR$/Jdbc/Jdbc.iml" group="Old" />
-      <module fileurl="file://$PROJECT_DIR$/JunitExtension/JunitExtension.iml" filepath="$PROJECT_DIR$/JunitExtension/JunitExtension.iml" group="Old" />
+      <module fileurl="file://$PROJECT_DIR$/X-modules/Jdbc/Jdbc.iml" filepath="$PROJECT_DIR$/X-modules/Jdbc/Jdbc.iml" group="Old" />
+      <module fileurl="file://$PROJECT_DIR$/X-modules/JunitExtension/JunitExtension.iml" filepath="$PROJECT_DIR$/X-modules/JunitExtension/JunitExtension.iml" group="Old" />
       <module fileurl="file://$PROJECT_DIR$/KoExpectations/KoExpectations.iml" filepath="$PROJECT_DIR$/KoExpectations/KoExpectations.iml" group="Testing" />
       <module fileurl="file://$PROJECT_DIR$/TestBasic/TestBasic.iml" filepath="$PROJECT_DIR$/TestBasic/TestBasic.iml" group="Testing" />
       <module fileurl="file://$PROJECT_DIR$/TestConnection/TestConnection.iml" filepath="$PROJECT_DIR$/TestConnection/TestConnection.iml" group="Testing" />
-      <module fileurl="file://$PROJECT_DIR$/Tests/Tests.iml" filepath="$PROJECT_DIR$/Tests/Tests.iml" group="Old" />
+      <module fileurl="file://$PROJECT_DIR$/X-modules/Tests/Tests.iml" filepath="$PROJECT_DIR$/X-modules/Tests/Tests.iml" group="Old" />
     </modules>
   </component>
 </project>

@@ -9,7 +9,6 @@
     <JAVADOC />
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-reflect-1.1.3-2-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-reflect-1.1.3-2-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-stdlib-common-1.1.3-2-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-stdlib-jre7-1.1.3-2-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-stdlib-jre8-1.1.3-2-sources.jar!/" />
