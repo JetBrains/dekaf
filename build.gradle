@@ -12,6 +12,10 @@ buildscript {
 }
 
 
+allprojects { project ->
+    project.buildDir = new File(rootProject.projectDir, ".gradleTemp/" + project.name)
+}
+
 subprojects {
 
     apply plugin: 'java'
@@ -22,9 +26,9 @@ subprojects {
         }
     }
 
-    task testJar(type: Jar, dependsOn: testClasses) {
-        baseName = "${project.archivesBaseName}-tests"
-        from sourceSets.test.output
+    sourceSets {
+        test.java.srcDirs = []
+        test.resources.srcDirs = []
     }
 
     tasks.withType(Jar) {
@@ -34,22 +38,33 @@ subprojects {
 }
 
 
+def productionModules = [ project(':dekaf-base'),
+                          project(':dekaf-jdbc'),
+                          project(':dekaf-main'),
+                          project(':dekaf-test-db') ]
+
+def testModules = [ project(':dekaf-base-test'),
+                    project(':dekaf-jdbc-test'),
+                    project(':dekaf-main-test'),
+                    project(':dekaf-test-db-test'),
+                    project(':ko-test-util'),
+                    project(':test-basic'),
+                    project(':test-connection') ]
+
+def demoModules = [ project(':demo-on-java'),
+                    project(':demo-on-kotlin') ]
+
+def allModules = productionModules + testModules + demoModules
+
+
+
 // JAVA PRODUCTION AND DEMO MODULES
 configure ([ project(':dekaf-base'), project(':dekaf-jdbc'), project(':demo-on-java') ]) {
 
     sourceSets {
         main {
-            java {
-                srcDirs = ['src']
-            }
-            resources {
-                srcDirs = ['manifest','sql']
-            }
-        }
-        test {
-            java {
-                srcDirs = []
-            }
+            java.srcDirs = ['src']
+            resources.srcDirs = ['manifest','sql']
         }
     }
 
@@ -61,17 +76,8 @@ configure ([ project(':dekaf-base-test'), project(':dekaf-jdbc-test') ]) {
 
     sourceSets {
         main {
-            java {
-                srcDirs = ['tests']
-            }
-            resources {
-                srcDirs = ['manifest','tests-sql']
-            }
-        }
-        test {
-            java {
-                srcDirs = []
-            }
+            java.srcDirs = ['tests']
+            resources.srcDirs = ['manifest','tests-sql']
         }
     }
 
@@ -85,26 +91,14 @@ configure ([ project(':dekaf-main'), project(':dekaf-test-db'), project(':ko-tes
 
     sourceSets {
         main {
-            java {
-                srcDirs = []
-            }
-            kotlin {
-                srcDirs = ['src']
-            }
-            resources {
-                srcDirs = ['sql']
-            }
+            java.srcDirs = []
+            kotlin.srcDirs = ['src']
+            resources.srcDirs = ['sql']
         }
         test {
-            java {
-                srcDirs = []
-            }
-            kotlin {
-                srcDirs = []
-            }
-            resources {
-                srcDirs = []
-            }
+            java.srcDirs = []
+            kotlin.srcDirs = []
+            resources.srcDirs = []
         }
     }
 
@@ -118,26 +112,14 @@ configure ([ project(':dekaf-main-test'), project(':dekaf-test-db-test'), projec
 
     sourceSets {
         main {
-            java {
-                srcDirs = []
-            }
-            kotlin {
-                srcDirs = ['tests']
-            }
-            resources {
-                srcDirs = ['tests-sql']
-            }
+            java.srcDirs = []
+            kotlin.srcDirs = ['tests']
+            resources.srcDirs = ['tests-sql']
         }
         test {
-            java {
-                srcDirs = []
-            }
-            kotlin {
-                srcDirs = []
-            }
-            resources {
-                srcDirs = []
-            }
+            java.srcDirs = []
+            kotlin.srcDirs = []
+            resources.srcDirs = []
         }
     }
 
@@ -167,7 +149,7 @@ def jtdsVersion          = "1.2.8"
 project(':dekaf-base') {
 
     dependencies {
-        compile     name: "annotations-$annotationsVersion"
+        compile name: "annotations-$annotationsVersion"
     }
 
 }
@@ -345,7 +327,7 @@ project(':demo-on-kotlin') {
 
 project(':test-basic') {
 
-    apply plugin: 'org.junit.platform.gradle.plugin'
+    //apply plugin: 'org.junit.platform.gradle.plugin'
 
     dependencies {
         compile project(':demo-on-java')
@@ -370,6 +352,7 @@ project(':test-basic') {
         compile name: "assertj-core-$assertJVersion"
     }
 
+    /*
     junitPlatform {
         //platformVersion 1.0
         //logManager 'org.apache.logging.log4j.jul.LogManager'
@@ -385,6 +368,7 @@ project(':test-basic') {
             }
         }
     }
+    */
 
 }
 
@@ -435,52 +419,49 @@ project(':test-connection') {
 }
 
 
+//task farm(type: Copy) {
+//    from allModules.collect { it.configurations.runtime }
+//    into "$rootDir/farm/jars/"
+//}
 
 
-project (':zip-all') {
 
-    dependencies {
-        compile project(':dekaf-base')
-        compile project(':dekaf-jdbc')
-        compile project(':dekaf-main')
-        compile project(':dekaf-test-db')
+task zipProduction(type: Zip) {
+    destinationDir(file("$rootDir/farm/"))
+    baseName("production")
+    from productionModules.collect { it.tasks.jar }
+}
 
-        compile project(':dekaf-base-test')
-        compile project(':dekaf-jdbc-test')
-        compile project(':dekaf-main-test')
-        compile project(':dekaf-test-db-test')
+task zipTests(type: Zip) {
+    destinationDir(file("$rootDir/farm/"))
+    baseName("tests")
+    def sum = testModules + demoModules
+    from sum.collect { it.tasks.jar }
+}
 
-        compile project(':ko-test-util')
-        compile project(':test-basic')
-        compile project(':test-connection')
-        compile project(':demo-on-java')
-        compile project(':demo-on-kotlin')
+task zipDeps(type: Zip) {
+    destinationDir(file("$rootDir/farm/"))
+    baseName("deps")
+    from testModules.collect { it.configurations.runtime }
+    def filesToExclude = project.files(allModules.collect { it.tasks.jar }).files
+    exclude {
+        it.file in filesToExclude
     }
+}
 
-
-    task copyDownloadedJars(dependsOn: build, type: Copy) {
-        duplicatesStrategy 'exclude'
-        from configurations.testCompile
-        from configurations.testRuntime
-        into "$rootDir/farm/jars"
-    }
-
-    task copyBuiltJars(dependsOn: build, type: Copy) {
-        from "$rootDir/out/jars"
-        into "$rootDir/farm/jars"
-        exclude {it.file.length() == 261}
-    }
-
-    task zip(dependsOn: [copyDownloadedJars, copyBuiltJars], type: Zip) {
-        destinationDir(file("$rootDir/"))
-        baseName("farm")
-        from "$rootDir/farm/"
-        exclude "build/*"
-        includeEmptyDirs(false)
-    }
+task zipAll(dependsOn: [zipProduction, zipTests, zipDeps]) {
 
 }
 
+
+task clean {
+    allModules.each {project -> project.clean }
+    delete "$rootDir/.gradleTemp"
+}
+
+tasks.clean.doLast {
+
+}
 
 
 repositories {

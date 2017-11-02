@@ -18,4 +18,3 @@ include 'demo-on-kotlin'
 include 'test-basic'
 include 'test-connection'
 
-include 'zip-all'
