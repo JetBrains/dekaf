@@ -352,6 +352,15 @@ project(':test-basic') {
         compile name: "assertj-core-$assertJVersion"
     }
 
+    jar {
+        manifest {
+            attributes(
+                    "Class-Path": configurations.compile.collect { it.getName() }.join(' '),
+                    'Main-Class': 'org.jetbrains.dekaf.AllUnitTests'
+            )
+        }
+    }
+
     /*
     junitPlatform {
         //platformVersion 1.0
@@ -419,10 +428,11 @@ project(':test-connection') {
 }
 
 
-//task farm(type: Copy) {
-//    from allModules.collect { it.configurations.runtime }
-//    into "$rootDir/farm/jars/"
-//}
+task farm(type: Copy) {
+    from allModules.collect { it.tasks.jar }
+    from allModules.collect { it.configurations.runtime }
+    into "$rootDir/farm/jars/"
+}
 
 
 
@@ -454,14 +464,7 @@ task zipAll(dependsOn: [zipProduction, zipTests, zipDeps]) {
 }
 
 
-task clean {
-    allModules.each {project -> project.clean }
-    delete "$rootDir/.gradleTemp"
-}
 
-tasks.clean.doLast {
-
-}
 
 
 repositories {
