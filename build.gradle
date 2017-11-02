@@ -451,7 +451,7 @@ task zipTests(type: Zip) {
 
 task zipDeps(type: Zip) {
     destinationDir(file("$rootDir/farm/"))
-    baseName("deps")
+    baseName("dependencies")
     from testModules.collect { it.configurations.runtime }
     def filesToExclude = project.files(allModules.collect { it.tasks.jar }).files
     exclude {
