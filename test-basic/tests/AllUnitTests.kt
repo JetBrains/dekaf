@@ -1,6 +1,7 @@
 package org.jetbrains.dekaf
 
 
+import org.jetbrains.dekaf.teamcity.TeamCityListener
 import org.jetbrains.dekaf.testing.TerminalListener
 import org.junit.platform.engine.discovery.ClassNameFilter.includeClassNamePatterns
 import org.junit.platform.engine.discovery.DiscoverySelectors.selectPackage
@@ -23,7 +24,8 @@ object AllUnitTests {
 
         val launcher = LauncherFactory.create()
         val summaryListener = SummaryGeneratingListener()
-        launcher.registerTestExecutionListeners(TerminalListener, summaryListener)
+        val teamCityListener = TeamCityListener()
+        launcher.registerTestExecutionListeners(TerminalListener, teamCityListener, summaryListener)
         launcher.execute(request, *arrayOfNulls<TestExecutionListener>(0))
 
         TerminalListener.displayAll()
