@@ -16,7 +16,7 @@ allprojects { project ->
     project.buildDir = new File(rootProject.projectDir, ".gradleTemp/" + project.name)
 }
 
-subprojects {
+subprojects { project ->
 
     apply plugin: 'java'
 
@@ -29,6 +29,12 @@ subprojects {
     sourceSets {
         test.java.srcDirs = []
         test.resources.srcDirs = []
+    }
+
+    processResources {
+        //logger.warn("---- $project.projectDir")
+        eachFile { if (it.path.endsWith(".sql")) it.path = "org/jetbrains/dekaf/${it.path}" }
+        //eachFile { logger.warn("copying something from $it.sourcePath to $it.path") }
     }
 
     tasks.withType(Jar) {

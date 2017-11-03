@@ -2,7 +2,6 @@ package org.jetbrains.dekaf.jdbc;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.H2db;
-import org.jetbrains.dekaf.Postgres;
 import org.jetbrains.dekaf.Rdbms;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +18,7 @@ public class JdbcProviderTest {
 
     //@Test public void acceptConnectionString_Oracle_OCI()  { acceptConnectionString(Oracle.RDBMS, "jdbc:oracle:oci:tester/test@testing"); }
     //@Test public void acceptConnectionString_Oracle_Thin() { acceptConnectionString(Oracle.RDBMS, "jdbc:oracle:thin:@//localhost:1521/XE"); }
-    @Test public void acceptConnectionString_Postgres()    { acceptConnectionString(Postgres.RDBMS, "jdbc:postgresql:///"); }
+    //@Test public void acceptConnectionString_Postgres()    { acceptConnectionString(Postgres.RDBMS, "jdbc:postgresql:///"); }
     @Test public void acceptConnectionString_H2_Mem()      { acceptConnectionString(H2db.RDBMS, "jdbc:h2:mem:test"); }
 
 
