@@ -13,10 +13,58 @@ import java.util.Arrays;
  */
 public abstract class ArrayUtil {
 
+    /**
+     * Splits the given array to several ones,
+     * where the size of each one is <c>sliceSize</c>,
+     * excluding the last one that can be shorter.
+     *
+     * @param array       the source array to chop.
+     * @param sliceSize   lengths of a slice.
+     * @param <E>         type of elements.
+     * @return            slices.
+     */
     @NotNull
-    public static <E> E[][] chopArrayBy(final @NotNull E[] array,
-                                        final int sliceSize,
-                                        final @Nullable E padding) {
+    public static <E> E[][] chopArrayBy(final @NotNull E[] array, final int sliceSize) {
+        final int n = array.length;
+        if (n == sliceSize) return createArrayOf(array);
+
+        final int m = n / sliceSize; // number of whole slices
+        final int r = n % sliceSize; // reminder — number of actual elements in the last slice
+        final int q = r == 0 ? m : m + 1;
+
+        final E[][] result = createArrayOf(getArrayClass(array), q);
+        for (int i = 0; i < m; i++) {
+            int offset = i * sliceSize;
+            result[i] = Arrays.copyOfRange(array, offset, offset+sliceSize);
+        }
+        if (r > 0) {
+            Class<E> elementClass = getArrayElementClass(array);
+            int offset = m * sliceSize;
+            E[] reminder = createArrayOf(elementClass, r);
+            for (int i = 0; i < r; i++) reminder[i] = array[offset+i];
+            result[m] = reminder;
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Splits the given array to several ones,
+     * where the size of each one is exactly <c>sliceSize</c>.
+     * If the number of origin array doesn't divide on the slice size,
+     * the last slice is padded with the specified value.
+     *
+     * @param array       the source array to chop.
+     * @param sliceSize   lengths of a slice.
+     * @param padding     value to fill the last array "empty" cells.
+     * @param <E>         type of elements.
+     * @return            slices.
+     */
+    @NotNull
+    public static <E> E[][] chopAndPadArrayBy(final @NotNull E[] array,
+                                              final int sliceSize,
+                                              final @Nullable E padding) {
         final int n = array.length;
         if (n == sliceSize) return createArrayOf(array);
 

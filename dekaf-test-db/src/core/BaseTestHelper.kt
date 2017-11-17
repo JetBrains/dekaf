@@ -6,7 +6,7 @@ import org.jetbrains.dekaf.sql.SqlCommand
 import org.jetbrains.dekaf.sql.SqlScript
 import org.jetbrains.dekaf.sql.SqlScriptBuilder
 import org.jetbrains.dekaf.text.Scriptum
-import org.jetbrains.dekaf.util.chopBy
+import org.jetbrains.dekaf.util.chopAndPadBy
 import java.lang.String.format
 import java.util.*
 import kotlin.reflect.KClass
@@ -139,7 +139,7 @@ abstract class BaseTestHelper : DBTestHelper {
 
 
     override fun ensureNoTableOrView(vararg names: String) {
-        val namePacks = names.chopBy(4)
+        val namePacks = names.chopAndPadBy(4)
         for (namePack in namePacks) {
             ensureNoTableOrView4(namePack)
         }

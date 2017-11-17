@@ -194,10 +194,25 @@ infix fun<E> Array<out E>?.expected(array: Array<out E>) {
     val n1 = this.size
     val n2 = array.size
     if (n1 != n2) failDiff("Arrays have different sizes: got ${this.displayString()} when expected ${array.displayString()}", this, array)
-    var d = false
-    for (i in 0..n1-1) if (this[i] != array[i]) { d = true; break }
-    if (d) failDiff("Arrays are different: got ${this.displayString()} when expected ${array.displayString()}", this, array)
+    var eq = areArraysEqual(this, array)
+    if (!eq) failDiff("Arrays are different: got ${this.displayString()} when expected ${array.displayString()}", this, array)
 }
+
+private fun <T> areArraysEqual(a: Array<out T>, b: Array<out T>): Boolean {
+    if (a === b) return true
+    val n = a.size
+    if (b.size != n) return false
+    for (i in 0 until n) if (!areValuesEqual(a[i], b[i])) return false
+    return true
+}
+
+private fun areValuesEqual(a: Any?, b: Any?): Boolean =
+        when {
+            a === b                        -> true
+            a === null || b === null       -> false
+            a is Array<*> && b is Array<*> -> areArraysEqual(a, b)
+            else                           -> a == b
+        }
 
 infix fun<E> List<E>?.expected(list: List<E>) {
     if (this == null || this.isEmpty()) fail("Got ${this.displayString()} when expected ${list.displayString()}")
@@ -252,55 +267,6 @@ infix fun LongArray?.expected(array: LongArray) {
 
 
 ///  AUXILIARY FUNCTIONS \\\
-
-private fun ByteArray?.displayString():String {
-    if (this == null) return "null"
-    val n = this.size
-    if (n == 0) return "an empty array"
-    return this.joinToString(separator = ",", prefix = "[", postfix = "]")
-}
-
-private fun ShortArray?.displayString():String {
-    if (this == null) return "null"
-    val n = this.size
-    if (n == 0) return "an empty array"
-    return this.joinToString(separator = ",", prefix = "[", postfix = "]")
-}
-
-private fun IntArray?.displayString():String {
-    if (this == null) return "null"
-    val n = this.size
-    if (n == 0) return "an empty array"
-    return this.joinToString(separator = ",", prefix = "[", postfix = "]")
-}
-
-private fun LongArray?.displayString():String {
-    if (this == null) return "null"
-    val n = this.size
-    if (n == 0) return "an empty array"
-    return this.joinToString(separator = ",", prefix = "[", postfix = "]")
-}
-
-private fun Array<*>?.displayString():String {
-    if (this == null) return "null"
-    val n = this.size
-    if (n == 0) return "an empty array"
-    return this.joinToString(separator = ",", prefix = "[", postfix = "]")
-}
-
-private fun List<*>?.displayString():String {
-    if (this == null) return "null"
-    val n = this.size
-    if (n == 0) return "an empty list"
-    return this.joinToString(separator = ",", prefix = "[", postfix = "]")
-}
-
-private fun Set<*>?.displayString():String {
-    if (this == null) return "null"
-    val n = this.size
-    if (n == 0) return "an empty set"
-    return this.joinToString(separator = ",", prefix = "{", postfix = "}")
-}
 
 
 

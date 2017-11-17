@@ -10,18 +10,18 @@ import static org.jetbrains.dekaf.util.ArrayUtil.*;
 class ArrayUtilTest {
 
     @Test
-    void chopArrayBy_exactly() {
+    void chopAndPadArrayBy_exactly() {
         Number[] array = new Number[] { 111, 222, 333, 444 };
-        Number[][] sausage = chopArrayBy(array, 4, null);
+        Number[][] sausage = chopAndPadArrayBy(array, 4, null);
         assertThat(sausage[0]).isSameAs(array);
         assertThat(sausage.length).isEqualTo(1);
     }
 
 
     @Test
-    void chopArrayBy_twoWholeSlices() {
+    void chopAndPadArrayBy_twoWholeSlices() {
         Number[] array = new Number[] { 111, 222, 333, 444, 555, 666, 777, 888 };
-        Number[][] sausage = chopArrayBy(array, 4, null);
+        Number[][] sausage = chopAndPadArrayBy(array, 4, null);
         Number[] slice0 = sausage[0];
         Number[] slice1 = sausage[1];
         assertThat(slice0).containsExactly(111, 222, 333, 444);
@@ -33,9 +33,9 @@ class ArrayUtilTest {
 
 
     @Test
-    void chopArrayBy_usual() {
+    void chopAndPadArrayBy_usual() {
         Number[] array = new Number[] { 111, 222, 333, 444, 555, 666 };
-        Number[][] sausage = chopArrayBy(array, 4, null);
+        Number[][] sausage = chopAndPadArrayBy(array, 4, null);
         Number[] slice0 = sausage[0];
         Number[] slice1 = sausage[1];
         assertThat(getArrayElementClass(slice0)).isSameAs(Number.class);
@@ -49,10 +49,10 @@ class ArrayUtilTest {
     }
 
     @Test
-    void chopArrayBy_padding() {
+    void chopAndPadArrayBy_padding() {
         Number[] array = new Number[] { 111, 222, 333, 444, 555, 666 };
         Byte padding = (byte) -128;
-        Number[][] sausage = chopArrayBy(array, 4, padding);
+        Number[][] sausage = chopAndPadArrayBy(array, 4, padding);
         Number[] slice0 = sausage[0];
         Number[] slice1 = sausage[1];
         assertThat(getArrayElementClass(slice0)).isSameAs(Number.class);
