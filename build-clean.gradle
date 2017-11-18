@@ -1,0 +1,132 @@
+allprojects { project ->
+    project.buildDir = new File(rootProject.projectDir, ".gradleTemp/" + project.name)
+}
+
+
+def kotlinVersion        = '1.1.60'
+def annotationsVersion   = "15.0"
+
+def junitPlatformVersion = "1.0.0"
+def junitJupiterVersion  = "5.0.0"
+def assertJVersion       = "3.8.0"
+def log4jVersion         = "2.9.0"
+
+def junitVersion         = "4.11"
+def mockitoVersion       = "2.10.0"
+
+def h2dbVersion          = "1.4.196"
+def postgresVersion      = "9.4-1201-jdbc4"
+def mysqlVersion         = "6.0.6"
+def microsoftVersion     = "6.1.5.jre8-preview"
+def jtdsVersion          = "1.2.8"
+
+
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    pro  { }
+    test { }
+    jdbc { }
+}
+
+
+
+dependencies {
+    pro "org.jetbrains:annotations:$annotationsVersion",
+        "org.jetbrains:annotations:$annotationsVersion:sources",
+        "org.jetbrains:annotations:$annotationsVersion:javadoc",
+        "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+        "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion:sources",
+        "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion:javadoc",
+        "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion",
+        "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion:sources",
+        "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion:javadoc",
+        "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion",
+        "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion:sources",
+        "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion:javadoc",
+        "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion",
+        "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion:sources",
+        "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion:javadoc",
+        "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
+        "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion:sources",
+        "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion:javadoc"
+
+    test "org.junit.platform:junit-platform-commons:$junitPlatformVersion",
+         "org.junit.platform:junit-platform-commons:$junitPlatformVersion:sources",
+         "org.junit.platform:junit-platform-commons:$junitPlatformVersion:javadoc",
+         "org.junit.platform:junit-platform-engine:$junitPlatformVersion",
+         "org.junit.platform:junit-platform-engine:$junitPlatformVersion:sources",
+         "org.junit.platform:junit-platform-engine:$junitPlatformVersion:javadoc",
+         "org.junit.platform:junit-platform-suite-api:$junitPlatformVersion",
+         "org.junit.platform:junit-platform-suite-api:$junitPlatformVersion:sources",
+         "org.junit.platform:junit-platform-suite-api:$junitPlatformVersion:javadoc",
+         "org.junit.platform:junit-platform-launcher:$junitPlatformVersion",
+         "org.junit.platform:junit-platform-launcher:$junitPlatformVersion:sources",
+         "org.junit.platform:junit-platform-launcher:$junitPlatformVersion:javadoc",
+         "org.junit.platform:junit-platform-console:$junitPlatformVersion",
+         "org.junit.platform:junit-platform-console:$junitPlatformVersion:sources",
+         "org.junit.platform:junit-platform-console:$junitPlatformVersion:javadoc",
+         "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion",
+         "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion:sources",
+         "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion:javadoc",
+         "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion",
+         "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion:sources",
+         "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion:javadoc",
+         "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion",
+         "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion:sources",
+         "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion:javadoc",
+         "org.assertj:assertj-core:$assertJVersion",
+         "org.assertj:assertj-core:$assertJVersion:sources",
+         "org.assertj:assertj-core:$assertJVersion:javadoc",
+         "org.apache.logging.log4j:log4j:$log4jVersion",
+         //"org.apache.logging.log4j:log4j:$log4jVersion:sources",
+         //"org.apache.logging.log4j:log4j:$log4jVersion:javadoc",
+
+         "com.h2database:h2:$h2dbVersion",
+         "com.h2database:h2:$h2dbVersion:sources",
+         "com.h2database:h2:$h2dbVersion:javadoc",
+
+         "junit:junit:$junitVersion",
+         "junit:junit:$junitVersion:sources",
+         "junit:junit:$junitVersion:javadoc",
+         "org.mockito:mockito-core:$mockitoVersion",
+         "org.mockito:mockito-core:$mockitoVersion:sources",
+         "org.mockito:mockito-core:$mockitoVersion:javadoc"
+
+    jdbc "org.postgresql:postgresql:$postgresVersion",
+         "org.postgresql:postgresql:$postgresVersion:sources",
+         "org.postgresql:postgresql:$postgresVersion:javadoc",
+         "mysql:mysql-connector-java:$mysqlVersion",
+         "mysql:mysql-connector-java:$mysqlVersion:sources",  // mysql driver has no javadoc
+         "com.microsoft.sqlserver:mssql-jdbc:$microsoftVersion",
+         "com.microsoft.sqlserver:mssql-jdbc:$microsoftVersion:sources",
+         "com.microsoft.sqlserver:mssql-jdbc:$microsoftVersion:javadoc",
+         "net.sourceforge.jtds:jtds:$jtdsVersion",
+         "net.sourceforge.jtds:jtds:$jtdsVersion:sources",
+         "net.sourceforge.jtds:jtds:$jtdsVersion:javadoc"
+}
+
+
+task getLibsPro(type: Copy) {
+    from configurations.pro
+    into "lib/pro/"
+}
+
+task getLibsTest(type: Copy) {
+    from configurations.test - configurations.pro
+    into "lib/test/"
+}
+
+task getLibsJdbc(type: Copy) {
+    from configurations.jdbc - configurations.pro
+    into "lib/jdbc/"
+}
+
+task getLibs {
+    dependsOn << getLibsPro
+    dependsOn << getLibsTest
+    dependsOn << getLibsJdbc
+}
