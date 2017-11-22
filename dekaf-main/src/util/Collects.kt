@@ -128,32 +128,9 @@ infix fun <T: Any?> List<T>.chopAndPadBy(sliceSize: Int): List<List<T?>> {
                     this.subList(offset, end)
                 }
                 else {
-                    this.subList(offset, n).extend(sliceSize, null)
+                    this.subList(offset, n) + RepeatingList<T?>(null, end - n)
                 }
         result.add(slice)
     }
     return result
 }
-
-
-/**
- * Extends the list to get the specified size.
- * New elements are filled by the given value.
- * If the size already has the specified number of elements or more,
- * the original instance is returned.
- *
- * @receiver      a list to extend.
- * @param size    the desired size.
- * @param padding a value to use for filling new cells.
- * @return        the extended list which size is [size] or more.
- */
-fun <T: Any?> List<T>.extend(size: Int, padding: T): List<T> {
-    val n = this.size
-    if (n >= size) return this
-
-    val result = ArrayList<T>(size)
-    result.addAll(this)
-    while (result.size < size) result.add(padding)
-    return result
-}
-
