@@ -1,7 +1,7 @@
 @file:JvmName("Collects")
 package org.jetbrains.dekaf.util
 
-//import java.lang.reflect.Array
+import java.lang.Math.min
 import java.util.*
 
 
@@ -76,3 +76,84 @@ fun collectionToString(collection: Iterable<*>?,
 
     return b.toString()
 }
+
+
+/**
+ * Splits the given list to several ones,
+ * where the size of each one is <c>sliceSize</c>,
+ * excluding the last one that can be shorter.
+ *
+ * @receiver a list to split.
+ * @param sliceSize length of slices.
+ * @return   list of list slices — every inner list is a sublist of the original one;
+ *           if the original list is not longer that desired slices,
+ *           the single-element list of the original instance is returned.
+ *           The returned list can be unmodifiable.
+ */
+infix fun <T: Any?> List<T>.chopBy(sliceSize: Int): List<List<T>> {
+    val n = this.size
+    if (n <= sliceSize) return Collections.singletonList(this)
+    val result = ArrayList<List<T>>(n / sliceSize + if (n % sliceSize == 0) 0 else 1)
+    for (offset in 0 until n step sliceSize) {
+        val slice = this.subList(offset, min(offset+sliceSize, n))
+        result.add(slice)
+    }
+    return result
+}
+
+
+/**
+ * Splits the given list to several ones,
+ * where the size of each one is exactly <c>sliceSize</c>.
+ * If the number of origin list doesn't divide on the slice size,
+ * the last slice is padded with nulls.
+ *
+ * @receiver a list to split.
+ * @param sliceSize length of slices.
+ * @return   list of list slices — every inner list except the last one
+ *           is a sublist of the original one;
+ *           if the length of the original list is exactly <c>sliceSize</c>,
+ *           the single-element list of the original instance is returned.
+ *           The returned list can be unmodifiable.
+ */
+infix fun <T: Any?> List<T>.chopAndPadBy(sliceSize: Int): List<List<T?>> {
+    val n = this.size
+    if (n == sliceSize) return Collections.singletonList(this)
+    if (n == 0) return Collections.emptyList()
+    val result = ArrayList<List<T?>>(n / sliceSize + if (n % sliceSize == 0) 0 else 1)
+    for (offset in 0 until n step sliceSize) {
+        val end = offset + sliceSize
+        val slice =
+                if (end <= n) {
+                    this.subList(offset, end)
+                }
+                else {
+                    this.subList(offset, n).extend(sliceSize, null)
+                }
+        result.add(slice)
+    }
+    return result
+}
+
+
+/**
+ * Extends the list to get the specified size.
+ * New elements are filled by the given value.
+ * If the size already has the specified number of elements or more,
+ * the original instance is returned.
+ *
+ * @receiver      a list to extend.
+ * @param size    the desired size.
+ * @param padding a value to use for filling new cells.
+ * @return        the extended list which size is [size] or more.
+ */
+fun <T: Any?> List<T>.extend(size: Int, padding: T): List<T> {
+    val n = this.size
+    if (n >= size) return this
+
+    val result = ArrayList<T>(size)
+    result.addAll(this)
+    while (result.size < size) result.add(padding)
+    return result
+}
+
