@@ -19,6 +19,12 @@ class CollectsExt {
 
     }
 
+    @Test
+    fun chopBy_zeroSlice() {
+        expectIllegalArgumentException {
+            listOf(1L, 2L) chopBy 0
+        }
+    }
 
     @Test
     fun chopAndPadBy_basic() {
@@ -29,6 +35,14 @@ class CollectsExt {
         listOf(1L, 2L, 3L, 4L, 5L) chopAndPadBy 3 expected listOf(listOf(1L, 2L, 3L), listOf(4L, 5L, null))
 
     }
+
+    @Test
+    fun chopAndPadBy_zeroSlice() {
+        expectIllegalArgumentException {
+            listOf(1L, 2L) chopAndPadBy 0
+        }
+    }
+
 
 
 }

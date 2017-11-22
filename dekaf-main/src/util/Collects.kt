@@ -93,6 +93,7 @@ fun collectionToString(collection: Iterable<*>?,
 infix fun <T: Any?> List<T>.chopBy(sliceSize: Int): List<List<T>> {
     val n = this.size
     if (n <= sliceSize) return Collections.singletonList(this)
+    if (sliceSize <= 0) throw IllegalArgumentException("The slice size must be positive but it is $sliceSize")
     val result = ArrayList<List<T>>(n / sliceSize + if (n % sliceSize == 0) 0 else 1)
     for (offset in 0 until n step sliceSize) {
         val slice = this.subList(offset, min(offset+sliceSize, n))
@@ -120,6 +121,7 @@ infix fun <T: Any?> List<T>.chopAndPadBy(sliceSize: Int): List<List<T?>> {
     val n = this.size
     if (n == sliceSize) return Collections.singletonList(this)
     if (n == 0) return Collections.emptyList()
+    if (sliceSize <= 0) throw IllegalArgumentException("The slice size must be positive but it is $sliceSize")
     val result = ArrayList<List<T?>>(n / sliceSize + if (n % sliceSize == 0) 0 else 1)
     for (offset in 0 until n step sliceSize) {
         val end = offset + sliceSize

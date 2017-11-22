@@ -27,6 +27,7 @@ public abstract class ArrayUtil {
     public static <E> E[][] chopArrayBy(final @NotNull E[] array, final int sliceSize) {
         final int n = array.length;
         if (n == sliceSize) return createArrayOf(array);
+        if (sliceSize <= 0) throw new IllegalArgumentException("The slice size must be positive but it is " + sliceSize);
 
         final int m = n / sliceSize; // number of whole slices
         final int r = n % sliceSize; // reminder — number of actual elements in the last slice
@@ -67,6 +68,7 @@ public abstract class ArrayUtil {
                                               final @Nullable E padding) {
         final int n = array.length;
         if (n == sliceSize) return createArrayOf(array);
+        if (sliceSize <= 0) throw new IllegalArgumentException("The slice size must be positive but it is " + sliceSize);
 
         final int m = n / sliceSize; // number of whole slices
         final int r = n % sliceSize; // reminder — number of actual elements in the last slice
