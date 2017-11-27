@@ -37,7 +37,7 @@ public class MysqlIntermediateProvider extends JdbcIntermediateRdbmsProvider {
    * </pre>
    */
   static final Pattern MYSQL_CONNECTION_STRING_PATTERN =
-          Pattern.compile("^jdbc:mysql://.+$");
+          Pattern.compile("^jdbc:(?:mysql|mariadb)://.+$");
 
   static final String MYSQL_CONNECTION_STRING_EXAMPLE =
           "jdbc:mysql:///";
