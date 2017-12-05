@@ -538,7 +538,7 @@ public final class JdbcValueGetters {
             this.arrayClass = arrayClass;
         }
 
-        @Override
+        @Override @SuppressWarnings("unchecked")
         protected A convertArray(final Array array) throws SQLException {
             Object gotArray = array.getArray();
             final Object result;
@@ -562,10 +562,10 @@ public final class JdbcValueGetters {
                 throw new DBFetchingException(msg, e, null);
             }
 
-            //noinspection unchecked
             return (A) result;
         }
 
+        @SuppressWarnings("unchecked")
         private static Object copySlice(Class<?> sliceClass, Object sliceSource) {
             Class<?> componentType = sliceClass.getComponentType();
             int n = java.lang.reflect.Array.getLength(sliceSource);

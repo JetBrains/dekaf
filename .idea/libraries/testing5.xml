@@ -9,6 +9,7 @@
       <root url="jar://$PROJECT_DIR$/lib/test/junit-platform-suite-api-1.0.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/test/junit-platform-launcher-1.0.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/test/opentest4j-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/apiguardian-api-1.0.0.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/lib/test/junit-jupiter-api-5.0.0-javadoc.jar!/" />
@@ -27,6 +28,7 @@
       <root url="jar://$PROJECT_DIR$/lib/test/junit-platform-engine-1.0.0-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/test/junit-platform-suite-api-1.0.0-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/test/junit-platform-launcher-1.0.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/test/apiguardian-api-1.0.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

@@ -64,6 +64,7 @@ public final class InterLayout implements Serializable {
     public final Class[] cortegeClasses;
 
 
+    @SuppressWarnings("unchecked")
     public InterLayout(final @NotNull  InterResultKind   resultKind,
                        final @NotNull  InterRowKind      rowKind,
                        final @Nullable JavaPrimitiveKind primitiveKind,

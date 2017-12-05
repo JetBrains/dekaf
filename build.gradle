@@ -108,6 +108,16 @@ configure ([ project(':dekaf-main'), project(':dekaf-test-db'), project(':ko-tes
         }
     }
 
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "1.8"
+            //languageVersion = "1.1"
+            //apiVersion = "1.1"
+            javaParameters = true
+            kotlinOptions.suppressWarnings = false
+        }
+    }
+    
 }
 
 
@@ -126,6 +136,16 @@ configure ([ project(':dekaf-main-test'), project(':dekaf-test-db-test'), projec
             java.srcDirs = []
             kotlin.srcDirs = []
             resources.srcDirs = []
+        }
+    }
+
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "1.8"
+            //languageVersion = "1.2"
+            //apiVersion = "1.2"
+            javaParameters = true
+            kotlinOptions.suppressWarnings = true
         }
     }
 
@@ -172,6 +192,7 @@ project(':dekaf-base-test') {
         compile name: "junit-jupiter-api-$junitJupiterVersion"
         compile name: "junit-jupiter-engine-$junitJupiterVersion"
         compile name: "junit-jupiter-params-$junitJupiterVersion"
+        compile name: "apiguardian-api-1.0.0"
         compile name: "assertj-core-$assertJVersion"
     }
 
@@ -199,6 +220,7 @@ project(':dekaf-jdbc-test') {
         compile name: "junit-jupiter-api-$junitJupiterVersion"
         compile name: "junit-jupiter-engine-$junitJupiterVersion"
         compile name: "junit-jupiter-params-$junitJupiterVersion"
+        compile name: "apiguardian-api-1.0.0"
         compile name: "assertj-core-$assertJVersion"
     }
 
@@ -232,6 +254,7 @@ project(':dekaf-main-test') {
         compile name: "junit-jupiter-api-$junitJupiterVersion"
         compile name: "junit-jupiter-engine-$junitJupiterVersion"
         compile name: "junit-jupiter-params-$junitJupiterVersion"
+        compile name: "apiguardian-api-1.0.0"
         compile name: "assertj-core-$assertJVersion"
     }
 
@@ -270,6 +293,7 @@ project(':dekaf-test-db-test') {
         compile name: "junit-jupiter-api-$junitJupiterVersion"
         compile name: "junit-jupiter-engine-$junitJupiterVersion"
         compile name: "junit-jupiter-params-$junitJupiterVersion"
+        compile name: "apiguardian-api-1.0.0"
         compile name: "assertj-core-$assertJVersion"
     }
 
@@ -290,6 +314,7 @@ project(':ko-test-util') {
         compile name: "junit-jupiter-api-$junitJupiterVersion"
         compile name: "junit-jupiter-engine-$junitJupiterVersion"
         compile name: "junit-jupiter-params-$junitJupiterVersion"
+        compile name: "apiguardian-api-1.0.0"
         compile name: "assertj-core-$assertJVersion"
         compile name: "opentest4j-1.0.0"
     }
@@ -345,6 +370,7 @@ project(':test-basic') {
         compile name: "junit-jupiter-api-$junitJupiterVersion"
         compile name: "junit-jupiter-engine-$junitJupiterVersion"
         compile name: "junit-jupiter-params-$junitJupiterVersion"
+        compile name: "apiguardian-api-1.0.0"
         compile name: "assertj-core-$assertJVersion"
     }
 
@@ -400,6 +426,7 @@ project(':test-connection') {
         compile name: "junit-jupiter-engine-$junitJupiterVersion"
         compile name: "junit-jupiter-params-$junitJupiterVersion"
         compile name: "assertj-core-$assertJVersion"
+        compile name: "apiguardian-api-1.0.0"
         compile name: "h2-$h2dbVersion"
     }
 
@@ -515,6 +542,9 @@ dependencies {
          "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion",
          "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion:sources",
          "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion:javadoc",
+         "org.apiguardian:apiguardian-api:1.0.0",
+         "org.apiguardian:apiguardian-api:1.0.0:sources",
+         "org.apiguardian:apiguardian-api:1.0.0:javadoc",
          "org.assertj:assertj-core:$assertJVersion",
          "org.assertj:assertj-core:$assertJVersion:sources",
          "org.assertj:assertj-core:$assertJVersion:javadoc",

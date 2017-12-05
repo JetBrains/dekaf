@@ -134,7 +134,7 @@ final class JdbcDriverManager {
         return driver;
     }
 
-    @NotNull
+    @NotNull @SuppressWarnings("unchecked")
     private Class<Driver> getDriverClass(final @NotNull String className)  {
         final ClassLoader classLoader = getDriverClassLoader();
 
@@ -151,7 +151,6 @@ final class JdbcDriverManager {
         }
 
         if (Driver.class.isAssignableFrom(justClass)) {
-            //noinspection unchecked
             return justClass;
         }
         else {
