@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.1.60'
+    ext.kotlin_version = '1.2.0'
 
     repositories {
         mavenCentral()
@@ -134,7 +134,7 @@ configure ([ project(':dekaf-main-test'), project(':dekaf-test-db-test'), projec
 
 
 
-def kotlinVersion        = '1.1.60'
+def kotlinVersion        = '1.2.0'
 def annotationsVersion   = "15.0"
 
 def junitPlatformVersion = "1.0.0"
@@ -211,7 +211,6 @@ project(':dekaf-main') {
         compile project(':dekaf-base')
         compile name: "kotlin-stdlib-$kotlinVersion"
         compile name: "kotlin-stdlib-common-$kotlinVersion"
-        compile name: "kotlin-stdlib-jre7-$kotlinVersion"
         compile name: "kotlin-stdlib-jre8-$kotlinVersion"
         compile name: "kotlin-reflect-$kotlinVersion"
     }
@@ -224,11 +223,7 @@ project(':dekaf-main-test') {
         compile project(':dekaf-base')
         compile project(':dekaf-main')
         compile project(':ko-test-util')
-        compile name: "kotlin-stdlib-$kotlinVersion"
-        compile name: "kotlin-stdlib-common-$kotlinVersion"
-        compile name: "kotlin-stdlib-jre7-$kotlinVersion"
         compile name: "kotlin-stdlib-jre8-$kotlinVersion"
-        compile name: "kotlin-reflect-$kotlinVersion"
         compile name: "h2-$h2dbVersion"
         compile name: "junit-platform-commons-$junitPlatformVersion"
         compile name: "junit-platform-engine-$junitPlatformVersion"
@@ -250,7 +245,6 @@ project(':dekaf-test-db') {
         compile project(':dekaf-main')
         compile name: "kotlin-stdlib-$kotlinVersion"
         compile name: "kotlin-stdlib-common-$kotlinVersion"
-        compile name: "kotlin-stdlib-jre7-$kotlinVersion"
         compile name: "kotlin-stdlib-jre8-$kotlinVersion"
         compile name: "kotlin-reflect-$kotlinVersion"
     }
@@ -266,7 +260,6 @@ project(':dekaf-test-db-test') {
         compile project(':ko-test-util')
         compile name: "kotlin-stdlib-$kotlinVersion"
         compile name: "kotlin-stdlib-common-$kotlinVersion"
-        compile name: "kotlin-stdlib-jre7-$kotlinVersion"
         compile name: "kotlin-stdlib-jre8-$kotlinVersion"
         compile name: "kotlin-reflect-$kotlinVersion"
         compile name: "h2-$h2dbVersion"
@@ -288,7 +281,6 @@ project(':ko-test-util') {
     dependencies {
         compile name: "kotlin-stdlib-$kotlinVersion"
         compile name: "kotlin-stdlib-common-$kotlinVersion"
-        compile name: "kotlin-stdlib-jre7-$kotlinVersion"
         compile name: "kotlin-stdlib-jre8-$kotlinVersion"
         compile name: "kotlin-reflect-$kotlinVersion"
         compile name: "junit-platform-commons-$junitPlatformVersion"
@@ -324,7 +316,6 @@ project(':demo-on-kotlin') {
         compile name: "h2-$h2dbVersion"
         compile name: "kotlin-stdlib-$kotlinVersion"
         compile name: "kotlin-stdlib-common-$kotlinVersion"
-        compile name: "kotlin-stdlib-jre7-$kotlinVersion"
         compile name: "kotlin-stdlib-jre8-$kotlinVersion"
     }
 
@@ -344,7 +335,6 @@ project(':test-basic') {
         compile project(':ko-test-util')
         compile name: "kotlin-stdlib-$kotlinVersion"
         compile name: "kotlin-stdlib-common-$kotlinVersion"
-        compile name: "kotlin-stdlib-jre7-$kotlinVersion"
         compile name: "kotlin-stdlib-jre8-$kotlinVersion"
         compile name: "kotlin-reflect-$kotlinVersion"
         compile name: "h2-$h2dbVersion"
@@ -400,7 +390,6 @@ project(':test-connection') {
         compile project(':ko-test-util')
         compile name: "kotlin-stdlib-$kotlinVersion"
         compile name: "kotlin-stdlib-common-$kotlinVersion"
-        compile name: "kotlin-stdlib-jre7-$kotlinVersion"
         compile name: "kotlin-stdlib-jre8-$kotlinVersion"
         compile name: "kotlin-reflect-$kotlinVersion"
         compile name: "junit-platform-commons-$junitPlatformVersion"
@@ -495,9 +484,6 @@ dependencies {
         "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion",
         "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion:sources",
         "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion:javadoc",
-        "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion",
-        "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion:sources",
-        "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion:javadoc",
         "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion",
         "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion:sources",
         "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion:javadoc",

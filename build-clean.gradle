@@ -3,7 +3,7 @@ allprojects { project ->
 }
 
 
-def kotlinVersion        = '1.1.60'
+def kotlinVersion        = '1.2.0'
 def annotationsVersion   = "15.0"
 
 def junitPlatformVersion = "1.0.0"
@@ -44,9 +44,6 @@ dependencies {
         "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion",
         "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion:sources",
         "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion:javadoc",
-        "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion",
-        "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion:sources",
-        "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion:javadoc",
         "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion",
         "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion:sources",
         "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion:javadoc",
