@@ -1,6 +1,7 @@
 @file:JvmName("DateExt")
 package org.jetbrains.dekaf.util
 
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.GregorianCalendar.*
@@ -70,7 +71,7 @@ fun java.util.Date.export() =
  * @see [exportDateTime]
  */
 fun java.util.Date.exportDateOnly(): String =
-        formalTimestampFormat10.format(this)
+        this toString formalTimestampFormat10
 
 /**
  * Exports the date and time to a string
@@ -94,7 +95,7 @@ fun java.util.Date.exportDateTime(): String  {
  */
 fun java.util.Date.exportDateTime(withMilliseconds: Boolean): String  {
     val format = if (withMilliseconds) formalTimestampFormat23 else formalTimestampFormat19
-    return format.format(this)
+    return this toString format
 }
 
 /**
@@ -113,6 +114,23 @@ fun java.util.Date.hasMilliseconds(): Boolean {
     return this.time % 1000L > 0L
 }
 
+
+/**
+ * Converts the date to a string using the specified format.
+ * @throws IllegalAccessException when failed to convert.
+ */
+infix fun java.util.Date.toString (format: DateFormat): String {
+    try {
+        return format.format(this)
+    }
+    catch (e: Exception) {
+        val message =
+                """|Failed to format date of class ${this.javaClass.name} with value "$this", numeric value ${this.time}, using format $format.
+                   |Exception ${e.javaClass.simpleName}: ${e.message}
+                """.trimMargin()
+        throw IllegalArgumentException(message, e)
+    }
+}
 
 
 private val formalTimestampFormat10 = SimpleDateFormat("yyyy-MM-dd")
