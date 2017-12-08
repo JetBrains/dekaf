@@ -1,4 +1,4 @@
-@file:JvmName("Collects")
+@file:JvmName("CollectExt")
 package org.jetbrains.dekaf.util
 
 import java.lang.Math.min

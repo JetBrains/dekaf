@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 /**
  *
  */
-class CollectsExt {
+class CollectExtTest {
 
     @Test
     fun chopBy_basic() {
