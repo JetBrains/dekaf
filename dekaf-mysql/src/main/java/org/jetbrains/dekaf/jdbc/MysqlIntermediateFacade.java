@@ -78,6 +78,7 @@ public class MysqlIntermediateFacade extends JdbcIntermediateFacade {
         int pos = serverVersionStr.indexOf(MARIA_DB);
         if (pos != -1) {
           serverVersion = extractVersion(serverVersionStr.substring(pos + MARIA_DB.length()), SIMPLE_VERSION_PATTERN, 1);
+          if (serverVersion == Version.ZERO) serverVersion = extractVersion(serverVersionStr.substring(0, pos), SIMPLE_VERSION_PATTERN, 1);
           if (serverVersion != Version.ZERO) rdbmsName = MARIA_DB;
           else serverVersion = null;
         }
