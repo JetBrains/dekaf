@@ -71,7 +71,7 @@ where C.constraint_type = 'FOREIGN KEY'
 ;
 
 ---- ZapSchemaMetaQuery ----
-select concat('drop ', object_type, ' if exists ', object_name, ' ', suffix) as cmd
+select concat('drop ', object_type, ' if exists `', replace(object_name, '`', '``'), '` ', suffix) as cmd
 from (
   select 'table' as object_type, table_name as object_name, 'cascade' as suffix
   from information_schema.tables
@@ -81,6 +81,10 @@ from (
   select 'view' as object_type, table_name as object_name, 'cascade' as suffix
   from information_schema.views
   where table_schema = schema()
+  union
+  select 'event' as object_type, event_name as object_name, '' as suffix
+  from information_schema.events
+  where event_schema = schema()
   union
   select lower(routine_type) as object_type, routine_name as object_name, '' as suffix
   from information_schema.routines
