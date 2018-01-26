@@ -11,9 +11,10 @@
     <orderEntry type="module" module-name="dekaf-base" />
     <orderEntry type="module" module-name="dekaf-main" />
     <orderEntry type="module" module-name="dekaf-test-db" />
-    <orderEntry type="library" name="kotlin" level="project" />
+    <orderEntry type="library" name="kotlin-stdlib" level="project" />
     <orderEntry type="module" module-name="ko-test-util" />
-    <orderEntry type="library" name="testing5" level="project" />
-    <orderEntry type="library" name="testingAssertJ" level="project" />
+    <orderEntry type="library" name="junit-jupiter-api" level="project" />
+    <orderEntry type="library" name="junit-jupiter-engine" level="project" />
+    <orderEntry type="library" name="assertj-core" level="project" />
   </component>
 </module>

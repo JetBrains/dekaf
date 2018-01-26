@@ -11,6 +11,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="dekaf-base" />
     <orderEntry type="module" module-name="dekaf-main" />
-    <orderEntry type="library" name="kotlin" level="project" />
+    <orderEntry type="library" name="kotlin-stdlib" level="project" />
   </component>
 </module>

@@ -1,0 +1,26 @@
+<component name="libraryTable">
+  <library name="junit-jupiter-engine" type="repository">
+    <properties maven-id="org.junit.jupiter:junit-jupiter-engine:5.1.0-M1" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/junit-jupiter-engine-5.1.0-M1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-platform-engine-1.1.0-M1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-platform-commons-1.1.0-M1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opentest4j-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-jupiter-api-5.1.0-M1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/junit-jupiter-engine-5.1.0-M1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-platform-engine-1.1.0-M1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-platform-commons-1.1.0-M1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opentest4j-1.0.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-jupiter-api-5.1.0-M1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/junit-jupiter-engine-5.1.0-M1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-platform-engine-1.1.0-M1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-platform-commons-1.1.0-M1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opentest4j-1.0.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-jupiter-api-5.1.0-M1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

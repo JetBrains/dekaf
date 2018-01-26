@@ -9,7 +9,10 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="dekaf-base" />
     <orderEntry type="library" name="annotations" level="project" />
-    <orderEntry type="library" name="testing5" level="project" />
-    <orderEntry type="library" name="testingAssertJ" level="project" />
+    <orderEntry type="library" name="junit-jupiter-api" level="project" />
+    <orderEntry type="library" name="junit-jupiter-engine" level="project" />
+    <orderEntry type="library" name="junit-jupiter-params" level="project" />
+    <orderEntry type="library" name="h2" level="project" />
+    <orderEntry type="library" name="assertj-core" level="project" />
   </component>
 </module>
