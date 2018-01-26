@@ -6,9 +6,11 @@ import org.jetbrains.dekaf.assertions.IsTrue
 import org.jetbrains.dekaf.assertions.expected
 import org.jetbrains.dekaf.core.*
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
 
+@Tag("UnitTest")
 class LayoutsTest {
 
     companion object {

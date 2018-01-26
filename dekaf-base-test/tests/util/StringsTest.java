@@ -1,6 +1,7 @@
 package org.jetbrains.dekaf.util;
 
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -8,6 +9,7 @@ import static org.jetbrains.dekaf.util.Strings.ensureEndsWith;
 import static org.jetbrains.dekaf.util.Strings.ensureStartsWith;
 
 
+@Tag("UnitTest")
 @SuppressWarnings("SpellCheckingInspection")
 public class StringsTest {
 

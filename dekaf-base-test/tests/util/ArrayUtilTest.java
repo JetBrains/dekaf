@@ -1,5 +1,6 @@
 package org.jetbrains.dekaf.util;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -7,6 +8,7 @@ import static org.jetbrains.dekaf.util.ArrayUtil.*;
 
 
 
+@Tag("UnitTest")
 class ArrayUtilTest {
 
     @Test

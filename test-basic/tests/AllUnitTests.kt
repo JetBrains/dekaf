@@ -5,6 +5,7 @@ import org.jetbrains.dekaf.teamcity.TeamCityListener
 import org.jetbrains.dekaf.testing.TerminalListener
 import org.junit.platform.engine.discovery.ClassNameFilter.includeClassNamePatterns
 import org.junit.platform.engine.discovery.DiscoverySelectors.selectPackage
+import org.junit.platform.launcher.TagFilter.includeTags
 import org.junit.platform.launcher.TestExecutionListener
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder
 import org.junit.platform.launcher.core.LauncherFactory
@@ -19,7 +20,7 @@ object AllUnitTests {
 
         val request = LauncherDiscoveryRequestBuilder.request()
                 .selectors(selectPackage("org.jetbrains.dekaf"))
-                .filters(includeClassNamePatterns(".*Test"))
+                .filters(includeClassNamePatterns(".*Test"), includeTags("UnitTest","DemoTest"))
                 .build()
 
         val launcher = LauncherFactory.create()

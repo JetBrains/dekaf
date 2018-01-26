@@ -2,12 +2,14 @@ package org.jetbrains.dekaf.text
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
 
 /**
  * @author Leonid Bushuev 
  */
+@Tag("UnitTest")
 internal class ScriptumResourceFromJavaTest {
 
     companion object {

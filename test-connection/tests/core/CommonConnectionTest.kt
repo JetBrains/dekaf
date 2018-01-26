@@ -3,12 +3,12 @@ package org.jetbrains.dekaf.core
 import org.jetbrains.dekaf.DekafMaster
 import org.jetbrains.dekaf.assertions.expected
 import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Tags
 import org.junit.jupiter.api.Test
 
 
-@Tag("Common")
+@Tags(Tag("Common"), Tag("UnitTest"))
 class CommonConnectionTest {
-
 
 
     @Test
@@ -28,7 +28,6 @@ class CommonConnectionTest {
 
         facade.isConnected expected false
     }
-
 
 
 }

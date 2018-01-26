@@ -2,10 +2,11 @@ package org.jetbrains.dekaf.core
 
 import org.jetbrains.dekaf.DekafMaster
 import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Tags
 import org.junit.jupiter.api.Test
 
 
-@Tag("H2")
+@Tags(Tag("H2"), Tag("UnitTest"))
 class H2ConnectionTest {
 
     @Test

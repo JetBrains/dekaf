@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.inter.InterLayout;
 import org.jetbrains.dekaf.inter.InterTask;
 import org.jetbrains.dekaf.util.JavaPrimitiveKind;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.Serializable;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 
+@Tag("UnitTest")
 public final class JdbcSeanceTest {
 
     @Test

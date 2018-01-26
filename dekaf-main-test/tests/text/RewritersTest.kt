@@ -1,10 +1,12 @@
 package org.jetbrains.dekaf.text
 
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import java.util.*
 
 
+@Tag("UnitTest")
 class RewritersTest {
 
     @Test

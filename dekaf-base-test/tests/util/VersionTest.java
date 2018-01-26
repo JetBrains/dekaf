@@ -1,5 +1,6 @@
 package org.jetbrains.dekaf.util;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -10,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Leonid Bushuev
  */
+@Tag("UnitTest")
 class VersionTest {
 
     @Test

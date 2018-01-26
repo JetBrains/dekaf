@@ -1,5 +1,6 @@
 package org.jetbrains.dekaf;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -8,6 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 
+@Tag("UnitTest")
 class RdbmsTest {
 
     @Test

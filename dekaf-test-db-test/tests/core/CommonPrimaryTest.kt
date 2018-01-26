@@ -2,6 +2,7 @@ package org.jetbrains.dekaf.core
 
 import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.dekaf.CommonIntegrationCase
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import java.sql.DatabaseMetaData
 import java.sql.Driver
@@ -11,6 +12,7 @@ import java.sql.SQLException
 /**
  * @author Leonid Bushuev
  */
+@Tag("UnitTest")
 class CommonPrimaryTest : CommonIntegrationCase() {
 
     @Test

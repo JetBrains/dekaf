@@ -2,9 +2,11 @@ package org.jetbrains.dekaf.util
 
 import org.jetbrains.dekaf.assertions.expected
 import org.jetbrains.dekaf.assertions.expectedSameAs
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
 
+@Tag("UnitTest")
 class StringExtTest {
 
     @Test

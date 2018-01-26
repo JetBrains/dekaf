@@ -3,6 +3,7 @@ package org.jetbrains.dekaf.jdbc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.H2db;
 import org.jetbrains.dekaf.Rdbms;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Driver;
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 
+@Tag("UnitTest")
 public class JdbcProviderTest {
 
 

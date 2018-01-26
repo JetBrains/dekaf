@@ -1,5 +1,6 @@
 package org.jetbrains.dekaf.core;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -8,7 +9,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
+@Tag("UnitTest")
 public class SettingsTest {
 
     @Test

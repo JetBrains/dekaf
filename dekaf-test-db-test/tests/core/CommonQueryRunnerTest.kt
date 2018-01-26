@@ -10,6 +10,7 @@ import org.jetbrains.dekaf.assertions.expected
 import org.jetbrains.dekaf.sql.SqlQuery
 import org.jetbrains.dekaf.text.Rewriters
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import java.lang.Number
 import java.sql.ResultSetMetaData
@@ -24,6 +25,7 @@ import kotlin.Suppress
 /**
  * @author Leonid Bushuev
  */
+@Tag("UnitTest")
 class CommonQueryRunnerTest : CommonIntegrationCase() {
 
 

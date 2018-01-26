@@ -3,9 +3,11 @@ package org.jetbrains.dekaf.sql
 
 import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.dekaf.text.Rewriters
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
 
+@Tag("UnitTest")
 class SqlCommandTest {
 
     @Test

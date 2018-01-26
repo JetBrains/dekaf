@@ -4,12 +4,14 @@ package org.jetbrains.dekaf.text
 import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.dekaf.core.layoutSingleValueOf
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
 
 /**
  * @author Leonid Bushuev from JetBrains
  */
+@Tag("UnitTest")
 class ScriptumBasicTest {
 
     companion object {

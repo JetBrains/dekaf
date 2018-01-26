@@ -1,6 +1,7 @@
 package org.jetbrains.dekaf.util;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 
-
+@Tag("UnitTest")
 class ArrayBuilderTest {
 
     @Test

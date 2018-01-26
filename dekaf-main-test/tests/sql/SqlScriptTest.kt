@@ -2,12 +2,14 @@ package org.jetbrains.dekaf.sql
 
 
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
 
 /**
  * @author Leonid Bushuev from JetBrains
  */
+@Tag("UnitTest")
 class SqlScriptTest {
 
     @Test
