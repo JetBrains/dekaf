@@ -1,17 +1,17 @@
 <component name="libraryTable">
   <library name="kotlin">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-reflect-1.2.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-stdlib-1.2.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-stdlib-jre7-1.2.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-stdlib-jre8-1.2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-reflect-1.2.21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-stdlib-1.2.21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-stdlib-jdk7-1.2.21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-stdlib-jdk8-1.2.21.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-reflect-1.2.0-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-stdlib-common-1.2.0-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-stdlib-jre7-1.2.0-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-stdlib-jre8-1.2.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-reflect-1.2.21-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-stdlib-1.2.21-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-stdlib-jdk7-1.2.21-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/pro/kotlin-stdlib-jdk8-1.2.21-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

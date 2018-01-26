@@ -3,7 +3,7 @@ allprojects { project ->
 }
 
 
-def kotlinVersion        = '1.2.0'
+def kotlinVersion        = '1.2.21'
 def annotationsVersion   = "15.0"
 
 def junitPlatformVersion = "1.0.0"
@@ -41,15 +41,12 @@ dependencies {
         "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
         "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion:sources",
         "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion:javadoc",
-        "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion",
-        "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion:sources",
-        "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion:javadoc",
-        "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion",
-        "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion:sources",
-        "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion:javadoc",
-        "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion",
-        "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion:sources",
-        "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion:javadoc",
+        "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion",
+        "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion:sources",
+        "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion:javadoc",
+        "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion",
+        "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion:sources",
+        "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion:javadoc",
         "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
         "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion:sources",
         "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion:javadoc"
