@@ -19,9 +19,8 @@
     <orderEntry type="module" module-name="demo-on-java" />
     <orderEntry type="module" module-name="demo-on-kotlin" />
     <orderEntry type="module" module-name="ko-test-util" />
-    <orderEntry type="library" name="junit-jupiter-api" level="project" />
     <orderEntry type="library" name="junit-jupiter-engine" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="h2" level="project" />
     <orderEntry type="library" name="junit-platform-launcher" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="h2" level="project" />
   </component>
 </module>

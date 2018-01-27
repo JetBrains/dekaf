@@ -13,7 +13,6 @@
     <orderEntry type="module" module-name="dekaf-test-db" />
     <orderEntry type="library" name="kotlin-stdlib" level="project" />
     <orderEntry type="module" module-name="ko-test-util" />
-    <orderEntry type="library" name="junit-jupiter-api" level="project" />
     <orderEntry type="library" name="junit-jupiter-engine" level="project" />
     <orderEntry type="library" name="assertj-core" level="project" />
   </component>
