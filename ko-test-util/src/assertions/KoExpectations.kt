@@ -5,6 +5,7 @@ package org.jetbrains.dekaf.assertions
 
 import org.junit.jupiter.api.Assertions
 import org.opentest4j.AssertionFailedError
+import kotlin.math.sign
 import kotlin.reflect.KClass
 
 
@@ -264,6 +265,50 @@ infix fun LongArray?.expected(array: LongArray) {
     for (i in 0..n1-1) if (this[i] != array[i]) { d = true; break }
     if (d) failDiff("Arrays are different: got ${this.displayString()} when expected ${array.displayString()}", this, array)
 }
+
+
+/// NUMBERS \\\
+
+infix fun<N: Comparable<N>> N?.expectedGreaterThan(than: N): N {
+    if (this == null) fail("Got null when expected a value greater than $than")
+    val c = this.compareTo(than)
+    when (c.sign) {
+        +1   -> return this!!
+        0    -> fail("Got $this when expected greater")
+        -1   -> fail("Got $this when expected greater than $than")
+        else -> error("Just for compiler")
+    }
+}
+
+infix fun<N: Number> N?.expectedGreaterThan(than: Int): N
+    = expectedGreaterThan(than as Long)
+
+infix fun<N: Number> N?.expectedGreaterThan(than: Long): N {
+    if (this == null) fail("Got null when expected a value greater than $than")
+    val v = this.toLong()
+    when {
+        v > than  -> return this!!
+        v == than -> fail("Got $this when expected greater")
+        else      -> fail("Got $this when expected greater than $than")
+    }
+}
+
+infix fun Int.expectedGreaterThan(than: Int): Int {
+    when {
+        this > than  -> return this!!
+        this == than -> fail("Got $this when expected greater")
+        else         -> fail("Got $this when expected greater than $than")
+    }
+}
+
+infix fun Long.expectedGreaterThan(than: Long): Long {
+    when {
+        this > than  -> return this!!
+        this == than -> fail("Got $this when expected greater")
+        else         -> fail("Got $this when expected greater than $than")
+    }
+}
+
 
 
 ///  AUXILIARY FUNCTIONS \\\

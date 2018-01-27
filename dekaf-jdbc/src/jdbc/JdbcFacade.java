@@ -5,9 +5,11 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.Rdbms;
 import org.jetbrains.dekaf.core.ConnectionInfo;
 import org.jetbrains.dekaf.core.ConnectionParameterCategory;
+import org.jetbrains.dekaf.core.DbDriverInfo;
 import org.jetbrains.dekaf.core.ImplementationAccessibleService;
 import org.jetbrains.dekaf.exceptions.DBConnectionException;
 import org.jetbrains.dekaf.inter.InterFacade;
+import org.jetbrains.dekaf.util.Version;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -46,6 +48,13 @@ final class JdbcFacade implements InterFacade {
     @NotNull
     private final ArrayList<JdbcSession> sessions = new ArrayList<>();
 
+    @Nullable
+    private Driver driver = null;
+
+    @Nullable
+    private DbDriverInfo driverInfo = null;
+
+    @Nullable
     private ConnectionInfo connectionInfo = null;
 
 
@@ -95,8 +104,13 @@ final class JdbcFacade implements InterFacade {
 
     @Override
     public void activate() {
+        if (driver == null) {
+            activateDriver();
+            assert driver != null : "JDBC driver has not been activated";
+            assert driverInfo != null : "JDBC driver info is omitted";
+        }
+
         if (dataSource == null) {
-            Driver driver = ensureDriver();
             JdbcSimpleDataSource ds = new JdbcSimpleDataSource(connectionString, properties, driver);
             dataSource = ds;
         }
@@ -106,11 +120,24 @@ final class JdbcFacade implements InterFacade {
         }
     }
 
+    public void activateDriver() {
+        driver = ensureDriver();
+        driverInfo = obtainDriverInfo(driver);
+    }
+
     @NotNull
     Driver ensureDriver() {
         if (provider == null) throw new IllegalStateException("Neither provider nor data source specified — impossible to activate");
         return provider.getDriver(specific.getDriverClassName());
     }
+
+    @NotNull
+    private static DbDriverInfo obtainDriverInfo(final @Nullable Driver driver) {
+        String name = driver.toString();
+        Version version = Version.of(driver.getMajorVersion(), driver.getMinorVersion());
+        return new DbDriverInfo(name, version);
+    }
+
 
     @Override
     public boolean isActive() {
@@ -139,6 +166,20 @@ final class JdbcFacade implements InterFacade {
         finally {
             JdbcUtil.close(connection);
         }
+    }
+
+
+    @Override
+    public void deactivateDriver() {
+        deactivate();
+
+        driverInfo = null;
+        driver = null;
+    }
+
+    @Override
+    public @Nullable DbDriverInfo getDriverInfo() {
+        return driverInfo;
     }
 
     @Override

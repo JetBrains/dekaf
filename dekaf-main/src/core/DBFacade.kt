@@ -17,6 +17,11 @@ interface DBFacade : DBSessionAware, ImplementationAccessibleService {
     fun rdbms(): Rdbms
 
     /**
+     * Activates the database driver.
+     */
+    fun activateDriver();
+
+    /**
      * Connects to the database server.
      */
     fun connect()
@@ -40,6 +45,11 @@ interface DBFacade : DBSessionAware, ImplementationAccessibleService {
     fun disconnect()
 
     /**
+     * Deactivates the driver. Also disconnects if necessary.
+     */
+    fun deactivateDriver();
+
+    /**
      * Checks whether it is connected to the server.
      *
      * TBD does it really performs a "ping" interaction or just returning a kind of internal status?
@@ -47,6 +57,12 @@ interface DBFacade : DBSessionAware, ImplementationAccessibleService {
      * @return whether is connected.
      */
     val isConnected: Boolean
+
+    /**
+     * The driver information, when it's loaded and activated.
+     * Null when is not activated.
+     */
+    val driverInfo: DbDriverInfo?
 
     /**
      * Provides a brief connection info.

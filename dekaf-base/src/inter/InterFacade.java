@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.Rdbms;
 import org.jetbrains.dekaf.core.ConnectionInfo;
 import org.jetbrains.dekaf.core.ConnectionParameterCategory;
+import org.jetbrains.dekaf.core.DbDriverInfo;
 import org.jetbrains.dekaf.core.ImplementationAccessibleService;
 
 import java.util.Map;
@@ -30,11 +31,15 @@ public interface InterFacade extends ImplementationAccessibleService {
 
     ////// CONNECT-DISCONNECT \\\\\\
 
+    void activateDriver();
+
     void activate();
 
     boolean isActive();
 
     void deactivate();
+
+    void deactivateDriver();
 
 
     ////// SESSIONS \\\\\\
@@ -43,6 +48,9 @@ public interface InterFacade extends ImplementationAccessibleService {
 
 
     ////// OTHER \\\\\\
+
+    @Nullable
+    DbDriverInfo getDriverInfo();
 
     ConnectionInfo getConnectionInfo();
 

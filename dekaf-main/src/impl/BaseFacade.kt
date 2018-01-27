@@ -1,10 +1,7 @@
 package org.jetbrains.dekaf.impl
 
 import org.jetbrains.dekaf.Rdbms
-import org.jetbrains.dekaf.core.ConnectionInfo
-import org.jetbrains.dekaf.core.DBFacade
-import org.jetbrains.dekaf.core.DBSession
-import org.jetbrains.dekaf.core.DBTransaction
+import org.jetbrains.dekaf.core.*
 import org.jetbrains.dekaf.inter.InterFacade
 import java.lang.IllegalStateException
 import java.util.concurrent.ConcurrentLinkedDeque
@@ -31,6 +28,8 @@ internal open class BaseFacade: DBFacade {
 
     private var prima: BaseSession? = null
 
+    private var driverInfo_: DbDriverInfo? = null
+
     private var connectionInfo_: ConnectionInfo? = null
 
 
@@ -49,6 +48,11 @@ internal open class BaseFacade: DBFacade {
 
     override fun rdbms(): Rdbms {
         return rdbms
+    }
+
+    override fun activateDriver() {
+        inter.activateDriver()
+        driverInfo_ = inter.driverInfo
     }
 
     override fun connect() {
@@ -106,8 +110,17 @@ internal open class BaseFacade: DBFacade {
         }
     }
 
+    override fun deactivateDriver() {
+        if (connected) disconnect()
+        driverInfo_ = null
+        inter.deactivateDriver()
+    }
+
     override val isConnected: Boolean
         get() = connected
+
+    override val driverInfo: DbDriverInfo?
+        get() = driverInfo_
 
     override val connectionInfo: ConnectionInfo
         get() = connectionInfo_ ?: throw IllegalStateException("The connection info is not obtained")

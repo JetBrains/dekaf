@@ -1,0 +1,35 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Driver Tests" type="JUnit" factoryName="JUnit">
+    <module name="test-drivers" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <option name="PACKAGE_NAME" value="org.jetbrains.dekaf" />
+    <option name="MAIN_CLASS_NAME" value="" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="tags" />
+    <option name="VM_PARAMETERS" value="-ea" />
+    <option name="PARAMETERS" value="" />
+    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+    <option name="PASS_PARENT_ENVS" value="true" />
+    <option name="TEST_SEARCH_SCOPE">
+      <value defaultName="moduleWithDependencies" />
+    </option>
+    <category value="testing.categories.UnitTest" />
+    <patterns>
+      <pattern testClass="org.jetbrains.jdba.CoreUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.core1.CoreOldUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.oracle.OracleUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.microsoft.MicrosoftUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.jdbc.JdbcUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.jdbc.OracleJdbcUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.jdbc.PostgreJdbcUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.jdbc.MysqlJdbcUnitTests" />
+      <pattern testClass="org.jetbrains.jdba.jdbc.H2dbJdbcUnitTests" />
+    </patterns>
+    <fork_mode value="class" />
+    <tags>
+      <tag value="DriverTest" />
+    </tags>
+    <method />
+  </configuration>
+</component>
