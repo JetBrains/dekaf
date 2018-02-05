@@ -6,8 +6,8 @@ allprojects { project ->
 def kotlinVersion        = '1.2.21'
 def annotationsVersion   = "15.0"
 
-def junitPlatformVersion = "1.0.0"
-def junitJupiterVersion  = "5.0.0"
+def junitPlatformVersion = "1.1.0-RC1"
+def junitJupiterVersion  = "5.1.0-RC1"
 def assertJVersion       = "3.8.0"
 def log4jVersion         = "2.9.0"
 
