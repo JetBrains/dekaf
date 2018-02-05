@@ -1,6 +1,7 @@
 <component name="InspectionProjectProfileManager">
   <profile version="1.0">
     <option name="myName" value="Project Default" />
+    <inspection_tool class="CanBeVal" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="ConvertSecondaryConstructorToPrimary" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="ForCanBeForeach" enabled="false" level="WARNING" enabled_by_default="false">
       <option name="REPORT_INDEXED_LOOP" value="true" />
@@ -15,18 +16,26 @@
     </inspection_tool>
     <inspection_tool class="LoopToCallChain" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="NonAsciiCharacters" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="PrivatePropertyName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
-      <option name="namePattern" value="_?[a-z][A-Za-zß\d]*" />
+    <inspection_tool class="PrivatePropertyName" enabled="true" level="TYPO" enabled_by_default="true">
+      <option name="namePattern" value="[a-z][A-Za-zß\d]*_?" />
     </inspection_tool>
     <inspection_tool class="PropertyName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <option name="namePattern" value="[a-z][A-Za-zß\d]*" />
     </inspection_tool>
     <inspection_tool class="RemoveExplicitTypeArguments" enabled="true" level="TYPO" enabled_by_default="true" />
+    <inspection_tool class="ReplaceRangeToWithUntil" enabled="true" level="INFORMATION" enabled_by_default="true" />
+    <inspection_tool class="TestFunctionName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <scope name="Tests" level="WEAK WARNING" enabled="true">
+        <option name="namePattern" value="[a-zA-Zа-яЁА-ЯЁ_\d]*" />
+      </scope>
+    </inspection_tool>
     <inspection_tool class="UnnecessaryLocalVariable" enabled="true" level="INFORMATION" enabled_by_default="true">
       <option name="m_ignoreImmediatelyReturnedVariables" value="false" />
       <option name="m_ignoreAnnotatedVariables" value="false" />
     </inspection_tool>
     <inspection_tool class="UnnecessaryUnboxing" enabled="true" level="TYPO" enabled_by_default="true" />
+    <inspection_tool class="UnnecessaryVariable" enabled="true" level="INFORMATION" enabled_by_default="true" />
+    <inspection_tool class="UnusedSymbol" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="WeakerAccess" enabled="true" level="INFORMATION" enabled_by_default="true">
       <option name="SUGGEST_PACKAGE_LOCAL_FOR_MEMBERS" value="true" />
       <option name="SUGGEST_PACKAGE_LOCAL_FOR_TOP_CLASSES" value="true" />

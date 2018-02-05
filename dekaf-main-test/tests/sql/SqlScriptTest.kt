@@ -17,7 +17,7 @@ class SqlScriptTest {
         val script1 = SqlScript("command1")
         val script2 = SqlScript("command2")
         val script = SqlScript(script1, script2)
-        assertThat(script.statements.size.toInt()).isEqualTo(2.toInt())
+        assertThat(script.statements.size).isEqualTo(2)
         assertThat(script.statements[0].sourceText).isEqualTo("command1")
         assertThat(script.statements[1].sourceText).isEqualTo("command2")
     }

@@ -27,7 +27,7 @@ class BaseProvider: DBProvider {
 
     init {
         val providers = ArrayList<InterProvider>()
-        val providerClass1 = getClassIfExists<InterProvider>("org.jetbrains.dekaf.jdbc.JdbcProvider");
+        val providerClass1 = getClassIfExists<InterProvider>("org.jetbrains.dekaf.jdbc.JdbcProvider")
         if (providerClass1 != null) {
             val constructor1 = providerClass1.getDefaultConstructor()
             val provider1 = constructor1.newInstance()

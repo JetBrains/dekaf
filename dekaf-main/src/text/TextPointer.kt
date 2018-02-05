@@ -30,5 +30,14 @@ data class TextPointer
     override fun toString(): String {
         return "$row:$pos($offset)"
     }
-    
+
+    override fun equals(other: Any?) = this === other || other is TextPointer && this.equals(other)
+
+    // @formatter:off
+    fun equals(that: TextPointer) =
+            this.offset == that.offset &&
+            this.row    == that.row &&
+            this.pos    == that.pos
+    // @formatter:on
+
 }

@@ -75,7 +75,7 @@ object TeamCityMessages {
     private fun Throwable.getStackTraceText(): String {
         val w = StringWriter(4096)
         this.printStackTrace(java.io.PrintWriter(w))
-        return w.buffer.toString();
+        return w.buffer.toString()
     }
 
 

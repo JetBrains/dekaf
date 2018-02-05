@@ -1,5 +1,6 @@
 package org.jetbrains.dekaf.testing
 
+import org.jetbrains.dekaf.util.nop
 import org.junit.platform.engine.TestExecutionResult
 import org.junit.platform.launcher.TestExecutionListener
 import org.junit.platform.launcher.TestIdentifier
@@ -29,7 +30,7 @@ object TerminalListener : TestExecutionListener {
     }
 
     override fun executionStarted(testIdentifier: TestIdentifier) {
-        val entry = createOrGetTestEntry(testIdentifier)
+        createOrGetTestEntry(testIdentifier)
     }
 
     override fun executionFinished(testIdentifier: TestIdentifier, testExecutionResult: TestExecutionResult) {
@@ -44,12 +45,12 @@ object TerminalListener : TestExecutionListener {
 
 
     fun displayAll() {
-        var skippedTests = 0
         for (entry in testEntries) {
             val result = entry.result ?: continue
             when (result.status) {
                 TestExecutionResult.Status.FAILED -> printFail(entry)
                 TestExecutionResult.Status.ABORTED -> printFail(entry)
+                else -> nop()
             }
         }
     }

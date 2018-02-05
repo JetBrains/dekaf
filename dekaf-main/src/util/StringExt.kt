@@ -111,10 +111,11 @@ fun String.rtrim(): String {
 @Deprecated("use ==")
 fun eq(str1: String?, str2: String?): Boolean = str1 == str2
 
-@Deprecated("use something else")
+@Deprecated("use something else") @Suppress("ReplaceCallWithComparison")
 fun eq(str1: String?, str2: String?, caseSensitive: Boolean): Boolean =
-        str1 === str2 || str1 != null && str2 != null && if (caseSensitive) String.CASE_INSENSITIVE_ORDER.compare(str1,str2) == 0
-                                                         else str1 == str2
+        str1 === str2 ||
+        str1 !== null && str2 !== null && if (caseSensitive) String.CASE_INSENSITIVE_ORDER.compare(str1,str2) == 0
+                                          else str1.equals(str2)
 
 fun minimizeSpaces(string: String): String {
     val s = string.trim { it <= ' ' }

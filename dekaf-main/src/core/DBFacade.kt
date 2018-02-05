@@ -19,7 +19,7 @@ interface DBFacade : DBSessionAware, ImplementationAccessibleService {
     /**
      * Activates the database driver.
      */
-    fun activateDriver();
+    fun activateDriver()
 
     /**
      * Connects to the database server.
@@ -47,7 +47,7 @@ interface DBFacade : DBSessionAware, ImplementationAccessibleService {
     /**
      * Deactivates the driver. Also disconnects if necessary.
      */
-    fun deactivateDriver();
+    fun deactivateDriver()
 
     /**
      * Checks whether it is connected to the server.

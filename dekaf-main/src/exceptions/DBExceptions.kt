@@ -7,8 +7,8 @@ class DBSessionIsClosedException(message: String) : DBServiceIsNotActiveExceptio
 
 class DBTransactionIsAlreadyStartedException : DBException {
 
-    constructor() : super("Transaction is already started.", null) {}
+    constructor() : super("Transaction is already started.", null)
 
-    constructor(message: String) : super(message, null) {}
+    constructor(message: String) : super(message, null)
 
 }

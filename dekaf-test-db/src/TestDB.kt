@@ -51,5 +51,5 @@ object TestDB {
     }
 
     private fun prepareTH(db: DBFacade): DBTestHelper =
-            DekafTestHelperFactory.createTestHelperFor(db);
+            DekafTestHelperFactory.createTestHelperFor(db)
 }

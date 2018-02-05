@@ -195,7 +195,7 @@ infix fun<E> Array<out E>?.expected(array: Array<out E>) {
     val n1 = this.size
     val n2 = array.size
     if (n1 != n2) failDiff("Arrays have different sizes: got ${this.displayString()} when expected ${array.displayString()}", this, array)
-    var eq = areArraysEqual(this, array)
+    val eq = areArraysEqual(this, array)
     if (!eq) failDiff("Arrays are different: got ${this.displayString()} when expected ${array.displayString()}", this, array)
 }
 
@@ -273,7 +273,7 @@ infix fun<N: Comparable<N>> N?.expectedGreaterThan(than: N): N {
     if (this == null) fail("Got null when expected a value greater than $than")
     val c = this.compareTo(than)
     when (c.sign) {
-        +1   -> return this!!
+        +1   -> return this
         0    -> fail("Got $this when expected greater")
         -1   -> fail("Got $this when expected greater than $than")
         else -> error("Just for compiler")
@@ -281,13 +281,13 @@ infix fun<N: Comparable<N>> N?.expectedGreaterThan(than: N): N {
 }
 
 infix fun<N: Number> N?.expectedGreaterThan(than: Int): N
-    = expectedGreaterThan(than as Long)
+    = expectedGreaterThan(than.toLong())
 
 infix fun<N: Number> N?.expectedGreaterThan(than: Long): N {
     if (this == null) fail("Got null when expected a value greater than $than")
     val v = this.toLong()
     when {
-        v > than  -> return this!!
+        v > than  -> return this
         v == than -> fail("Got $this when expected greater")
         else      -> fail("Got $this when expected greater than $than")
     }
@@ -295,7 +295,7 @@ infix fun<N: Number> N?.expectedGreaterThan(than: Long): N {
 
 infix fun Int.expectedGreaterThan(than: Int): Int {
     when {
-        this > than  -> return this!!
+        this > than  -> return this
         this == than -> fail("Got $this when expected greater")
         else         -> fail("Got $this when expected greater than $than")
     }
@@ -303,7 +303,7 @@ infix fun Int.expectedGreaterThan(than: Int): Int {
 
 infix fun Long.expectedGreaterThan(than: Long): Long {
     when {
-        this > than  -> return this!!
+        this > than  -> return this
         this == than -> fail("Got $this when expected greater")
         else         -> fail("Got $this when expected greater than $than")
     }
