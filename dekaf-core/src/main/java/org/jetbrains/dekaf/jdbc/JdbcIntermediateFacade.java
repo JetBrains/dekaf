@@ -161,7 +161,7 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
         if (rdbmsName == null) rdbmsName = connection.getClass().getName();
         String databaseName = connection.getCatalog();
         String schemaName = getSchema(connection);
-        String userName = md.getUserName();
+        String userName = getUserNameSafe(md);
         Version serverVersion = Version.of(md.getDatabaseMajorVersion(), md.getDatabaseMinorVersion());
         Version driverVersion = Version.of(md.getDriverMajorVersion(), md.getDriverMinorVersion());
         return new ConnectionInfo(rdbmsName,
@@ -174,6 +174,15 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
     }
     catch (SQLException sqle) {
       throw  myExceptionRecognizer.recognizeException(sqle, "getting brief connection info using JDBC connection metadata");
+    }
+  }
+
+  private String getUserNameSafe(final DatabaseMetaData md) {
+    try {
+      return md.getUserName();
+    }
+    catch (Exception ignored) {
+      return null;
     }
   }
 
