@@ -3,9 +3,9 @@ def annotationsVersion   = '15.0'
 
 def log4jVersion         = '2.9.0'
 
-def junitPlatformVersion = '1.1.0-RC1'
-def junitJupiterVersion  = '5.1.0-RC1'
-def assertJVersion       = '3.8.0'
+def junitPlatformVersion = '1.1.0'
+def junitJupiterVersion  = '5.1.0'
+def assertJVersion       = '3.9.1'
 
 def h2dbVersion          = '1.4.196'
 def postgresVersion      = '9.4-1201-jdbc4'
@@ -19,7 +19,7 @@ buildscript {
 
     // unfortunately, we have to duplicate this two variables :(
     def kotlinVersion        = '1.2.30'
-    def junitPlatformVersion = '1.1.0-RC1'
+    def junitPlatformVersion = '1.1.0'
 
 
     ext {
