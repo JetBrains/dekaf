@@ -1,4 +1,4 @@
-def kotlinVersion        = '1.2.21'
+def kotlinVersion        = '1.2.30'
 def annotationsVersion   = '15.0'
 
 def log4jVersion         = '2.9.0'
@@ -18,7 +18,7 @@ def jtdsVersion          = '1.2.8'
 buildscript {
 
     // unfortunately, we have to duplicate this two variables :(
-    def kotlinVersion        = '1.2.21'
+    def kotlinVersion        = '1.2.30'
     def junitPlatformVersion = '1.1.0-RC1'
 
 
