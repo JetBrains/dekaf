@@ -1,16 +1,16 @@
 package org.jetbrains.dekaf.jdbc;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jetbrains.dekaf.jdbc.H2mem.hmFacade;
 
 
-
-class JdbcFacadeTest {
+@Tag("UnitTest")
+class JdbcFacadeUnitTest extends JdbcUnitTestCase {
 
     @Test
     void activate() {

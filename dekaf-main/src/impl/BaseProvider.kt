@@ -1,8 +1,11 @@
 package org.jetbrains.dekaf.impl
 
+import org.jetbrains.dekaf.H2db
 import org.jetbrains.dekaf.Rdbms
 import org.jetbrains.dekaf.core.DBFacade
 import org.jetbrains.dekaf.core.DBProvider
+import org.jetbrains.dekaf.core.DekafSettingNames
+import org.jetbrains.dekaf.core.Settings
 import org.jetbrains.dekaf.inter.InterFacade
 import org.jetbrains.dekaf.inter.InterProvider
 import org.jetbrains.dekaf.util.getClassIfExists
@@ -67,8 +70,12 @@ class BaseProvider: DBProvider {
     }
 
     override fun provide(interProvider: InterProvider, connectionString: String): DBFacade {
-        val interFacade = interProvider.createFacade(connectionString)
-        interFacade.setConnectionString(connectionString)
+        val rdbms = H2db.RDBMS // TODO determine
+        val interFacade = interProvider.createFacade(rdbms)
+
+        val settings = Settings(DekafSettingNames.ConnectionString, connectionString)
+
+        interFacade.setUp(settings)
         return makeFacade(interFacade)
     }
 

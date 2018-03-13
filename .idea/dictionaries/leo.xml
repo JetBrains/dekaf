@@ -19,6 +19,7 @@
       <w>jacocoagent</w>
       <w>javaagent</w>
       <w>jdba</w>
+      <w>jdbc</w>
       <w>jtds</w>
       <w>klass</w>
       <w>klazz</w>
@@ -39,6 +40,7 @@
       <w>rset</w>
       <w>scriptum</w>
       <w>sqle</w>
+      <w>sqlite</w>
       <w>sqlserver</w>
       <w>struct</w>
       <w>structs</w>

@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.inter.InterLayout;
 import org.jetbrains.dekaf.inter.InterTask;
 import org.jetbrains.dekaf.util.JavaPrimitiveKind;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.Serializable;
@@ -13,14 +14,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.jetbrains.dekaf.core.TaskKind.TASK_QUERY;
 import static org.jetbrains.dekaf.inter.InterResultKind.*;
 import static org.jetbrains.dekaf.inter.InterRowKind.*;
-import static org.jetbrains.dekaf.jdbc.H2mem.hmInSession;
-import static org.jetbrains.dekaf.jdbc.H2mem.hmInSessionDo;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 
-public final class JdbcSeanceTest {
+@Tag("UnitTest")
+public final class JdbcSeanceTest extends JdbcUnitTestCase
+{
 
     @Test
     public void existence_0() {

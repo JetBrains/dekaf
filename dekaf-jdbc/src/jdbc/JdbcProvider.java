@@ -3,10 +3,9 @@ package org.jetbrains.dekaf.jdbc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.Rdbms;
+import org.jetbrains.dekaf.core.Settings;
 import org.jetbrains.dekaf.inter.InterProvider;
 
-import java.sql.Driver;
-import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -20,7 +19,22 @@ final class JdbcProvider implements InterProvider {
 
     ////// STATE \\\\\\
 
-    private final JdbcDriverManager driverManager = new JdbcDriverManager();
+    private Settings baseSettings = new Settings();
+
+
+
+    ////// LONG SERVICE \\\\\\
+
+    @Override
+    public void setUp(final @NotNull Settings settings) {
+        baseSettings = settings;
+    }
+
+    @Override
+    public void shutDown() {
+    }
+
+
 
 
     ////// RDBMS \\\\\\
@@ -40,32 +54,6 @@ final class JdbcProvider implements InterProvider {
     }
 
 
-    ////// DRIVERS \\\\\\
-
-    @Override
-    public void setDriverDirectory(final @NotNull String directory) {
-        driverManager.setDriverDirectory(directory);
-    }
-
-    @Override
-    public @NotNull String getDriverDirectory() {
-        return driverManager.getDriverDirectory();
-    }
-
-    @Override
-    public void setDriverJars(final @Nullable Collection<String> jars) {
-        driverManager.setDriverJars(jars);
-    }
-
-    @Override
-    public @Nullable Collection<String> getDriverJars() {
-        return driverManager.getDriverJars();
-    }
-
-    @NotNull
-    public Driver getDriver(final @NotNull String className) {
-        return driverManager.getDriver(className);
-    }
 
 
     ////// FACADES \\\\\\
@@ -98,13 +86,6 @@ final class JdbcProvider implements InterProvider {
             if (matcher.matches()) return d;
         }
         return null;
-    }
-
-
-
-
-    public void shutDown() {
-        driverManager.deregisterAllDrivers();
     }
 
 }

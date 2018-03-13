@@ -13,13 +13,20 @@ import java.sql.SQLException;
  */
 public abstract class DBException extends RuntimeException {
 
+  /**
+   * Vendor error code, or 0 if not applicable.
+   */
   public final int vendorErrorCode;
-  public final String statementText;
+
+  /**
+   * The statement text or some additional info.
+   */
+  public final @Nullable String statementText;
 
 
-  protected DBException(@NotNull final SQLException sqlException,
+  protected DBException(@NotNull final Exception exception,
                         @Nullable final String statementText) {
-    this(sqlException.getMessage(), sqlException, sqlException.getErrorCode(), statementText);
+    this(exception.getMessage(), exception, getErrorCode(exception), statementText);
   }
 
 
@@ -109,5 +116,10 @@ public abstract class DBException extends RuntimeException {
       b.append("\nThe SQL statement:\n").append(statementText).append('\n');
     }
     return b.toString();
+  }
+
+
+  private static int getErrorCode(final @Nullable Exception exception) {
+    return exception instanceof SQLException ? ((SQLException) exception).getErrorCode() : 0;
   }
 }

@@ -20,6 +20,8 @@ public class Settings {
 
     private final int size;
 
+    private transient int hash = 0;
+
 
     /// CONSTRUCTOR \\\
 
@@ -58,10 +60,21 @@ public class Settings {
     }
 
     @NotNull
-    public String get(final @NotNull String parameterName,
-                      final @NotNull String defaultValue) {
+    public String get(final @NotNull String parameterName, final @NotNull String defaultValue) {
         String value = map.get(parameterName);
         return value != null ? value : defaultValue;
+    }
+
+    public boolean getBoolean(final @NotNull String parameterName, boolean defaultValue) {
+        String string = map.get(parameterName);
+        if (string == null || string.length() == 0) return defaultValue;
+        try {
+            boolean value = parseBoolean(string);
+            return value;
+        }
+        catch (IllegalArgumentException iae) {
+            throw new IllegalStateException("Cannot get parameter "+parameterName+" as boolean: "+iae.getMessage(), iae);
+        }
     }
 
     @NotNull
@@ -106,7 +119,47 @@ public class Settings {
     }
 
 
+
     /// OTHER \\\
+
+    @Override
+    public int hashCode() {
+        int h = this.hash;
+        if (h == 0 && size > 0) {
+            for (Map.Entry<String, String> entry : map.entrySet())
+                h = h * 11 + entry.getKey().hashCode() * 7 + entry.getKey().hashCode();
+            if (h == 0) h = size;
+            this.hash = h;
+        }
+        return h;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) return true;
+        if (obj instanceof Settings) return equals((Settings) obj);
+        return false;
+    }
+
+    public boolean equals(final @NotNull Settings that) {
+        if (this == that) return true;
+        if (this.size != that.size) return false;
+        if (this.hashCode() != that.hashCode()) return false;
+
+        Iterator<Map.Entry<String, String>> it1 = this.map.entrySet().iterator();
+        Iterator<Map.Entry<String, String>> it2 = that.map.entrySet().iterator();
+
+        while (it1.hasNext() || it2.hasNext()) {
+            if (!it1.hasNext()) return false;
+            if (!it2.hasNext()) return false;
+            Map.Entry<String, String> entry1 = it1.next();
+            Map.Entry<String, String> entry2 = it2.next();
+            if (String.CASE_INSENSITIVE_ORDER.compare(entry1.getKey(), entry2.getKey()) != 0) return false;
+            if (!Objects.equals(entry1.getValue(), entry2.getValue())) return false;
+        }
+
+        return true;
+    }
 
     @Override
     public String toString() {
@@ -115,5 +168,35 @@ public class Settings {
             b.append(entry.getKey()).append(" = ").append(entry.getValue()).append('\n');
         return b.toString();
     }
-    
+
+
+    /// HELPER FUNCTIONS \\\
+
+    private static boolean parseBoolean(@NotNull String string) throws IllegalArgumentException {
+        String s = string.trim();
+        if (s.length() == 0) throw new IllegalArgumentException("Attempted to convert an empty string into a boolean");
+        char c = Character.toUpperCase(s.charAt(0));
+        switch (c) {
+            case 'T':
+            case 'Y':
+            case 'Д':
+            case '+':
+            case '1':
+                return true;
+            case 'F':
+            case 'N':
+            case 'Н':                             
+            case '-':
+            case '0':
+                return false;
+            default:
+                throw new IllegalArgumentException("Attempted to convert \""+s+"\" into a boolean");
+        }
+    }
+
+
+    /// ZERO \\\
+
+    public static final Settings NO_SETTINGS = new Settings(Collections.emptyNavigableMap(), false);
+
 }
