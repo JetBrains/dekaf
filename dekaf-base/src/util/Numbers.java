@@ -63,7 +63,7 @@ public abstract class Numbers {
   @Contract(value = "!null -> !null; null -> null", pure = true)
   public static Number convertNumberSmartly(final BigDecimal decimal) {
     if (decimal == null) return null;
-    if (decimal.equals(Numbers.DECIMAL_ZERO)) return BYTE_ZERO;
+    if (decimal.equals(Numbers.DECIMAL_0)) return BYTE_0;
 
     final int precision = decimal.precision();
     final int scale = decimal.scale();
@@ -134,8 +134,29 @@ public abstract class Numbers {
   }
 
 
-  public static final Byte       BYTE_ZERO        = (byte) 0;
-  public static final BigDecimal DECIMAL_ZERO     = new BigDecimal(0);
+
+  ////// CONSTANTS \\\\\\
+
+
+
+  public static final Byte BYTE_0    = (byte)  0;
+  public static final Byte BYTE_1    = (byte)  1;
+  public static final Byte BYTE_M1   = (byte) -1;
+
+  public static final Short SHORT_0  = (short)  0;
+  public static final Short SHORT_1  = (short)  1;
+  public static final Short SHORT_M1 = (short) -1;
+
+  public static final Integer INT_0  =  0;
+  public static final Integer INT_1  =  1;
+  public static final Integer INT_M1 = -1;
+
+  public static final Long LONG_0    =  0L;
+  public static final Long LONG_1    =  1L;
+  public static final Long LONG_M1   = -1L;
+
+  public static final BigDecimal DECIMAL_0        = BigDecimal.ZERO;
+  public static final BigDecimal DECIMAL_1        = BigDecimal.ONE;
   public static final BigDecimal DECIMAL_MIN_LONG = new BigDecimal(Long.MIN_VALUE);
   public static final BigDecimal DECIMAL_MAX_LONG = new BigDecimal(Long.MAX_VALUE);
 

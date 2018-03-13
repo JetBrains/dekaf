@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.String.format;
+import static org.jetbrains.dekaf.util.Numbers.*;
 
 
 
@@ -211,11 +212,8 @@ public final class JdbcValueGetters {
         @Nullable
         Byte getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
             final boolean value = rset.getBoolean(index);
-            return rset.wasNull() ? null : value ? _1_ : _0_;
+            return rset.wasNull() ? null : value ? BYTE_1 : BYTE_0;
         }
-
-        private final static Byte _1_ = Byte.valueOf((byte) 1);
-        private final static Byte _0_ = Byte.valueOf((byte) 0);
 
         final static BoolByteGetter INSTANCE = new BoolByteGetter();
     }
@@ -228,11 +226,8 @@ public final class JdbcValueGetters {
         @Nullable
         Short getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
             final boolean value = rset.getBoolean(index);
-            return rset.wasNull() ? null : value ? _1_ : _0_;
+            return rset.wasNull() ? null : value ? SHORT_1 : SHORT_0;
         }
-
-        private final static Short _1_ = Short.valueOf((short) 1);
-        private final static Short _0_ = Short.valueOf((short) 0);
 
         final static BoolShortGetter INSTANCE = new BoolShortGetter();
     }
@@ -245,11 +240,8 @@ public final class JdbcValueGetters {
         @Nullable
         Integer getValue(@NotNull final ResultSet rset, final int index) throws SQLException {
             final boolean value = rset.getBoolean(index);
-            return rset.wasNull() ? null : value ? _1_ : _0_;
+            return rset.wasNull() ? null : value ? INT_1 : INT_0;
         }
-
-        private final static Integer _1_ = Integer.valueOf((int) 1);
-        private final static Integer _0_ = Integer.valueOf((int) 0);
 
         final static BoolIntGetter INSTANCE = new BoolIntGetter();
     }
