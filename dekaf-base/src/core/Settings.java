@@ -90,6 +90,11 @@ public class Settings {
     }
 
     @NotNull
+    public NavigableMap<String,String> toMap() {
+        return Collections.unmodifiableNavigableMap(map);
+    }
+
+    @NotNull
     public Properties toProperties(final @Nullable Properties parentProperties) {
         return createProperties(parentProperties, map);
     }
@@ -116,6 +121,10 @@ public class Settings {
 
     public int getSize() {
         return size;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
     }
 
 

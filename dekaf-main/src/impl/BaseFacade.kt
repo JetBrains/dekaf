@@ -1,10 +1,7 @@
 package org.jetbrains.dekaf.impl
 
 import org.jetbrains.dekaf.Rdbms
-import org.jetbrains.dekaf.core.ConnectionInfo
-import org.jetbrains.dekaf.core.DBFacade
-import org.jetbrains.dekaf.core.DBSession
-import org.jetbrains.dekaf.core.DBTransaction
+import org.jetbrains.dekaf.core.*
 import org.jetbrains.dekaf.inter.InterFacade
 import java.lang.IllegalStateException
 import java.util.concurrent.ConcurrentLinkedDeque
@@ -49,6 +46,10 @@ internal open class BaseFacade: DBFacade {
 
     override fun rdbms(): Rdbms {
         return rdbms
+    }
+
+    override fun setUp(settings: Settings) {
+        inter.setUp(settings)
     }
 
     override fun connect() {

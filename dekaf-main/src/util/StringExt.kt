@@ -125,3 +125,7 @@ fun minimizeSpaces(string: String): String {
 }
 
 private val SEVERAL_SPACES_PATTERN = Pattern.compile("[ \\s\\t\\r\\n]{2,}")
+
+
+infix fun CharSequence.matches(pattern: Pattern): Boolean =
+        pattern.matcher(this).matches()

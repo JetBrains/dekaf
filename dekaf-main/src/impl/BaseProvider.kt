@@ -10,6 +10,7 @@ import org.jetbrains.dekaf.inter.InterFacade
 import org.jetbrains.dekaf.inter.InterProvider
 import org.jetbrains.dekaf.util.getClassIfExists
 import org.jetbrains.dekaf.util.getDefaultConstructor
+import org.jetbrains.dekaf.util.override
 import java.lang.IllegalStateException
 import java.util.*
 import java.util.Collections.unmodifiableList
@@ -58,9 +59,25 @@ class BaseProvider: DBProvider {
     override fun provide(connectionString: String): DBFacade {
         if (myProviders.isEmpty())
             throw IllegalStateException("No intermediate providers")
-        for (p in myProviders)
-            if (p.supportedConnectionString(connectionString))
-                return provide(p, connectionString)
+        val autoDescriptor = findDescriptor(connectionString)
+        val settings =
+                if (autoDescriptor != null)
+                    autoDescriptor.defaultSettings.override(mapOf(DekafSettingNames.ConnectionString to connectionString))
+                else
+                    Settings.NO_SETTINGS
+
+        for (p in myProviders) {
+            if (p.supportedConnectionString(connectionString)) {
+                if (autoDescriptor != null) {
+                    val facade = provide(autoDescriptor.rdbms)
+                    facade.setUp(settings)
+                    return facade
+                }
+                else {
+                    return provide(p, connectionString)
+                }
+            }
+        }
         throw RuntimeException("""Provider for "$connectionString" not found""")
     }
 

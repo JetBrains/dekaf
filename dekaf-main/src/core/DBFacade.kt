@@ -17,6 +17,11 @@ interface DBFacade : DBSessionAware, ImplementationAccessibleService {
     fun rdbms(): Rdbms
 
     /**
+     * Assign settings.
+     */
+    fun setUp(settings: Settings)
+
+    /**
      * Connects to the database server.
      */
     fun connect()
