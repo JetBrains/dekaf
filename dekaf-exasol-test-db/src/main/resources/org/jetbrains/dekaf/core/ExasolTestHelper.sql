@@ -27,8 +27,9 @@ where lower(object_name) in (lower(?),lower(?),lower(?),lower(?))
 select case when object_type = 'VIEW' then 'drop view if exists ' || object_name || ' cascade'
             when object_type = 'TABLE' then 'drop table if exists ' || object_name || ' cascade constraints'
             when object_type = 'FUNCTION' then 'drop function ' || object_name
+            when script_type = 'ADAPTER' then 'drop adapter script if exists ' || object_name
             when object_type = 'SCRIPT' then 'drop script if exists ' || object_name
             when object_type = 'CONNECTION' then 'drop connection if exists ' || object_name
             else null end as cmd
-from sys.exa_all_objects where root_name = current_schema
+from sys.exa_all_objects left join sys.exa_all_scripts on object_id = script_object_id where root_name = current_schema
 ;
