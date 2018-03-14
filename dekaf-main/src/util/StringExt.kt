@@ -126,3 +126,25 @@ fun minimizeSpaces(string: String): String {
 }
 
 private val SEVERAL_SPACES_PATTERN = Pattern.compile("[ \\s\\t\\r\\n]{2,}")
+
+
+/**
+ * Replicates this string specified [times].
+ * @receiver string to replicate.
+ * @param times how many times to replicate.
+ * @param delimiter delimiter.
+ * @param zero what to return when [times] is 0.
+ * @return replicated string.
+ */
+fun String.replicate(times: Int, delimiter: String = "", zero: String = ""): String {
+    if (times == 0) return zero
+    if (times == 1) return this
+
+    val m = this.length + delimiter.length
+    if (m == 0) return this
+
+    val b = StringBuilder(m *times)
+    b.append(this)
+    for (i in 2..times) b.append(delimiter).append(this)
+    return b.toString()
+}

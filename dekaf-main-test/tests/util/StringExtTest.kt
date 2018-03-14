@@ -64,4 +64,20 @@ class StringExtTest {
         "".countOf('X') expected 0
     }
 
+
+    @Test
+    fun replicate_basic() {
+        "Cat".replicate(0) expected ""
+        "Cat".replicate(1) expected "Cat"
+        "Cat".replicate(2) expected "CatCat"
+        "Cat".replicate(3) expected "CatCatCat"
+
+        "Cat".replicate(0, "-") expected ""
+        "Cat".replicate(1, "-") expected "Cat"
+        "Cat".replicate(2, "-") expected "Cat-Cat"
+        "Cat".replicate(3, "-") expected "Cat-Cat-Cat"
+
+        "Cat".replicate(0, zero = "Mice") expected "Mice"
+    }
+
 }

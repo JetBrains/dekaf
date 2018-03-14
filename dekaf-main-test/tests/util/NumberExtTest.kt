@@ -37,5 +37,28 @@ class NumberExtTest {
         (-123).toFixString(3) expected "-123"
         (-123).toFixString(4) expected "-0123"
     }
-    
+
+
+    @Test
+    fun Byte_toUnsignedInt() {
+        //@formatter:off
+        `1`    .toUnsignedInt() expected 1
+        `127`  .toUnsignedInt() expected 127
+        `-1`   .toUnsignedInt() expected 0xFF
+        `-127` .toUnsignedInt() expected 0x81
+        `-128` .toUnsignedInt() expected 0x80
+        //@formatter:on
+    }
+
+    @Test
+    fun Short_toUnsignedInt() {
+        //@formatter:off
+        `1s`      .toUnsignedInt() expected 1
+        `32767s`  .toUnsignedInt() expected 32767
+        `-1s`     .toUnsignedInt() expected 0xFFFF
+        `-32767s` .toUnsignedInt() expected 0x8001
+        `-32768s` .toUnsignedInt() expected 0x8000
+        //@formatter:on
+    }
+
 }
