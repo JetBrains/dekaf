@@ -86,6 +86,7 @@ from pg_catalog.pg_class C
      natural join
      (values ('S'::"char", 'sequence'),
              ('r'::"char", 'table'),
+             ('p'::"char", 'table'),
              ('v'::"char", 'view'),
              ('m'::"char", 'materialized view')
       ) as CX(relkind, what)
