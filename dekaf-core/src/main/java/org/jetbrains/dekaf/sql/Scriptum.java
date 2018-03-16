@@ -5,6 +5,8 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.core.ResultLayout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -189,6 +191,33 @@ public final class Scriptum {
       }
       throw new ScriptNotFoundException(b.toString());
     }
+  }
+
+
+  /**
+   * Lists name of all fragments.
+   * @return names, preserving the original order.
+   */
+  @NotNull
+  public final List<String> listFragmentNames() {
+    ArrayList<String> names = new ArrayList<String>();
+    for (ScriptumResource resource : myResources)
+      names.addAll(Arrays.asList(resource.getExistentNames()));
+    return names;
+  }
+
+  /**
+   * Lists name of all fragments.
+   * @return names, preserving the original order.
+   */
+  @NotNull
+  public final List<TextFileFragment> listFragments() {
+    ArrayList<TextFileFragment> fragments = new ArrayList<TextFileFragment>();
+    for (ScriptumResource resource : myResources) {
+      resource.loadIfNeeded();
+      fragments.addAll(Arrays.asList(resource.myFragments));
+    }
+    return fragments;
   }
 
 

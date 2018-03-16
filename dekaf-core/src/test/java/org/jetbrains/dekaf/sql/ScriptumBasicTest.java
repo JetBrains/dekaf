@@ -148,4 +148,28 @@ public class ScriptumBasicTest {
     assertThat(statement.getSourceText()).contains("select something", "from some_table");
   }
 
+  @Test
+  public void listFragmentNames_basic() {
+    Scriptum scriptum = Scriptum.of(ScriptumBasicTest.class, "FileWithFragments");
+    List<String> names = scriptum.listFragmentNames();
+    assertThat(names)
+        .isNotEmpty()
+        .containsSequence("0", "first-fragment", "second-fragment");
+  }
+
+  @Test
+  public void listFragments_basic() {
+    Scriptum scriptum = Scriptum.of(ScriptumBasicTest.class, "FileWithFragments");
+    List<TextFileFragment> fragments = scriptum.listFragments();
+    assertThat(fragments).hasSize(3);
+
+    assertThat(fragments.get(0).getFragmentName()).isEqualTo("0");
+    assertThat(fragments.get(1).getFragmentName()).isEqualTo("first-fragment");
+    assertThat(fragments.get(2).getFragmentName()).isEqualTo("second-fragment");
+
+    assertThat(fragments.get(0).text).contains("zero fragment");
+    assertThat(fragments.get(1).text).contains("the first fragment");
+    assertThat(fragments.get(2).text).contains("the second fragment");
+  }
+
 }
