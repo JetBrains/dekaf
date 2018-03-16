@@ -146,4 +146,28 @@ class ScriptumBasicTest {
         assertThat(statement.sourceText).contains("select something", "from some_table")
     }
 
+    @Test
+    fun listFragmentNames_basic() {
+        val scriptum = Scriptum.of(ScriptumBasicTest::class.java, "FileWithFragments")
+        val names = scriptum.listFragmentNames()
+        assertThat(names)
+                .isNotEmpty
+                .containsSequence("0", "first-fragment", "second-fragment")
+    }
+
+    @Test
+    fun listFragments_basic() {
+        val scriptum = Scriptum.of(ScriptumBasicTest::class.java, "FileWithFragments")
+        val fragments = scriptum.listFragments()
+        assertThat(fragments).hasSize(3)
+
+        assertThat(fragments[0].fragmentName).isEqualTo("0")
+        assertThat(fragments[1].fragmentName).isEqualTo("first-fragment")
+        assertThat(fragments[2].fragmentName).isEqualTo("second-fragment")
+
+        assertThat(fragments[0].text).contains("zero fragment")
+        assertThat(fragments[1].text).contains("the first fragment")
+        assertThat(fragments[2].text).contains("the second fragment")
+    }
+
 }

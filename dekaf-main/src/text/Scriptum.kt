@@ -188,6 +188,26 @@ private constructor
     }
 
 
+    /**
+     * Lists name of all fragments.
+     * @return names, preserving the original order.
+     */
+    fun listFragmentNames(): List<String> {
+        val names = ArrayList<String>()
+        for (resource in myResources) names.addAll(resource.existentNames.filterNotNull())
+        return names
+    }
+
+    /**
+     * Lists name of all fragments.
+     * @return names, preserving the original order.
+     */
+    fun listFragments(): List<TextFileFragment> {
+        val fragments = ArrayList<TextFileFragment>()
+        for (resource in myResources) fragments.addAll(resource.existentFragments)
+        return fragments
+    }
+
     fun <S> query(name: String,
                   layout: QueryResultLayout<S>): SqlQuery<S> {
         var fragment = getText(name)

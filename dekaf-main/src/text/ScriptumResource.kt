@@ -88,6 +88,11 @@ abstract class ScriptumResource {
             return Array(fragments.size) { i -> fragments[i].fragmentName }
         }
 
+    val existentFragments: Array<TextFileFragment>
+        get() {
+            loadIfNeeded()
+            return myFragments!!
+        }
 
     fun count(): Int {
         loadIfNeeded()
