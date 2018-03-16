@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
  * Wrapper around the value under the test.
  * The value is nullable.
  */
-open class Matter<T:Any>
+open class Matter<out T:Any>
 {
 
     /// STATE \\\
@@ -33,8 +33,8 @@ open class Matter<T:Any>
 
     /// CONSTRUCTOR \\\
 
-    constructor(thing: T?, declaredType: KClass<out T>, aspect: String? = null) {
-        this.something = thing
+    constructor(something: T?, declaredType: KClass<out T>, aspect: String? = null) {
+        this.something = something
         this.declaredType = declaredType
         this.aspect = aspect
     }
@@ -48,12 +48,11 @@ open class Matter<T:Any>
     fun thing(check: String): T =
         something ?: blame("$check: Value of type: $declaredType must not be null")
 
+    val displayString: String
+        get() = something.displayString()
     
 
     /// BLAME \\\
-
-    protected open fun actualText(): String = something.displayString()
-
 
     fun blame(check:   String?,
               expect:  String?    = null,
@@ -62,7 +61,7 @@ open class Matter<T:Any>
               diff:    Boolean    = false,
               cause:   Throwable? = null): Nothing
     {
-        val actualText = actual ?: if (expect != null) actualText() else null
+        val actualText = actual ?: if (expect != null) displayString else null
         val checkText = check ?: if (diff) "Difference" else null
 
         // prepare the message
@@ -91,13 +90,13 @@ open class Matter<T:Any>
 
     /// SEVERAL MEMBER CHECKERS \\\
 
-    inline fun<reified M: T> beInstanceOf(): Matter<M> =
+    inline fun<reified M: Any> beInstanceOf(): Matter<M> =
         if (something == null) blame(check = "Instance class check",
                                      expect = "an instance of ${M::class.java.simpleName}")
         else if (this is M) Matter(something as M, M::class, aspect)
-        else blame(check = "Wrong class of instance",
-                   actual = "instance of ${something.javaClass.simpleName}",
-                   expect = "instance of ${M::class.java.simpleName}",
+        else blame(check   = "Wrong class of instance",
+                   actual  = "instance of ${something.javaClass.simpleName}",
+                   expect  = "instance of ${M::class.java.simpleName}",
                    details = "The value: " + something.displayString())
 
 
@@ -109,7 +108,7 @@ open class Matter<T:Any>
         get()  {
             if (something == null) return
             else blame(check = "Value (type $declaredType) must be null",
-                       actual = actualText())
+                       actual = displayString)
         }
 
 

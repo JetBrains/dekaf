@@ -1,4 +1,4 @@
-@file:Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
+@file:Suppress("platform_class_mapped_to_kotlin")
 
 package org.jetbrains.dekaf.expectation
 

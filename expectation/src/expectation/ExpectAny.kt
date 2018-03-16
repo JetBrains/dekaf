@@ -49,25 +49,13 @@ fun <T:Any> Matter<T>.satisfy(check: String, predicate: (x: T) -> Boolean): Matt
 
 fun <T:Comparable<T>> Matter<T>.beBetween(min: T, max: T): Matter<T> {
     val d1 = thing.compareTo(min)
-    if (d1 < 0) blame (check = "Value must be between $min and $max", actual = "value is too small")
+    if (d1 < 0) blame (check = "Value must be between $min and $max", actual = "$displayString (value is too small)")
     val d2 = thing.compareTo(max)
-    if (d2 > 0) blame (check = "Value must be between $min and $max", actual = "value is too large")
+    if (d2 > 0) blame (check = "Value must be between $min and $max", actual = "$displayString (value is too large)")
     return this
 }
 
 
-
-
-
-////// BOOLEAN \\\\\\
-
-
-
-val Matter<Boolean>.beTrue
-    get() = thing("true").apply { if (!thing) blame(null, expect = "true") }
-
-val Matter<Boolean>.beFalse
-    get() = thing("false").apply { if (thing) blame(null, expect = "false") }
 
 
 
