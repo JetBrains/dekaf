@@ -90,7 +90,7 @@ final class JdbcFacade implements InterFacade {
         if (dataSource == null) {
             Driver driver = getDriver();
             String connectionString = settings.get(DekafSettingNames.ConnectionString);
-            Properties properties = settings.subSettings(DekafSettingNames.ConnectionParameterSection).toProperties(null);
+            Properties properties = settings.toSubgroupProperties(null, DekafSettingNames.ConnectionParameterSection);
             JdbcSimpleDataSource ds = new JdbcSimpleDataSource(connectionString, properties, driver);
             dataSource = ds;
         }
