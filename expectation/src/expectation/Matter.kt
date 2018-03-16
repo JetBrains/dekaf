@@ -2,98 +2,146 @@
 
 package org.jetbrains.dekaf.expectation
 
+import org.opentest4j.AssertionFailedError
 import kotlin.reflect.KClass
 
 /**
  * Wrapper around the value under the test.
  * The value is nullable.
  */
-sealed class OptionalMatter<T:Any> (type: KClass<T>)
+open class Matter<T:Any>
 {
-    /// STATE ACCESSORS \\\
+
+    /// STATE \\\
 
     /**
      * The value that is under the test.
      */
-    abstract val thing: T?
+    val something: T?
 
     /**
      * The expected type of the value.
      */
-    val declaredType: KClass<out T> = type
+    val declaredType: KClass<out T>
+
+    /**
+     * Brief info what's verifying.
+     */
+    val aspect: String?
+
+
+
+    /// CONSTRUCTOR \\\
+
+    constructor(thing: T?, declaredType: KClass<out T>, aspect: String? = null) {
+        this.something = thing
+        this.declaredType = declaredType
+        this.aspect = aspect
+    }
+
+
+    /// HELPER FUNCTIONS \\\
+
+    val thing: T
+        get() = something ?: blame("Value of type: $declaredType must not be null")
+
+    fun thing(check: String): T =
+        something ?: blame("$check: Value of type: $declaredType must not be null")
+
+    
+
+    /// BLAME \\\
+
+    protected open fun actualText(): String = something.displayString()
+
+
+    fun blame(check:   String?,
+              expect:  String?    = null,
+              actual:  String?    = null,
+              details: String?    = null,
+              diff:    Boolean    = false,
+              cause:   Throwable? = null): Nothing
+    {
+        val actualText = actual ?: if (expect != null) actualText() else null
+        val checkText = check ?: if (diff) "Difference" else null
+
+        // prepare the message
+        val b = StringBuilder()
+        b.append("\nFAIL")
+        if (aspect != null) b.append(": ").append(aspect)
+        if (checkText != null) b.append(": ").append(checkText)
+        if (cause?.message != null) b.append(": ").append(cause.message)
+        b.append('\n')
+        if (actualText != null) b.append("ACTUAL: ").append(actualText).append('\n')
+        if (expect != null) b.append("EXPECTED: ").append(expect).append('\n')
+        if (details != null) b.append("DETAILS: ").append(details).append('\n')
+        val message = b.toString()
+
+        // throw it
+        if (diff) {
+            throw DiffAssertionFailedError(message, expect, actual, cause)
+        }
+        else {
+            throw BasicAssertionFailedError(message, cause)
+        }
+    }
+
+
 
 
     /// SEVERAL MEMBER CHECKERS \\\
 
-    inline fun<reified M: T> beInstanceOf(): Matter<M> {
-        if (thing == null) blameNull("an instance of ${M::class.java.simpleName}")
-        else if (this is M) { /* OK */ }
-        else blameActualExpectValue("Wrong class of instance",
-                                    "instance of ${thing!!.javaClass.simpleName}",
-                                    "instance of ${M::class.java.simpleName}",
-                                    thing!!.displayString())
-        return Matter(thing as M, M::class)
-    }
+    inline fun<reified M: T> beInstanceOf(): Matter<M> =
+        if (something == null) blame(check = "Instance class check",
+                                     expect = "an instance of ${M::class.java.simpleName}")
+        else if (this is M) Matter(something as M, M::class, aspect)
+        else blame(check = "Wrong class of instance",
+                   actual = "instance of ${something.javaClass.simpleName}",
+                   expect = "instance of ${M::class.java.simpleName}",
+                   details = "The value: " + something.displayString())
 
 
-    /// INTERNAL STUFF \\\
+    val beNotNull: Matter<T>
+        get() = if (something == null) blame("Value of type $declaredType must not be null)")
+                else this
 
-    internal abstract fun m(expectationText: String): Matter<T>
+    val beNull: Unit
+        get()  {
+            if (something == null) return
+            else blame(check = "Value (type $declaredType) must be null",
+                       actual = actualText())
+        }
+
 
 }
 
 
-/**
- * Wrapper around the value under the test.
- * The value is not null.
- */
-class Matter<T:Any> : OptionalMatter<T>
-{
-    override val thing: T
-
-    constructor(thing: T, declaredType: KClass<T>) : super(declaredType) {
-        this.thing = thing
-    }
-
-    override fun toString(): String {
-        return "${thing.displayString()} (declared type: ${declaredType.simpleName})"
-    }
 
 
-    /// INTERNAL STUFF \\\
-
-    override fun m(expectationText: String): Matter<T> = this
-}
+////// FORMERS \\\\\\
 
 
-/**
- * Wrapper around the null value under the test.
- * The value is always null.
- */
-class NullMatter<T:Any>(declaredType: KClass<T>) : OptionalMatter<T>(declaredType)
-{
-    override val thing: T? = null
-
-    override fun toString(): String {
-        return "NULL (declared type: ${declaredType.simpleName})"
-    }
-
-    /// INTERNAL STUFF \\\
-
-    override fun m(expectationText: String): Nothing =
-        blameNull(expectationText)
-    
-}
-
-
-
-val <reified T:Any> T.must: Matter<T>
+val <reified T:Any> T?.must: Matter<T>
     inline get() = Matter(this, T::class)
 
 
-val <reified T:Any> T?.must: OptionalMatter<T>
-    inline get() =
-        if (this != null) Matter(this, T::class)
-        else NullMatter(T::class)
 
+
+
+
+////// EXCEPTIONS \\\\\\
+
+
+class BasicAssertionFailedError: AssertionFailedError
+{
+    constructor(message: String?, cause: Throwable?)
+            : super(message, cause)
+}
+
+
+class DiffAssertionFailedError: AssertionFailedError
+{
+    constructor(message: String?, expected: Any?, actual: Any?, cause: Throwable?)
+            : super(message, expected, actual, cause)
+}
 

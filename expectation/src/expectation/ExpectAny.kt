@@ -4,89 +4,57 @@ package org.jetbrains.dekaf.expectation
 ////// ANY \\\\\\
 
 
-val <T:Any> OptionalMatter<T>.beNull: Unit
-    get() {
-        when (this) {
-            is NullMatter -> { /* OK */ }
-            is Matter -> blame(this, "the null (declared type: ${this.declaredType})")
-        }
-    }
-
-
-val <T:Any> OptionalMatter<T>.beNotNull: Matter<T>
-    get() = when (this) {
-        is NullMatter -> blameNull(this)
-        is Matter -> blame(this, "a non-null value (declared type: ${this.declaredType})")
-    }
-
-
-
-fun <T:Any> OptionalMatter<T>.be(expect: T) =
-        m(expect.displayString()).be(expect)
-
 fun <T:Any> Matter<T>.be(expect: T) =
         if (this.thing == expect) { /* OK */ }
-        else blameDiff(this, expect)
+        else blame(null, expect = expect.displayString(), diff = true)
 
-
-fun <T:Any> OptionalMatter<T>.beSameAs(expect: T) =
-        m("the same instance as the expected value").beSameAs(expect)
 
 fun <T:Any> Matter<T>.beSameAs(expect: T) =
         when {
             this.thing === expect -> { /* OK */ }
-            this.thing == expect  -> blameNotSame(this, expect)
-            else                  -> blameDiff(this, expect)
+            this.thing == expect  -> blame(check = "Same instance check: values are similar but are different instances",
+                                           expect = expect.objectReference,
+                                           actual = thing.objectReference,
+                                           details = "Value: " + thing.displayString(),
+                                           diff = false)
+            else                  -> blame(check = "Same instance check: values are different",
+                                           expect = expect.displayString(),
+                                           diff = true)
         }
 
 
-fun <T:Any> OptionalMatter<T>.beIn(vararg items: T) =
-        m("one of given ${items.size} items")
-                .apply {
-                    for (item in items) if (thing == item) return@apply
-                    val expectationText =
-                            "One of the following ${items.size} items: \n\t" +
-                                    items.joinToString("\n\t", transform = Any::displayString)
-                    blame(this, expectationText)
-                }
+fun <T:Any> Matter<T>.beIn(vararg items: T) =
+        if (thing in items) this
+        else blame (null, expect = "One of the following ${items.size} items: \n\t" +
+                                   items.joinToString("\n\t", transform = Any::displayString))
 
-fun <T:Any> OptionalMatter<T>.beIn(items: Collection<out T>) =
-        m("one of given ${items.size} items")
-                .apply {
-                    for (item in items) if (thing == item) return@apply
-                    val expectationText =
-                            "One of the following ${items.size} items:\n\t" +
-                                    items.joinToString("\n\t", transform = Any::displayString)
-                    blame(this, expectationText)
-                }
+fun <T:Any> Matter<T>.beIn(items: Collection<T>) =
+        if (thing in items) this
+        else blame (null, expect = "One of the following ${items.size} items: \n\t" +
+                                   items.joinToString("\n\t", transform = Any::displayString))
 
 
-
-fun <T:Any> OptionalMatter<T>.satisfy(predicate: (x: T) -> Boolean): Matter<T> =
-        m("satisfy the specified predicate")
-                .apply {
-                    if (!predicate(thing)) blame(this, "satisfying the specified predicate")
-                }
+fun <T:Any> Matter<T>.satisfy(predicate: (x: T) -> Boolean): Matter<T> =
+        if (predicate(thing)) this
+        else blame("Predicate satisfaction", expect = "satisfying the specified predicate")
 
 
-fun <T:Any> OptionalMatter<T>.satisfy(description: String, predicate: (x: T) -> Boolean): Matter<T> =
-        m("satisfy the predicate: $description")
-                .apply {
-                    if (!predicate(thing)) blame(this, "satisfying the predicate: $description")
-                }
+fun <T:Any> Matter<T>.satisfy(check: String, predicate: (x: T) -> Boolean): Matter<T> =
+        if (predicate(thing)) this
+        else blame(check, expect = "satisfying the specified predicate")
 
 
 
 ////// COMPARABLE \\\\\\
 
-fun <T:Comparable<T>> OptionalMatter<T>.beBetween(min: T, max: T): Matter<T> =
-        m("value between ${min.displayString()} and ${max.displayString()} both inclusive")
-                .apply {
-                    val d1 = thing.compareTo(min)
-                    if (d1 < 0) blame(this, "value is too small", "value between ${min.displayString()} and ${max.displayString()} both inclusive")
-                    val d2 = thing.compareTo(max)
-                    if (d2 > 0) blame(this, "value is too large", "value between ${min.displayString()} and ${max.displayString()} both inclusive")
-                }
+fun <T:Comparable<T>> Matter<T>.beBetween(min: T, max: T): Matter<T> {
+    val d1 = thing.compareTo(min)
+    if (d1 < 0) blame (check = "Value must be between $min and $max", actual = "value is too small")
+    val d2 = thing.compareTo(max)
+    if (d2 > 0) blame (check = "Value must be between $min and $max", actual = "value is too large")
+    return this
+}
+
 
 
 
@@ -95,11 +63,11 @@ fun <T:Comparable<T>> OptionalMatter<T>.beBetween(min: T, max: T): Matter<T> =
 
 
 
-val OptionalMatter<Boolean>.beTrue
-    get() = m("true").apply { if (!thing) blame(this, "true") }
+val Matter<Boolean>.beTrue
+    get() = thing("true").apply { if (!thing) blame(null, expect = "true") }
 
-val OptionalMatter<Boolean>.beFalse
-    get() = m("false").apply { if (thing) blame(this, "false") }
+val Matter<Boolean>.beFalse
+    get() = thing("false").apply { if (thing) blame(null, expect = "false") }
 
 
 
