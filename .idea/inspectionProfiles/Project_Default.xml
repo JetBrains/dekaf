@@ -14,7 +14,6 @@
     <inspection_tool class="LocalVariableName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <option name="namePattern" value="[a-z][A-Za-zß\d]*" />
     </inspection_tool>
-    <inspection_tool class="LoopToCallChain" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="NonAsciiCharacters" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="PrivatePropertyName" enabled="true" level="TYPO" enabled_by_default="true">
       <option name="namePattern" value="[a-z][A-Za-zß\d]*_?" />
@@ -23,6 +22,7 @@
       <option name="namePattern" value="[a-z][A-Za-zß\d]*" />
     </inspection_tool>
     <inspection_tool class="RemoveExplicitTypeArguments" enabled="true" level="TYPO" enabled_by_default="true" />
+    <inspection_tool class="RemoveRedundantBackticks" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="ReplaceRangeToWithUntil" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="TestFunctionName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <scope name="Tests" level="WEAK WARNING" enabled="true">

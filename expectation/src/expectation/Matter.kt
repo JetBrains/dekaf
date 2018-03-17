@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
  * Wrapper around the value under the test.
  * The value is nullable.
  */
-open class Matter<out T:Any>
+class Matter<out T:Any>
 {
 
     /// STATE \\\
@@ -22,57 +22,172 @@ open class Matter<out T:Any>
     /**
      * The expected type of the value.
      */
-    val declaredType: KClass<out T>
+    val declaredType: KClass<*>
 
     /**
      * Brief info what's verifying.
      */
     val aspect: String?
 
+    /**
+     * Whats'expected.
+     */
+    val expect: String?
 
 
     /// CONSTRUCTOR \\\
 
-    constructor(something: T?, declaredType: KClass<out T>, aspect: String? = null) {
+    constructor(something:    T?,
+                declaredType: KClass<*>,
+                aspect:       String? = null,
+                expect:       String? = null) {
         this.something = something
         this.declaredType = declaredType
         this.aspect = aspect
+        this.expect = expect
     }
 
 
-    /// HELPER FUNCTIONS \\\
+    fun<R:Any> transform(transformer: (T) -> R): Matter<R> =
+            Matter<R>(something    = transformer(thing),
+                      declaredType = declaredType,
+                      aspect       = aspect,
+                      expect       = expect)
+
+
+    /**
+     * Specifies the aspect of testing.
+     * When a checking is failed, the given message be presented in the exception.
+     */
+    fun theAspect(aspect: String): Matter<T> =
+            Matter(something    = something,
+                   declaredType = declaredType,
+                   aspect       = if (this.aspect == null) aspect else this.aspect + ": " + aspect,
+                   expect       = expect)
+
+    /**
+     * Overrides the expectation text.
+     * When a checking failed, this text will be presented in the exception instead of normal expectation text.
+     *
+     * This function is designed to be used inside checkers, to specify the expectation text once
+     * for several consequent inner checks.
+     */
+    fun expecting(expect: String): Matter<T> =
+            Matter(something    = something,
+                   declaredType = declaredType,
+                   aspect       = aspect,
+                   expect       = expect)
+
+
+    /// FLOW CONTROL \\\
+
+    fun with(aspect: String? = null, expect: String? = null, inner: Matter<T>.() -> Unit): Matter<T> {
+        val matter = if (aspect == null && expect == null) this
+                     else Matter(something    = something,
+                                 declaredType = declaredType,
+                                 aspect       = prepareNewAspect(aspect),
+                                 expect       = expect ?: this.expect)
+        matter.inner()
+        return this
+    }
+
+    private fun prepareNewAspect(aspect: String?): String? =
+        if (this.aspect != null && aspect != null) this.aspect + ": " + aspect
+        else aspect ?: this.aspect
+
+
+    /// SEVERAL MEMBER CHECKERS \\\
+
+    inline fun<reified M: Any> beInstanceOf(): Matter<M> =
+            when (something) {
+                null -> blame(expect = "an instance of ${M::class.simpleName}",
+                              aspect = "Instance class with")
+                is M -> Matter(something as M, M::class, aspect, expect)
+                else -> blame(expect  = "instance of ${M::class.java.simpleName}",
+                              actual  = "instance of ${something.javaClass.simpleName}",
+                              details = "The value: " + something.displayString(),
+                              aspect  = "Wrong class of instance")
+            }
+
+    @Suppress("unchecked_cast")
+    fun<M:Any> beInstanceOf(kotlinClass: KClass<M>): Matter<M> =
+            when {
+                something == null                 -> blame(expect = "an instance of ${kotlinClass.simpleName}",
+                                                           aspect = "Instance class with")
+                kotlinClass.isInstance(something) -> Matter(something as M, kotlinClass, aspect, expect)
+                else                              -> blame(expect  = "instance of ${kotlinClass.simpleName}",
+                                                           actual  = "instance of ${something.javaClass.kotlin.simpleName}",
+                                                           details = "The value: " + something.displayString(),
+                                                           aspect  = "Wrong class of instance")
+            }
+
+    @Suppress("unchecked_cast")
+    fun<M:Any> beInstanceOf(javaClass: Class<M>): Matter<M> =
+            when {
+                something == null                               -> blame(expect = "an instance of ${javaClass.simpleName}",
+                                                                         aspect = "Instance class with")
+                javaClass.isAssignableFrom(something.javaClass) -> Matter(something as M, javaClass.kotlin, aspect, expect)
+                else                                            -> blame(expect  = "instance of ${javaClass.simpleName}",
+                                                                         actual  = "instance of ${something.javaClass.simpleName}",
+                                                                         details = "The value: " + something.displayString(),
+                                                                         aspect  = "Wrong class of instance")
+            }
+
+    val beNotNull: Matter<T>
+        get() = if (something == null) blame(expect = "Non-null value of type $declaredType")
+                else this
+
+    val beNull: Unit
+        get()  {
+            if (something == null) return
+            else blame(expect = "Null value of type $declaredType",
+                       actual = displayText)
+        }
+
+    fun satisfy(predicate: (x: T) -> Boolean): Matter<T> =
+            if (predicate(thing)) this
+            else blame(expect = "satisfying the specified predicate")
+
+    fun satisfy(expect: String, predicate: (x: T) -> Boolean): Matter<T> =
+            if (predicate(thing)) this
+            else blame(expect = expect)
+
+
+
+    /// HELPER FUNCTIONS FOR CHECKERS \\\
 
     val thing: T
-        get() = something ?: blame("Value of type: $declaredType must not be null")
+        get() = something ?: blame(expect = "Non-null value of type: $declaredType")
 
-    fun thing(check: String): T =
-        something ?: blame("$check: Value of type: $declaredType must not be null")
+    fun thing(expect: String): T =
+            something ?: blame(expect = expect)
 
-    val displayString: String
-        get() = something.displayString()
-    
+    val displayText: String
+        get() = something.displayText()
+
 
     /// BLAME \\\
 
-    fun blame(check:   String?,
-              expect:  String?    = null,
-              actual:  String?    = null,
-              details: String?    = null,
-              diff:    Boolean    = false,
-              cause:   Throwable? = null): Nothing
+    fun blame(expect: String?   = null,
+              actual: String?   = null,
+              details: String?  = null,
+              aspect: String?   = null,
+              diff: Boolean     = false,
+              cause: Throwable? = null): Nothing
     {
-        val actualText = actual ?: if (expect != null) displayString else null
-        val checkText = check ?: if (diff) "Difference" else null
+        val aspectText = aspect ?: if (diff) "Difference" else null
+        val actualText = actual ?: if (expect != null) displayText else null
+        val expectText = this.expect ?: expect
 
         // prepare the message
         val b = StringBuilder()
         b.append("\nFAIL")
-        if (aspect != null) b.append(": ").append(aspect)
-        if (checkText != null) b.append(": ").append(checkText)
+        if (this.aspect != null) b.append(": ").append(this.aspect)
+        if (aspectText != null) b.append(": ").append(aspectText)
         if (cause?.message != null) b.append(": ").append(cause.message)
         b.append('\n')
         if (actualText != null) b.append("ACTUAL: ").append(actualText).append('\n')
-        if (expect != null) b.append("EXPECTED: ").append(expect).append('\n')
+        if (expectText != null) b.append("EXPECTED: ").append(expectText).append('\n')
         if (details != null) b.append("DETAILS: ").append(details).append('\n')
         val message = b.toString()
 
@@ -84,33 +199,6 @@ open class Matter<out T:Any>
             throw BasicAssertionFailedError(message, cause)
         }
     }
-
-
-
-
-    /// SEVERAL MEMBER CHECKERS \\\
-
-    inline fun<reified M: Any> beInstanceOf(): Matter<M> =
-        if (something == null) blame(check = "Instance class check",
-                                     expect = "an instance of ${M::class.java.simpleName}")
-        else if (this is M) Matter(something as M, M::class, aspect)
-        else blame(check   = "Wrong class of instance",
-                   actual  = "instance of ${something.javaClass.simpleName}",
-                   expect  = "instance of ${M::class.java.simpleName}",
-                   details = "The value: " + something.displayString())
-
-
-    val beNotNull: Matter<T>
-        get() = if (something == null) blame("Value of type $declaredType must not be null)")
-                else this
-
-    val beNull: Unit
-        get()  {
-            if (something == null) return
-            else blame(check = "Value (type $declaredType) must be null",
-                       actual = displayString)
-        }
-
 
 }
 

@@ -12,83 +12,87 @@ import kotlin.math.sign
 
 fun Matter<Number>.be(expect: Byte) =
         if (thing compareTo expect.toInt() == 0) this
-        else blame(null, expect = expect.toString())
+        else blame(expect = expect.toString())
 
 fun Matter<Number>.be(expect: Short) =
         if (thing compareTo expect.toInt() == 0) this
-        else blame(null, expect = expect.toString())
+        else blame(expect = expect.toString())
 
 fun Matter<Number>.be(expect: Int) =
         if (thing compareTo expect == 0) this
-        else blame(null, expect = expect.toString())
+        else blame(expect = expect.toString())
 
 fun Matter<Number>.be(expect: Long) =
         if (thing compareTo expect == 0) this
-        else blame(null, expect = expect.toString())
+        else blame(expect = expect.toString())
 
 
 fun Matter<Float>.be(expect: Float, tolerance: Float) =
         if (thing >= expect-tolerance && thing <= expect+tolerance) this
-        else blame(null, expect = expect.displayString(), details = "delta is ${(thing-expect).absoluteValue}")
+        else blame(expect = expect.displayString(), details = "delta is ${(thing-expect).absoluteValue}")
 
 fun Matter<Double>.be(expect: Double, tolerance: Double) =
         if (thing >= expect-tolerance && thing <= expect+tolerance) this
-        else blame(null, expect = expect.displayString(), details = "delta is ${(thing-expect).absoluteValue}")
+        else blame(expect = expect.displayString(), details = "delta is ${(thing-expect).absoluteValue}")
 
 
 
 fun <N:Number> Matter<N>.beBetween(range: IntRange): Matter<N> {
     val min = range.first
     val max = range.last
-    val d1 = thing compareTo min
-    if (d1 < 0) blame (check = "Value must be between $min and $max", actual = "$displayString (value is too small)")
-    val d2 = thing.compareTo(max)
-    if (d2 > 0) blame (check = "Value must be between $min and $max", actual = "$displayString (value is too large)")
+    with(expect = "Value between $min and $max") {
+        val d1 = thing compareTo min
+        if (d1 < 0) blame (actual = "$displayText (value is too small)")
+        val d2 = thing.compareTo(max)
+        if (d2 > 0) blame (actual = "$displayText (value is too large)")
+    }
     return this
 }
 
 fun <N:Number> Matter<N>.beBetween(range: LongRange): Matter<N> {
     val min = range.first
     val max = range.last
-    val d1 = thing compareTo min
-    if (d1 < 0) blame (check = "Value must be between $min and $max", actual = "$displayString (value is too small)")
-    val d2 = thing.compareTo(max)
-    if (d2 > 0) blame (check = "Value must be between $min and $max", actual = "$displayString (value is too large)")
+    with(expect = "Value between $min and $max") {
+        val d1 = thing compareTo min
+        if (d1 < 0) blame (actual = "$displayText (value is too small)")
+        val d2 = thing.compareTo(max)
+        if (d2 > 0) blame (actual = "$displayText (value is too large)")
+    }
     return this
 }
 
 
 fun <N:Number> Matter<N>.beLess(threshold: Int): Matter<N> =
         if (thing compareTo threshold < 0) this
-        else blame (check = "Number value check", expect = "A value less than $threshold")
+        else blame (expect = "A value less than $threshold")
 
 fun <N:Number> Matter<N>.beLess(threshold: Long): Matter<N> =
         if (thing compareTo threshold < 0) this
-        else blame (check = "Number value check", expect = "A value less than $threshold")
+        else blame (expect = "A value less than $threshold")
 
 fun <N:Number> Matter<N>.beLessOrEqual(threshold: Int): Matter<N> =
         if (thing compareTo threshold <= 0) this
-        else blame (check = "Number value check", expect = "A value less than or equal to $threshold")
+        else blame (expect = "A value less than or equal to $threshold")
 
 fun <N:Number> Matter<N>.beLessOrEqual(threshold: Long): Matter<N> =
         if (thing compareTo threshold <= 0) this
-        else blame (check = "Number value check", expect = "A value less than or equal to $threshold")
+        else blame (expect = "A value less than or equal to $threshold")
 
 fun <N:Number> Matter<N>.beGreaterOrEqual(threshold: Int): Matter<N> =
         if (thing compareTo threshold >= 0) this
-        else blame (check = "Number value check", expect = "A value greater than or equal to $threshold")
+        else blame (expect = "A value greater than or equal to $threshold")
 
 fun <N:Number> Matter<N>.beGreaterOrEqual(threshold: Long): Matter<N> =
         if (thing compareTo threshold >= 0) this
-        else blame (check = "Number value check", expect = "A value greater than or equal to $threshold")
+        else blame (expect = "A value greater than or equal to $threshold")
 
 fun <N:Number> Matter<N>.beGreater(threshold: Int): Matter<N> =
         if (thing compareTo threshold > 0) this
-        else blame (check = "Number value check", expect = "A value greater than $threshold")
+        else blame (expect = "A value greater than $threshold")
 
 fun <N:Number> Matter<N>.beGreater(threshold: Long): Matter<N> =
         if (thing compareTo threshold > 0) this
-        else blame (check = "Number value check", expect = "A value greater than $threshold")
+        else blame (expect = "A value greater than $threshold")
 
 
 
@@ -96,32 +100,32 @@ fun <N:Number> Matter<N>.beGreater(threshold: Long): Matter<N> =
 val Matter<Number>.beZero
     get() =
         if (thing.signum == 0) this
-        else blame(null, expect = "0")
+        else blame(expect = "0")
 
 val Matter<Number>.beNonZero
     get() =
         if (thing.signum != 0) this
-        else blame(null, expect = "not 0")
+        else blame(expect = "not 0")
 
 val Matter<Number>.bePositive
     get() =
         if (thing.signum == +1) this
-        else blame(null, expect = "a positive value")
+        else blame(expect = "a positive value")
 
 val Matter<Number>.beNegative
     get() =
         if (thing.signum == -1) this
-        else blame(null, expect = "a negative value")
+        else blame(expect = "a negative value")
 
 val Matter<Number>.bePositiveOrZero
     get() =
         if (thing.signum >= 0) this
-        else blame(null, expect = "a positive or zero value")
+        else blame(expect = "a positive or zero value")
 
 val Matter<Number>.beNegativeOrZero
     get() =
         if (thing.signum <= 0) this
-        else blame(null, expect = "a negative or zero value")
+        else blame(expect = "a negative or zero value")
 
 
 
@@ -129,10 +133,10 @@ val Matter<Number>.beNegativeOrZero
 ////// BOOLEAN \\\\\\
 
 val Matter<Boolean>.beTrue
-    get() = thing("true").apply { if (!thing) blame(null, expect = "true") }
+    get() = thing("true").apply { if (!thing) blame(expect = "true") }
 
 val Matter<Boolean>.beFalse
-    get() = thing("false").apply { if (thing) blame(null, expect = "false") }
+    get() = thing("false").apply { if (thing) blame(expect = "false") }
 
 
 

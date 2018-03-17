@@ -25,6 +25,16 @@ class DemoAnyTest {
     }
 
     @Test
+    fun withAspect() {
+        33.must.theAspect("Strange with").beNull
+    }
+
+    @Test
+    fun expecting() {
+        33.must.expecting("A prime number").beNull
+    }
+
+    @Test
     fun instanceOf() {
         val x: Number = 1234567890123456789L
         x.must.beInstanceOf<Short>()
@@ -74,6 +84,25 @@ class DemoAnyTest {
         val x = 44
         x.must.beIn(setOf(5,13,44,72))
         x.must.beIn(setOf(1,5,13,22,76,99))
+    }
+
+    @Test
+    fun between_range() {
+        'Z'.must.beBetween('X' .. 'Y')
+    }
+
+    @Test
+    fun between_pair() {
+        'Z'.must.beBetween('X', 'Y')
+    }
+
+
+    @Test
+    fun aspects() {
+        val number: Number = 1234L
+        number.must
+                .with("Checking the object type") { beNotNull.beInstanceOf<Long>() }
+                .with("Checking the value") { beBetween(-100L .. +100L).beNonZero }
     }
 
 }
