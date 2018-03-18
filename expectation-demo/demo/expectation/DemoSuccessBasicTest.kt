@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
 @Tag("ExpectationDemoTest")
-class DemoBasicGoodTest {
+class DemoSuccessBasicTest {
 
     @Test
     fun `2 * 2 = 4`() {

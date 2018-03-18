@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
  * Wrapper around the value under the test.
  * The value is nullable.
  */
-class Matter<out T:Any>
+open class Matter<out T:Any>
 {
 
     /// STATE \\\
@@ -48,6 +48,10 @@ class Matter<out T:Any>
     }
 
 
+    internal open fun copy(aspect: String? = this.aspect, expect: String? = this.expect): Matter<T> =
+            Matter(this.something, this.declaredType, aspect, expect)
+
+
     fun<R:Any> transform(transformer: (T) -> R): Matter<R> =
             Matter<R>(something    = transformer(thing),
                       declaredType = declaredType,
@@ -55,45 +59,8 @@ class Matter<out T:Any>
                       expect       = expect)
 
 
-    /**
-     * Specifies the aspect of testing.
-     * When a checking is failed, the given message be presented in the exception.
-     */
-    fun theAspect(aspect: String): Matter<T> =
-            Matter(something    = something,
-                   declaredType = declaredType,
-                   aspect       = if (this.aspect == null) aspect else this.aspect + ": " + aspect,
-                   expect       = expect)
-
-    /**
-     * Overrides the expectation text.
-     * When a checking failed, this text will be presented in the exception instead of normal expectation text.
-     *
-     * This function is designed to be used inside checkers, to specify the expectation text once
-     * for several consequent inner checks.
-     */
-    fun expecting(expect: String): Matter<T> =
-            Matter(something    = something,
-                   declaredType = declaredType,
-                   aspect       = aspect,
-                   expect       = expect)
 
 
-    /// FLOW CONTROL \\\
-
-    fun with(aspect: String? = null, expect: String? = null, inner: Matter<T>.() -> Unit): Matter<T> {
-        val matter = if (aspect == null && expect == null) this
-                     else Matter(something    = something,
-                                 declaredType = declaredType,
-                                 aspect       = prepareNewAspect(aspect),
-                                 expect       = expect ?: this.expect)
-        matter.inner()
-        return this
-    }
-
-    private fun prepareNewAspect(aspect: String?): String? =
-        if (this.aspect != null && aspect != null) this.aspect + ": " + aspect
-        else aspect ?: this.aspect
 
 
     /// SEVERAL MEMBER CHECKERS \\\
@@ -133,25 +100,6 @@ class Matter<out T:Any>
                                                                          aspect  = "Wrong class of instance")
             }
 
-    val beNotNull: Matter<T>
-        get() = if (something == null) blame(expect = "Non-null value of type $declaredType")
-                else this
-
-    val beNull: Unit
-        get()  {
-            if (something == null) return
-            else blame(expect = "Null value of type $declaredType",
-                       actual = displayText)
-        }
-
-    fun satisfy(predicate: (x: T) -> Boolean): Matter<T> =
-            if (predicate(thing)) this
-            else blame(expect = "satisfying the specified predicate")
-
-    fun satisfy(expect: String, predicate: (x: T) -> Boolean): Matter<T> =
-            if (predicate(thing)) this
-            else blame(expect = expect)
-
 
 
     /// HELPER FUNCTIONS FOR CHECKERS \\\
@@ -164,6 +112,10 @@ class Matter<out T:Any>
 
     val displayText: String
         get() = something.displayText()
+
+    fun prepareNewAspect(aspect: String?): String? =
+            if (this.aspect != null && aspect != null) this.aspect + ": " + aspect
+            else aspect ?: this.aspect
 
 
     /// BLAME \\\
@@ -204,6 +156,29 @@ class Matter<out T:Any>
 
 
 
+class MultiMatter<out E: Any, out T: Any> : Matter<T>
+{
+    val elements: List<E>
+
+    constructor(something: T?,
+                declaredType: KClass<*>,
+                elements: List<E>?,
+                aspect: String? = null,
+                expect: String? = null)
+            : super(something, declaredType, aspect, expect)
+    {
+        this.elements = elements ?: emptyList()
+    }
+
+
+    override fun copy(aspect: String?, expect: String?): MultiMatter<E,T> =
+            MultiMatter(this.something, this.declaredType, elements, aspect, expect)
+
+}
+
+
+
+
 
 ////// FORMERS \\\\\\
 
@@ -211,6 +186,33 @@ class Matter<out T:Any>
 val <reified T:Any> T?.must: Matter<T>
     inline get() = Matter(this, T::class)
 
+val <reified E:Any> Array<out E>?.must: MultiMatter<E, Array<out E>>
+    inline get() = MultiMatter(this, Array<E>::class, this?.asList())
+
+val <reified E:Any, reified T:List<E>> T?.must: MultiMatter<E,T>
+    inline get() = MultiMatter(this, T::class, this)
+
+val <reified E:Any, reified T:Iterable<E>> T?.must: MultiMatter<E,T>
+    inline get() = MultiMatter(this, T::class, this?.toList())
+
+
+val ByteArray.must: MultiMatter<Byte, ByteArray>
+    get() = MultiMatter(this, ByteArray::class, this.explode())
+
+val ShortArray.must: MultiMatter<Short, ShortArray>
+    get() = MultiMatter(this, ShortArray::class, this.explode())
+
+val IntArray.must: MultiMatter<Int, IntArray>
+    get() = MultiMatter(this, IntArray::class, this.explode())
+
+val LongArray.must: MultiMatter<Long, LongArray>
+    get() = MultiMatter(this, LongArray::class, this.explode())
+
+val FloatArray.must: MultiMatter<Float, FloatArray>
+    get() = MultiMatter(this, FloatArray::class, this.explode())
+
+val DoubleArray.must: MultiMatter<Double, DoubleArray>
+    get() = MultiMatter(this, DoubleArray::class, this.explode())
 
 
 

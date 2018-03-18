@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
 @Tag("ExpectationDemoTest")
-class DemoAnyTest {
+class DemoFailBasicTest {
 
     @Test
     fun checkForNull() {
@@ -26,7 +26,10 @@ class DemoAnyTest {
 
     @Test
     fun withAspect() {
-        33.must.theAspect("Strange with").beNull
+        999999999L.must
+                .theAspect("Strange with") {
+                    beNull
+                }
     }
 
     @Test
@@ -101,8 +104,8 @@ class DemoAnyTest {
     fun aspects() {
         val number: Number = 1234L
         number.must
-                .with("Checking the object type") { beNotNull.beInstanceOf<Long>() }
-                .with("Checking the value") { beBetween(-100L .. +100L).beNonZero }
+                .theAspect("Checking the object type") { beNotNull.beInstanceOf<Long>() }
+                .theAspect("Checking the value") { beBetween(-100L .. +100L).beNonZero }
     }
 
 }

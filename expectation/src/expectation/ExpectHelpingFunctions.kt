@@ -1,9 +1,6 @@
 @file:JvmName("ExpectHelpingFunctions")
 package org.jetbrains.dekaf.expectation
 
-import java.util.*
-import kotlin.collections.ArrayList
-
 
 /// ARRAYS AND COLLECTIONS \\\
 
@@ -15,17 +12,14 @@ internal data class CheckEntry<out E>
         val remark:  String? = null
 )
 
-internal fun<E, T:Any> Matter<T>.checkElements(containerWord: String,
-                                               iterator: Iterator<E>,
-                                               predictedSize: Int,
-                                               predicateDescription: String,
-                                               predicate: (E) -> Boolean): Matter<T>
+internal fun<E: Any, T:Any> MultiMatter<E,T>.checkElements(containerWord: String,
+                                                           predicateDescription: String,
+                                                           predicate: (E) -> Boolean): MultiMatter<E,T>
 {
-    val result: ArrayList<CheckEntry<E>> = if (predictedSize > 0) ArrayList(predictedSize) else ArrayList()
+    val result: ArrayList<CheckEntry<E>> = ArrayList(elements.size)
     var index = 0
     var fails = 0
-    while (iterator.hasNext()) {
-        val element = iterator.next()
+    for (element in elements) {
         var ok = false
         var remark: String? = null
         try {
@@ -57,20 +51,6 @@ internal fun<E, T:Any> Matter<T>.checkElements(containerWord: String,
     }
 }
 
-
-@Suppress("unchecked_cast")
-internal fun<E> Iterable<E>?.toList(): List<E> {
-    val container = this ?: return emptyList()
-    if (this is List<E>) return this
-    if (this is Array<*>) return Arrays.asList(*(this as Array<out E>))
-
-    val n = this.predictSize()
-    if (n == 1) return Collections.singletonList(container.iterator().next())
-
-    val list: ArrayList<E> = if (n > 0) ArrayList(n) else ArrayList()
-    for (element in container) list += element
-    return list
-}
 
 
 internal fun Iterable<*>.isEmpty(): Boolean =
@@ -159,4 +139,49 @@ internal fun<E:Any> Collection<E>.containsAnyOf(elements: Collection<E>): Boolea
 
     return false
 }
+
+
+
+internal fun ByteArray.explode(): List<Byte> {
+    val n = this.size
+    val list = ArrayList<Byte>(n)
+    for (i in 0..n-1) list += this[i]
+    return list
+}
+
+internal fun ShortArray.explode(): List<Short> {
+    val n = this.size
+    val list = ArrayList<Short>(n)
+    for (i in 0..n-1) list += this[i]
+    return list
+}
+
+internal fun IntArray.explode(): List<Int> {
+    val n = this.size
+    val list = ArrayList<Int>(n)
+    for (i in 0..n-1) list += this[i]
+    return list
+}
+
+internal fun LongArray.explode(): List<Long> {
+    val n = this.size
+    val list = ArrayList<Long>(n)
+    for (i in 0..n-1) list += this[i]
+    return list
+}
+
+internal fun FloatArray.explode(): List<Float> {
+    val n = this.size
+    val list = ArrayList<Float>(n)
+    for (i in 0..n-1) list += this[i]
+    return list
+}
+
+internal fun DoubleArray.explode(): List<Double> {
+    val n = this.size
+    val list = ArrayList<Double>(n)
+    for (i in 0..n-1) list += this[i]
+    return list
+}
+
 

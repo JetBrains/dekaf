@@ -2,6 +2,7 @@ package org.jetbrains.dekaf.expectation
 
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
+import java.util.*
 
 @Tag("ExpectationDemoTest")
 class DemoFailCollectionTest {
@@ -44,6 +45,19 @@ class DemoFailCollectionTest {
     }
 
     @Test
+    fun containsExactlyDifferentOrder1() {
+        val list = listOf("Dog", "Cat", "Rat", "GuineaPig")
+        list.must.containExactly("Dog", "Mouse", "GuineaPig", "Cat")
+    }
+
+    @Test
+    fun containsExactlyDifferentOrder2() {
+        val set = TreeSet<Int>()
+        set.addAll(arrayOf(111,222,-1,333,444))
+        set.must.containExactly(111,222,-1,333,444)
+    }
+
+    @Test
     fun notContainsElements() {
         val set = setOf("A", "B", "C", "D", "E", "F", "G")
         set.must.notContain("F", "G", "H")
@@ -57,8 +71,8 @@ class DemoFailCollectionTest {
 
     @Test
     fun notContainsList() {
-        val set = setOf("A", "B", "C", "D", "E", "F", "G")
-        set.must.notContain(listOf("F", "G", "H"))
+        val list = setOf("A", "B", "C", "D", "E", "F", "G")
+        list.must.notContain(listOf("F", "G", "H"))
     }
 
     @Test

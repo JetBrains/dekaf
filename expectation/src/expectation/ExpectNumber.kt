@@ -40,7 +40,7 @@ fun Matter<Double>.be(expect: Double, tolerance: Double) =
 fun <N:Number> Matter<N>.beBetween(range: IntRange): Matter<N> {
     val min = range.first
     val max = range.last
-    with(expect = "Value between $min and $max") {
+    expecting("Value between $min and $max").also {
         val d1 = thing compareTo min
         if (d1 < 0) blame (actual = "$displayText (value is too small)")
         val d2 = thing.compareTo(max)
@@ -52,7 +52,7 @@ fun <N:Number> Matter<N>.beBetween(range: IntRange): Matter<N> {
 fun <N:Number> Matter<N>.beBetween(range: LongRange): Matter<N> {
     val min = range.first
     val max = range.last
-    with(expect = "Value between $min and $max") {
+    expecting("Value between $min and $max").also {
         val d1 = thing compareTo min
         if (d1 < 0) blame (actual = "$displayText (value is too small)")
         val d2 = thing.compareTo(max)
