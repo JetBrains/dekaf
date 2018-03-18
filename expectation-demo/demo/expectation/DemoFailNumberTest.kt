@@ -4,33 +4,13 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
 @Tag("ExpectationDemoTest")
-class DemoNumberTest {
-
-    @Test
-    fun int_equal_ok() {
-        0.must.be(0)
-        (-2147483648).must.be(-2147483648)
-        2147483647.must.be(2147483647)
-    }
-
-    @Test
-    fun long_equal_ok() {
-        0L.must.be(0L)
-        Long.MIN_VALUE.must.be(Long.MIN_VALUE)
-        Long.MAX_VALUE.must.be(Long.MAX_VALUE)
-    }
+class DemoFailNumberTest {
 
     @Test
     fun long_equal_int() {
         1234567890123456789L.must.be(2112454933) // must fail
     }
 
-
-    @Test
-    fun long_range_ok() {
-        val x = 22L
-        x.must.beBetween(-100 .. +100).beNonZero  // ok
-    }
 
     @Test
     fun long_range_min() {

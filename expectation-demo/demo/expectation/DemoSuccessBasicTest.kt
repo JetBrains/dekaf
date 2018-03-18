@@ -12,6 +12,12 @@ class DemoSuccessBasicTest {
         x.must.be(4)
     }
 
+    @Test
+    fun `2 * 2 ≠ 5`() {
+        val x = 2 * 2
+        x.must.notBe(5)
+    }
+
 
     @Test
     fun `value is Long (using generic)`() {

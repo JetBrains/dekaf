@@ -9,6 +9,18 @@ import org.junit.jupiter.api.Test
 class DemoFailBasicTest {
 
     @Test
+    fun `2 * 2 = 4`() {
+        val x = 2 * 2
+        x.must.be(3)
+    }
+
+    @Test
+    fun `2 * 2 ≠ 5`() {
+        val x = 2 * 2
+        x.must.notBe(4)
+    }
+
+    @Test
     fun checkForNull() {
         val x: Any? = null
         val y: Any? = Object()

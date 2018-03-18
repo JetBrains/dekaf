@@ -17,6 +17,10 @@ fun <T:Any> Matter<T>.be(expect: T) =
         if (this.thing == expect) { /* OK */ }
         else blame(expect = expect.displayString(), diff = true)
 
+fun <T:Any> Matter<T>.notBe(unexpect: T) =
+        if (this.thing != unexpect) { /* OK */ }
+        else blame(expect = "another value (not this)")
+
 
 fun <T:Any> Matter<T>.beSameAs(expect: T) =
         when {
