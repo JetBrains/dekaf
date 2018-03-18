@@ -6,6 +6,7 @@ import java.util.*
 fun Any?.displayText(): String =
         if (this != null)
             when (this) {
+                is CharSequence  -> this.displayText()
                 is Map<*,*>      -> this.displayText()
                 is Collection<*> -> this.displayText()
                 is Array<*>      -> this.displayText()
@@ -18,6 +19,10 @@ fun Any?.displayText(): String =
         else "null"
 
 
+fun CharSequence.displayText(): String =
+        if (this.isEmpty()) "empty text"
+        else "text (${this.length} characters): \n\t|" +
+                this.toString().replace("\n", "\n\t|")
 
 
 fun<K:Any?, V:Any?> Map<K,V>.displayText(): String {

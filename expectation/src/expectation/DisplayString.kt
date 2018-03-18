@@ -16,6 +16,7 @@ fun Any?.displayString(): String =
                 is LongArray  -> this.displayString()
                 is List<*>    -> this.displayString()
                 is Set<*>     -> this.displayString()
+                is Char       -> this.displayString()
                 else          -> this.toString()
             }
         else "null"
@@ -69,6 +70,11 @@ fun Set<*>?.displayString(): String {
     return this.joinToString(separator = ",", prefix = "{", postfix = "}", transform = Any?::displayString)
 }
 
+
+fun Char?.displayString(): String {
+    if (this == null) return "null char"
+    return "'$this' (0x${java.lang.Short.toUnsignedInt(this.toShort()).toString(16).toUpperCase()})"
+}
 
 val Any.objectReference
     get() = Integer.toHexString(System.identityHashCode(this)) + '@' + this.javaClass.simpleName

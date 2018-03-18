@@ -145,7 +145,7 @@ open class Matter<out T:Any>
 
         // throw it
         if (diff) {
-            throw DiffAssertionFailedError(message, expect, actual, cause)
+            throw DiffAssertionFailedError(message, expectText, actualText, cause)
         }
         else {
             throw BasicAssertionFailedError(message, cause)
@@ -176,6 +176,34 @@ class MultiMatter<out E: Any, out T: Any> : Matter<T>
 
 }
 
+
+
+class TextMatter : Matter<CharSequence>
+{
+    val text: String
+
+    val length: Int
+
+    constructor(something: CharSequence?,
+                declaredType: KClass<*>,
+                text: String?,
+                aspect: String? = null,
+                expect: String? = null)
+            : super(something, declaredType, aspect, expect) {
+        this.text = text ?: ""
+        this.length = this.text.length
+    }
+
+    override fun copy(aspect: String?, expect: String?): TextMatter =
+            TextMatter(something, declaredType, text, aspect, expect)
+
+    fun transform(newText: String): TextMatter =
+            TextMatter(newText, declaredType, newText, aspect, expect)
+
+    val trimmed: TextMatter
+        get() = transform(text.trim())
+
+}
 
 
 
@@ -215,6 +243,8 @@ val DoubleArray.must: MultiMatter<Double, DoubleArray>
     get() = MultiMatter(this, DoubleArray::class, this.explode())
 
 
+val <reified T: CharSequence> T?.must: TextMatter
+    inline get() = TextMatter(this, T::class, this?.toString() ?: "")
 
 
 
