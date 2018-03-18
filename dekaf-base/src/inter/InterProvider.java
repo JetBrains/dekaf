@@ -1,15 +1,24 @@
 package org.jetbrains.dekaf.inter;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.Rdbms;
+import org.jetbrains.dekaf.core.Settings;
 
-import java.util.Collection;
 import java.util.Set;
 
 
 
-public interface InterProvider {
+public interface InterProvider extends InterLongService {
+
+    ////// LONG SERVICE \\\\\\
+
+    @Override
+    void setUp(final @NotNull Settings settings);
+
+    @Override
+    void shutDown();
+
+
 
     ////// RDBMS \\\\\\
 
@@ -19,25 +28,13 @@ public interface InterProvider {
     boolean supportedConnectionString(@NotNull String connectionString);
 
 
-    ////// DRIVERS \\\\\\
-
-    void setDriverDirectory(@NotNull String directory);
-
-    @NotNull
-    String getDriverDirectory();
-
-    void setDriverJars(@Nullable Collection<String> jars);
-
-    @Nullable
-    Collection<String> getDriverJars();
-
 
     ////// FACADES AND CONNECTIONS \\\\\\
 
     @NotNull
     InterFacade createFacade(@NotNull Rdbms rdbms);
 
-    @NotNull
+    @NotNull @Deprecated()
     InterFacade createFacade(@NotNull String connectionString);
 
 }

@@ -7,12 +7,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jetbrains.dekaf.jdbc.H2mem.hmFacade;
-
 
 
 @Tag("UnitTest")
-class JdbcFacadeTest {
+class JdbcFacadeUnitTest extends JdbcUnitTestCase {
 
     @Test
     void activate() {

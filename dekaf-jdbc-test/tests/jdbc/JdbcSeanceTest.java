@@ -14,15 +14,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.jetbrains.dekaf.core.TaskKind.TASK_QUERY;
 import static org.jetbrains.dekaf.inter.InterResultKind.*;
 import static org.jetbrains.dekaf.inter.InterRowKind.*;
-import static org.jetbrains.dekaf.jdbc.H2mem.hmInSession;
-import static org.jetbrains.dekaf.jdbc.H2mem.hmInSessionDo;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 
 @Tag("UnitTest")
-public final class JdbcSeanceTest {
+public final class JdbcSeanceTest extends JdbcUnitTestCase
+{
 
     @Test
     public void existence_0() {

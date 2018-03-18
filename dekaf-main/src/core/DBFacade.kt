@@ -17,9 +17,9 @@ interface DBFacade : DBSessionAware, ImplementationAccessibleService {
     fun rdbms(): Rdbms
 
     /**
-     * Activates the database driver.
+     * Assign settings.
      */
-    fun activateDriver()
+    fun setUp(settings: Settings)
 
     /**
      * Connects to the database server.
@@ -43,11 +43,6 @@ interface DBFacade : DBSessionAware, ImplementationAccessibleService {
      * If not connected - does nothing.
      */
     fun disconnect()
-
-    /**
-     * Deactivates the driver. Also disconnects if necessary.
-     */
-    fun deactivateDriver()
 
     /**
      * Checks whether it is connected to the server.

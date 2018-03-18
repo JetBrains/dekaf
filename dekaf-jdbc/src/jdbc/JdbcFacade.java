@@ -4,19 +4,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.Rdbms;
 import org.jetbrains.dekaf.core.ConnectionInfo;
-import org.jetbrains.dekaf.core.ConnectionParameterCategory;
-import org.jetbrains.dekaf.core.DbDriverInfo;
-import org.jetbrains.dekaf.core.ImplementationAccessibleService;
+import org.jetbrains.dekaf.core.DekafSettingNames;
+import org.jetbrains.dekaf.core.Settings;
 import org.jetbrains.dekaf.exceptions.DBConnectionException;
 import org.jetbrains.dekaf.inter.InterFacade;
-import org.jetbrains.dekaf.util.Version;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Properties;
 
 import static org.jetbrains.dekaf.util.Objects.castTo;
@@ -24,6 +21,9 @@ import static org.jetbrains.dekaf.util.Objects.castTo;
 
 
 final class JdbcFacade implements InterFacade {
+
+
+    ////// STATE \\\\\\
 
     @Nullable
     final JdbcProvider provider;
@@ -34,11 +34,11 @@ final class JdbcFacade implements InterFacade {
     @NotNull
     final Specific specific;
 
-    @Nullable
-    private String connectionString;
-
     @NotNull
-    final private Properties properties = new Properties();
+    private Settings settings = Settings.NO_SETTINGS;
+
+    @Nullable
+    private Driver driver = null;
 
     @Nullable
     private DataSource dataSource;
@@ -48,15 +48,10 @@ final class JdbcFacade implements InterFacade {
     @NotNull
     private final ArrayList<JdbcSession> sessions = new ArrayList<>();
 
-    @Nullable
-    private Driver driver = null;
-
-    @Nullable
-    private DbDriverInfo driverInfo = null;
-
-    @Nullable
     private ConnectionInfo connectionInfo = null;
 
+
+    ////// LONG SERVICE \\\\\\
 
     JdbcFacade(final @Nullable JdbcProvider provider,
                final @NotNull Rdbms rdbms,
@@ -64,33 +59,21 @@ final class JdbcFacade implements InterFacade {
         this.provider = provider;
         this.rdbms = rdbms;
         this.specific = specific;
-        this.connectionString = null;
+    }
+
+    @Override
+    public void setUp(final @NotNull Settings settings) {
+        this.settings = settings;
+    }
+
+    @Override
+    public void shutDown() {
+
     }
 
 
 
     ////// TUNING \\\\\\
-
-    @Override
-    public void setJarsPath(final @Nullable String path) {
-        throw new RuntimeException("Not implemented yet");
-    }
-
-    @Override
-    public void setJarsToLoad(final @Nullable String[] files) {
-        throw new RuntimeException("Not implemented yet");
-    }
-
-    @Override
-    public void setConnectionString(final @Nullable String connectionString) {
-        this.connectionString = connectionString;
-    }
-
-    @Override
-    public void setParameters(final @NotNull ConnectionParameterCategory category,
-                              final @NotNull Map<String, Object> parameters) {
-        throw new RuntimeException("Not implemented yet");
-    }
 
     @Override
     public @NotNull Rdbms getRdbms() {
@@ -104,13 +87,10 @@ final class JdbcFacade implements InterFacade {
 
     @Override
     public void activate() {
-        if (driver == null) {
-            activateDriver();
-            assert driver != null : "JDBC driver has not been activated";
-            assert driverInfo != null : "JDBC driver info is omitted";
-        }
-
         if (dataSource == null) {
+            Driver driver = getDriver();
+            String connectionString = settings.get(DekafSettingNames.ConnectionString);
+            Properties properties = settings.toSubgroupProperties(null, DekafSettingNames.ConnectionParameterSection);
             JdbcSimpleDataSource ds = new JdbcSimpleDataSource(connectionString, properties, driver);
             dataSource = ds;
         }
@@ -120,24 +100,14 @@ final class JdbcFacade implements InterFacade {
         }
     }
 
-    public void activateDriver() {
-        driver = ensureDriver();
-        driverInfo = obtainDriverInfo(driver);
-    }
-
     @NotNull
-    Driver ensureDriver() {
-        if (provider == null) throw new IllegalStateException("Neither provider nor data source specified — impossible to activate");
-        return provider.getDriver(specific.getDriverClassName());
+    Driver getDriver() {
+        if (driver == null) {
+            Settings driverSettings = settings.subSettings(DekafSettingNames.DriverSection);
+            driver = JdbcMaster.ourDriverManager.getDriver(driverSettings);
+        }
+        return driver;
     }
-
-    @NotNull
-    private static DbDriverInfo obtainDriverInfo(final @Nullable Driver driver) {
-        String name = driver.toString();
-        Version version = Version.of(driver.getMajorVersion(), driver.getMinorVersion());
-        return new DbDriverInfo(name, version);
-    }
-
 
     @Override
     public boolean isActive() {
@@ -166,20 +136,6 @@ final class JdbcFacade implements InterFacade {
         finally {
             JdbcUtil.close(connection);
         }
-    }
-
-
-    @Override
-    public void deactivateDriver() {
-        deactivate();
-
-        driverInfo = null;
-        driver = null;
-    }
-
-    @Override
-    public @Nullable DbDriverInfo getDriverInfo() {
-        return driverInfo;
     }
 
     @Override
@@ -231,22 +187,12 @@ final class JdbcFacade implements InterFacade {
     @Override @SuppressWarnings("unchecked")
     public <I> @Nullable I getSpecificService(final @NotNull Class<I> serviceClass,
                                               final @NotNull String serviceName)
-            throws ClassCastException
+        throws ClassCastException
     {
         switch (serviceName) {
             case Names.JDBC_DATA_SOURCE: return castTo(serviceClass, dataSource);
             case Names.JDBC_DRIVER:      return castTo(serviceClass, getDriver());
             default:                     return null;
-        }
-    }
-
-    private @Nullable Driver getDriver() {
-        if (dataSource != null && dataSource instanceof ImplementationAccessibleService) {
-            ImplementationAccessibleService service = (ImplementationAccessibleService) dataSource;
-            return service.getSpecificService(Driver.class, Names.JDBC_DRIVER);
-        }
-        else {
-            return null;
         }
     }
 

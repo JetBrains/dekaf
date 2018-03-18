@@ -18,10 +18,11 @@
       <module fileurl="file://$PROJECT_DIR$/dekaf-test-db-test/dekaf-test-db-test.iml" filepath="$PROJECT_DIR$/dekaf-test-db-test/dekaf-test-db-test.iml" group="Dekaf" />
       <module fileurl="file://$PROJECT_DIR$/demo-on-java/demo-on-java.iml" filepath="$PROJECT_DIR$/demo-on-java/demo-on-java.iml" group="Demo" />
       <module fileurl="file://$PROJECT_DIR$/demo-on-kotlin/demo-on-kotlin.iml" filepath="$PROJECT_DIR$/demo-on-kotlin/demo-on-kotlin.iml" group="Demo" />
+      <module fileurl="file://$PROJECT_DIR$/expectation/expectation.iml" filepath="$PROJECT_DIR$/expectation/expectation.iml" group="Testing" />
+      <module fileurl="file://$PROJECT_DIR$/expectation-demo/expectation-demo.iml" filepath="$PROJECT_DIR$/expectation-demo/expectation-demo.iml" group="Testing" />
       <module fileurl="file://$PROJECT_DIR$/ko-test-util/ko-test-util.iml" filepath="$PROJECT_DIR$/ko-test-util/ko-test-util.iml" group="Testing" />
       <module fileurl="file://$PROJECT_DIR$/test-basic/test-basic.iml" filepath="$PROJECT_DIR$/test-basic/test-basic.iml" group="Testing" />
       <module fileurl="file://$PROJECT_DIR$/test-connection/test-connection.iml" filepath="$PROJECT_DIR$/test-connection/test-connection.iml" group="Testing" />
-      <module fileurl="file://$PROJECT_DIR$/test-drivers/test-drivers.iml" filepath="$PROJECT_DIR$/test-drivers/test-drivers.iml" group="Testing" />
     </modules>
   </component>
 </project>

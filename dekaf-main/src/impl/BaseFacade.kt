@@ -50,9 +50,8 @@ internal open class BaseFacade: DBFacade {
         return rdbms
     }
 
-    override fun activateDriver() {
-        inter.activateDriver()
-        driverInfo_ = inter.driverInfo
+    override fun setUp(settings: Settings) {
+        inter.setUp(settings)
     }
 
     override fun connect() {
@@ -110,11 +109,6 @@ internal open class BaseFacade: DBFacade {
         }
     }
 
-    override fun deactivateDriver() {
-        if (connected) disconnect()
-        driverInfo_ = null
-        inter.deactivateDriver()
-    }
 
     override val isConnected: Boolean
         get() = connected
