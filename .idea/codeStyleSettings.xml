@@ -25,10 +25,15 @@
         <codeStyleSettings language="JAVA">
           <option name="LINE_COMMENT_AT_FIRST_COLUMN" value="false" />
           <option name="BLOCK_COMMENT_AT_FIRST_COLUMN" value="false" />
+          <option name="KEEP_FIRST_COLUMN_COMMENT" value="false" />
           <option name="KEEP_BLANK_LINES_IN_DECLARATIONS" value="3" />
           <option name="KEEP_BLANK_LINES_IN_CODE" value="3" />
           <option name="BLANK_LINES_AFTER_IMPORTS" value="3" />
           <option name="BLANK_LINES_AROUND_CLASS" value="3" />
+          <option name="BRACE_STYLE" value="5" />
+          <option name="CLASS_BRACE_STYLE" value="5" />
+          <option name="METHOD_BRACE_STYLE" value="5" />
+          <option name="LAMBDA_BRACE_STYLE" value="5" />
           <option name="ELSE_ON_NEW_LINE" value="true" />
           <option name="WHILE_ON_NEW_LINE" value="true" />
           <option name="CATCH_ON_NEW_LINE" value="true" />
@@ -43,8 +48,13 @@
           <option name="METHOD_CALL_CHAIN_WRAP" value="5" />
           <option name="KEEP_SIMPLE_BLOCKS_IN_ONE_LINE" value="true" />
           <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true" />
+          <option name="KEEP_SIMPLE_LAMBDAS_IN_ONE_LINE" value="true" />
           <option name="KEEP_SIMPLE_CLASSES_IN_ONE_LINE" value="true" />
           <option name="KEEP_MULTIPLE_EXPRESSIONS_IN_ONE_LINE" value="true" />
+          <indentOptions>
+            <option name="CONTINUATION_INDENT_SIZE" value="4" />
+            <option name="USE_RELATIVE_INDENTS" value="true" />
+          </indentOptions>
         </codeStyleSettings>
         <codeStyleSettings language="XML">
           <indentOptions>

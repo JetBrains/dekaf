@@ -1,115 +1,455 @@
-apply plugin: 'java'
+def kotlinVersion        = '1.2.30'
+def annotationsVersion   = '15.0'
 
-repositories {
-    mavenCentral()
-}
+def log4jVersion         = '2.9.0'
 
-configurations {
-    pro  { }
-    test { }
-    jdbc { }
-}
+def junitPlatformVersion = '1.1.0'
+def junitJupiterVersion  = '5.1.0'
+def assertJVersion       = '3.9.1'
 
-def kotlinVersion       = "1.1.2-3"
-def annotationsVersion  = "15.0"
-
-def junit5Version       = "1.0.0-M4"
-def junitJupiterVersion = "5.0.0-M4"
-def assertJVersion      = "1.6.0"
-
-def junitVersion        = "4.11"
-def mockitoVersion      = "2.0.7-beta"
-
-def h2dbVersion         = "1.4.187"
-def postgresVersion     = "9.4-1201-jdbc4"
-def mysqlVersion        = "6.0.6"
-def microsoftVersion    = "6.1.5.jre8-preview"
-def jtdsVersion         = "1.2.8"
+def h2dbVersion          = '1.4.196'
+def postgresVersion      = '9.4-1201-jdbc4'
+def mysqlVersion         = '6.0.6'
+def microsoftVersion     = '6.1.5.jre8-preview'
+def jtdsVersion          = '1.2.8'
 
 
-dependencies {
-    pro "org.jetbrains:annotations:$annotationsVersion",
-        "org.jetbrains:annotations:$annotationsVersion:sources",
-        "org.jetbrains:annotations:$annotationsVersion:javadoc",
-        "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion",
-        "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion:sources",
-        "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion:javadoc",
-        "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion",
-        "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion:sources",
-        "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion:javadoc",
-        "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion",
-        "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion:sources",
-        "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion:javadoc",
-        "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
-        "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion:sources",
-        "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion:javadoc"
 
-    test "org.junit.platform:junit-platform-commons:$junit5Version",
-         "org.junit.platform:junit-platform-commons:$junit5Version:sources",
-         "org.junit.platform:junit-platform-commons:$junit5Version:javadoc",
-         "org.junit.platform:junit-platform-engine:$junit5Version",
-         "org.junit.platform:junit-platform-engine:$junit5Version:sources",
-         "org.junit.platform:junit-platform-engine:$junit5Version:javadoc",
-         "org.junit.platform:junit-platform-suite-api:$junit5Version",
-         "org.junit.platform:junit-platform-suite-api:$junit5Version:sources",
-         "org.junit.platform:junit-platform-suite-api:$junit5Version:javadoc",
-         "org.junit.platform:junit-platform-launcher:$junit5Version",
-         "org.junit.platform:junit-platform-launcher:$junit5Version:sources",
-         "org.junit.platform:junit-platform-launcher:$junit5Version:javadoc",
-         "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion",
-         "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion:sources",
-         "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion:javadoc",
-         "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion",
-         "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion:sources",
-         "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion:javadoc",
-         "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion",
-         "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion:sources",
-         "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion:javadoc",
-         "org.assertj:assertj-core:$assertJVersion",
-         "org.assertj:assertj-core:$assertJVersion:sources",
-         "org.assertj:assertj-core:$assertJVersion:javadoc",
+buildscript {
 
-         "junit:junit:$junitVersion",
-         "junit:junit:$junitVersion:sources",
-         "junit:junit:$junitVersion:javadoc",
-         "org.mockito:mockito-core:$mockitoVersion",
-         "org.mockito:mockito-core:$mockitoVersion:sources",
-         "org.mockito:mockito-core:$mockitoVersion:javadoc"
+    // unfortunately, we have to duplicate this two variables :(
+    def kotlinVersion        = '1.2.30'
+    def junitPlatformVersion = '1.1.0'
 
-    jdbc "com.h2database:h2:$h2dbVersion",
-         "com.h2database:h2:$h2dbVersion:sources",
-         "com.h2database:h2:$h2dbVersion:javadoc",
-         "org.postgresql:postgresql:$postgresVersion",
-         "org.postgresql:postgresql:$postgresVersion:sources",
-         "org.postgresql:postgresql:$postgresVersion:javadoc",
-         "mysql:mysql-connector-java:$mysqlVersion",
-         "mysql:mysql-connector-java:$mysqlVersion:sources",  // mysql driver has no javadoc
-         "com.microsoft.sqlserver:mssql-jdbc:$microsoftVersion",
-         "com.microsoft.sqlserver:mssql-jdbc:$microsoftVersion:sources",
-         "com.microsoft.sqlserver:mssql-jdbc:$microsoftVersion:javadoc",
-         "net.sourceforge.jtds:jtds:$jtdsVersion",
-         "net.sourceforge.jtds:jtds:$jtdsVersion:sources",
-         "net.sourceforge.jtds:jtds:$jtdsVersion:javadoc"
+
+    ext {
+        kotlin_version = kotlinVersion
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.junit.platform:junit-platform-gradle-plugin:$junitPlatformVersion"
+    }
 }
 
 
-task getLibsPro(type: Copy) {
-    from configurations.pro
-    into "lib/pro/"
+allprojects { project ->
+    project.buildDir = new File(rootProject.projectDir, ".gradleTemp/" + project.name)
 }
 
-task getLibsTest(type: Copy) {
-    from configurations.test - configurations.pro
-    into "lib/test/"
+
+subprojects { project ->
+
+    apply plugin: 'java'
+
+    repositories {
+        flatDir {
+            mavenCentral()
+            dirs ("$rootProject.projectDir/lib/pro", "$rootProject.projectDir/lib/test")
+        }
+    }
+
+    sourceSets {
+        test.java.srcDirs = []
+        test.resources.srcDirs = []
+    }
+
+    processResources {
+        //logger.warn("---- $project.projectDir")
+        eachFile { if (it.path.endsWith(".sql")) it.path = "org/jetbrains/dekaf/${it.path}" }
+        //eachFile { logger.warn("copying something from $it.sourcePath to $it.path") }
+    }
+
+    tasks.withType(Jar) {
+        destinationDir = file("$rootDir/out/jars")
+    }
+
 }
 
-task getLibsJdbc(type: Copy) {
-    from configurations.jdbc - configurations.pro
-    into "lib/jdbc/"
+
+def productionModules = [ project(':dekaf-base'),
+                          project(':dekaf-jdbc'),
+                          project(':dekaf-main'),
+                          project(':dekaf-test-db') ]
+
+def testModules = [ project(':dekaf-base-test'),
+                    project(':dekaf-jdbc-test'),
+                    project(':dekaf-main-test'),
+                    project(':dekaf-test-db-test'),
+                    project(':ko-test-util'),
+                    project(':test-basic'),
+                    project(':test-connection') ]
+
+def demoModules = [ project(':demo-on-java'),
+                    project(':demo-on-kotlin') ]
+
+def allModules = productionModules + testModules + demoModules
+
+
+
+// JAVA PRODUCTION AND DEMO MODULES
+configure ([ project(':dekaf-base'), project(':dekaf-jdbc'), project(':demo-on-java') ]) {
+
+    sourceSets {
+        main {
+            java.srcDirs = ['src']
+            resources.srcDirs = ['manifest','sql']
+        }
+    }
+
 }
 
-task getLibs {
-    dependsOn << getLibsPro
-    dependsOn << getLibsTest
-    dependsOn << getLibsJdbc
+
+// JAVA TEST MODULES
+configure ([ project(':dekaf-base-test'), project(':dekaf-jdbc-test') ]) {
+
+    sourceSets {
+        main {
+            java.srcDirs = ['tests']
+            resources.srcDirs = ['manifest','tests-sql']
+        }
+    }
+
 }
+
+
+// KOTLIN PRODUCTION AND DEMO MODULES
+configure ([ project(':dekaf-main'), project(':dekaf-test-db'), project(':ko-test-util'), project(':demo-on-kotlin') ]) {
+
+    apply plugin: 'kotlin'
+
+    sourceSets {
+        main {
+            java.srcDirs = []
+            kotlin.srcDirs = ['src']
+            resources.srcDirs = ['sql']
+        }
+        test {
+            java.srcDirs = []
+            kotlin.srcDirs = []
+            resources.srcDirs = []
+        }
+    }
+
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "1.8"
+            //languageVersion = "1.1"
+            //apiVersion = "1.1"
+            javaParameters = true
+            kotlinOptions.suppressWarnings = false
+        }
+    }
+    
+}
+
+
+// KOTLIN TEST MODULES
+configure ([ project(':dekaf-main-test'), project(':dekaf-test-db-test'), project(':test-basic'), project(':test-connection') ]) {
+
+    apply plugin: 'kotlin'
+
+    sourceSets {
+        main {
+            java.srcDirs = []
+            kotlin.srcDirs = ['tests']
+            resources.srcDirs = ['tests-sql']
+        }
+        test {
+            java.srcDirs = []
+            kotlin.srcDirs = []
+            resources.srcDirs = []
+        }
+    }
+
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "1.8"
+            //languageVersion = "1.2"
+            //apiVersion = "1.2"
+            javaParameters = true
+            kotlinOptions.suppressWarnings = true
+        }
+    }
+
+}
+
+
+
+
+def libAnnotations              = "org.jetbrains:annotations:$annotationsVersion"
+
+def libKotlinStd                = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+def libKotlinReflect            = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+
+def libJunitJupiterApi          = "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
+def libJunitJupiterEngine       = "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
+def libJunitJupiterParams       = "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion"
+def libJunitPlatformLauncher    = "org.junit.platform:junit-platform-launcher:$junitPlatformVersion"
+def libAssertJ                  = "org.assertj:assertj-core:$assertJVersion"
+
+def libH2                       = "com.h2database:h2:$h2dbVersion"
+
+
+
+
+project(':dekaf-base') {
+
+    dependencies {
+        compile libAnnotations
+    }
+
+}
+
+project(':dekaf-base-test') {
+
+    dependencies {
+        compile project(':dekaf-base')
+        compile libAnnotations
+        compile libJunitJupiterApi
+        compile libJunitJupiterEngine
+        compile libJunitJupiterParams
+        compile libAssertJ
+    }
+
+}
+
+
+project(':dekaf-jdbc') {
+
+    dependencies {
+        compile project(':dekaf-base')
+    }
+
+}
+
+project(':dekaf-jdbc-test') {
+
+    dependencies {
+        compile project(':dekaf-base')
+        compile project(':dekaf-jdbc')
+        compile libH2
+        compile libJunitJupiterApi
+        compile libJunitJupiterEngine
+        compile libJunitJupiterParams
+        compile libAssertJ
+    }
+
+}
+
+
+project(':dekaf-main') {
+
+    dependencies {
+        compile project(':dekaf-base')
+        compile libKotlinStd
+        compile libKotlinReflect
+    }
+
+}
+
+project(':dekaf-main-test') {
+
+    dependencies {
+        compile project(':dekaf-base')
+        compile project(':dekaf-main')
+        compile project(':ko-test-util')
+        compile libKotlinStd
+        compile libH2
+        compile libJunitJupiterApi
+        compile libJunitJupiterEngine
+        compile libJunitJupiterParams
+        compile libAssertJ
+    }
+
+}
+
+
+project(':dekaf-test-db') {
+
+    dependencies {
+        compile project(':dekaf-base')
+        compile project(':dekaf-main')
+        compile libKotlinStd
+        compile libKotlinReflect
+    }
+
+}
+
+project(':dekaf-test-db-test') {
+
+    dependencies {
+        compile project(':dekaf-base')
+        compile project(':dekaf-main')
+        compile project(':dekaf-test-db')
+        compile project(':ko-test-util')
+        compile libKotlinStd
+        compile libKotlinReflect
+        compile libH2
+        compile libJunitJupiterApi
+        compile libJunitJupiterEngine
+        compile libJunitJupiterParams
+        compile libAssertJ
+    }
+
+}
+
+
+project(':ko-test-util') {
+
+    dependencies {
+        compile libKotlinStd
+        compile libKotlinReflect
+        compile libJunitJupiterApi
+        compile libJunitJupiterEngine
+        compile libJunitJupiterParams
+        compile libJunitPlatformLauncher
+    }
+                      
+}
+
+
+project(':demo-on-java') {
+
+    dependencies {
+        compile project(':dekaf-base')
+        compile project(':dekaf-main')
+        compile libH2
+    }
+
+}
+
+
+project(':demo-on-kotlin') {
+
+    dependencies {
+        compile project(':dekaf-base')
+        compile project(':dekaf-main')
+        compile libH2
+        compile libKotlinStd
+    }
+
+}
+
+
+project(':test-basic') {
+
+    //apply plugin: 'org.junit.platform.gradle.plugin'
+
+    dependencies {
+        compile project(':demo-on-java')
+        compile project(':demo-on-kotlin')
+        compile project(':dekaf-base-test')
+        compile project(':dekaf-jdbc-test')
+        compile project(':dekaf-main-test')
+        compile project(':ko-test-util')
+        compile libKotlinStd
+        compile libKotlinReflect
+        compile libH2
+        compile libJunitJupiterApi
+        compile libJunitJupiterEngine
+        compile libJunitJupiterParams
+        compile libJunitPlatformLauncher
+    }
+
+    jar {
+        manifest {
+            attributes(
+                    "Class-Path": configurations.compile.collect { it.getName() }.join(' '),
+                    'Main-Class': 'org.jetbrains.dekaf.AllUnitTests'
+            )
+        }
+    }
+
+    /*
+    junitPlatform {
+        //platformVersion 1.0
+        //logManager 'org.apache.logging.log4j.jul.LogManager'
+        reportsDir file('build/reports')
+
+        // enableStandardTestTask true
+        // selectors (optional)
+
+        filters {
+            engines {
+                include 'junit-jupiter'
+                exclude 'junit-vintage'
+            }
+        }
+    }
+    */
+
+}
+
+
+project(':test-connection') {
+
+    //apply plugin: 'org.junit.platform.gradle.plugin'
+
+    dependencies {
+        compile project(':dekaf-base')
+        compile project(':dekaf-jdbc')
+        compile project(':dekaf-main')
+        compile project(':dekaf-test-db')
+        compile project(':ko-test-util')
+        compile libKotlinStd
+        compile libKotlinReflect
+        compile libJunitJupiterApi
+        compile libJunitJupiterEngine
+        compile libJunitJupiterParams
+        compile libJunitPlatformLauncher
+        compile libH2
+    }
+
+    /*
+    junitPlatform {
+        //platformVersion 1.0
+        //logManager 'org.apache.logging.log4j.jul.LogManager'
+        reportsDir file('build/reports')
+
+        // enableStandardTestTask true
+        // selectors (optional)
+
+        filters {
+            engines {
+                include 'junit-jupiter'
+                exclude 'junit-vintage'
+            }
+        }
+    }
+    */
+}
+
+
+
+task zipProduction(type: Zip) {
+    destinationDir(file("$rootDir/farm/"))
+    baseName("production")
+    from productionModules.collect { it.tasks.jar }
+}
+
+task zipTests(type: Zip) {
+    destinationDir(file("$rootDir/farm/"))
+    baseName("tests")
+    def sum = testModules + demoModules
+    from sum.collect { it.tasks.jar }
+}
+
+task zipDeps(type: Zip) {
+    destinationDir(file("$rootDir/farm/"))
+    baseName("dependencies")
+    from testModules.collect { it.configurations.runtime }
+    def filesToExclude = project.files(allModules.collect { it.tasks.jar }).files
+    exclude {
+        it.file in filesToExclude
+    }
+}
+
+task zipAll(dependsOn: [zipProduction, zipTests, zipDeps]) {
+
+}
+

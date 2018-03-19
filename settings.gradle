@@ -1,0 +1,20 @@
+rootProject.name = 'dekaf'
+
+include 'dekaf-base'
+include 'dekaf-jdbc'
+include 'dekaf-main'
+include 'dekaf-test-db'
+
+include 'ko-test-util'
+
+include 'dekaf-base-test'
+include 'dekaf-jdbc-test'
+include 'dekaf-main-test'
+include 'dekaf-test-db-test'
+
+include 'demo-on-java'
+include 'demo-on-kotlin'
+
+include 'test-basic'
+include 'test-connection'
+

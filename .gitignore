@@ -8,8 +8,11 @@ lib
 out
 dist
 coverage
+build
+**/build
 */target
 .gradle
+.gradleTemp
 
 .idea/workspace.xml
 .idea/uiDesigner.xml

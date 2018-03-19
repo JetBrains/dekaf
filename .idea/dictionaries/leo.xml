@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="leo">
     <words>
+      <w>apiguardian</w>
       <w>assertj</w>
       <w>büro</w>
       <w>callables</w>
@@ -11,38 +12,49 @@
       <w>dekaf</w>
       <w>deregister</w>
       <w>deregistering</w>
+      <w>eoln</w>
       <w>gauder</w>
       <w>iface</w>
       <w>inno</w>
+      <w>ints</w>
+      <w>ipsum</w>
       <w>isam</w>
       <w>jacoco</w>
       <w>jacocoagent</w>
       <w>javaagent</w>
       <w>jdba</w>
+      <w>jdbc</w>
       <w>jtds</w>
       <w>klass</w>
       <w>klazz</w>
       <w>lada</w>
+      <w>lorem</w>
       <w>mockito</w>
       <w>mssql</w>
+      <w>nullable</w>
       <w>odbc</w>
       <w>passivate</w>
       <w>plpgsql</w>
       <w>postgre</w>
       <w>postgresql</w>
+      <w>praktisch</w>
       <w>prima</w>
+      <w>quadratisch</w>
       <w>rdbms</w>
       <w>reinit</w>
       <w>rewriters</w>
       <w>rset</w>
       <w>scripter</w>
       <w>scriptum</w>
+      <w>signum</w>
       <w>sqle</w>
+      <w>sqlite</w>
       <w>sqlserver</w>
       <w>struct</w>
       <w>structs</w>
       <w>sudoku</w>
       <w>unexistent</w>
+      <w>unexpect</w>
     </words>
   </dictionary>
 </component>
