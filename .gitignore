@@ -10,7 +10,7 @@ dist
 coverage
 build
 **/build
-*/target
+**/target
 .gradle
 .gradleTemp
 
@@ -20,6 +20,14 @@ build
 .idea/shelf
 .idea/ant.xml
 .idea/dataSources.local.xml
+
+*/.idea/workspace.xml
+*/.idea/uiDesigner.xml
+*/.idea/deployment.xml
+*/.idea/shelf
+*/.idea/ant.xml
+*/.idea/dataSources.local.xml
+
 
 test-db.config
 test-db.properties
