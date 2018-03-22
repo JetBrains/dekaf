@@ -427,20 +427,20 @@ project(':test-connection') {
 
 
 task zipProduction(type: Zip) {
-    destinationDir(file("$rootDir/int/farm/"))
+    destinationDir(file("$rootDir/../int/farm/"))
     baseName("production")
     from productionModules.collect { it.tasks.jar }
 }
 
 task zipTests(type: Zip) {
-    destinationDir(file("$rootDir/int/farm/"))
+    destinationDir(file("$rootDir/../int/farm/"))
     baseName("tests")
     def sum = testModules + demoModules
     from sum.collect { it.tasks.jar }
 }
 
 task zipDeps(type: Zip) {
-    destinationDir(file("$rootDir/int/farm/"))
+    destinationDir(file("$rootDir/../int/farm/"))
     baseName("dependencies")
     from testModules.collect { it.configurations.runtime }
     def filesToExclude = project.files(allModules.collect { it.tasks.jar }).files
