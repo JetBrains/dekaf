@@ -183,6 +183,7 @@ configure ([ project(':dekaf-main-test'), project(':dekaf-test-db-test'), projec
 
 
 def libAnnotations              = "org.jetbrains:annotations:$annotationsVersion"
+def libAntlrRuntime             = "org.antlr:antlr4-runtime:$annotationsVersion"
 
 def libKotlinStd                = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 def libKotlinReflect            = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
