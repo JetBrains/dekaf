@@ -39,6 +39,7 @@ buildscript {
 
 allprojects { project ->
     project.buildDir = new File(rootProject.projectDir, ".gradleTemp/" + project.name)
+    project.apply(plugin: 'idea')
 }
 
 
@@ -69,6 +70,35 @@ subprojects { project ->
     }
 
 }
+
+def groupDekaf = [ project(':dekaf-base'),
+                   project(':dekaf-base-test'),
+                   project(':dekaf-jdbc'),
+                   project(':dekaf-jdbc-test'),
+                   project(':dekaf-main'),
+                   project(':dekaf-main-test'),
+                   project(':dekaf-test-db'),
+                   project(':dekaf-test-db-test') ]
+
+def groupDemo =  [ project(':demo-on-java'),
+                   project(':demo-on-kotlin') ]                  
+
+def groupTesting = [ project(':ko-test-util'),
+                     project(':test-basic'),
+                     project(':test-connection') ]
+
+configure (groupDekaf) {
+    idea.module.name = "Dekaf.$it.name"
+}
+
+configure (groupDemo) {
+    idea.module.name = "Demo.$it.name"
+}
+
+configure (groupTesting) {
+    idea.module.name = "Testing.$it.name"
+}
+
 
 
 def productionModules = [ project(':dekaf-base'),
