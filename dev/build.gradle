@@ -14,6 +14,8 @@ def microsoftVersion     = '6.1.5.jre8-preview'
 def jtdsVersion          = '1.2.8'
 
 
+apply plugin: 'java'
+
 
 buildscript {
 
@@ -483,6 +485,15 @@ project(':test-connection') {
     */
 }
 
+
+
+task jars(type: Copy) {
+    dependsOn build
+    //configurations.runtime
+    //from jar
+    from allModules.collect { it.configurations.runtime }
+    into "$rootDir/../int/jars"
+}
 
 
 task zipProduction(type: Zip) {
