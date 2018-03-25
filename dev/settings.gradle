@@ -1,20 +1,21 @@
 rootProject.name = 'dekaf'
 
 include 'dekaf-base'
-include 'dekaf-jdbc'
-include 'dekaf-main'
-include 'dekaf-test-db'
-
-include 'ko-test-util'
-
 include 'dekaf-base-test'
+include 'dekaf-jdbc'
 include 'dekaf-jdbc-test'
+
+include 'dekaf-main'
 include 'dekaf-main-test'
+include 'dekaf-test-db'
 include 'dekaf-test-db-test'
 
 include 'demo-on-java'
 include 'demo-on-kotlin'
 
+include 'ko-test-util'
+include 'expectation'
+include 'expectation-demo'
 include 'test-basic'
 include 'test-connection'
 

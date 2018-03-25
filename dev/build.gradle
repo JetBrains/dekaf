@@ -18,12 +18,12 @@ def jtdsVersion          = '1.2.8'
 buildscript {
 
     // unfortunately, we have to duplicate this two variables :(
-    def kotlinVersion        = '1.2.30'
-    def junitPlatformVersion = '1.1.0'
+    def kotlinVersion0        = '1.2.30'
+    def junitPlatformVersion0 = '1.1.0'
 
 
     ext {
-        kotlin_version = kotlinVersion
+        kotlin_version = kotlinVersion0
     }
 
     repositories {
@@ -31,14 +31,15 @@ buildscript {
     }
 
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath "org.junit.platform:junit-platform-gradle-plugin:$junitPlatformVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion0"
+        classpath "org.junit.platform:junit-platform-gradle-plugin:$junitPlatformVersion0"
     }
 }
 
 
 allprojects { project ->
     project.buildDir = new File(rootProject.projectDir, ".gradleTemp/" + project.name)
+    project.apply(plugin: 'idea')
 }
 
 
@@ -65,10 +66,44 @@ subprojects { project ->
     }
 
     tasks.withType(Jar) {
-        destinationDir = file("$rootDir/out/jars")
+        destinationDir = file("$rootDir/../out/jars")
     }
 
 }
+
+def groupDekaf = [ project(':dekaf-base'),
+                   project(':dekaf-base-test'),
+                   project(':dekaf-jdbc'),
+                   project(':dekaf-jdbc-test'),
+                   project(':dekaf-main'),
+                   project(':dekaf-main-test'),
+                   project(':dekaf-test-db'),
+                   project(':dekaf-test-db-test') ]
+
+def groupDemo =  [ project(':demo-on-java'),
+                   project(':demo-on-kotlin') ]
+
+def groupTesting = [ project(':ko-test-util'),
+                     project(':expectation'),
+                     project(':expectation-demo'),
+                     project(':test-basic'),
+                     project(':test-connection') ]
+
+def allModules = groupDekaf + groupDemo + groupTesting
+
+
+configure (groupDekaf) {
+    idea.module.name = "Dekaf.$it.name"
+}
+
+configure (groupDemo) {
+    idea.module.name = "Demo.$it.name"
+}
+
+configure (groupTesting) {
+    idea.module.name = "Testing.$it.name"
+}
+
 
 
 def productionModules = [ project(':dekaf-base'),
@@ -81,13 +116,14 @@ def testModules = [ project(':dekaf-base-test'),
                     project(':dekaf-main-test'),
                     project(':dekaf-test-db-test'),
                     project(':ko-test-util'),
+                    project(':expectation'),
+                    project(':expectation-demo'),
                     project(':test-basic'),
                     project(':test-connection') ]
 
 def demoModules = [ project(':demo-on-java'),
                     project(':demo-on-kotlin') ]
 
-def allModules = productionModules + testModules + demoModules
 
 
 
@@ -117,8 +153,9 @@ configure ([ project(':dekaf-base-test'), project(':dekaf-jdbc-test') ]) {
 }
 
 
-// KOTLIN PRODUCTION AND DEMO MODULES
-configure ([ project(':dekaf-main'), project(':dekaf-test-db'), project(':ko-test-util'), project(':demo-on-kotlin') ]) {
+// KOTLIN PRODUCTION, DEMO AND TEST UTILS MODULES
+configure ([ project(':dekaf-main'), project(':dekaf-test-db'), project(':demo-on-kotlin'),
+             project(':ko-test-util'), project(':expectation'), project(':expectation-demo') ]) {
 
     apply plugin: 'kotlin'
 
@@ -318,7 +355,8 @@ project(':demo-on-java') {
     dependencies {
         compile project(':dekaf-base')
         compile project(':dekaf-main')
-        compile libH2
+        runtime project(':dekaf-jdbc')
+        runtime libH2
     }
 
 }
@@ -329,8 +367,30 @@ project(':demo-on-kotlin') {
     dependencies {
         compile project(':dekaf-base')
         compile project(':dekaf-main')
-        compile libH2
         compile libKotlinStd
+        runtime project(':dekaf-jdbc')
+        runtime libH2
+    }
+
+}
+
+
+project(':expectation') {
+
+    dependencies {
+        compile libKotlinStd
+        compile libJunitJupiterApi
+    }
+
+}
+
+
+project(':expectation-demo') {
+
+    dependencies {
+        compile project(':expectation')
+        compile libKotlinStd
+        compile libJunitJupiterApi
     }
 
 }
@@ -349,11 +409,11 @@ project(':test-basic') {
         compile project(':ko-test-util')
         compile libKotlinStd
         compile libKotlinReflect
-        compile libH2
         compile libJunitJupiterApi
         compile libJunitJupiterEngine
         compile libJunitJupiterParams
         compile libJunitPlatformLauncher
+        runtime libH2
     }
 
     jar {
@@ -402,7 +462,6 @@ project(':test-connection') {
         compile libJunitJupiterEngine
         compile libJunitJupiterParams
         compile libJunitPlatformLauncher
-        compile libH2
     }
 
     /*

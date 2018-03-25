@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="distributionType" value="LOCAL" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/dev" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/dev" />
+            <option value="$PROJECT_DIR$/dev/dekaf-base" />
+            <option value="$PROJECT_DIR$/dev/dekaf-base-test" />
+            <option value="$PROJECT_DIR$/dev/dekaf-jdbc" />
+            <option value="$PROJECT_DIR$/dev/dekaf-jdbc-test" />
+            <option value="$PROJECT_DIR$/dev/dekaf-main" />
+            <option value="$PROJECT_DIR$/dev/dekaf-main-test" />
+            <option value="$PROJECT_DIR$/dev/dekaf-test-db" />
+            <option value="$PROJECT_DIR$/dev/dekaf-test-db-test" />
+            <option value="$PROJECT_DIR$/dev/demo-on-java" />
+            <option value="$PROJECT_DIR$/dev/demo-on-kotlin" />
+            <option value="$PROJECT_DIR$/dev/expectation" />
+            <option value="$PROJECT_DIR$/dev/expectation-demo" />
+            <option value="$PROJECT_DIR$/dev/ko-test-util" />
+            <option value="$PROJECT_DIR$/dev/test-basic" />
+            <option value="$PROJECT_DIR$/dev/test-connection" />
+          </set>
+        </option>
+        <option name="resolveModulePerSourceSet" value="false" />
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

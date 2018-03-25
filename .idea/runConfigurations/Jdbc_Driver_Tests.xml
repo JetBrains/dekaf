@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Jdbc Driver Tests" type="JUnit" factoryName="JUnit" singleton="true">
-    <module name="dekaf-jdbc-test" />
+    <module name="Testing.test-basic" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <option name="PACKAGE_NAME" />
