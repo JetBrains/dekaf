@@ -1,0 +1,8 @@
+apply plugin: 'java'
+
+task testBasic {
+    javaexec {
+        main = "-jar"
+        args = ["jars/test-basic-tests.jar"]
+    }
+}

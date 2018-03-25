@@ -14,6 +14,9 @@ build
 .gradle
 .gradleTemp
 
+*/.gradle
+*/.gradleTemp
+
 .idea/workspace.xml
 .idea/uiDesigner.xml
 .idea/deployment.xml
