@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.Properties;
 
 import static org.jetbrains.dekaf.jdbc.MysqlConsts.FETCH_STRATEGY_AUTO;
@@ -24,7 +25,6 @@ import static org.jetbrains.dekaf.jdbc.MysqlConsts.FETCH_STRATEGY_AUTO;
  * @author Leonid Bushuev from JetBrains
  **/
 public class MysqlIntermediateFacade extends JdbcIntermediateFacade {
-  private static final String MARIA_DB = "MariaDB";
   @MagicConstant(valuesFromClass = MysqlConsts.class,
                  stringValues = {"FETCH_STRATEGY_AUTO", "FETCH_STRATEGY_ROW", "FETCH_STRATEGY_WHOLE"})
   private byte myFetchStrategy = FETCH_STRATEGY_AUTO;
@@ -58,8 +58,10 @@ public class MysqlIntermediateFacade extends JdbcIntermediateFacade {
     final JdbcIntermediateSession session = openSession();
     try {
       // environment
-      env = session.queryOneRow(CONNECTION_INFO_QUERY, 3, String.class);
-      if (env == null) env = new String[] {null,null,null};
+      env = session.queryOneRow(CONNECTION_INFO_QUERY, 4, String.class);
+      String verComment = env == null ? null : env[3];
+      if (verComment != null) verComment = verComment.toLowerCase(Locale.ENGLISH);
+      if (env == null) env = new String[] {null, null, null};
 
       // versions
       String rdbmsName, serverVersionStr, driverVersionStr;
@@ -75,12 +77,20 @@ public class MysqlIntermediateFacade extends JdbcIntermediateFacade {
       }
 
       if (rdbmsName.equals("MySQL")) {
-        int pos = serverVersionStr.indexOf(MARIA_DB);
+        int pos = serverVersionStr.indexOf(Mysql.MARIADB_FLAVOUR);
         if (pos != -1) {
-          serverVersion = extractVersion(serverVersionStr.substring(pos + MARIA_DB.length()), SIMPLE_VERSION_PATTERN, 1);
+          serverVersion = extractVersion(serverVersionStr.substring(pos + Mysql.MARIADB_FLAVOUR.length()), SIMPLE_VERSION_PATTERN, 1);
           if (serverVersion == Version.ZERO) serverVersion = extractVersion(serverVersionStr.substring(0, pos), SIMPLE_VERSION_PATTERN, 1);
-          if (serverVersion != Version.ZERO) rdbmsName = MARIA_DB;
+          if (serverVersion != Version.ZERO) rdbmsName = Mysql.MARIADB_FLAVOUR;
           else serverVersion = null;
+        }
+        else if (verComment != null) {
+          if (verComment.startsWith("memsql")) {
+            rdbmsName = Mysql.MEMSQL_FLAVOUR;
+            String[] memVer = session.queryOneRow("select @@memsql_version", 1, String.class);
+            if (memVer != null && memVer[0] != null) serverVersion = extractVersion(memVer[0], SIMPLE_VERSION_PATTERN, 1);
+          }
+          else if (verComment.startsWith("mariadb")) rdbmsName = Mysql.MARIADB_FLAVOUR;
         }
       }
 
@@ -97,7 +107,7 @@ public class MysqlIntermediateFacade extends JdbcIntermediateFacade {
 
   @SuppressWarnings("SpellCheckingInspection")
   private static final String CONNECTION_INFO_QUERY =
-      "select database(), schema(), left(user(),instr(concat(user(),'@'),'@')-1)";
+      "select database(), schema(), left(user(),instr(concat(user(),'@'),'@')-1), @@version_comment";
 
 
   @NotNull
