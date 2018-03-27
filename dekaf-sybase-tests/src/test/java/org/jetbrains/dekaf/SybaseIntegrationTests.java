@@ -18,6 +18,7 @@ import org.junit.runners.Suite;
                             SybaseCommandRunnerTest.class,
                             SybaseQueryRunnerTest.class,
                             SybaseExceptionRecognizerTest.class,
-                            SybaseTestHelperTest.class
+                            SybaseTestHelperTest.class,
+                            SybaseVersionTest.class,
 })
 public class SybaseIntegrationTests {}
