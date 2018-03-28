@@ -1,8 +1,67 @@
-apply plugin: 'java'
-
-task testBasic {
-    javaexec {
-        main = "-jar"
-        args = ["jars/test-basic-tests.jar"]
+buildscript {
+    repositories {
+        mavenCentral()
+        // The following is only necessary if you want to use SNAPSHOT releases.
+        // maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    }
+    dependencies {
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.1.0'
     }
 }
+
+
+apply plugin: 'java'
+apply plugin: 'org.junit.platform.gradle.plugin'
+
+
+repositories {
+    flatDir { dirs 'jars' }
+    mavenCentral()
+}
+
+dependencies {
+    runtime fileTree(dir: 'jars', include: '*.jar')
+}
+
+
+allprojects {
+    sourceSets {
+        main {
+            java.srcDirs = []
+            resources.srcDirs = []
+        }
+        test {
+            java.srcDirs = []
+            resources.srcDirs = []
+        }
+    }
+}
+
+
+junitPlatformTest {
+    systemProperty "test-db", "jdbc:h2:mem:test"
+}
+
+junitPlatform {
+    selectors {
+        packages "org.jetbrains.dekaf"
+    }
+    filters {
+        engines {
+            include 'junit-jupiter'
+            exclude 'junit-vintage'
+        }
+        includeClassNamePatterns '.*Test', '.*Tests'
+        tags {
+            include "UnitTest", "DemoTest"
+        }
+    }
+}
+
+
+//task testBasic {
+//    javaexec {
+//        main = "-jar"
+//        args = ["jars/test-basic-tests.jar"]
+//    }
+//}
