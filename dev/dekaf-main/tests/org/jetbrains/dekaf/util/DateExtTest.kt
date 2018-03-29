@@ -9,7 +9,7 @@ import java.util.*
 /**
  * @author Leonid Bushuev
  **/
-@Tag("UnitTest")
+@Tag("basic")
 class DateExtTest {
 
     @Test

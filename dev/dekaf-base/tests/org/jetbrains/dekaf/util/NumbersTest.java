@@ -16,7 +16,7 @@ import static org.jetbrains.dekaf.util.Numbers.*;
 /**
  * @author Leonid Bushuev
  */
-@Tag("UnitTest")
+@Tag("basic")
 @SuppressWarnings({"unused", "RedundantCast"})
 public class NumbersTest {
 

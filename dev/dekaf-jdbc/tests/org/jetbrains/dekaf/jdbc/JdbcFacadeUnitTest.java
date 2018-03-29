@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@Tag("UnitTest")
+@Tag("basic")
 class JdbcFacadeUnitTest extends JdbcUnitTestCase {
 
     @Test

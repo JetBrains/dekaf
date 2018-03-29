@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Tags
 import org.junit.jupiter.api.Test
 
 
-@Tags(Tag("H2"), Tag("UnitTest"))
+@Tags(Tag("h2"), Tag("basic"))
 class H2ConnectionTest {
 
     @Test

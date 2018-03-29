@@ -12,7 +12,7 @@ import java.sql.SQLException
 /**
  * @author Leonid Bushuev from JetBrains
  */
-@Tag("UnitTest")
+@Tag("basic")
 abstract class CommonSessionTest : CommonIntegrationCase() {
 
     companion object {

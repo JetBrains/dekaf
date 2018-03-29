@@ -10,7 +10,7 @@ import static org.jetbrains.dekaf.jdbc.JdbcTestHelper.queryString;
 
 
 
-@Tag("JdbcDriverTest")
+@Tag("jdbc")
 class JdbcFacadeDriverTest extends JdbcDriverTestCase {
 
     @Test

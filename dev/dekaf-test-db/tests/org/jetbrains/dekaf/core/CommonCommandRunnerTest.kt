@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 /**
  * @author Leonid Bushuev
  */
-@Tag("UnitTest")
+@Tag("basic")
 class CommonCommandRunnerTest : CommonIntegrationCase() {
 
     companion object {

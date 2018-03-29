@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 
-@Tag("UnitTest")
+@Tag("basic")
 class ArrayBuilderTest {
 
     @Test

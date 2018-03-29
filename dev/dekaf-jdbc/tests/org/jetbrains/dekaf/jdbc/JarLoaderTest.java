@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 
 
-@Tag("JdbcDriverTest")
+@Tag("jdbc")
 public class JarLoaderTest extends JdbcDriverTestCase
 {
 

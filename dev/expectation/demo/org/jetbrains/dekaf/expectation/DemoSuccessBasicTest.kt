@@ -3,7 +3,7 @@ package org.jetbrains.dekaf.expectation
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
-@Tag("ExpectationDemoTest")
+@Tag("demo")
 class DemoSuccessBasicTest {
 
     @Test

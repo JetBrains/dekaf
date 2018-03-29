@@ -16,7 +16,7 @@
     </option>
     <patterns />
     <tags>
-      <tag value="JdbcDriverTest" />
+      <tag value="jdbc" />
     </tags>
     <method />
   </configuration>

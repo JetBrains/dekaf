@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 
-@Tag("JdbcDriverTest")
+@Tag("jdbc")
 public class JdbcDriverManagerTest extends JdbcDriverTestCase {
 
     @Test

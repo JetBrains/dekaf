@@ -8,7 +8,7 @@ import static org.jetbrains.dekaf.util.ArrayUtil.*;
 
 
 
-@Tag("UnitTest")
+@Tag("basic")
 class ArrayUtilTest {
 
     @Test

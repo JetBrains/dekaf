@@ -482,6 +482,7 @@ project(':test-basic') {
         testRuntime project(':dekaf-jdbc')
         testRuntime project(':dekaf-main')
         testRuntime project(':dekaf-test-db')
+        testRuntime project(':expectation')
         testCompile project(':demo-on-java')
         testCompile project(':demo-on-kotlin')
         testCompile project(':ko-test-util')

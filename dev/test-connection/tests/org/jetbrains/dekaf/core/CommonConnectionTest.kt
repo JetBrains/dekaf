@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Tags
 import org.junit.jupiter.api.Test
 
 
-@Tags(Tag("Common"), Tag("UnitTest"))
+@Tags(Tag("basic"), Tag("connection"))
 class CommonConnectionTest {
 
 

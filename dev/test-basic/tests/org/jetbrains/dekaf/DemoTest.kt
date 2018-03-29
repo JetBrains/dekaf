@@ -2,10 +2,7 @@ package org.jetbrains.dekaf
 
 import org.jetbrains.dekaf.util.ArrayUtil
 import org.jetbrains.dekaf.util.toFixString
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.DynamicTest
-import org.junit.jupiter.api.Tag
-import org.junit.jupiter.api.TestFactory
+import org.junit.jupiter.api.*
 import java.lang.IllegalStateException
 import java.lang.reflect.Method
 
@@ -17,7 +14,7 @@ internal const val demoPackage = "demo"
 /**
  * Tests of Demo examples.
  */
-@Tag("DemoTest")
+@Tag("demo")
 class DemoTest {
 
     @TestFactory  @DisplayName("java")
@@ -57,7 +54,13 @@ class DemoTest {
         }
 
         override fun execute() {
-            method.invoke(null, emptyArray<String>())
+            try {
+                method.isAccessible = true
+                method.invoke(null, emptyArray<String>())
+            }
+            catch (e: Throwable) {
+                fail("Failed to execute class ${claß.simpleName} method ${method.name}: exception ${e.javaClass.simpleName}: ${e.message}")
+            }
         }
 
     }

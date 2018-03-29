@@ -22,7 +22,7 @@ object AllUnitTests {
 
         val request = LauncherDiscoveryRequestBuilder.request()
                 .selectors(selectPackage("org.jetbrains.dekaf"))
-                .filters(includeClassNamePatterns(".*Test"), includeTags("UnitTest","DemoTest"))
+                .filters(includeClassNamePatterns(".*Test"), includeTags("basic","demo"))
                 .build()
 
         val launcher = LauncherFactory.create()

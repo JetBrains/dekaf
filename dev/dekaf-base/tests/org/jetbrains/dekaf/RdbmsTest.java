@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 
-@Tag("UnitTest")
+@Tag("basic")
 class RdbmsTest {
 
     @Test

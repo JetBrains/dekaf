@@ -10,7 +10,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Tag("UnitTest")
+@Tag("basic")
 @SuppressWarnings("SpellCheckingInspection")
 public class SettingsTest {
 

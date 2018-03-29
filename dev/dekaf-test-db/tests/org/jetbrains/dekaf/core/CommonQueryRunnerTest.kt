@@ -25,7 +25,7 @@ import kotlin.Suppress
 /**
  * @author Leonid Bushuev
  */
-@Tag("UnitTest")
+@Tag("basic")
 class CommonQueryRunnerTest : CommonIntegrationCase() {
 
 

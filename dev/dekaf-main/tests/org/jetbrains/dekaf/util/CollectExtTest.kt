@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 /**
  *
  */
-@Tag("UnitTest")
+@Tag("basic")
 class CollectExtTest {
 
     @Test

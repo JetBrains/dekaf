@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 /**
  * @author Leonid Bushuev from JetBrains
  */
-@Tag("UnitTest")
+@Tag("basic")
 class ScriptumBasicTest {
 
     companion object {

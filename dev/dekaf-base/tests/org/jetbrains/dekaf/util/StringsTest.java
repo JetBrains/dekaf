@@ -9,7 +9,7 @@ import static org.jetbrains.dekaf.util.Strings.ensureEndsWith;
 import static org.jetbrains.dekaf.util.Strings.ensureStartsWith;
 
 
-@Tag("UnitTest")
+@Tag("basic")
 @SuppressWarnings("SpellCheckingInspection")
 public class StringsTest {
 

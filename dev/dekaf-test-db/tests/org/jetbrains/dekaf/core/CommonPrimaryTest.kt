@@ -12,7 +12,7 @@ import java.sql.SQLException
 /**
  * @author Leonid Bushuev
  */
-@Tag("UnitTest")
+@Tag("basic")
 class CommonPrimaryTest : CommonIntegrationCase() {
 
     @Test

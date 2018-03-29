@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 
 
-@Tag("UnitTest")
+@Tag("basic")
 public final class JdbcSeanceTest extends JdbcUnitTestCase
 {
 

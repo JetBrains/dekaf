@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Leonid Bushuev
  */
-@Tag("UnitTest")
+@Tag("basic")
 class VersionTest {
 
     @Test
