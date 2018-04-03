@@ -64,7 +64,7 @@ where lower(table_name) in (lower(?),lower(?),lower(?),lower(?))
 
 
 ---- ZapForeignKeysMetaQuery ----
-select concat('alter table ',table_name,' drop foreign key ',constraint_name) as command
+select concat('alter table `', replace(table_name, '`', '``'), '` drop foreign key `', replace(constraint_name, '`', '``'), '`') as command
 from information_schema.table_constraints C
 where C.constraint_type = 'FOREIGN KEY'
   and C.table_schema = schema()

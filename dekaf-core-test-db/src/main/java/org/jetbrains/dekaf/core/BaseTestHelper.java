@@ -1,6 +1,7 @@
 package org.jetbrains.dekaf.core;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.dekaf.exceptions.DBException;
 import org.jetbrains.dekaf.exceptions.DBProtectionException;
 import org.jetbrains.dekaf.exceptions.NoTableOrViewException;
 import org.jetbrains.dekaf.sql.*;
@@ -156,6 +157,36 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
       }
     });
   }
+
+  protected void performMetaQueryCommandsIterative(@NotNull final Scriptum scriptum,
+                                                   @NotNull final String metaQueryName,
+                                                   final int retries,
+                                                   final Object... params) {
+    final SqlQuery<List<String>> metaQuery =
+        scriptum.query(metaQueryName, listOf(oneOf(String.class)));
+
+    db.inSession(new InSessionNoResult() {
+      @Override
+      public void run(@NotNull final DBSession session) {
+        for (int i = 0; i < retries; ++i) {
+          List<String> commands = session.query(metaQuery).withParams(params).run();
+
+          try {
+            for (String command : commands) {
+              if (command != null && command.length() > 0) {
+                session.command(command).run();
+              }
+            }
+            i = retries + 1;
+          }
+          catch (DBException e) {
+            if (i + 1 >= retries) throw e;
+          }
+        }
+      }
+    });
+  }
+
 
 
   @Override
