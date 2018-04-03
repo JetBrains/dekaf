@@ -478,13 +478,13 @@ project(':test-basic') {
     }
     
     dependencies {
-        testRuntime project(':dekaf-base')
+        testCompile project(':dekaf-base')
         testRuntime project(':dekaf-jdbc')
-        testRuntime project(':dekaf-main')
+        testCompile project(':dekaf-main')
         testRuntime project(':dekaf-test-db')
-        testRuntime project(':expectation')
-        testCompile project(':demo-on-java')
-        testCompile project(':demo-on-kotlin')
+        testCompile project(':expectation')
+        testRuntime project(':demo-on-java')
+        testRuntime project(':demo-on-kotlin')
         testCompile project(':ko-test-util')
         testCompile libKotlinStd
         testCompile libKotlinReflect
@@ -502,7 +502,7 @@ project(':test-basic') {
         manifest {
             attributes(
                     "Class-Path": testJarsString + ' ' + configurations.testRuntime.collect { it.getName() }.join(' '),
-                    'Main-Class': 'org.jetbrains.dekaf.AllUnitTests'
+                    'Main-Class': 'org.jetbrains.dekaf.TestBasic'
             )
         }
     }

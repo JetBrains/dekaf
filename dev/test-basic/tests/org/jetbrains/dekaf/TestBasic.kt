@@ -12,7 +12,7 @@ import org.junit.platform.launcher.core.LauncherFactory
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener
 
 
-object AllUnitTests {
+object TestBasic {
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -22,12 +22,12 @@ object AllUnitTests {
 
         val request = LauncherDiscoveryRequestBuilder.request()
                 .selectors(selectPackage("org.jetbrains.dekaf"))
-                .filters(includeClassNamePatterns(".*Test"), includeTags("basic","demo"))
+                .filters(includeClassNamePatterns(".*Test"), includeTags("basic|demo&!fail"))
                 .build()
 
         val launcher = LauncherFactory.create()
         val summaryListener = SummaryGeneratingListener()
-        val teamCityListener = TeamCityListener()
+        val teamCityListener = TeamCityListener
         launcher.registerTestExecutionListeners(TerminalListener, teamCityListener, summaryListener)
         launcher.execute(request, *arrayOfNulls<TestExecutionListener>(0))
 

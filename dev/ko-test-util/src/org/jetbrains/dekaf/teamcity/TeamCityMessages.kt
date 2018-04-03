@@ -1,6 +1,8 @@
 package org.jetbrains.dekaf.teamcity
 
-import java.io.StringWriter
+import org.jetbrains.dekaf.util.getStackTraceText
+import org.opentest4j.AssertionFailedError
+import java.nio.file.Path
 
 /**
  * Simple methods for reporting TeamCity service messages.
@@ -16,67 +18,82 @@ object TeamCityMessages {
      * If this variable presents in the OS environment,
      * then we can expect that our tests are running under TeamCity.
      */
-    private val teamcityDetectVarName = "TEAMCITY_PROJECT_NAME"
+    private const val teamcityDetectVarName = "TEAMCITY_PROJECT_NAME"
 
     /**
      * Whether we're under TeamCity.
      */
-    private val ourUnderTeamCity = System.getenv(teamcityDetectVarName) != null
+    val underTeamCity = System.getenv(teamcityDetectVarName) != null
 
 
     fun reportSuiteStarted(suiteName: String?) {
         if (suiteName == null) return
-        if (ourUnderTeamCity)
+        if (underTeamCity)
             say("##teamcity[testSuiteStarted name='%s']", suiteName)
     }
 
     fun reportSuiteFinished(suiteName: String?) {
         if (suiteName == null) return
-        if (ourUnderTeamCity)
+        if (underTeamCity)
             say("##teamcity[testSuiteFinished name='%s']", suiteName)
     }
 
     fun reportTestStarted(testName: String) {
-        if (ourUnderTeamCity)
+        if (underTeamCity)
             say("##teamcity[testStarted name='%s' captureStandardOutput='true']", testName)
     }
 
+    fun reportPublishFile(file: Path) {
+        if (underTeamCity) {
+            val p = file.toAbsolutePath().toString()
+            say("##teamcity[publishArtifacts '%s']", p)
+        }
+    }
+
     fun reportTestFailure(testName: String, messagePrefix: String, exception: Throwable?) {
-        if (ourUnderTeamCity) {
-            if (exception != null) {
-                val message = "$messagePrefix: ${exception.javaClass.simpleName}: ${exception.message}"
-                reportTestFailure(testName, message, exception)
+        if (underTeamCity) {
+            if (exception == null) {
+                reportTestFailure(testName, messagePrefix, "No exception")
+            }
+            else if (exception is AssertionFailedError) {
+                //System.err.println("CAPTURED ${exception.javaClass.name}")
+                val exp = exception.expected.value?.toString() ?: "<null>"
+                val act = exception.actual.value?.toString() ?: "<null>"
+                val text = exception.getStackTraceText()
+                reportDifference(testName, exp, act, text)
             }
             else {
-                reportTestFailure(testName, messagePrefix, "No exception")
+                //System.err.println("MISSED ${exception.javaClass.name}")
+                val message = "$messagePrefix: ${exception.javaClass.simpleName}: ${exception.message}"
+                val text = exception.getStackTraceText()
+                reportTestFailure(testName, message, text)
             }
         }
     }
 
-    fun reportTestFailure(testName: String, errorMessage: String, stackTrace: String) {
-        if (ourUnderTeamCity)
+    private fun reportTestFailure(testName: String, errorMessage: String, stackTrace: CharSequence) {
+        if (underTeamCity)
             say("##teamcity[testFailed name='%s' message='%s' details='%s']",
-                testName,
-                errorMessage,
-                stackTrace)
+                testName, errorMessage, stackTrace)
+    }
+
+    private fun reportDifference(testName: String, expected: CharSequence, actual: CharSequence, text: CharSequence) {
+        if (underTeamCity)
+            say("##teamcity[testFailed type='comparisonFailure' name='%s' message='Difference' details='%s' expected='%s' actual='%s']",
+                testName, text, expected, actual)
     }
 
     fun reportTestIgnored(testName: String) {
-        if (ourUnderTeamCity)
+        if (underTeamCity)
             say("##teamcity[testIgnored name='%s'", testName)
     }
 
     fun reportTestFinished(testName: String) {
-        if (ourUnderTeamCity)
+        if (underTeamCity)
             say("##teamcity[testFinished name='%s']", testName)
     }
 
 
-    private fun Throwable.getStackTraceText(): String {
-        val w = StringWriter(4096)
-        this.printStackTrace(java.io.PrintWriter(w))
-        return w.buffer.toString()
-    }
 
 
     private fun say(template: String, vararg params: Any) {
