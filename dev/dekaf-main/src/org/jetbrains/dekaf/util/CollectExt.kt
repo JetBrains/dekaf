@@ -3,30 +3,51 @@ package org.jetbrains.dekaf.util
 
 import java.lang.Math.min
 import java.util.*
+import kotlin.collections.HashMap
 
 
 /**
- * Return an immutable (shallow) copy of the given collection.
- * @param collection   the collection to copy.
- * *
- * @param <T>          the type of elements.
- * *
- * @return             just created copy.
-</T> */
-fun <T> listCopy(collection: Collection<T>?): List<T> {
-    if (collection == null || collection.isEmpty()) {
-        return emptyList()
-    }
-    else {
-        val n = collection.size
-        if (n == 1) {
-            return listOf(collection.iterator().next())
+ * Makes an optimized immutable (shallow) copy of the given collection.
+ * @param this@listCopy   the collection to copy.
+ * @param <T>             the type of elements.
+ * @return                just created copy.
+ */
+fun <T> Collection<T>?.optimizeToList(): List<T> =
+        if (this == null || isEmpty()) {
+            emptyList()
         }
         else {
-            return Collections.unmodifiableList(ArrayList(collection))
+            if (size == 1) listOf(iterator().next())
+            else Collections.unmodifiableList(ArrayList(this))
         }
-    }
-}
+
+
+/**
+ * Makes an optimized immutable map populated with keys and values made from this elements.
+ * @param splitter the function to get a key and a value for each element.
+ * @return         the map.
+ */
+fun <T,K,V> Collection<T>?.optimizeToMap(splitter: (T) -> Pair<K,V>): Map<K,V> =
+        if (this == null || isEmpty()) {
+            emptyMap()
+        }
+        else {
+            if (size == 1) {
+                val element = this.iterator().next()
+                val p = splitter(element)
+                Collections.singletonMap(p.first, p.second)
+            }
+            else {
+                val map = HashMap<K,V>(size)
+                for (element in this) {
+                    val p = splitter(element)
+                    map.put(p.first, p.second)
+                }
+                map
+            }
+        }
+
+
 
 
 fun arrayToString(array: Array<*>?, delimiter: String): String {
@@ -136,3 +157,64 @@ infix fun <T: Any?> List<T>.chopAndPadBy(sliceSize: Int): List<List<T?>> {
     }
     return result
 }
+
+
+
+
+@Throws(TopologicallySortingException::class)
+fun<T:Any> Collection<T>.sortTopologicallyBySetDeferringDependents(dependents: (T) -> Collection<T>?): List<T> {
+    val n = size
+    if (n == 0) return Collections.emptyList()
+    if (n == 1) return Collections.singletonList(this.iterator().next())
+
+    val queue = LinkedHashSet<T>(this)
+    val result = LinkedHashSet<T>(n)
+
+    processQueue@
+    while (queue.isNotEmpty()) {
+        val iterator = queue.iterator()
+        do {
+            val element = iterator.next()
+            val d = dependents(element)
+            var ok = true
+            if (d != null) {
+                for (x: T in d)
+                    when (x) {
+                        in result -> {}
+                        in queue  -> ok = false
+                        else      -> throw UnexistentDependencyException(x)
+                    }
+            }
+            if (ok) {
+                iterator.remove()
+                result.add(element)
+                continue@processQueue
+            }
+        } while (iterator.hasNext())
+
+        throw CyclicDependenciesException()
+    }
+
+    return result.toList()
+}
+
+
+/**
+ * Thrown when attempted to sort a graph topologically but something went wrong.
+ * @see [sortTopologicallyBySetDeferringDependents]
+ */
+abstract class TopologicallySortingException(message: String): Exception(message)
+
+
+/**
+ * Thrown when attempted to sort a graph topologically but the graph has cycles.
+ * @see [sortTopologicallyBySetDeferringDependents]
+ */
+class CyclicDependenciesException: TopologicallySortingException("Cyclic dependencies")
+
+
+/**
+ * Thrown when attempted to sort a graph topologically but the dependencies contain unknown element.
+ * @see [sortTopologicallyBySetDeferringDependents]
+ */
+class UnexistentDependencyException(val element: Any): TopologicallySortingException("Unexistent dependency: $element")

@@ -290,6 +290,7 @@ project(':dekaf-main') {
         compile libKotlinReflect
         testRuntime project(':dekaf-jdbc')
         testCompile project(':ko-test-util')
+        testCompile project(':expectation')
         testCompile libKotlinStd
         testCompile libJunitJupiterApi
         testCompile libJunitJupiterEngine
