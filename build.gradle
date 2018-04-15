@@ -1,0 +1,66 @@
+/// DEV TASKS \\\
+
+task assembleDev (type: GradleBuild) {
+	dir = 'dev'
+	tasks = ['assemble']
+}
+
+task buildDev (type: GradleBuild) {
+	dir = 'dev'
+	tasks = ['build']
+}
+
+task cleanDev (type: GradleBuild) {
+	dir = 'dev'
+	tasks = ['clean']
+}
+
+task jarsDev (type: GradleBuild) {
+	dir = 'dev'
+	tasks = ['jars']
+}
+
+
+
+
+/// INT TASKS \\\
+
+task cleanInt (type: GradleBuild) {
+	dir = 'int'
+	tasks = ['clean']
+}
+
+task testBasicInt (type: GradleBuild) {
+	dir = 'int'
+	tasks = [':testBasic:test']
+}
+
+
+
+/// OUTER TASKS \\\
+
+
+task gram (type: Exec) {
+	workingDir 'dev/dekaf-main/grammar'
+	commandLine 'antlr4', 'SQLM.g4', '-package', 'org.jetbrains.dekaf.sqlm.parser', '-o', '../parser/org/jetbrains/dekaf/sqlm/parser/'
+}
+
+task cleanOut (type: Delete) {
+	delete "${project.rootDir}/out"
+	followSymlinks = false
+}
+
+
+/// COMBINED TASKS \\\
+
+task assemble(dependsOn: assembleDev) {}
+
+task build(dependsOn: buildDev) {}
+
+task jars(dependsOn: [assemble,jarsDev]) {}
+
+task testBasic(dependsOn: [jars,testBasicInt]) {}
+
+task clean(dependsOn: [cleanDev,cleanInt,cleanOut]) {}
+
+
