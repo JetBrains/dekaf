@@ -44,6 +44,8 @@ allprojects { project ->
     project.apply(plugin: 'idea')
 }
 
+idea.module.name = "dev-directory"
+
 
 subprojects { project ->
 
@@ -128,37 +130,6 @@ configure (groupTesting) {
 
 
 
-def productionModules = [ project(':dekaf-base'),
-                          project(':dekaf-jdbc'),
-                          project(':dekaf-main'),
-                          project(':dekaf-test-db') ]
-
-def testModules = [ project(':ko-test-util'),
-                    project(':expectation'),
-                    project(':test-basic'),
-                    project(':test-connection') ]
-
-def demoModules = [ project(':demo-on-java'),
-                    project(':demo-on-kotlin') ]
-
-
-
-
-// JAVA PRODUCTION AND DEMO MODULES
-configure ([ project(':demo-on-java') ]) {
-
-    sourceSets {
-        main {
-            java.srcDirs = ['src']
-            resources.srcDirs = ['manifest','sql']
-        }
-    }
-
-}
-
-
-
-// KOTLIN PRODUCTION, DEMO AND TEST UTILS MODULES
 configure (kotlinModules) {
 
     apply plugin: 'kotlin'
