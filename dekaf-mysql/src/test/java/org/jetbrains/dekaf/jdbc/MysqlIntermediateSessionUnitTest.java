@@ -57,7 +57,7 @@ public class MysqlIntermediateSessionUnitTest {
   @NotNull
   private static MysqlIntermediateFacade createFacade() {
     MysqlIntermediateFacade facade =
-        new MysqlIntermediateFacade(FAKE_DATA_SOURCE, 7,new MysqlExceptionRecognizer());
+        new MysqlIntermediateFacade(FAKE_DATA_SOURCE, 7, true, new MysqlExceptionRecognizer());
     facade.connect();
     return facade;
   }

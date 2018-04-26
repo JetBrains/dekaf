@@ -30,7 +30,7 @@ public class ConnectionPoolTest {
 
   @Test
   public void create() {
-    ConnectionPool pool = new ConnectionPool(myDataSource);
+    ConnectionPool pool = new ConnectionPool(myDataSource, true);
 
     then(pool.isReady()).isFalse();
 
@@ -41,7 +41,7 @@ public class ConnectionPoolTest {
 
   @Test
   public void connect_disconnect() throws SQLException {
-    ConnectionPool pool = new ConnectionPool(myDataSource);
+    ConnectionPool pool = new ConnectionPool(myDataSource, true);
     pool.connect();
 
     then(pool.isReady()).isTrue();
@@ -59,8 +59,8 @@ public class ConnectionPoolTest {
 
 
   @Test
-  public void borrow_1() throws SQLException {
-    ConnectionPool pool = new ConnectionPool(myDataSource);
+  public void borrow_no_own() throws SQLException {
+    ConnectionPool pool = new ConnectionPool(myDataSource, false);
     pool.connect();
 
     Connection connection = pool.borrow();
@@ -79,12 +79,39 @@ public class ConnectionPoolTest {
     pool.disconnect();
 
     then(myDataSource.countGotConnections()).isEqualTo(1);
+
+    then(connection.isClosed()).isFalse();
+  }
+
+
+  @Test
+  public void borrow_1() throws SQLException {
+    ConnectionPool pool = new ConnectionPool(myDataSource, true);
+    pool.connect();
+
+    Connection connection = pool.borrow();
+    then(connection.isValid(1)).isTrue();
+    then(connection.isClosed()).isFalse();
+
+    then(pool.countAllConnections()).isEqualTo(1);
+    then(pool.countFreeConnections()).isEqualTo(0);
+    then(pool.countBorrowedConnections()).isEqualTo(1);
+
+    pool.release(connection);
+    then(pool.countAllConnections()).isEqualTo(1);
+    then(pool.countFreeConnections()).isEqualTo(1);
+    then(pool.countBorrowedConnections()).isEqualTo(0);
+
+    pool.disconnect();
+
+    then(myDataSource.countGotConnections()).isEqualTo(1);
+    then(connection.isClosed()).isTrue();
   }
 
 
   @Test
   public void borrow_1_two_times() throws SQLException {
-    ConnectionPool pool = new ConnectionPool(myDataSource);
+    ConnectionPool pool = new ConnectionPool(myDataSource, true);
     pool.connect();
 
     Connection connection1 = pool.borrow();
@@ -101,7 +128,7 @@ public class ConnectionPoolTest {
 
   @Test
   public void borrow_2() throws SQLException {
-    ConnectionPool pool = new ConnectionPool(myDataSource);
+    ConnectionPool pool = new ConnectionPool(myDataSource, true);
     pool.connect();
 
     Connection connection1 = pool.borrow();
@@ -145,7 +172,7 @@ public class ConnectionPoolTest {
 
 
   private void borrow_in_parallel(int threads, int connectionsLimit) throws Exception {
-    final ConnectionPool pool = new ConnectionPool(myDataSource);
+    final ConnectionPool pool = new ConnectionPool(myDataSource, true);
     pool.setConnectionsLimit(connectionsLimit);
     pool.connect();
 

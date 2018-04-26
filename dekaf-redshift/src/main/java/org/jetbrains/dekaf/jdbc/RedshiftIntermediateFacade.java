@@ -24,8 +24,9 @@ public class RedshiftIntermediateFacade extends JdbcIntermediateFacade {
 
   public RedshiftIntermediateFacade(@NotNull final DataSource dataSource,
                                     final int connectionsLimit,
+                                    boolean ownConnections,
                                     @NotNull final DBExceptionRecognizer exceptionRecognizer) {
-    super(dataSource, connectionsLimit, exceptionRecognizer);
+    super(dataSource, connectionsLimit, ownConnections, exceptionRecognizer);
   }
 
   @NotNull

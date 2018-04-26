@@ -54,14 +54,15 @@ public class JdbcIntermediateFacade implements IntegralIntermediateFacade {
                                 int connectionsLimit,
                                 @NotNull final DBExceptionRecognizer exceptionRecognizer) {
     this(prepareDataSource(connectionString, connectionProperties, driver),
-         connectionsLimit,
+         connectionsLimit, true,
          exceptionRecognizer);
   }
 
   public JdbcIntermediateFacade(@NotNull final DataSource dataSource,
                                 int connectionsLimit,
+                                boolean ownConnections,
                                 @NotNull final DBExceptionRecognizer exceptionRecognizer) {
-    myPool = new ConnectionPool(dataSource);
+    myPool = new ConnectionPool(dataSource, ownConnections);
     myPool.setConnectionsLimit(connectionsLimit);
     myExceptionRecognizer = exceptionRecognizer;
   }

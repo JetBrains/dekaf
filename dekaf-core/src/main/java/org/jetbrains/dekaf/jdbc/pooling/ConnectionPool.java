@@ -26,6 +26,7 @@ public class ConnectionPool implements ImplementationAccessibleService {
 
   @NotNull
   private final DataSource myOriginalDataSource;
+  private final boolean myOwnConnections;
 
   private final CopyOnWriteArrayList<Connection> myAllConnections = new CopyOnWriteArrayList<Connection>();
 
@@ -43,8 +44,9 @@ public class ConnectionPool implements ImplementationAccessibleService {
 
 
 
-  public ConnectionPool(@NotNull DataSource originalDataSource) {
+  public ConnectionPool(@NotNull DataSource originalDataSource, boolean ownConnections) {
     myOriginalDataSource = originalDataSource;
+    myOwnConnections = ownConnections;
   }
 
   @NotNull
@@ -197,9 +199,9 @@ public class ConnectionPool implements ImplementationAccessibleService {
   }
 
 
-  private static void closeConnection(final Connection connection) {
+  private void closeConnection(final Connection connection) {
     try {
-      connection.close();
+      if (myOwnConnections) connection.close();
     }
     catch (Exception e) {
       panic("Close connection", e);

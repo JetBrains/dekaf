@@ -35,8 +35,9 @@ public class OracleIntermediateFacade extends JdbcIntermediateFacade {
 
   public OracleIntermediateFacade(@NotNull final DataSource dataSource,
                                   final int connectionsLimit,
+                                  boolean ownConnections,
                                   @NotNull final DBExceptionRecognizer exceptionRecognizer) {
-    super(dataSource, connectionsLimit, exceptionRecognizer);
+    super(dataSource, connectionsLimit, ownConnections, exceptionRecognizer);
   }
 
   @NotNull

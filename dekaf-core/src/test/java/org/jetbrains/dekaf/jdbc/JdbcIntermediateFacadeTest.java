@@ -33,7 +33,7 @@ public class JdbcIntermediateFacadeTest {
 
     // testing
 
-    JdbcIntermediateFacade facade = new JdbcIntermediateFacade(mockDataSource, 1, mockExceptionRecognizer);
+    JdbcIntermediateFacade facade = new JdbcIntermediateFacade(mockDataSource, 1, true, mockExceptionRecognizer);
 
     assertThat(facade.countOpenedConnections()).isZero();
     assertThat(facade.countOpenedSessions()).isZero();
@@ -73,7 +73,7 @@ public class JdbcIntermediateFacadeTest {
     doNothing().doThrow(new IllegalStateException("Second attempt to close!")).when(mockConnection).close();
 
     // testing
-    JdbcIntermediateFacade facade = new JdbcIntermediateFacade(mockDataSource, 1, mockExceptionRecognizer);
+    JdbcIntermediateFacade facade = new JdbcIntermediateFacade(mockDataSource, 1, true, mockExceptionRecognizer);
     facade.connect();
 
     final JdbcIntermediateSession session1 = facade.openSession();
@@ -105,7 +105,7 @@ public class JdbcIntermediateFacadeTest {
                                         .thenThrow(new RuntimeException("Too many connections"));
 
     // testing
-    JdbcIntermediateFacade facade = new JdbcIntermediateFacade(mockDataSource, 2, mockExceptionRecognizer);
+    JdbcIntermediateFacade facade = new JdbcIntermediateFacade(mockDataSource, 2, true, mockExceptionRecognizer);
     facade.connect();
 
     final JdbcIntermediateSession session1 = facade.openSession();

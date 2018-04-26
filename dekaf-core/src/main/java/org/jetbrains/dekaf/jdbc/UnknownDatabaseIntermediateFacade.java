@@ -32,8 +32,9 @@ public class UnknownDatabaseIntermediateFacade extends JdbcIntermediateFacade {
 
   public UnknownDatabaseIntermediateFacade(@NotNull final DataSource dataSource,
                                            final int connectionsLimit,
+                                           boolean ownConnections,
                                            @NotNull final DBExceptionRecognizer exceptionRecognizer) {
-    super(dataSource, connectionsLimit, exceptionRecognizer);
+    super(dataSource, connectionsLimit, ownConnections, exceptionRecognizer);
   }
 
   @Override

@@ -28,8 +28,9 @@ public class H2dbIntermediateFacade extends JdbcIntermediateFacade {
 
   public H2dbIntermediateFacade(@NotNull final DataSource dataSource,
                                 final int connectionsLimit,
+                                boolean ownConnections,
                                 @NotNull final DBExceptionRecognizer exceptionRecognizer) {
-    super(dataSource, connectionsLimit, exceptionRecognizer);
+    super(dataSource, connectionsLimit, ownConnections, exceptionRecognizer);
   }
 
   @NotNull
