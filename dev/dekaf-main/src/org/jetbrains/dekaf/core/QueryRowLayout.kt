@@ -94,6 +94,7 @@ class QueryRowArrayOfValuesLayout<E>
 }
 
 
+@Suppress("platform_class_mapped_to_kotlin")
 class QueryRowStructLayout<R> : QueryRowLayout<R>
 {
     val cortegeClass: Class<R>
@@ -104,7 +105,7 @@ class QueryRowStructLayout<R> : QueryRowLayout<R>
     internal val fields: List<Field>
     internal val constructor: Constructor<R>
 
-    internal val commonComponentClass: Class<out Any?>?
+    internal val commonComponentClass: Class<out Object?>?
     internal val componentClasses: Array<Class<*>>
     internal val componentNames: Array<String>
 
@@ -124,7 +125,8 @@ class QueryRowStructLayout<R> : QueryRowLayout<R>
     override fun interComponentClasses(): Array<Class<*>>? = componentClasses
 
     override fun transform(a: Any): R {
-        val array: Array<out Any?> = castToArrayOf(commonComponentClass ?: Object::class.java, a)
+        val elementClass: Class<out Object?> = commonComponentClass ?: Object::class.java
+        val array: Array<out Any?> = castToArrayOf(elementClass, a)
         val struct: R = constructor.instantiate()
         val n = fields.size
         for (i in 0..n-1) {

@@ -1,4 +1,4 @@
-def kotlinVersion        = '1.2.30'
+def kotlinVersion        = '1.2.41'
 def annotationsVersion   = '15.0'
 
 def log4jVersion         = '2.9.0'
@@ -20,7 +20,7 @@ apply plugin: 'java'
 buildscript {
 
     // unfortunately, we have to duplicate this two variables :(
-    def kotlinVersion0        = '1.2.30'
+    def kotlinVersion0        = '1.2.41'
     def junitPlatformVersion0 = '1.1.0'
 
 
