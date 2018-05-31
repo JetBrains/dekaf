@@ -42,6 +42,7 @@ buildscript {
 allprojects { project ->
     project.buildDir = new File(rootProject.projectDir, ".gradleTemp/" + project.name)
     project.apply(plugin: 'idea')
+    compileJava.options.encoding = 'UTF-8'
 }
 
 idea.module.name = "dev-directory"
@@ -50,6 +51,8 @@ idea.module.name = "dev-directory"
 subprojects { project ->
 
     apply plugin: 'java'
+
+    compileJava.options.encoding = 'UTF-8'
 
     repositories {
         flatDir {
