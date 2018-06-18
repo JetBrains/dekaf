@@ -13,8 +13,8 @@ from system_range(1,1000000)
 
 
 ---- EnsureNoTableOrViewMetaQuery ----
-select case when table_type like 'VIEW' then concat('drop view if exists ', table_name)
-            when table_type like '%TABLE' then concat('drop table if exists ', table_name, ' cascade')
+select case when table_type like 'VIEW' then concat('drop view if exists "', replace(table_name, '"', '""'), '" cascade')
+            when table_type like '%TABLE' then concat('drop table if exists "', replace(table_name, '"', '""'), '" cascade')
             else null end as cmd
 from information_schema.tables
 where table_schema = schema()
@@ -23,11 +23,11 @@ where table_schema = schema()
 
 
 ---- ZapSchemaMetaQuery ----
-select concat('drop view if exists ', table_name) as cmd
+select concat('drop view if exists "', replace(table_name, '"', '""'), '" cascade') as cmd
 from information_schema.views
 where table_schema = schema()
 union all
-select concat('drop table if exists ', table_name, ' cascade') as cmd
+select concat('drop table if exists "', replace(table_name, '"', '""'), '" cascade') as cmd
 from information_schema.tables
 where table_schema = schema()
   and table_type like '%TABLE%'
