@@ -31,6 +31,10 @@ select concat('drop table if exists "', replace(table_name, '"', '""'), '" casca
 from information_schema.tables
 where table_schema = schema()
   and table_type like '%TABLE%'
+union all
+select concat('drop alias if exists "', replace(alias_name, '"', '""'), '" cascade') as cmd
+from information_schema.function_aliases
+where alias_schema = schema()
 ;
 
 
