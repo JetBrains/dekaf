@@ -1,0 +1,80 @@
+apply plugin: 'idea'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.1.0'
+    }
+}
+
+idea.module.name = 'int-directory'
+
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.junit.platform.gradle.plugin'
+
+    sourceSets {
+        main {
+            java.srcDirs = []
+            resources.srcDirs = []
+        }
+        test {
+            java.srcDirs = []
+            resources.srcDirs = []
+        }
+    }
+
+    repositories {
+        flatDir { dirs "$rootDir/jars" }
+        mavenCentral()
+    }
+}
+
+
+
+project(':testBasic') {
+
+    dependencies {
+        runtime fileTree(dir: "$rootDir/jars", includes: ['dekaf*.jar'
+                                                         ,'demo*.jar'
+                                                         ,'expectation*.jar'
+                                                         ,'h2*.jar'
+                                                         ,'junit*.jar'
+                                                         ,'ko*.jar'
+                                                         ,'opentest4j*.jar'
+                                                         ,'assertj*.jar'
+                                                         //,'test-basic*.jar'
+                                                         ])
+    }
+
+    junitPlatformTest {
+        systemProperty "test-db", "jdbc:h2:mem:test"
+    }
+
+    junitPlatform {
+        selectors {
+            packages "org.jetbrains.dekaf"
+        }
+        filters {
+            engines {
+                include 'junit-jupiter'
+                exclude 'junit-vintage'
+            }
+            includeClassNamePatterns '.*Test', '.*Tests'
+            tags {
+                include "basic|demo&!fail"
+            }
+        }
+    }
+
+    /*
+    task runTests(type: JavaExec) {
+        main = "-jar"
+        args = ["$rootDir/jars/test-basic-tests.jar"]
+    }
+    */
+
+}
