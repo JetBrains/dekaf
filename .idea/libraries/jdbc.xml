@@ -1,0 +1,21 @@
+<component name="libraryTable">
+  <library name="jdbc">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jdbc/jtds-1.2.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jdbc/mssql-jdbc-6.1.5.jre8-preview.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jdbc/mysql-connector-java-6.0.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jdbc/postgresql-9.4-1201-jdbc4.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/jdbc/jtds-1.2.8-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jdbc/mssql-jdbc-6.1.5.jre8-preview-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jdbc/postgresql-9.4-1201-jdbc4-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/jdbc/jtds-1.2.8-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jdbc/mssql-jdbc-6.1.5.jre8-preview-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jdbc/mysql-connector-java-6.0.6-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jdbc/postgresql-9.4-1201-jdbc4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

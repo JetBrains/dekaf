@@ -14,19 +14,18 @@ build
 .gradle
 .gradleTemp
 
-./.idea
+.idea/workspace.xml
+.idea/uiDesigner.xml
+.idea/deployment.xml
+.idea/shelf
+.idea/ant.xml
+.idea/dataSources.local.xml
 
-*/.idea/libraries
-*/.idea/modules
-
-*/.idea/modules.xml
 */.idea/workspace.xml
 */.idea/uiDesigner.xml
 */.idea/deployment.xml
 */.idea/shelf
 */.idea/ant.xml
-*/.idea/gradle.xml
-*/.idea/kotlinc.xml
 */.idea/dataSources.local.xml
 
 
