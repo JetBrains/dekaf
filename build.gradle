@@ -45,7 +45,6 @@ allprojects { project ->
     compileJava.options.encoding = 'UTF-8'
 }
 
-idea.module.name = "dev-directory"
 
 
 subprojects { project ->
@@ -75,7 +74,7 @@ subprojects { project ->
     */
 
     tasks.withType(Jar) {
-        destinationDir = file("$rootDir/../out/jars")
+        destinationDir = file("$rootDir/out/jars")
     }
 
     task testJar(type: Jar, dependsOn: testClasses) {

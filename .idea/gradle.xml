@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="distributionType" value="LOCAL" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleHome" value="$GRADLE_HOME$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/dekaf-base" />
+            <option value="$PROJECT_DIR$/dekaf-jdbc" />
+            <option value="$PROJECT_DIR$/dekaf-main" />
+            <option value="$PROJECT_DIR$/dekaf-test-db" />
+            <option value="$PROJECT_DIR$/demo-on-java" />
+            <option value="$PROJECT_DIR$/demo-on-kotlin" />
+            <option value="$PROJECT_DIR$/expectation" />
+            <option value="$PROJECT_DIR$/ko-test-util" />
+            <option value="$PROJECT_DIR$/test-basic" />
+            <option value="$PROJECT_DIR$/test-connection" />
+          </set>
+        </option>
+        <option name="resolveModulePerSourceSet" value="false" />
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
