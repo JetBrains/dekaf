@@ -7,3 +7,4 @@ org.jetbrains.dekaf.core.H2dbTestHelperFactory
 org.jetbrains.dekaf.core.SqliteTestHelperFactory
 org.jetbrains.dekaf.core.ExasolTestHelperFactory
 org.jetbrains.dekaf.core.RedshiftTestHelperFactory
+org.jetbrains.dekaf.core.CHouseTestHelperFactory

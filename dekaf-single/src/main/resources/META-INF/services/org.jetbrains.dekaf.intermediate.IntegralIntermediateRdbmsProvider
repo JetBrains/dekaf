@@ -7,4 +7,5 @@ org.jetbrains.dekaf.jdbc.H2dbIntermediateProvider
 org.jetbrains.dekaf.jdbc.SqliteIntermediateProvider
 org.jetbrains.dekaf.jdbc.ExasolIntermediateProvider
 org.jetbrains.dekaf.jdbc.RedshiftIntermediateProvider
+org.jetbrains.dekaf.jdbc.CHouseIntermediateProvider
 org.jetbrains.dekaf.jdbc.UnknownDatabaseProvider
