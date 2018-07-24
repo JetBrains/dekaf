@@ -29,6 +29,9 @@ abstract class JdbcUtil {
     catch (AbstractMethodError ame) {
       return false;
     }
+    catch (UnsupportedOperationException uoe) {
+      return false;
+    }
   }
 
   static boolean isClosed(final Statement statement) throws SQLException {
@@ -39,6 +42,9 @@ abstract class JdbcUtil {
     catch (AbstractMethodError ame) {
       return false;
     }
+    catch (UnsupportedOperationException uoe) {
+      return false;
+    }
   }
 
   static boolean isClosed(final ResultSet rset) throws SQLException {
@@ -47,6 +53,9 @@ abstract class JdbcUtil {
       return rset.isClosed();
     }
     catch (AbstractMethodError ame) {
+      return false;
+    }
+    catch (UnsupportedOperationException uoe) {
       return false;
     }
   }

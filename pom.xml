@@ -53,6 +53,10 @@
     <module>dekaf-redshift-test-db</module>
     <module>dekaf-redshift-tests</module>
 
+    <module>dekaf-clickhouse</module>
+    <module>dekaf-clickhouse-test-db</module>
+    <module>dekaf-clickhouse-tests</module>
+
     <module>dekaf-single</module>
     <module>dekaf-single-test-db</module>
 
