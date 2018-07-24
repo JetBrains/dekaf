@@ -220,6 +220,28 @@
 
     <fileSet>
       <outputDirectory>/</outputDirectory>
+      <directory>../dekaf-clickhouse/target</directory>
+      <includes>
+        <include>*-tests.jar</include>
+      </includes>
+    </fileSet>
+    <!--fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>../dekaf-clickhouse-test-db/target</directory>
+      <includes>
+        <include>*-tests.jar</include>
+      </includes>
+    </fileSet-->
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
+      <directory>../dekaf-clickhouse-tests/target</directory>
+      <includes>
+        <include>*-tests.jar</include>
+      </includes>
+    </fileSet>
+
+    <fileSet>
+      <outputDirectory>/</outputDirectory>
       <directory>../dekaf-redshift/target</directory>
       <includes>
         <include>*-tests.jar</include>
