@@ -20,6 +20,14 @@ abstract class JdbcUtil {
     return !sybaseNative ? md.getColumnName(columnIndex) : md.getColumnLabel(columnIndex);
   }
 
+  static int getFetchDirection(@NotNull final ResultSet rset) throws SQLException {
+    try {
+      return rset.getFetchDirection();
+    }
+    catch (UnsupportedOperationException uoe) {
+      return ResultSet.FETCH_FORWARD;
+    }
+  }
 
   static boolean isClosed(final Connection connection) throws SQLException {
     if (connection == null) return true;
