@@ -13,6 +13,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 
 
@@ -66,18 +67,21 @@ public class CHouseIntermediateFacade extends JdbcIntermediateFacade {
     }
 
     Version driverVersion =
-        extractVersion(driverVersionStr, SIMPLE_VERSION_PATTERN, 1);
+        extractVersion(driverVersionStr, CHOUSE_VERSION_PATTERN, 1);
 
     if (env != null) {
       assert env.length == 2;
       String serverVersionStr = env[1];
-      Version serverVersion = extractVersion(serverVersionStr, SIMPLE_VERSION_PATTERN, 1);
+      Version serverVersion = extractVersion(serverVersionStr, CHOUSE_VERSION_PATTERN, 1);
       return new ConnectionInfo(rdbmsName, null, env[0], null, serverVersion, driverVersion);
     }
     else {
       return new ConnectionInfo(rdbmsName, null, null, null, Version.ZERO, driverVersion);
     }
   }
+
+  private static final Pattern CHOUSE_VERSION_PATTERN =
+      Pattern.compile("(\\d{1,2}(\\.\\d{1,10}){1,5})");
 
   @SuppressWarnings("SpellCheckingInspection")
   private static final String CONNECTION_INFO_QUERY =
