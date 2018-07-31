@@ -33,6 +33,79 @@ public class VersionTest {
   }
 
   @Test
+  public void truncate_basic() {
+    Version v = Version.of(1,2,3,4,5);
+    Version x = v.truncate(3);
+    assertThat(x.size()).isEqualTo(3);
+    assertThat(x.toString()).isEqualTo("1.2.3");
+  }
+
+  @Test
+  public void truncate_caseWithSeveralZeros() {
+    Version v = Version.of(1,2,3,4,0,0,0,0,0,99);
+    Version x = v.truncate(7);
+    assertThat(x.toString()).isEqualTo("1.2.3.4");
+    assertThat(x.size()).isEqualTo(4);
+  }
+
+  @Test
+  public void truncate_nothingToTruncate5() {
+    Version v = Version.of(1,2,3,4,5);
+    Version x = v.truncate(5);
+    assertThat(x).isSameAs(v);
+  }
+
+  @Test
+  public void truncate_nothingToTruncate6() {
+    Version v = Version.of(1,2,3,4,5);
+    Version x = v.truncate(6);
+    assertThat(x).isSameAs(v);
+  }
+
+  @Test
+  public void truncate_ZERO() {
+    Version z = Version.ZERO;
+    Version z1 = z.truncate(1);
+    assertThat(z1).isSameAs(z);
+  }
+
+  @Test
+  public void truncateNegatives_basic_1() {
+    Version v = Version.of(1,2,3,-1,44,55);
+    Version x = v.truncateNegatives();
+    assertThat(x.toString()).isEqualTo("1.2.3");
+    assertThat(x.size()).isEqualTo(3);
+  }
+
+  @Test
+  public void truncateNegatives_basic_2() {
+    Version v = Version.of(1,2,3,0,0,-1,66,77);
+    Version x = v.truncateNegatives();
+    assertThat(x.toString()).isEqualTo("1.2.3");
+    assertThat(x.size()).isEqualTo(3);
+  }
+
+  @Test
+  public void truncateNegatives_pervert() {
+    Version v = Version.of(0,0,0,0,0,-10,99);
+    Version x = v.truncateNegatives();
+    assertThat(x).isEqualTo(Version.ZERO);
+    assertThat(x).isSameAs(Version.ZERO);
+  }
+
+  @Test
+  public void truncateNegatives_nothingToTruncate() {
+    Version v = Version.of(1,0,2,0,3);
+    Version x = v.truncateNegatives();
+    assertThat(x).isSameAs(v);
+  }
+
+  @Test
+  public void truncateNegatives_ZERO() {
+    assertThat(Version.ZERO.truncateNegatives()).isSameAs(Version.ZERO);
+  }
+
+  @Test
   public void toString_basic_0() {
     Version v = Version.of();
     assertThat(v.toString()).isEqualTo("0.0");
@@ -178,6 +251,16 @@ public class VersionTest {
   public void less_2() {
     assertThat(Version.of(1,2,3).less(Version.of(4))).isTrue();
     assertThat(Version.of(1,2,3).less(Version.of(1))).isFalse();
+  }
+
+  @Test
+  public void toArray_basic() {
+    Version v = Version.of(11,22,33);
+    int[] a = v.toArray();
+    assertThat(a[0]).isEqualTo(11);
+    assertThat(a[1]).isEqualTo(22);
+    assertThat(a[2]).isEqualTo(33);
+    assertThat(a.length).isEqualTo(3);
   }
 
 }

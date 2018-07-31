@@ -24,15 +24,17 @@ import java.util.*;
  *   in other words, versions 1.2.3 and 1.2.3.0.0 are equal.
  * </p>
  *
- * @author Leonid Bushuev from JetBrains
- * @since 8.1.3.
+ * @author Leonid Bushuev
  */
 public final class Version implements Comparable<Version>, Serializable {
+
   private static final Map<String, Integer> SPECIAL_VALUES = new HashMap<String, Integer>();
+
   static {
     SPECIAL_VALUES.put("alpha", -20);
     SPECIAL_VALUES.put("beta", -10);
   }
+
 
   @NotNull
   private final int[] elements;
@@ -122,8 +124,41 @@ public final class Version implements Comparable<Version>, Serializable {
   }
 
 
+  /**
+   * Number of elements (when the last element is not zero).
+   * @return number of elements, or 0 if the version is ZERO.
+   */
   public int size() {
     return elements.length;
+  }
+
+
+  /**
+   * Truncate to get the version with no more <b><i>n</i></b> elements.
+   * @param n how many elements to preserve.
+   * @return  the result with the size no more than <b><i>n</i></b>.
+   */
+  @NotNull
+  public Version truncate(final int n) {
+    if (elements.length <= n) return this;
+    if (n < 0) throw new IllegalArgumentException("Negative desired size: " + n);
+    int m = n;
+    while (m > 0 && elements[m-1] == 0) m--;
+    if (m == 0) return ZERO;
+    final int[] newElements = new int[m];
+    System.arraycopy(this.elements, 0, newElements, 0, m);
+    return new Version(newElements);
+  }
+
+  /**
+   * Truncate since the first negative element. This is needed for removing 'beta' marks.
+   * @return the version without negative elements.
+   */
+  @NotNull
+  public Version truncateNegatives() {
+    final int n = elements.length;
+    for (int k = 0; k < n; k++) if (elements[k] < 0) return truncate(k);
+    return this;
   }
 
 
@@ -248,5 +283,22 @@ public final class Version implements Comparable<Version>, Serializable {
   }
 
 
+  /**
+   * Returns this version as an array of elements.
+   * @return array of elements, may be an empty array but never null.
+   */
+  @NotNull
+  public int[] toArray() {
+    final int n = elements.length;
+    final int[] result = new int[n];
+    System.arraycopy(elements, 0, result, 0, n);
+    return result;
+  }
+
+
+  /**
+   * ZERO version — 0.0
+   */
   public static final Version ZERO = new Version(new int[0]);
+  
 }
