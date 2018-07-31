@@ -241,7 +241,9 @@ public class PostgresTestHelperTest extends CommonIntegrationCase {
   @Test
   public void zap_collation() {
     assumeTrue(ver.isOrGreater(9, 1));
-    test_zap_object("my_collation1", Kind.COLLATION, "create collation my_collation1 from pg_catalog.default");
+    String originCollationName = ver.get(0) >= 11 ? "\"ru-RU-x-icu\"" : "default";
+    String command = "create collation my_collation1 from pg_catalog." + originCollationName;
+    test_zap_object("my_collation1", Kind.COLLATION, command);
   }
 
 

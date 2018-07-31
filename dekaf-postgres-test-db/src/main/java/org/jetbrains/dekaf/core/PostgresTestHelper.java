@@ -2,6 +2,7 @@ package org.jetbrains.dekaf.core;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.sql.Scriptum;
+import org.jetbrains.dekaf.util.Version;
 
 
 
@@ -34,10 +35,13 @@ public class PostgresTestHelper extends BaseTestHelper<DBFacade> {
   @Override
   protected void zapSchemaInternally(final ConnectionInfo connectionInfo) {
     ConnectionInfo info = db.getConnectionInfo();
-    if (info.serverVersion.isOrGreater(9, 1)) {
+    Version version = info.serverVersion.truncateNegatives();
+    if (version.isOrGreater(9, 1)) {
       performMetaQueryCommands(scriptum, "ZapExtensionsMetaQuery");
       performMetaQueryCommands(scriptum, "ZapCollationsMetaQuery");
     }
-    performMetaQueryCommands(scriptum, "ZapSchemaMetaQuery");
+
+    String metaQueryName = version.isOrGreater(11) ? "ZapSchemaMetaQuery11" : "ZapSchemaMetaQuery";
+    performMetaQueryCommands(scriptum, metaQueryName);
   }
 }
