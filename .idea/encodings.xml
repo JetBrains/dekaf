@@ -2,6 +2,9 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dekaf-clickhouse" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dekaf-clickhouse-test-db" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dekaf-clickhouse-tests" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dekaf-core" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dekaf-core-test-db" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dekaf-exasol" charset="UTF-8" />

@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/dekaf.iml" filepath="$PROJECT_DIR$/dekaf.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-clickhouse/dekaf-clickhouse.iml" filepath="$PROJECT_DIR$/dekaf-clickhouse/dekaf-clickhouse.iml" group="14 ClickHouse" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-clickhouse-test-db/dekaf-clickhouse-test-db.iml" filepath="$PROJECT_DIR$/dekaf-clickhouse-test-db/dekaf-clickhouse-test-db.iml" group="14 ClickHouse" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-clickhouse-tests/dekaf-clickhouse-tests.iml" filepath="$PROJECT_DIR$/dekaf-clickhouse-tests/dekaf-clickhouse-tests.iml" group="14 ClickHouse" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-core/dekaf-core.iml" filepath="$PROJECT_DIR$/dekaf-core/dekaf-core.iml" group="00 Core" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-core-test-db/dekaf-core-test-db.iml" filepath="$PROJECT_DIR$/dekaf-core-test-db/dekaf-core-test-db.iml" group="00 Core" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-exasol/dekaf-exasol.iml" filepath="$PROJECT_DIR$/dekaf-exasol/dekaf-exasol.iml" group="13 Exasol" />
@@ -23,7 +26,7 @@
       <module fileurl="file://$PROJECT_DIR$/dekaf-postgres/dekaf-postgres.iml" filepath="$PROJECT_DIR$/dekaf-postgres/dekaf-postgres.iml" group="01 Postgres" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-postgres-test-db/dekaf-postgres-test-db.iml" filepath="$PROJECT_DIR$/dekaf-postgres-test-db/dekaf-postgres-test-db.iml" group="01 Postgres" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-postgres-tests/dekaf-postgres-tests.iml" filepath="$PROJECT_DIR$/dekaf-postgres-tests/dekaf-postgres-tests.iml" group="01 Postgres" />
-      <module fileurl="file://$PROJECT_DIR$/dekaf-redshift/dekaf-redshift.iml" filepath="$PROJECT_DIR$/dekaf-redshift/dekaf-redshift.iml"  group="01 Postgres" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-redshift/dekaf-redshift.iml" filepath="$PROJECT_DIR$/dekaf-redshift/dekaf-redshift.iml" group="01 Postgres" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-redshift-test-db/dekaf-redshift-test-db.iml" filepath="$PROJECT_DIR$/dekaf-redshift-test-db/dekaf-redshift-test-db.iml" group="01 Postgres" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-redshift-tests/dekaf-redshift-tests.iml" filepath="$PROJECT_DIR$/dekaf-redshift-tests/dekaf-redshift-tests.iml" group="01 Postgres" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-single/dekaf-single.iml" filepath="$PROJECT_DIR$/dekaf-single/dekaf-single.iml" group="70 All-containing JARs" />
