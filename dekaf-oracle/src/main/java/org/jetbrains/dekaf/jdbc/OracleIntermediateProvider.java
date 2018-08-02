@@ -42,7 +42,7 @@ public class OracleIntermediateProvider extends JdbcIntermediateRdbmsProvider {
   }
 
   @Override
-  protected Driver loadDriver() {
+  protected Driver loadDriver(final String connectionString) {
     Class<Driver> driverClass =
         getSimpleAccessibleDriverClass(ORACLE_DRIVER_CLASS_NAME);
     if (driverClass == null) {

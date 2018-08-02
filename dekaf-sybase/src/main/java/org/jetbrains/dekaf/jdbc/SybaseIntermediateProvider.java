@@ -33,7 +33,7 @@ public class SybaseIntermediateProvider extends JdbcIntermediateRdbmsProvider {
    * </ul>
    */
   static final Pattern SYBASE_CONNECTION_STRING_PATTERN =
-          Pattern.compile("^jdbc:(jtds:)?sybase:(Tds:)?.+$", Pattern.CASE_INSENSITIVE);
+          Pattern.compile("^jdbc:(?:jtds:sybase|sybase:Tds):.+$", Pattern.CASE_INSENSITIVE);
 
   static final String SYBASE_JTDS_CONNECTION_STRING_EXAMPLE =
           "jdbc:jtds:sybase://localhost/Testing";
@@ -43,6 +43,9 @@ public class SybaseIntermediateProvider extends JdbcIntermediateRdbmsProvider {
 
   private static final String SYBASE_JTDS_DRIVER_CLASS_NAME =
           "net.sourceforge.jtds.jdbc.Driver";
+
+  private static final String SYBASE_NATIVE_DRIVER_CLASS_NAME =
+          "com.sybase.jdbc4.jdbc.SybDriver";
 
 
 
@@ -57,8 +60,9 @@ public class SybaseIntermediateProvider extends JdbcIntermediateRdbmsProvider {
   }
 
   @Override
-  protected Driver loadDriver() {
-    Class<Driver> driverClass = getSimpleAccessibleDriverClass(SYBASE_JTDS_DRIVER_CLASS_NAME);
+  protected Driver loadDriver(final String connectionString) {
+    String className = connectionString.startsWith("jdbc:jtds") ? SYBASE_JTDS_DRIVER_CLASS_NAME : SYBASE_NATIVE_DRIVER_CLASS_NAME;
+    Class<Driver> driverClass = getSimpleAccessibleDriverClass(className);
     if (driverClass == null) {
       // TODO try to load from jars
     }

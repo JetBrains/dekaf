@@ -32,13 +32,16 @@ public class MssqlIntermediateProvider extends JdbcIntermediateRdbmsProvider {
    *
    */
   static final Pattern MSSQL_CONNECTION_STRING_PATTERN =
-          Pattern.compile("^jdbc:sqlserver:.+$");
+          Pattern.compile("^jdbc:(?:jtds:)sqlserver:.+$");
 
   static final String MSSQL_CONNECTION_STRING_EXAMPLE =
           "jdbc:sqlserver://";
 
   private static final String MSSQL_DRIVER_CLASS_NAME =
           "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+
+  private static final String JTDS_DRIVER_CLASS_NAME =
+          "net.sourceforge.jtds.jdbc.Driver";
 
 
 
@@ -53,8 +56,9 @@ public class MssqlIntermediateProvider extends JdbcIntermediateRdbmsProvider {
   }
 
   @Override
-  protected Driver loadDriver() {
-    Class<Driver> driverClass = getSimpleAccessibleDriverClass(MSSQL_DRIVER_CLASS_NAME);
+  protected Driver loadDriver(final String connectionString) {
+    String className = connectionString.startsWith("jdbc:jtds") ? JTDS_DRIVER_CLASS_NAME : MSSQL_DRIVER_CLASS_NAME;
+    Class<Driver> driverClass = getSimpleAccessibleDriverClass(className);
     if (driverClass == null) {
       // TODO try to load from jars
     }

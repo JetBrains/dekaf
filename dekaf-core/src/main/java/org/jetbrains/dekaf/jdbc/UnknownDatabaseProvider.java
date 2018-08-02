@@ -44,7 +44,7 @@ public final class UnknownDatabaseProvider extends JdbcIntermediateRdbmsProvider
 
   @Nullable
   @Override
-  protected Driver loadDriver() {
+  protected Driver loadDriver(final String connectionString) {
     return null;
   }
 

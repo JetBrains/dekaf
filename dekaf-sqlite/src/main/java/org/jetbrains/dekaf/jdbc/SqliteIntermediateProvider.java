@@ -47,7 +47,7 @@ public class SqliteIntermediateProvider extends JdbcIntermediateRdbmsProvider {
   }
 
   @Override
-  protected Driver loadDriver() {
+  protected Driver loadDriver(final String connectionString) {
     Class<Driver> driverClass = getSimpleAccessibleDriverClass(SQLITE_DRIVER_CLASS_NAME);
     if (driverClass == null) {
       // TODO try to load from jars

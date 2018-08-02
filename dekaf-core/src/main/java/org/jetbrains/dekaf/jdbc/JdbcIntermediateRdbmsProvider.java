@@ -71,7 +71,7 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
   }
 
   private Driver getDriverFromJavaDriverManager(final @NotNull String connectionString) {
-    tryToLoadDriverIfNeeded();
+    tryToLoadDriverIfNeeded(connectionString);
     try {
       List<Driver> drivers = Collections.list(DriverManager.getDrivers());
       Comparator<Driver> comparator = getDriverComparator();
@@ -93,14 +93,11 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
     throw new SQLException("No suitable driver", "08001");
   }
 
-  protected void tryToLoadDriverIfNeeded() {
-    String connectionStringExample = getConnectionStringExample();
-    if (connectionStringExample != null) {
-      if (!whetherApplicableDriverAlreadyRegistered(connectionStringExample)) {
-        Driver driver = loadDriver();
-        if (driver != null) {
-          registerDriver(driver);
-        }
+  protected void tryToLoadDriverIfNeeded(final String connectionString) {
+    if (!whetherApplicableDriverAlreadyRegistered(connectionString)) {
+      Driver driver = loadDriver(connectionString);
+      if (driver != null) {
+        registerDriver(driver);
       }
     }
   }
@@ -109,7 +106,7 @@ public abstract class JdbcIntermediateRdbmsProvider implements IntegralIntermedi
   protected abstract String getConnectionStringExample();
 
   @Nullable
-  protected abstract Driver loadDriver();
+  protected abstract Driver loadDriver(final String connectionString);
 
   @Nullable
   protected Comparator<Driver> getDriverComparator() {
