@@ -12,4 +12,5 @@ public abstract class Mssql {
    */
   public final static Rdbms RDBMS = Rdbms.of("MSSQL");
 
+  public final static String AZURE_FLAVOUR = "Azure";
 }
