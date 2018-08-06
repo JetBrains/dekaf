@@ -32,7 +32,7 @@ public class MssqlIntermediateProvider extends JdbcIntermediateRdbmsProvider {
    *
    */
   static final Pattern MSSQL_CONNECTION_STRING_PATTERN =
-          Pattern.compile("^jdbc:(?:jtds:)sqlserver:.+$");
+          Pattern.compile("^jdbc:(?:jtds:)?sqlserver:.+$");
 
   static final String MSSQL_CONNECTION_STRING_EXAMPLE =
           "jdbc:sqlserver://";
