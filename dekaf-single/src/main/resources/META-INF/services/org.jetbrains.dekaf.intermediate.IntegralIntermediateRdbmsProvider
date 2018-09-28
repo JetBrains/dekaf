@@ -8,4 +8,5 @@ org.jetbrains.dekaf.jdbc.SqliteIntermediateProvider
 org.jetbrains.dekaf.jdbc.ExasolIntermediateProvider
 org.jetbrains.dekaf.jdbc.RedshiftIntermediateProvider
 org.jetbrains.dekaf.jdbc.CHouseIntermediateProvider
+org.jetbrains.dekaf.jdbc.CassandraIntermediateProvider
 org.jetbrains.dekaf.jdbc.UnknownDatabaseProvider

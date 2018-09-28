@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/dekaf.iml" filepath="$PROJECT_DIR$/dekaf.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-cassandra/dekaf-cassandra.iml" filepath="$PROJECT_DIR$/dekaf-cassandra/dekaf-cassandra.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-cassandra-test-db/dekaf-cassandra-test-db.iml" filepath="$PROJECT_DIR$/dekaf-cassandra-test-db/dekaf-cassandra-test-db.iml" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-clickhouse/dekaf-clickhouse.iml" filepath="$PROJECT_DIR$/dekaf-clickhouse/dekaf-clickhouse.iml" group="14 ClickHouse" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-clickhouse-test-db/dekaf-clickhouse-test-db.iml" filepath="$PROJECT_DIR$/dekaf-clickhouse-test-db/dekaf-clickhouse-test-db.iml" group="14 ClickHouse" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-clickhouse-tests/dekaf-clickhouse-tests.iml" filepath="$PROJECT_DIR$/dekaf-clickhouse-tests/dekaf-clickhouse-tests.iml" group="14 ClickHouse" />

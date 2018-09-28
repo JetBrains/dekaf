@@ -57,6 +57,9 @@
     <module>dekaf-clickhouse-test-db</module>
     <module>dekaf-clickhouse-tests</module>
 
+    <module>dekaf-cassandra</module>
+    <module>dekaf-cassandra-test-db</module>
+
     <module>dekaf-single</module>
     <module>dekaf-single-test-db</module>
 
