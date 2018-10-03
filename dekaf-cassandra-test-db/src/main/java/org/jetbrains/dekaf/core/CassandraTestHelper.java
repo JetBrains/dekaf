@@ -7,15 +7,14 @@ import org.jetbrains.dekaf.sql.Scriptum;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static org.jetbrains.dekaf.core.ImplementationAccessibleService.Names.JDBC_CONNECTION;
+
 
 
 public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
-  private final Connection connection;
 
   public CassandraTestHelper(@NotNull final DBFacade db) {
     super(db, Scriptum.of(CassandraTestHelper.class));
-    connection = db.getSpecificService(Connection.class,
-                                       ImplementationAccessibleService.Names.JDBC_CONNECTION);
   }
 
   @Override
@@ -50,14 +49,22 @@ public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
 
   @NotNull
   private String getCurrentKeyspace() {
-    try {
-      String keyspace = connection.getCatalog();
-      if (keyspace == null) throw new IllegalStateException("No keyspace is selected");
-      return keyspace;
-    }
-    catch (SQLException e) {
-      throw new RuntimeException(e);
-    }
+    String keyspace = db.inSession(new InSession<String>() {
+      @Override
+      public String run(@NotNull final DBSession session) {
+        Connection connection = session.getSpecificService(Connection.class, JDBC_CONNECTION);
+        if (connection == null) throw new IllegalArgumentException("Cannot obtain connection");
+        try {
+          return connection.getCatalog();
+        }
+        catch (SQLException e) {
+          e.printStackTrace();
+        }
+        return null;
+      }
+    });
+    if (keyspace == null) throw new IllegalStateException("No keyspace is selected");
+    return keyspace;
   }
 
   private Object[] prependParam(@Nullable String param, @NotNull Object[] params) {
