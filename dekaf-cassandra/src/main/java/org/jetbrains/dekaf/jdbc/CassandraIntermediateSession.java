@@ -5,10 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.core.ParameterDef;
 import org.jetbrains.dekaf.intermediate.DBExceptionRecognizer;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Arrays;
 
 
@@ -42,5 +39,11 @@ public class CassandraIntermediateSession extends JdbcIntermediateSession {
   @Override
   CallableStatement prepareCallableStatement(@NotNull final String statementText) {
     throw new UnsupportedOperationException();
+  }
+
+  @Override
+  protected void performPing(final Statement statement) throws SQLException {
+    final String pingQuery = "SELECT uuid() FROM system.local;";
+    statement.execute(pingQuery);
   }
 }

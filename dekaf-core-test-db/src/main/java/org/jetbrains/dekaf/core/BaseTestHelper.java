@@ -139,6 +139,10 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
     final SqlQuery<List<String>> metaQuery =
         scriptum.query(metaQueryName, listOf(oneOf(String.class)));
 
+    performMetaQueryCommands(metaQuery, params);
+  }
+
+  void performMetaQueryCommands(final SqlQuery<List<String>> metaQuery, final Object[] params) {
     db.inSession(new InSessionNoResult() {
       @Override
       public void run(@NotNull final DBSession session) {
