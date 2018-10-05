@@ -1,5 +1,6 @@
 package org.jetbrains.dekaf.core;
 
+import javafx.util.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.exceptions.NoTableOrViewException;
 import org.jetbrains.dekaf.sql.Rewriters;
@@ -61,24 +62,42 @@ public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
   protected void zapSchemaInternally(final ConnectionInfo connectionInfo) {
     performCommand(scriptum, "CreateDropFunction");
     String currentKeyspace = getCurrentKeyspace();
-    setKeyspaceAndPerformMetaQueryCommands(scriptum, currentKeyspace,
-                                           "ZapViewsMetaQuery");
-    setKeyspaceAndPerformMetaQueryCommands(scriptum, currentKeyspace,
-                                           "ZapTablesMetaQuery");
-    performCommand(scriptum, "DropDropFunction");
+    SqlQuery<List<String>> metaQuery
+        = setPlaceholders(scriptum,
+                          "ZapObjectsMetaQuery",
+                          pair("keyspace", currentKeyspace),
+                          pair("type", "materialized view"),
+                          pair("column", "view_name"),
+                          pair("table", "views"));
+    performMetaQueryCommands(metaQuery);
+    performZapObjectsMetaQuery(currentKeyspace, "table");
+    performZapObjectsMetaQuery(currentKeyspace, "type");
+    metaQuery = setPlaceholders(scriptum,
+                          "ZapObjectsMetaQuery",
+                          pair("keyspace", currentKeyspace),
+                          pair("type", "index"),
+                          pair("column", "index_name"),
+                          pair("table", "indexes"));
+    performMetaQueryCommands(metaQuery);
+    performZapObjectsMetaQuery(currentKeyspace, "trigger");
+    performZapObjectsMetaQuery(currentKeyspace, "aggregate");
+    performZapObjectsMetaQuery(currentKeyspace, "function");
+  }
+
+  @NotNull
+  private Pair<String, String> pair(String key, String value) {
+    return new Pair<String, String>(key, value);
   }
 
   @Override
   protected void ensureNoTableOrView4(final Object[] params) {
     performCommand(scriptum, "CreateDropFunction");
-    String currentKeyspace = getCurrentKeyspace();
-    // it's not possible to do 'union all' in Cassandra
-    setKeyspaceAndPerformMetaQueryCommands(scriptum, currentKeyspace,
-                                           "EnsureNoViewMetaQuery",
-                                           lower(params));
-    setKeyspaceAndPerformMetaQueryCommands(scriptum, currentKeyspace,
-                                           "EnsureNoTableMetaQuery",
-                                           lower(params));
+    Pair<String, String> placeholder = new Pair<String, String>("keyspace", getCurrentKeyspace());
+    SqlQuery<List<String>> metaQuery;
+    metaQuery = setPlaceholders(scriptum, "EnsureNoViewMetaQuery", placeholder);
+    performMetaQueryCommands(metaQuery, lower(params));
+    metaQuery = setPlaceholders(scriptum, "EnsureNoTableMetaQuery", placeholder);
+    performMetaQueryCommands(metaQuery, lower(params));
     performCommand(scriptum, "DropDropFunction");
   }
 
@@ -90,15 +109,26 @@ public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
     return newParams;
   }
 
-  private void setKeyspaceAndPerformMetaQueryCommands(@NotNull final Scriptum scriptum,
-                                                      @NotNull final String keyspace,
-                                                      @NotNull final String metaQueryName,
-                                                      final Object... params) {
-    final SqlQuery<List<String>> metaQuery =
-        scriptum.query(metaQueryName, listOf(oneOf(String.class)))
-                .rewrite(Rewriters.replace("keyspace_name_placeholder", keyspace));
+  private void performZapObjectsMetaQuery(String currentKeyspace, String type) {
+    SqlQuery<List<String>> metaQuery
+        = setPlaceholders(scriptum, "ZapObjectsMetaQuery", pair("keyspace", currentKeyspace),
+                          pair("type", type), pair("column", type + "_name"),
+                          pair("table", type + "s"));
+    performMetaQueryCommands(metaQuery);
+  }
 
-    performMetaQueryCommands(metaQuery, params);
+  /**
+   * For cases where parameters binding is not possible
+   */
+  private SqlQuery<List<String>> setPlaceholders(@NotNull final Scriptum scriptum,
+                                                 @NotNull final String metaQueryName,
+                                                 final Pair... placeholder) {
+    SqlQuery<List<String>> metaQuery = scriptum.query(metaQueryName, listOf(oneOf(String.class)));
+    for (Pair placeholders : placeholder) {
+      metaQuery = metaQuery.rewrite(Rewriters.replace(placeholders.getKey().toString() + "_placeholder",
+                                                      placeholders.getValue().toString()));
+    }
+    return metaQuery;
   }
 
   @NotNull

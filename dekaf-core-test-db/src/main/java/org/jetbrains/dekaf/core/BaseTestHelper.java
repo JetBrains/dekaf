@@ -142,7 +142,7 @@ public abstract class BaseTestHelper<F extends DBFacade> implements DBTestHelper
     performMetaQueryCommands(metaQuery, params);
   }
 
-  void performMetaQueryCommands(final SqlQuery<List<String>> metaQuery, final Object[] params) {
+  void performMetaQueryCommands(final SqlQuery<List<String>> metaQuery, final Object... params) {
     db.inSession(new InSessionNoResult() {
       @Override
       public void run(@NotNull final DBSession session) {
