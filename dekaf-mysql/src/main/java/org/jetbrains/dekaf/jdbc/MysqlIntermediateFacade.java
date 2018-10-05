@@ -80,8 +80,7 @@ public class MysqlIntermediateFacade extends JdbcIntermediateFacade {
       if (rdbmsName.equals("MySQL")) {
         int pos = serverVersionStr.indexOf(Mysql.MARIADB_FLAVOUR);
         if (pos != -1) {
-          serverVersion = extractVersion(serverVersionStr.substring(pos + Mysql.MARIADB_FLAVOUR.length()), SIMPLE_VERSION_PATTERN, 1);
-          if (serverVersion == Version.ZERO) serverVersion = extractVersion(serverVersionStr.substring(0, pos), SIMPLE_VERSION_PATTERN, 1);
+          serverVersion = extractMariaVersionImpl(pos, serverVersionStr);
           if (serverVersion != Version.ZERO) rdbmsName = Mysql.MARIADB_FLAVOUR;
           else serverVersion = null;
         }
@@ -105,6 +104,23 @@ public class MysqlIntermediateFacade extends JdbcIntermediateFacade {
       session.close();
     }
   }
+
+  @NotNull
+  private static Version extractMariaVersionImpl(final int pos, final String serverVersionStr) {
+    Version serverVersion = extractVersion(
+        serverVersionStr.substring(0, pos),
+        SIMPLE_VERSION_PATTERN, 1);
+    if (serverVersion == Version.ZERO) serverVersion = extractVersion(serverVersionStr.substring(pos + Mysql.MARIADB_FLAVOUR.length()), SIMPLE_VERSION_PATTERN, 1);
+    return serverVersion;
+  }
+
+  @NotNull
+  public static Version parseServerVersion(String serverVersionStr) {
+    int pos = serverVersionStr.indexOf(Mysql.MARIADB_FLAVOUR);
+    if (pos != -1) return extractMariaVersionImpl(pos, serverVersionStr);
+    return extractVersion(serverVersionStr, SIMPLE_VERSION_PATTERN, 1);
+  }
+
 
   @SuppressWarnings("SpellCheckingInspection")
   private static final String CONNECTION_INFO_QUERY =

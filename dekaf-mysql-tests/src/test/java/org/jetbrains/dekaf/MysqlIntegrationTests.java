@@ -18,6 +18,7 @@ import org.junit.runners.Suite;
                             MysqlCommandRunnerTest.class,
                             MysqlQueryRunnerTest.class,
                             MysqlExceptionRecognizerTest.class,
-                            MysqlTestHelperTest.class
+                            MysqlTestHelperTest.class,
+                            MysqlVersionTest.class
 })
 public class MysqlIntegrationTests {}
