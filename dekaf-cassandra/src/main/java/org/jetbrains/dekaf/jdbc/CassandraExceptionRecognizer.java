@@ -17,7 +17,9 @@ public class CassandraExceptionRecognizer extends BaseExceptionRecognizer {
   @Override
   protected DBException recognizeSpecificException(@NotNull final SQLException sqle,
                                                    @Nullable final String statementText) {
-    if (sqle.getCause().getMessage().startsWith("unconfigured table")) {
+    Throwable cause = sqle.getCause();
+    if (cause == null) return super.recognizeSpecificException(sqle, statementText);
+    if (cause.getMessage().startsWith("unconfigured table")) {
       return new NoTableOrViewException(sqle, statementText);
     }
     return super.recognizeSpecificException(sqle, statementText);
