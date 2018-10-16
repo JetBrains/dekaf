@@ -139,7 +139,8 @@ public class VersionTest {
       {"33.b1", "33.0"},
       {"1.2 my beta version", "1.2"},
       {"1.3 my beta version released 31.12.1995", "1.3"},
-      {"10beta2", "10.-10.2"}
+      {"10beta2", "10.-20.2"},
+      {"11rc2", "11.-10.2"}
   };
 
   @TestWithParams(params = "POSSIBLE_VERSION_STRINGS")

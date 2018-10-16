@@ -31,8 +31,9 @@ public final class Version implements Comparable<Version>, Serializable {
   private static final Map<String, Integer> SPECIAL_VALUES = new HashMap<String, Integer>();
 
   static {
-    SPECIAL_VALUES.put("alpha", -20);
-    SPECIAL_VALUES.put("beta", -10);
+    SPECIAL_VALUES.put("alpha", -30);
+    SPECIAL_VALUES.put("beta", -20);
+    SPECIAL_VALUES.put("rc", -10);
   }
 
 

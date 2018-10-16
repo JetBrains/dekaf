@@ -48,7 +48,7 @@ public class PostgresIntermediateFacade extends JdbcIntermediateFacade {
   }
 
   protected static final Pattern ENHANCED_VERSION_PATTERN =
-          Pattern.compile("(\\d{1,2}(\\.\\d{1,3}|alpha|beta){1,5})");
+          Pattern.compile("(\\d{1,2}(\\.\\d{1,3}|alpha|beta|rc){1,5})");
 
   @SuppressWarnings("SpellCheckingInspection")
   public static final String CONNECTION_INFO_QUERY =
