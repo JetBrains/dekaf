@@ -7,6 +7,7 @@ import org.jetbrains.dekaf.util.Version;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.jetbrains.dekaf.core.ImplementationAccessibleService.Names.JDBC_CONNECTION;
 import static org.jetbrains.dekaf.core.Layouts.singleOf;
@@ -103,7 +104,7 @@ public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
       Statement statement = connection.createStatement();
       statement.execute("select index_name from system.\"IndexInfo\" where table_name = '" + currentKeyspace + "'");
       for (String name : getObjectNames(statement)) {
-        drop("index", name);
+        drop("index", name, connection);
       }
     }
     catch (SQLException e) {
@@ -112,7 +113,7 @@ public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
 
   }
 
-  private String[] getObjectNames(final Statement statement) throws SQLException {
+  private List<String> getObjectNames(final Statement statement) throws SQLException {
     ResultSet resultSet = statement.getResultSet();
     ArrayList<String> objectNames = new ArrayList<String>();
     boolean hasResults = resultSet.next();
@@ -120,11 +121,7 @@ public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
       objectNames.add(resultSet.getString(1));
       hasResults = resultSet.next();
     }
-    String[] res = new String[objectNames.size()];
-    for (int i = 0; i < objectNames.size(); i++) {
-      res[i] = objectNames.get(i);
-    }
-    return res;
+    return objectNames;
   }
 
   private void dropObjects(final Connection connection,
@@ -136,12 +133,16 @@ public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
       Statement statement = connection.createStatement();
       statement.execute("select " + columnName + " from " + tableName + " where keyspace_name = '" + currentKeyspace + "'");
       for (String name : getObjectNames(statement)) {
-        drop(type, name);
+        drop(type, name, connection);
       }
     }
     catch (SQLException e) {
       e.printStackTrace();
     }
+  }
+
+  private void drop(String type, String name, final Connection connection) throws SQLException {
+    connection.createStatement().execute("drop " + type + " if exists " + name);
   }
 
   private void drop(String type, String name) {
