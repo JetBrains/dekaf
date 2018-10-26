@@ -1,51 +1,57 @@
 package org.jetbrains.dekaf.core;
 
-import javafx.util.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.exceptions.NoTableOrViewException;
-import org.jetbrains.dekaf.sql.Rewriters;
 import org.jetbrains.dekaf.sql.Scriptum;
-import org.jetbrains.dekaf.sql.SqlQuery;
+import org.jetbrains.dekaf.util.Version;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
+import java.sql.*;
+import java.util.ArrayList;
 
 import static org.jetbrains.dekaf.core.ImplementationAccessibleService.Names.JDBC_CONNECTION;
-import static org.jetbrains.dekaf.core.Layouts.*;
+import static org.jetbrains.dekaf.core.Layouts.singleOf;
 
 
 
 public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
 
-  public CassandraTestHelper(@NotNull final DBFacade db) {
+  CassandraTestHelper(@NotNull final DBFacade db) {
     super(db, Scriptum.of(CassandraTestHelper.class));
   }
 
   @Override
   public void prepareX1() {
     ensureNoTableOrView("X1");
-    performScript(scriptum, "X1");
-    performCommand(getInsertValuesStatement("X1", 0, 1));
+    performCommand(scriptum, "X1");
+    insertValues("X1", 1, 1);
   }
 
-  private String getInsertValuesStatement(String tableName, int firstValue, int amount) {
-    StringBuilder builder = new StringBuilder("BEGIN BATCH\n");
-    for (int i = firstValue; i < firstValue + amount; i++) {
-      builder.append("INSERT INTO ")
-             .append(tableName)
-             .append(" (X) VALUES (")
-             .append(i + 1)
-             .append(");\n");
-    }
-    return builder.append("APPLY BATCH\n").toString();
+  private void insertValues(final String tableName, final int firstValue, final int amount) {
+    db.inSession(new InSessionNoResult() {
+      @Override
+      public void run(@NotNull final DBSession session) {
+        Connection connection = session.getSpecificService(Connection.class, JDBC_CONNECTION);
+        if (connection == null) throw new IllegalArgumentException("Cannot obtain connection");
+        try {
+          PreparedStatement preparedStatement = connection.prepareStatement("insert into " + tableName + " (X) values (?)");
+          for (int i = firstValue; i < firstValue + amount; i++) {
+            preparedStatement.setObject(1, i);
+            preparedStatement.addBatch();
+          }
+          preparedStatement.executeBatch();
+        }
+        catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+    });
   }
 
   @Override
   public void prepareX1000() {
     ensureNoTableOrView("X1000");
     performCommand(scriptum, "X1000");
-    performCommand(getInsertValuesStatement("X1000", 0, 1000));
+    insertValues("X1000", 1, 1000);
   }
 
   @Override
@@ -54,81 +60,111 @@ public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
     performCommand(scriptum, "X1000000");
     int step = 1000;
     for (int i = 0; i < 1000; i++) {
-      performCommand(getInsertValuesStatement("X1000000", i * step, step));
+      insertValues("X1000000", i * step + 1, step);
     }
+  }
+
+  private void useConnection(final ConnectionConsumer consumer) {
+    db.inSession(new InSessionNoResult() {
+      @Override
+      public void run(@NotNull final DBSession session) {
+        Connection connection = session.getSpecificService(Connection.class, JDBC_CONNECTION);
+        if (connection == null) throw new IllegalArgumentException("Cannot obtain connection");
+        try {
+          consumer.consume(connection);
+        }
+        catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+    });
   }
 
   @Override
   protected void zapSchemaInternally(final ConnectionInfo connectionInfo) {
-    performCommand(scriptum, "CreateDropFunction");
-    String currentKeyspace = getCurrentKeyspace();
-    SqlQuery<List<String>> metaQuery
-        = setPlaceholders(scriptum,
-                          "ZapObjectsMetaQuery",
-                          pair("keyspace", currentKeyspace),
-                          pair("type", "materialized view"),
-                          pair("column", "view_name"),
-                          pair("table", "views"));
-    performMetaQueryCommands(metaQuery);
-    performZapObjectsMetaQuery(currentKeyspace, "table");
-    performZapObjectsMetaQuery(currentKeyspace, "type");
-    metaQuery = setPlaceholders(scriptum,
-                          "ZapObjectsMetaQuery",
-                          pair("keyspace", currentKeyspace),
-                          pair("type", "index"),
-                          pair("column", "index_name"),
-                          pair("table", "indexes"));
-    performMetaQueryCommands(metaQuery);
-    performZapObjectsMetaQuery(currentKeyspace, "trigger");
-    performZapObjectsMetaQuery(currentKeyspace, "aggregate");
-    performZapObjectsMetaQuery(currentKeyspace, "function");
+    final String currentKeyspace = getCurrentKeyspace();
+    Version serverVersion = getVersion();
+    if (serverVersion.isOrGreater(3, 0)) {
+      dropObjects(currentKeyspace, "type_name", "system_schema.types", "type");
+      dropObjects(currentKeyspace, "view_name", "system_schema.views", "materialized view");
+      dropObjects(currentKeyspace, "table_name", "system_schema.tables", "table");
+      dropObjects(currentKeyspace, "index_name", "system_schema.indexes", "index");
+      dropObjects(currentKeyspace, "trigger_name", "system_schema.triggers", "trigger");
+      dropObjects(currentKeyspace, "aggregate_name", "system_schema.aggregates", "aggregate");
+      dropObjects(currentKeyspace, "function_name", "system_schema.functions", "function");
+    }
+    else {
+      dropObjects(currentKeyspace, "type_name", "system.schema_usertypes", "type");
+      dropCassandra2Indexes(currentKeyspace);
+      dropObjects(currentKeyspace, "columnfamily_name", "system.schema_columnfamilies", "table");
+      dropObjects(currentKeyspace, "trigger_name", "system.schema_triggers", "trigger");
+      if (serverVersion.isOrGreater(2, 2)) {
+        dropObjects(currentKeyspace, "aggregate_name", "system.schema_aggregates", "aggregate");
+        dropObjects(currentKeyspace, "function_name", "system.schema_functions", "function");
+      }
+    }
   }
 
-  @NotNull
-  private Pair<String, String> pair(String key, String value) {
-    return new Pair<String, String>(key, value);
+  private void dropCassandra2Indexes(final String currentKeyspace) {
+    useConnection(new ConnectionConsumer() {
+      @Override
+      void consume(final Connection connection) throws SQLException {
+        Statement statement = connection.createStatement();
+        statement.execute("select index_name from system.\"IndexInfo\" where table_name = '" + currentKeyspace + "'");
+        String[] objectNames = getObjectNames(statement);
+        for (String objectName : objectNames) {
+          int dot = objectName.indexOf('.');
+          drop("index", objectName.substring(dot + 1));
+        }
+      }
+    });
+  }
+
+  private String[] getObjectNames(final Statement statement) throws SQLException {
+    ResultSet resultSet = statement.getResultSet();
+    ArrayList<String> objectNames = new ArrayList<String>();
+    boolean hasResults = resultSet.next();
+    while (hasResults) {
+      objectNames.add(resultSet.getString(1));
+      hasResults = resultSet.next();
+    }
+    String[] res = new String[objectNames.size()];
+    for (int i = 0; i < objectNames.size(); i++) {
+      res[i] = objectNames.get(i);
+    }
+    return res;
+  }
+
+  private void dropObjects(final String currentKeyspace,
+                           final String columnName,
+                           final String tableName,
+                           final String type) {
+    useConnection(new ConnectionConsumer() {
+      @Override
+      void consume(final Connection connection) throws SQLException {
+        Statement statement = connection.createStatement();
+        statement.execute("select " + columnName + " from " + tableName + " where keyspace_name = '" + currentKeyspace + "'");
+        String[] objectNames = getObjectNames(statement);
+        for (String objectName : objectNames) {
+          drop(type, objectName);
+        }
+      }
+    });
+  }
+
+  private void drop(String type, String name) {
+    performCommand("drop " + type + " if exists " + name);
   }
 
   @Override
   protected void ensureNoTableOrView4(final Object[] params) {
-    performCommand(scriptum, "CreateDropFunction");
-    Pair<String, String> placeholder = new Pair<String, String>("keyspace", getCurrentKeyspace());
-    SqlQuery<List<String>> metaQuery;
-    metaQuery = setPlaceholders(scriptum, "EnsureNoViewMetaQuery", placeholder);
-    performMetaQueryCommands(metaQuery, lower(params));
-    metaQuery = setPlaceholders(scriptum, "EnsureNoTableMetaQuery", placeholder);
-    performMetaQueryCommands(metaQuery, lower(params));
-    performCommand(scriptum, "DropDropFunction");
-  }
-
-  private Object[] lower(final Object[] params) {
-    Object[] newParams = new Object[params.length];
-    for (int i = 0; i < params.length; i++) {
-      newParams[i] = ((String) params[i]).toLowerCase();
+    for (Object param : params) {
+      if (param == null || param.toString().isEmpty()) continue;
+      if (getVersion().isOrGreater(3, 0)) {
+        drop("materialized view", param.toString());
+      }
+      drop("table", param.toString());
     }
-    return newParams;
-  }
-
-  private void performZapObjectsMetaQuery(String currentKeyspace, String type) {
-    SqlQuery<List<String>> metaQuery
-        = setPlaceholders(scriptum, "ZapObjectsMetaQuery", pair("keyspace", currentKeyspace),
-                          pair("type", type), pair("column", type + "_name"),
-                          pair("table", type + "s"));
-    performMetaQueryCommands(metaQuery);
-  }
-
-  /**
-   * For cases where parameters binding is not possible
-   */
-  private SqlQuery<List<String>> setPlaceholders(@NotNull final Scriptum scriptum,
-                                                 @NotNull final String metaQueryName,
-                                                 final Pair... placeholder) {
-    SqlQuery<List<String>> metaQuery = scriptum.query(metaQueryName, listOf(oneOf(String.class)));
-    for (Pair placeholders : placeholder) {
-      metaQuery = metaQuery.rewrite(Rewriters.replace(placeholders.getKey().toString() + "_placeholder",
-                                                      placeholders.getValue().toString()));
-    }
-    return metaQuery;
   }
 
   @NotNull
@@ -152,6 +188,26 @@ public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
   }
 
   @NotNull
+  private Version getVersion() {
+    String version = db.inSession(new InSession<String>() {
+      @Override
+      public String run(@NotNull final DBSession session) {
+        Connection connection = session.getSpecificService(Connection.class, JDBC_CONNECTION);
+        if (connection == null) throw new IllegalArgumentException("Cannot obtain connection");
+        try {
+          return connection.getMetaData().getDatabaseProductVersion();
+        }
+        catch (SQLException e) {
+          e.printStackTrace();
+        }
+        return null;
+      }
+    });
+    if (version == null) throw new IllegalStateException("Version is not defined");
+    return Version.of(version);
+  }
+
+  @NotNull
   @Override
   public String fromSingleRowTable() {
     return " from system.local";
@@ -168,5 +224,9 @@ public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
     catch (NoTableOrViewException ntv) {
       return Integer.MIN_VALUE;
     }
+  }
+
+  private static abstract class ConnectionConsumer {
+    abstract void consume(Connection connection) throws SQLException;
   }
 }
