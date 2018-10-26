@@ -64,60 +64,49 @@ public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
     }
   }
 
-  private void useConnection(final ConnectionConsumer consumer) {
-    db.inSession(new InSessionNoResult() {
+  @Override
+  protected void zapSchemaInternally(final ConnectionInfo connectionInfo) {
+    final String currentKeyspace = db.getConnectionInfo().schemaName;
+    Version serverVersion = getVersion();
+    if (serverVersion.isOrGreater(3, 0)) {
+      drop("type", getObjectNames(currentKeyspace, "type_name", "system_schema.types"));
+      drop("materialized view", getObjectNames(currentKeyspace, "view_name", "system_schema.views"));
+      drop("table", getObjectNames(currentKeyspace, "table_name", "system_schema.tables"));
+      drop("index", getObjectNames(currentKeyspace, "index_name", "system_schema.indexes"));
+      drop("trigger", getObjectNames(currentKeyspace, "trigger_name", "system_schema.triggers"));
+      drop("aggregate", getObjectNames(currentKeyspace, "aggregate_name", "system_schema.aggregates"));
+      drop("function", getObjectNames(currentKeyspace, "function_name", "system_schema.functions"));
+    }
+    else {
+      drop("type", getObjectNames(currentKeyspace, "type_name", "system.schema_usertypes"));
+      drop("index", getCassandra2Indexes(currentKeyspace));
+      drop("table", getObjectNames(currentKeyspace, "columnfamily_name", "system.schema_columnfamilies"));
+      drop("trigger", getObjectNames(currentKeyspace, "trigger_name", "system.schema_triggers"));
+      if (serverVersion.isOrGreater(2, 2)) {
+        drop("aggregate", getObjectNames(currentKeyspace, "aggregate_name", "system.schema_aggregates"));
+        drop("function", getObjectNames(currentKeyspace, "function_name", "system.schema_functions"));
+      }
+    }
+  }
+
+  private String[] getCassandra2Indexes(final String currentKeyspace) {
+    String[] res = db.inSession(new InSession<String[]>() {
       @Override
-      public void run(@NotNull final DBSession session) {
+      public String[] run(@NotNull final DBSession session) {
         Connection connection = session.getSpecificService(Connection.class, JDBC_CONNECTION);
         if (connection == null) throw new IllegalArgumentException("Cannot obtain connection");
         try {
-          consumer.consume(connection);
+          Statement statement = connection.createStatement();
+          statement.execute("select index_name from system.\"IndexInfo\" where table_name = '" + currentKeyspace + "'");
+          return getObjectNames(statement);
         }
         catch (SQLException e) {
           e.printStackTrace();
         }
+        return null;
       }
     });
-  }
-
-  @Override
-  protected void zapSchemaInternally(final ConnectionInfo connectionInfo) {
-    final String currentKeyspace = getCurrentKeyspace();
-    Version serverVersion = getVersion();
-    if (serverVersion.isOrGreater(3, 0)) {
-      dropObjects(currentKeyspace, "type_name", "system_schema.types", "type");
-      dropObjects(currentKeyspace, "view_name", "system_schema.views", "materialized view");
-      dropObjects(currentKeyspace, "table_name", "system_schema.tables", "table");
-      dropObjects(currentKeyspace, "index_name", "system_schema.indexes", "index");
-      dropObjects(currentKeyspace, "trigger_name", "system_schema.triggers", "trigger");
-      dropObjects(currentKeyspace, "aggregate_name", "system_schema.aggregates", "aggregate");
-      dropObjects(currentKeyspace, "function_name", "system_schema.functions", "function");
-    }
-    else {
-      dropObjects(currentKeyspace, "type_name", "system.schema_usertypes", "type");
-      dropCassandra2Indexes(currentKeyspace);
-      dropObjects(currentKeyspace, "columnfamily_name", "system.schema_columnfamilies", "table");
-      dropObjects(currentKeyspace, "trigger_name", "system.schema_triggers", "trigger");
-      if (serverVersion.isOrGreater(2, 2)) {
-        dropObjects(currentKeyspace, "aggregate_name", "system.schema_aggregates", "aggregate");
-        dropObjects(currentKeyspace, "function_name", "system.schema_functions", "function");
-      }
-    }
-  }
-
-  private void dropCassandra2Indexes(final String currentKeyspace) {
-    useConnection(new ConnectionConsumer() {
-      @Override
-      void consume(final Connection connection) throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.execute("select index_name from system.\"IndexInfo\" where table_name = '" + currentKeyspace + "'");
-        String[] objectNames = getObjectNames(statement);
-        for (String objectName : objectNames) {
-          int dot = objectName.indexOf('.');
-          drop("index", objectName.substring(dot + 1));
-        }
-      }
-    });
+    return res == null ? new String[] {} : res;
   }
 
   private String[] getObjectNames(final Statement statement) throws SQLException {
@@ -135,25 +124,36 @@ public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
     return res;
   }
 
-  private void dropObjects(final String currentKeyspace,
-                           final String columnName,
-                           final String tableName,
-                           final String type) {
-    useConnection(new ConnectionConsumer() {
+  private String[] getObjectNames(final String currentKeyspace,
+                                  final String columnName,
+                                  final String tableName) {
+    String[] res = db.inSession(new InSession<String[]>() {
       @Override
-      void consume(final Connection connection) throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.execute("select " + columnName + " from " + tableName + " where keyspace_name = '" + currentKeyspace + "'");
-        String[] objectNames = getObjectNames(statement);
-        for (String objectName : objectNames) {
-          drop(type, objectName);
+      public String[] run(@NotNull final DBSession session) {
+        Connection connection = session.getSpecificService(Connection.class, JDBC_CONNECTION);
+        if (connection == null) throw new IllegalArgumentException("Cannot obtain connection");
+        try {
+          Statement statement = connection.createStatement();
+          statement.execute("select " + columnName + " from " + tableName + " where keyspace_name = '" + currentKeyspace + "'");
+          return getObjectNames(statement);
         }
+        catch (SQLException e) {
+          e.printStackTrace();
+        }
+        return null;
       }
     });
+    return res == null ? new String[] {} : res;
   }
 
   private void drop(String type, String name) {
     performCommand("drop " + type + " if exists " + name);
+  }
+
+  private void drop(String type, String[] names) {
+    for (String name : names) {
+      performCommand("drop " + type + " if exists " + name);
+    }
   }
 
   @Override
@@ -168,43 +168,8 @@ public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
   }
 
   @NotNull
-  private String getCurrentKeyspace() {
-    String keyspace = db.inSession(new InSession<String>() {
-      @Override
-      public String run(@NotNull final DBSession session) {
-        Connection connection = session.getSpecificService(Connection.class, JDBC_CONNECTION);
-        if (connection == null) throw new IllegalArgumentException("Cannot obtain connection");
-        try {
-          return connection.getCatalog();
-        }
-        catch (SQLException e) {
-          e.printStackTrace();
-        }
-        return null;
-      }
-    });
-    if (keyspace == null) throw new IllegalStateException("No keyspace is selected");
-    return keyspace;
-  }
-
-  @NotNull
   private Version getVersion() {
-    String version = db.inSession(new InSession<String>() {
-      @Override
-      public String run(@NotNull final DBSession session) {
-        Connection connection = session.getSpecificService(Connection.class, JDBC_CONNECTION);
-        if (connection == null) throw new IllegalArgumentException("Cannot obtain connection");
-        try {
-          return connection.getMetaData().getDatabaseProductVersion();
-        }
-        catch (SQLException e) {
-          e.printStackTrace();
-        }
-        return null;
-      }
-    });
-    if (version == null) throw new IllegalStateException("Version is not defined");
-    return Version.of(version);
+    return db.getConnectionInfo().serverVersion;
   }
 
   @NotNull
@@ -224,9 +189,5 @@ public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
     catch (NoTableOrViewException ntv) {
       return Integer.MIN_VALUE;
     }
-  }
-
-  private static abstract class ConnectionConsumer {
-    abstract void consume(Connection connection) throws SQLException;
   }
 }
