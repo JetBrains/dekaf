@@ -67,46 +67,49 @@ public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
   @Override
   protected void zapSchemaInternally(final ConnectionInfo connectionInfo) {
     final String currentKeyspace = db.getConnectionInfo().schemaName;
-    Version serverVersion = getVersion();
-    if (serverVersion.isOrGreater(3, 0)) {
-      drop("type", getObjectNames(currentKeyspace, "type_name", "system_schema.types"));
-      drop("materialized view", getObjectNames(currentKeyspace, "view_name", "system_schema.views"));
-      drop("table", getObjectNames(currentKeyspace, "table_name", "system_schema.tables"));
-      drop("index", getObjectNames(currentKeyspace, "index_name", "system_schema.indexes"));
-      drop("trigger", getObjectNames(currentKeyspace, "trigger_name", "system_schema.triggers"));
-      drop("aggregate", getObjectNames(currentKeyspace, "aggregate_name", "system_schema.aggregates"));
-      drop("function", getObjectNames(currentKeyspace, "function_name", "system_schema.functions"));
-    }
-    else {
-      drop("type", getObjectNames(currentKeyspace, "type_name", "system.schema_usertypes"));
-      drop("index", getCassandra2Indexes(currentKeyspace));
-      drop("table", getObjectNames(currentKeyspace, "columnfamily_name", "system.schema_columnfamilies"));
-      drop("trigger", getObjectNames(currentKeyspace, "trigger_name", "system.schema_triggers"));
-      if (serverVersion.isOrGreater(2, 2)) {
-        drop("aggregate", getObjectNames(currentKeyspace, "aggregate_name", "system.schema_aggregates"));
-        drop("function", getObjectNames(currentKeyspace, "function_name", "system.schema_functions"));
-      }
-    }
-  }
-
-  private String[] getCassandra2Indexes(final String currentKeyspace) {
-    String[] res = db.inSession(new InSession<String[]>() {
+    final Version serverVersion = getVersion();
+    db.inSession(new InSessionNoResult() {
       @Override
-      public String[] run(@NotNull final DBSession session) {
+      public void run(@NotNull final DBSession session) {
         Connection connection = session.getSpecificService(Connection.class, JDBC_CONNECTION);
         if (connection == null) throw new IllegalArgumentException("Cannot obtain connection");
-        try {
-          Statement statement = connection.createStatement();
-          statement.execute("select index_name from system.\"IndexInfo\" where table_name = '" + currentKeyspace + "'");
-          return getObjectNames(statement);
+        if (serverVersion.isOrGreater(3, 0)) {
+          dropObjects(connection, currentKeyspace, "type", "type_name", "system_schema.types");
+          dropObjects(connection, currentKeyspace, "materialized view", "view_name", "system_schema.views");
+          dropObjects(connection, currentKeyspace, "table", "table_name", "system_schema.tables");
+          dropObjects(connection, currentKeyspace, "index", "index_name", "system_schema.indexes");
+          dropObjects(connection, currentKeyspace, "trigger", "trigger_name", "system_schema.triggers");
+          dropObjects(connection, currentKeyspace, "aggregate", "aggregate_name", "system_schema.aggregates");
+          dropObjects(connection, currentKeyspace, "function", "function_name", "system_schema.functions");
         }
-        catch (SQLException e) {
-          e.printStackTrace();
+        else {
+          dropObjects(connection, currentKeyspace, "type", "type_name", "system.schema_usertypes");
+          dropCassandra2Indexes(connection, currentKeyspace);
+          dropObjects(connection, currentKeyspace, "table", "columnfamily_name", "system.schema_columnfamilies");
+          dropObjects(connection, currentKeyspace, "trigger", "trigger_name", "system.schema_triggers");
+          if (serverVersion.isOrGreater(2, 2)) {
+            dropObjects(connection, currentKeyspace, "aggregate", "aggregate_name", "system.schema_aggregates");
+            dropObjects(connection, currentKeyspace, "function", "function_name", "system.schema_functions");
+          }
         }
-        return null;
       }
     });
-    return res == null ? new String[] {} : res;
+  }
+
+  private void dropCassandra2Indexes(final Connection connection,
+                                     final String currentKeyspace) {
+
+    try {
+      Statement statement = connection.createStatement();
+      statement.execute("select index_name from system.\"IndexInfo\" where table_name = '" + currentKeyspace + "'");
+      for (String name : getObjectNames(statement)) {
+        drop("index", name);
+      }
+    }
+    catch (SQLException e) {
+      e.printStackTrace();
+    }
+
   }
 
   private String[] getObjectNames(final Statement statement) throws SQLException {
@@ -124,36 +127,25 @@ public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
     return res;
   }
 
-  private String[] getObjectNames(final String currentKeyspace,
-                                  final String columnName,
-                                  final String tableName) {
-    String[] res = db.inSession(new InSession<String[]>() {
-      @Override
-      public String[] run(@NotNull final DBSession session) {
-        Connection connection = session.getSpecificService(Connection.class, JDBC_CONNECTION);
-        if (connection == null) throw new IllegalArgumentException("Cannot obtain connection");
-        try {
-          Statement statement = connection.createStatement();
-          statement.execute("select " + columnName + " from " + tableName + " where keyspace_name = '" + currentKeyspace + "'");
-          return getObjectNames(statement);
-        }
-        catch (SQLException e) {
-          e.printStackTrace();
-        }
-        return null;
+  private void dropObjects(final Connection connection,
+                           final String currentKeyspace,
+                           final String type,
+                           final String columnName,
+                           final String tableName) {
+    try {
+      Statement statement = connection.createStatement();
+      statement.execute("select " + columnName + " from " + tableName + " where keyspace_name = '" + currentKeyspace + "'");
+      for (String name : getObjectNames(statement)) {
+        drop(type, name);
       }
-    });
-    return res == null ? new String[] {} : res;
+    }
+    catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   private void drop(String type, String name) {
     performCommand("drop " + type + " if exists " + name);
-  }
-
-  private void drop(String type, String[] names) {
-    for (String name : names) {
-      performCommand("drop " + type + " if exists " + name);
-    }
   }
 
   @Override
