@@ -80,7 +80,8 @@ public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
           dropObjects(connection, currentKeyspace, "table", "table_name", "system_schema.tables");
           dropObjects(connection, currentKeyspace, "index", "index_name", "system_schema.indexes");
           dropObjects(connection, currentKeyspace, "trigger", "trigger_name", "system_schema.triggers");
-          dropObjects(connection, currentKeyspace, "aggregate", "aggregate_name", "system_schema.aggregates");
+          dropRoutines(connection, currentKeyspace, "aggregate", "aggregate_name", "argument_types", "system_schema.aggregates");
+          dropRoutines(connection, currentKeyspace, "function", "function_name", "argument_types", "system_schema.functions");
           dropObjects(connection, currentKeyspace, "function", "function_name", "system_schema.functions");
         }
         else {
@@ -89,8 +90,8 @@ public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
           dropObjects(connection, currentKeyspace, "table", "columnfamily_name", "system.schema_columnfamilies");
           dropObjects(connection, currentKeyspace, "trigger", "trigger_name", "system.schema_triggers");
           if (serverVersion.isOrGreater(2, 2)) {
-            dropObjects(connection, currentKeyspace, "aggregate", "aggregate_name", "system.schema_aggregates");
-            dropObjects(connection, currentKeyspace, "function", "function_name", "system.schema_functions");
+            dropRoutines(connection, currentKeyspace, "aggregate", "aggregate_name", "signature", "system.schema_aggregates");
+            dropRoutines(connection, currentKeyspace, "function", "function_name", "signature", "system.schema_functions");
           }
         }
       }
@@ -122,6 +123,51 @@ public class CassandraTestHelper extends BaseTestHelper<DBFacade> {
       hasResults = resultSet.next();
     }
     return objectNames;
+  }
+
+  private void dropRoutines(final Connection connection,
+                            final String currentKeyspace,
+                            final String routineKind,
+                            final String nameColumn,
+                            final String signatureColumn,
+                            final String tableName) {
+    try {
+      Statement statement = connection.createStatement();
+      statement.execute(
+          "select " + nameColumn + ", " + signatureColumn + " from " + tableName + " where keyspace_name = '" + currentKeyspace + "'");
+      for (String name : getSignatures(statement)) {
+        connection.createStatement().execute("drop " + routineKind + " if exists " + name);
+      }
+    }
+    catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private List<String> getSignatures(final Statement statement) throws SQLException {
+    ResultSet resultSet = statement.getResultSet();
+    ArrayList<String> signatures = new ArrayList<String>();
+    boolean hasResults = resultSet.next();
+    while (hasResults) {
+      String name = resultSet.getString(1);
+      List<String> types = (List<String>) resultSet.getObject(2);
+      StringBuilder sig = new StringBuilder(name).append("(");
+      String sep = "";
+      for (String type : types) {
+        sig.append(sep);
+        sep = ", ";
+        sig.append(unwrapFrozen(type));
+      }
+      sig.append(")");
+      signatures.add(sig.toString());
+      hasResults = resultSet.next();
+    }
+    return signatures;
+  }
+
+  private String unwrapFrozen(final String type) {
+    if (type.startsWith("frozen<")) return type.substring("frozen<".length(), type.length() - 1);
+    return type;
   }
 
   private void dropObjects(final Connection connection,
