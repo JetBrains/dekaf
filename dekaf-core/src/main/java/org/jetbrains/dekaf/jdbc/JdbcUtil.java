@@ -66,6 +66,9 @@ abstract class JdbcUtil {
     catch (UnsupportedOperationException uoe) {
       return false;
     }
+    catch (SQLException e) {
+      return false;
+    }
   }
 
 
