@@ -8,10 +8,6 @@ def junitJupiterVersion  = '5.4.0'
 def assertJVersion       = '3.10.0'
 
 def h2dbVersion          = '1.4.196'
-def postgresVersion      = '9.4-1201-jdbc4'
-def mysqlVersion         = '6.0.6'
-def microsoftVersion     = '6.1.5.jre8-preview'
-def jtdsVersion          = '1.2.8'
 
 
 apply plugin: 'java'
@@ -537,6 +533,11 @@ project(':test-connection') {
 }
 
 
+
+task getJdbc (type: GradleBuild) {
+    dir = 'int'
+    tasks = ['getJdbc']
+}
 
 
 task jarsBuilt(type: Copy, dependsOn: build) {
