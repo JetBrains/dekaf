@@ -1,4 +1,4 @@
-def kotlinVersion        = '1.2.41'
+def kotlinVersion        = '1.3.21'
 def annotationsVersion   = '15.0'
 
 def log4jVersion         = '2.9.0'
@@ -20,7 +20,7 @@ apply plugin: 'java'
 buildscript {
 
     // unfortunately, we have to duplicate this two variables :(
-    def kotlinVersion0        = '1.2.41'
+    def kotlinVersion0        = '1.3.21'
     def junitPlatformVersion0 = '1.1.0'
 
 
@@ -139,8 +139,8 @@ configure (kotlinModules) {
     compileKotlin {
         kotlinOptions {
             jvmTarget = "1.8"
-            languageVersion = "1.2"
-            apiVersion = "1.2"
+            languageVersion = "1.3"
+            apiVersion = "1.3"
             javaParameters = true
             suppressWarnings = true
         }
@@ -149,8 +149,8 @@ configure (kotlinModules) {
     compileTestKotlin {
         kotlinOptions {
             jvmTarget = "1.8"
-            languageVersion = "1.2"
-            apiVersion = "1.2"
+            languageVersion = "1.3"
+            apiVersion = "1.3"
             javaParameters = true
             suppressWarnings = true
         }
