@@ -1,4 +1,4 @@
-![dekaf icon](dev/.idea/icon.png)
+![dekaf icon](.idea/icon.png)
 Dekaf
 =====
 
