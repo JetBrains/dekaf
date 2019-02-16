@@ -3,9 +3,9 @@ def annotationsVersion   = '15.0'
 
 def log4jVersion         = '2.9.0'
 
-def junitPlatformVersion = '1.1.0'
-def junitJupiterVersion  = '5.1.0'
-def assertJVersion       = '3.9.1'
+def junitPlatformVersion = '1.4.0'
+def junitJupiterVersion  = '5.4.0'
+def assertJVersion       = '3.10.0'
 
 def h2dbVersion          = '1.4.196'
 def postgresVersion      = '9.4-1201-jdbc4'
@@ -169,9 +169,7 @@ def libAnnotations              = "org.jetbrains:annotations:$annotationsVersion
 def libKotlinStd                = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 def libKotlinReflect            = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 
-def libJunitJupiterApi          = "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
-def libJunitJupiterEngine       = "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
-def libJunitJupiterParams       = "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion"
+def libJunitJupiter             = "org.junit.jupiter:junit-jupiter:$junitJupiterVersion"
 def libJunitPlatformLauncher    = "org.junit.platform:junit-platform-launcher:$junitPlatformVersion"
 def libAssertJ                  = "org.assertj:assertj-core:$assertJVersion"
 
@@ -196,9 +194,7 @@ project(':dekaf-base') {
     
     dependencies {
         compile libAnnotations
-        testCompile libJunitJupiterApi
-        testCompile libJunitJupiterEngine
-        testCompile libJunitJupiterParams
+        testCompile libJunitJupiter
         testCompile libAssertJ
     }
 
@@ -227,9 +223,7 @@ project(':dekaf-jdbc') {
 
     dependencies {
         compile project(':dekaf-base')
-        testCompile libJunitJupiterApi
-        testCompile libJunitJupiterEngine
-        testCompile libJunitJupiterParams
+        testCompile libJunitJupiter
         testCompile libAssertJ
         testRuntime libH2
     }
@@ -265,9 +259,7 @@ project(':dekaf-main') {
         testCompile project(':ko-test-util')
         testCompile project(':expectation')
         testCompile libKotlinStd
-        testCompile libJunitJupiterApi
-        testCompile libJunitJupiterEngine
-        testCompile libJunitJupiterParams
+        testCompile libJunitJupiter
         testCompile libAssertJ
         testRuntime libH2
     }
@@ -304,9 +296,7 @@ project(':dekaf-test-db') {
         testCompile project(':ko-test-util')
         testCompile libKotlinStd
         testCompile libKotlinReflect
-        testCompile libJunitJupiterApi
-        testCompile libJunitJupiterEngine
-        testCompile libJunitJupiterParams
+        testCompile libJunitJupiter
         testCompile libAssertJ
         testRuntime libH2
     }
@@ -391,9 +381,7 @@ project(':ko-test-util') {
     dependencies {
         compile libKotlinStd
         compile libKotlinReflect
-        compile libJunitJupiterApi
-        compile libJunitJupiterEngine
-        compile libJunitJupiterParams
+        compile libJunitJupiter
         compile libJunitPlatformLauncher
     }
 
@@ -421,9 +409,8 @@ project(':expectation') {
 
     dependencies {
         compile libKotlinStd
-        compile libJunitJupiterApi
+        compile libJunitJupiter
         runtime libKotlinReflect
-        testCompile libJunitJupiterEngine
         testCompile libJunitPlatformLauncher
     }
 
@@ -462,9 +449,7 @@ project(':test-basic') {
         testCompile project(':ko-test-util')
         testCompile libKotlinStd
         testCompile libKotlinReflect
-        testCompile libJunitJupiterApi
-        testCompile libJunitJupiterEngine
-        testCompile libJunitJupiterParams
+        testCompile libJunitJupiter
         testCompile libJunitPlatformLauncher
         testCompile libAssertJ
         testRuntime libH2
@@ -528,9 +513,7 @@ project(':test-connection') {
         testCompile project(':ko-test-util')
         testCompile libKotlinStd
         testCompile libKotlinReflect
-        testCompile libJunitJupiterApi
-        testCompile libJunitJupiterEngine
-        testCompile libJunitJupiterParams
+        testCompile libJunitJupiter
         testCompile libJunitPlatformLauncher
     }
 
