@@ -1,2 +1,16 @@
-rootProject.name = 'Dekaf-Workspace'
+rootProject.name = 'dekaf'
+
+include 'dekaf-base'
+include 'dekaf-jdbc'
+include 'dekaf-main'
+include 'dekaf-test-db'
+
+include 'demo-on-java'
+include 'demo-on-kotlin'
+
+include 'ko-test-util'
+include 'expectation'
+include 'test-basic'
+include 'test-connection'
+
 

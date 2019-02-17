@@ -12,6 +12,14 @@ buildscript {
 idea.module.name = 'int-directory'
 
 
+def h2dbVersion          = '1.4.196'
+def postgresVersion      = '42.2.5'
+def mysqlVersion         = '8.0.15'
+def microsoftVersion     = '6.1.5.jre8-preview'
+def jtdsVersion          = '1.3.1'
+
+
+
 subprojects {
     apply plugin: 'java'
     apply plugin: 'org.junit.platform.gradle.plugin'
@@ -35,18 +43,52 @@ subprojects {
 
 
 
+repositories {
+    mavenCentral()
+}
+
+
+
+configurations {
+    open_jdbc {
+    }
+}
+
+
+dependencies {
+
+    open_jdbc "com.h2database:h2:$h2dbVersion",
+              "com.h2database:h2:$h2dbVersion:sources",
+              "com.h2database:h2:$h2dbVersion:javadoc",
+              "org.postgresql:postgresql:$postgresVersion",
+              "org.postgresql:postgresql:$postgresVersion:sources",
+              "org.postgresql:postgresql:$postgresVersion:javadoc",
+              "net.sourceforge.jtds:jtds:$jtdsVersion",
+              "net.sourceforge.jtds:jtds:$jtdsVersion:sources",
+              "net.sourceforge.jtds:jtds:$jtdsVersion:javadoc",
+              "mysql:mysql-connector-java:$mysqlVersion"
+
+}
+
+task getJdbc(type:Copy) {
+    from configurations.open_jdbc into "jdbc/"
+}
+
+
+
+
 project(':testBasic') {
 
     dependencies {
         runtime fileTree(dir: "$rootDir/jars", includes: ['dekaf*.jar'
                                                          ,'demo*.jar'
                                                          ,'expectation*.jar'
-                                                         ,'h2*.jar'
                                                          ,'junit*.jar'
                                                          ,'ko*.jar'
                                                          ,'opentest4j*.jar'
                                                          ,'assertj*.jar'
-                                                         //,'test-basic*.jar'
+                                                         ])
+        runtime fileTree(dir: "$rootDir/jdbc", includes: ['h2*.jar'
                                                          ])
     }
 
@@ -69,12 +111,5 @@ project(':testBasic') {
             }
         }
     }
-
-    /*
-    task runTests(type: JavaExec) {
-        main = "-jar"
-        args = ["$rootDir/jars/test-basic-tests.jar"]
-    }
-    */
 
 }
