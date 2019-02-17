@@ -534,15 +534,9 @@ project(':test-connection') {
 
 
 
-task getJdbc (type: GradleBuild) {
-    dir = 'int'
-    tasks = ['getJdbc']
-}
-
-
 task jarsBuilt(type: Copy, dependsOn: build) {
-    from "$rootDir/../out/jars"
-    into "$rootDir/../int/jars"
+    from "$rootDir/out/jars"
+    into "$rootDir/int/jars"
     exclude {it.file.length() == 261}
 }
 
@@ -551,9 +545,21 @@ task jarsDownloaded(type: Copy) {
     //from configurations.testCompile
     //from configurations.testRuntime
     from allModules.collect { it.configurations.testRuntime }
-    into "$rootDir/../int/jars"
+    into "$rootDir/int/jars"
 }
 
 task jars(dependsOn: [jarsBuilt,jarsDownloaded]) {
 }
 
+
+/// INTEGRATION TASKS \\\
+
+task getJdbc (type: GradleBuild) {
+    dir = 'int'
+    tasks = ['getJdbc']
+}
+
+task itest (type: GradleBuild, dependsOn: [build, getJdbc, jars]) {
+    dir = 'int'
+    tasks = [':testBasic:clean', 'test']
+}

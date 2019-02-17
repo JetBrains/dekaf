@@ -83,12 +83,12 @@ project(':testBasic') {
         runtime fileTree(dir: "$rootDir/jars", includes: ['dekaf*.jar'
                                                          ,'demo*.jar'
                                                          ,'expectation*.jar'
-                                                         ,'h2*.jar'
                                                          ,'junit*.jar'
                                                          ,'ko*.jar'
                                                          ,'opentest4j*.jar'
                                                          ,'assertj*.jar'
-                                                         //,'test-basic*.jar'
+                                                         ])
+        runtime fileTree(dir: "$rootDir/jdbc", includes: ['h2*.jar'
                                                          ])
     }
 
@@ -111,12 +111,5 @@ project(':testBasic') {
             }
         }
     }
-
-    /*
-    task runTests(type: JavaExec) {
-        main = "-jar"
-        args = ["$rootDir/jars/test-basic-tests.jar"]
-    }
-    */
 
 }
