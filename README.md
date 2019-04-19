@@ -7,11 +7,14 @@ Java Database Access Layer Framework
 
 Dekaf is Java framework for working with databases, primarily via JDBC. Dekaf is NOT an ORM.
 
+Major Dekaf versions:
 
-NOW THIS FRAMEWORK IS UNDER DEVELOPMENT.
+| Version                  | Status                |
+| ------------------------ | --------------------- |
+| 1.x (codename Hydrogen)  | Not supported         |
+| 2.0.0.x                  | This version. Stable  |
+| 3.x                      | Is under development  |
 
-The stable version is 2.0.0.X. 
-The currently developed version is 3.0.0.
 
 
 Motivation
@@ -57,20 +60,6 @@ R.2.0 supported RDBMS:
 * Sybase ASE     15+
 * MySQL          5.1+
 * H2             1.4+
-
-Planned features to address the problems mentioned above:
-
-* SQL macros that allow to unify queries and reduce dynamic query text constructions
-* named parameter
-* typed out parameters
-* unified exceptions hierarchy (better hierarchy)
-
-Planned supported RDBMS:
-
-* Azure
-* RedShift
-* SQLite
-
 
 
 The Name
