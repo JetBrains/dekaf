@@ -88,7 +88,7 @@
     <repository>
       <id>redshift</id>
       <name>Redshift Repository</name>
-      <url>http://redshift-maven-repository.s3-website-us-east-1.amazonaws.com/release</url>
+      <url>https://s3.amazonaws.com/redshift-maven-repository/release</url>
     </repository>
     <repository>
       <id>exasol</id>
