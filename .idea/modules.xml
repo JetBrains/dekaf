@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/dekaf-core/dekaf-core.iml" filepath="$PROJECT_DIR$/dekaf-core/dekaf-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-inter/dekaf-inter.iml" filepath="$PROJECT_DIR$/dekaf-inter/dekaf-inter.iml" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-jdbc/dekaf-jdbc.iml" filepath="$PROJECT_DIR$/dekaf-jdbc/dekaf-jdbc.iml" />
     </modules>
