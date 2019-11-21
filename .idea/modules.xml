@@ -3,8 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/dekaf-core/dekaf-core.iml" filepath="$PROJECT_DIR$/dekaf-core/dekaf-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-core-test/dekaf-core-test.iml" filepath="$PROJECT_DIR$/dekaf-core-test/dekaf-core-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-inter/dekaf-inter.iml" filepath="$PROJECT_DIR$/dekaf-inter/dekaf-inter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-inter-test/dekaf-inter-test.iml" filepath="$PROJECT_DIR$/dekaf-inter-test/dekaf-inter-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-jdbc/dekaf-jdbc.iml" filepath="$PROJECT_DIR$/dekaf-jdbc/dekaf-jdbc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dekaf-jdbc-test/dekaf-jdbc-test.iml" filepath="$PROJECT_DIR$/dekaf-jdbc-test/dekaf-jdbc-test.iml" />
     </modules>
   </component>
 </project>
