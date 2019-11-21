@@ -4,8 +4,6 @@
 *.ear
 *.zip
 
-*.iml
-
 lib
 out
 dist
@@ -16,10 +14,8 @@ coverage
 .idea/workspace.xml
 .idea/uiDesigner.xml
 .idea/deployment.xml
-.idea/libraries
 .idea/shelf
 .idea/ant.xml
-.idea/compiler.xml
 .idea/dataSources.local.xml
 
 test-db.config

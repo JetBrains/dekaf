@@ -3,17 +3,17 @@
 Dekaf
 =====
 
-Java Database Access Layer Framework
+Java/Kotlin Database Access Layer Framework
 
 Dekaf is Java framework for working with databases, primarily via JDBC. Dekaf is NOT an ORM.
 
 Major Dekaf versions:
 
-| Version                  | Status                |
-| ------------------------ | --------------------- |
-| 1.x (codename Hydrogen)  | Not supported         |
-| 2.0.0.x                  | This version. Stable  |
-| 3.x                      | Is under development  |
+| Version                  | Status                            |
+| ------------------------ | --------------------------------- |
+| 1.x (codename Hydrogen)  | Not supported                     |
+| 2.0.0.x                  | The stable version                |
+| 3.x                      | This version (under construction) |
 
 
 
@@ -40,26 +40,30 @@ Development and debug of applications problem
 * due to the problems mentioned above, one have to construct their queries dynamically, that obstructs to try and debug these queries right from the code  
 
 
+Version 3
+---------
+
+This version is started from scratch, to get the perfect internal architecture
+and get rid of legacy code.
+
+In version 3 most of code will be written on Kotlin and just, except two modules:
+   * intermediate interface
+   * JDBC-specific stuff
+
+Requirements:
+   * Java 11+
+   * Kotlin 1.3.60+
+
+
 
 Features
 --------
 
-R.2.0 features:
-
 Key features to address the problems mentioned above:
 
 * SQL queries are in separated .sql files, that allow to try/debug them right from these files
-* retrieve data as commonly used Java structures (arrays, lists, sets)
+* retrieve data as commonly used Java/Kotlin structures (arrays, lists, sets, data classes)
 * unified exceptions hierarchy (partially)
-
-R.2.0 supported RDBMS:
-
-* PostgreSQL     9+
-* Oracle         9+
-* MS SQL Server  9+
-* Sybase ASE     15+
-* MySQL          5.1+
-* H2             1.4+
 
 
 The Name

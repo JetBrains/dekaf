@@ -9,7 +9,7 @@ PACKAGE_DESCRIPTOR=bintray-package.json
 ## BT_KEY=???
 ## BT_ORG=???
 ## BT_REPO=dekaf
-## VERSION=2.0.0.version
+## VERSION=3.0.0.version
 
 if [ -z "${VERSION}" ]; then VERSION="dev"; fi;
 
