@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="yaka" type="repository">
+    <properties include-transitive-deps="false" maven-id="lb.yaka:yaka:0.2.6" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/lb/yaka/yaka/0.2.6/yaka-0.2.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/lb/yaka/yaka/0.2.6/yaka-0.2.6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

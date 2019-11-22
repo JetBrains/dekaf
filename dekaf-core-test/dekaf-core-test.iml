@@ -10,6 +10,7 @@
     <orderEntry type="library" name="kotlin-stdlib-jdk8" level="project" />
     <orderEntry type="module" module-name="dekaf-core" />
     <orderEntry type="module" module-name="dekaf-inter" />
+    <orderEntry type="library" scope="TEST" name="yaka" level="project" />
     <orderEntry type="library" scope="TEST" name="junit-jupiter" level="project" />
     <orderEntry type="library" scope="TEST" name="h2" level="project" />
   </component>
