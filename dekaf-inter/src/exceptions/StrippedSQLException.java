@@ -1,4 +1,4 @@
-package org.jetbrains.dekaf.exceptions;
+package org.jetbrains.dekaf.inter.exceptions;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
