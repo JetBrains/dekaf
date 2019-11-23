@@ -6,6 +6,9 @@
       <w>consts</w>
       <w>dedulplicate</w>
       <w>dekaf</w>
+      <w>drei</w>
+      <w>einz</w>
+      <w>fünf</w>
       <w>inno</w>
       <w>isam</w>
       <w>iseq</w>
@@ -28,7 +31,9 @@
       <w>struct</w>
       <w>sudoku</w>
       <w>unexistent</w>
+      <w>vier</w>
       <w>yaka</w>
+      <w>zwei</w>
     </words>
   </dictionary>
 </component>
