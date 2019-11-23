@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/dekaf-inter-test/dekaf-inter-test.iml" filepath="$PROJECT_DIR$/dekaf-inter-test/dekaf-inter-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-jdbc/dekaf-jdbc.iml" filepath="$PROJECT_DIR$/dekaf-jdbc/dekaf-jdbc.iml" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-jdbc-test/dekaf-jdbc-test.iml" filepath="$PROJECT_DIR$/dekaf-jdbc-test/dekaf-jdbc-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test-utils/test-utils.iml" filepath="$PROJECT_DIR$/test-utils/test-utils.iml" />
     </modules>
   </component>
 </project>
