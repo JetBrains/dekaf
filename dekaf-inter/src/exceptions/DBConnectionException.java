@@ -23,4 +23,8 @@ public class DBConnectionException extends DBException {
     super(sqlException, statementText);
   }
 
+  public DBConnectionException(@NotNull final String message) {
+    super(message, null);
+  }
+
 }

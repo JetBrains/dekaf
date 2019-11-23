@@ -2,6 +2,8 @@ package org.jetbrains.dekaf.inter.exceptions;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.SQLException;
+
 
 
 /**
@@ -10,6 +12,10 @@ import org.jetbrains.annotations.NotNull;
 public class DBDriverException extends DBException {
 
   public DBDriverException(@NotNull String message, @NotNull Exception exception) {
+    super(message, exception, null);
+  }
+
+  public DBDriverException(@NotNull String message, @NotNull SQLException exception) {
     super(message, exception, null);
   }
 
