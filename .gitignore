@@ -6,6 +6,7 @@
 
 lib
 out
+classes
 dist
 coverage
 */target
