@@ -5,7 +5,6 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.inter.exceptions.DBDriverException;
 import org.jetbrains.dekaf.inter.exceptions.DBInitializationException;
 import org.jetbrains.dekaf.inter.intf.InterFacade;
-import org.jetbrains.dekaf.inter.intf.InterSession;
 import org.jetbrains.dekaf.inter.settings.Settings;
 
 import java.sql.Connection;
@@ -116,13 +115,13 @@ public class JdbcFacade implements InterFacade {
     /// SESSIONS \\\
 
     @Override @NotNull
-    public InterSession openSession() {
+    public JdbcSession openSession() {
         return openSession(null, null);
     }
 
     @Override @NotNull
-    public InterSession openSession(@Nullable final String connectionString,
-                                    @Nullable final Settings connectionParameters) {
+    public JdbcSession openSession(@Nullable final String connectionString,
+                                   @Nullable final Settings connectionParameters) {
         if (driver == null) throw new IllegalStateException("Facade is not initialized");
 
         String cs = connectionString != null ? connectionString : this.jdbcConnectionString;
@@ -169,9 +168,8 @@ public class JdbcFacade implements InterFacade {
         }
     }
 
-    void imClosed(final JdbcSession session) {
+    void sessionJustClosed(final JdbcSession session) {
         sessions.remove(session);
     }
-
 
 }

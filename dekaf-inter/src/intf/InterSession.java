@@ -1,6 +1,7 @@
 package org.jetbrains.dekaf.inter.intf;
 
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.inter.exceptions.DBConnectionException;
 
 
@@ -15,6 +16,12 @@ public interface InterSession extends AutoCloseable {
      */
     void ping()
             throws DBConnectionException;
+
+    /**
+     * Opens a new seance.
+     */
+    @NotNull
+    InterSeance openSeance();
 
     /**
      * Closes the session.

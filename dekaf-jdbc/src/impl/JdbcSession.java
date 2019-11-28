@@ -6,6 +6,9 @@ import org.jetbrains.dekaf.inter.intf.InterSession;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
+import static org.jetbrains.dekaf.jdbc.impl.JdbcStuff.closeIt;
 
 
 
@@ -16,6 +19,8 @@ public class JdbcSession implements InterSession {
 
     @NotNull
     private final Connection connection;
+
+    private final ArrayList<JdbcSeance> seances = new ArrayList<>();
 
     private boolean closed = false;
 
@@ -41,17 +46,43 @@ public class JdbcSession implements InterSession {
     }
 
     @Override
+    public @NotNull JdbcSeance openSeance() {
+        JdbcSeance seance = new JdbcSeance(this);
+        synchronized (seances) {
+            seances.add(seance);
+        }
+        return seance;
+    }
+
+    @NotNull
+    Connection getConnection() {
+        if (closed) throw new IllegalStateException("Session is closed");
+        return connection;
+    }
+
+    @Override
     public void close() {
         if (closed) return;
-        try {
-            connection.close();
+        closeAllSeances();
+        closeIt(connection);
+        closed = true;
+        facade.sessionJustClosed(this);
+    }
+
+    void seanceJustClosed(final JdbcSeance seance) {
+        synchronized (seances) {
+            seances.remove(seance);
         }
-        catch (Exception e) {
-            // panic!
+    }
+
+    public void closeAllSeances() {
+        JdbcSeance[] seancesToClose;
+        synchronized (seances) {
+            seancesToClose = seances.toArray(new JdbcSeance[0]);
+            seances.clear();
         }
-        finally {
-            closed = true;
-            facade.imClosed(this);
+        for (int i = seancesToClose.length - 1; i >= 0; i--) {
+            seancesToClose[i].close();
         }
     }
 

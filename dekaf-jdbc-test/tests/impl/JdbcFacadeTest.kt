@@ -1,4 +1,4 @@
-package com.jetbrains.dekaf.jdbcTest.impl
+package org.jetbrains.dekaf.jdbcTest.impl
 
 import lb.yaka.expectations.equalsTo
 import lb.yaka.expectations.iz

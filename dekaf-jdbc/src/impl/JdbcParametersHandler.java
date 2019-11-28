@@ -1,7 +1,6 @@
 package org.jetbrains.dekaf.jdbc.impl;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.inter.exceptions.DBParameterSettingException;
 
 import java.math.BigDecimal;
@@ -24,18 +23,11 @@ import static java.lang.String.format;
  */
 abstract class JdbcParametersHandler {
 
-
-
-  static void assignParameter(@NotNull final PreparedStatement stmt,
-                              final int index,
-                              @Nullable final Object object)
-          throws SQLException
+  static void assignValueByItsType(@NotNull final PreparedStatement stmt,
+                                   final int index,
+                                   @NotNull final Object object)
+          throws DBParameterSettingException
   {
-    if (object == null) {
-      assignNull(stmt, index);
-      return;
-    }
-
     String setter = null;
     try {
       if (object instanceof Boolean) {
@@ -108,10 +100,16 @@ abstract class JdbcParametersHandler {
         stmt.setObject(index, object);
       }
     }
+    catch (SQLException sqle) {
+      String message =
+          format("Error %d occurred during setting parameter %d using %s(). The original value class is %s. Exception: %s",
+                 sqle.getErrorCode(), index, setter, object.getClass().getCanonicalName(), sqle.getMessage());
+      throw new DBParameterSettingException(message, sqle, null);
+    }
     catch (Exception e) {
       //noinspection ConstantConditions
       String message = setter != null
-          ? format("A problem with setting parameter %d using %s(). The original value class is %s. Exception %s: %s",
+          ? format("A problem occurred during setting parameter %d using %s(). The original value class is %s. Exception %s: %s",
                    index, setter, object.getClass().getCanonicalName(), e.getClass().getSimpleName(), e.getMessage())
           : format("An unexpected problem with setting parameter %d. Exception %s: %s",
                    index, e.getClass().getSimpleName(), e.getMessage());
@@ -119,13 +117,20 @@ abstract class JdbcParametersHandler {
     }
   }
 
-  private static void assignNull(final @NotNull PreparedStatement stmt, final int index)  {
+  static void assignNull(final @NotNull PreparedStatement stmt, final int index)
+          throws DBParameterSettingException
+  {
     try {
       stmt.setNull(index, Types.BIT);
     }
+    catch (SQLException sqle) {
+      String message = format("Error %d occurred during setting NULL to parameter %d.", sqle.getErrorCode(), index);
+      throw new DBParameterSettingException(message, sqle, null);
+    }
     catch (Exception e) {
-      String message = format("A problem with setting NULL to parameter %d.", index);
+      String message = format("A problem occurred during setting NULL to parameter %d.", index);
       throw new DBParameterSettingException(message, e, null);
     }
   }
+
 }

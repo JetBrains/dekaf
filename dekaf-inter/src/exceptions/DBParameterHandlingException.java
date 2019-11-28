@@ -1,6 +1,9 @@
 package org.jetbrains.dekaf.inter.exceptions;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.sql.SQLException;
 
 
 
@@ -9,9 +12,15 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class DBParameterHandlingException extends DBException {
 
-  public DBParameterHandlingException(@NotNull final String message,
-                                      @NotNull final Exception exception,
-                                      final String statementText) {
+  protected DBParameterHandlingException(final @NotNull String message,
+                                         final @NotNull SQLException sqlException,
+                                         final @Nullable String statementText) {
+    super(message, sqlException, statementText);
+  }
+
+  public DBParameterHandlingException(final @NotNull String message,
+                                      final @NotNull Exception exception,
+                                      final @NotNull String statementText) {
     super(message, exception, statementText);
   }
 

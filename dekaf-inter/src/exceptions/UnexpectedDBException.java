@@ -12,10 +12,15 @@ import java.sql.SQLException;
  */
 public final class UnexpectedDBException extends DBException {
 
-  public UnexpectedDBException(@NotNull final String message,
-                               @NotNull final SQLException sqlException,
+  public UnexpectedDBException(@NotNull final SQLException sqlException,
                                @Nullable String statementText) {
     super(sqlException, statementText);
+  }
+
+  public UnexpectedDBException(@NotNull final String message,
+                               @NotNull final Exception exception,
+                               @Nullable String statementText) {
+    super(message, exception, statementText);
   }
 
 }
