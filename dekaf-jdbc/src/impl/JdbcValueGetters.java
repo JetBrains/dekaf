@@ -1,10 +1,10 @@
-package org.jetbrains.dekaf.jdbc;
+package org.jetbrains.dekaf.jdbc.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.dekaf.exceptions.DBFetchingException;
-import org.jetbrains.dekaf.exceptions.DBPreparingException;
-import org.jetbrains.dekaf.util.Numbers;
+import org.jetbrains.dekaf.inter.exceptions.DBFetchingException;
+import org.jetbrains.dekaf.inter.exceptions.DBPreparingException;
+import org.jetbrains.dekaf.jdbc.utils.Numbers;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

@@ -1,4 +1,4 @@
-package org.jetbrains.dekaf.util;
+package org.jetbrains.dekaf.jdbc.utils;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;

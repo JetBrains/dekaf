@@ -1,9 +1,9 @@
-package org.jetbrains.dekaf.jdbc;
+package org.jetbrains.dekaf.jdbc.impl;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dekaf.exceptions.UnexpectedDBException;
-import org.jetbrains.dekaf.exceptions.UnexpectedReflectionException;
-import org.jetbrains.dekaf.util.NameAndClass;
+import org.jetbrains.dekaf.inter.exceptions.UnexpectedDBException;
+import org.jetbrains.dekaf.inter.exceptions.UnexpectedReflectionException;
+import org.jetbrains.dekaf.jdbc.utils.NameAndClass;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;

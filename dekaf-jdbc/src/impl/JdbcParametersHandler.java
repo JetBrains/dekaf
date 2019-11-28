@@ -1,8 +1,8 @@
-package org.jetbrains.dekaf.jdbc;
+package org.jetbrains.dekaf.jdbc.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.dekaf.exceptions.DBParameterSettingException;
+import org.jetbrains.dekaf.inter.exceptions.DBParameterSettingException;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
