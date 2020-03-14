@@ -57,7 +57,7 @@ public final class Version implements Comparable<Version>, Serializable {
       if (special != null) b.add(special);
       else {
         try {
-          Integer v = new Integer(ss2);
+          Integer v = Integer.valueOf(ss2);
           b.add(v);
         } catch (NumberFormatException e) {
           break;

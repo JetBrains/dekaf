@@ -43,12 +43,12 @@ public abstract class Numbers {
     if (number == null) return null;
     if (numberClass.isAssignableFrom(number.getClass())) return (N) number;
 
-    if (numberClass == Byte.class || numberClass == byte.class) return (N) new Byte(number.byteValue());
-    if (numberClass == Short.class || numberClass == short.class) return (N) new Short(number.shortValue());
-    if (numberClass == Integer.class || numberClass == int.class) return (N) new Integer(number.intValue());
-    if (numberClass == Long.class || numberClass == long.class) return (N) new Long(number.longValue());
-    if (numberClass == Float.class || numberClass == float.class) return (N) new Float(number.floatValue());
-    if (numberClass == Double.class || numberClass == double.class) return (N) new Double(number.doubleValue());
+    if (numberClass == Byte.class || numberClass == byte.class) return (N) Byte.valueOf(number.byteValue());
+    if (numberClass == Short.class || numberClass == short.class) return (N) Short.valueOf(number.shortValue());
+    if (numberClass == Integer.class || numberClass == int.class) return (N) Integer.valueOf(number.intValue());
+    if (numberClass == Long.class || numberClass == long.class) return (N) Long.valueOf(number.longValue());
+    if (numberClass == Float.class || numberClass == float.class) return (N) Float.valueOf(number.floatValue());
+    if (numberClass == Double.class || numberClass == double.class) return (N) Double.valueOf(number.doubleValue());
     if (numberClass == BigInteger.class) return (N) new BigInteger(number.toString());
     if (numberClass == BigDecimal.class) return (N) new BigDecimal(number.toString());
 
