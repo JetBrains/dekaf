@@ -13,6 +13,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import static org.jetbrains.dekaf.inter.common.StatementCategory.stmtQuery;
 import static org.jetbrains.dekaf.inter.common.StatementCategory.stmtSimple;
@@ -35,6 +37,8 @@ public class JdbcSeance implements InterSeance {
     @Nullable
     protected String statementText = null;
 
+    protected int portionSize = 1000;
+
     @Nullable
     protected ParamDef[] paramsDefs = null;
 
@@ -49,17 +53,24 @@ public class JdbcSeance implements InterSeance {
 
     private boolean closed = false;
 
+    private final Collection<JdbcBaseCursor> cursors = new ArrayList<>();
+
 
     public JdbcSeance(final @NotNull JdbcSession session) {
         this.session = session;
     }
 
+    @Override
+    public void setPortionSize(final int portionSize) {
+        if (portionSize < 1) throw new IllegalArgumentException("Wrong portion size: " + portionSize);
+        this.portionSize = portionSize;
+    }
 
     @Override
     public void prepare(final @NotNull String statementText,
                         final @NotNull StatementCategory category,
-                        final @Nullable ParamDef[] paramDefs) {
-        if (closed) throw new IllegalStateException("Seance is closed");
+                        final /*@NotNull*/ ParamDef @Nullable [] paramDefs) {
+        checkNotClosed();
 
         this.category = category;
         this.statementText = statementText;
@@ -112,8 +123,7 @@ public class JdbcSeance implements InterSeance {
 
     @Override
     public void execute(@Nullable final Iterable<?> paramValues) {
-        if (closed) throw new IllegalStateException("Seance is closed");
-        if (stmt == null) throw new IllegalStateException("Seance is not prepared");
+        checkPrepared();
 
         affectedRows = 0;
         rset = null;
@@ -226,8 +236,44 @@ public class JdbcSeance implements InterSeance {
         return affectedRows;
     }
 
+
+    @Override @NotNull
+    public <B> JdbcMatrixCursor<B> makeMatrixCursor(final int parameter, @NotNull Class<B> baseClass) {
+        ResultSet rset = getResultSet(parameter);
+        JdbcMatrixCursor<B> cursor = new JdbcMatrixCursor<>(this, rset, baseClass);
+        cursors.add(cursor);
+        return cursor;
+    }
+
+    @Override @NotNull
+    public <C> JdbcColumnCursor<C> makeColumnCursor(final int parameter, @NotNull Class<C> cellClass) {
+        ResultSet rset   = getResultSet(parameter);
+        JdbcColumnCursor<C> cursor = new JdbcColumnCursor<>(this, rset, cellClass);
+        cursors.add(cursor);
+        return cursor;
+    }
+
+    @NotNull
+    protected ResultSet getResultSet(final int parameter) {
+        checkPrepared();
+        if (parameter == 0) {
+            if (rset != null) return rset;
+            else throw new IllegalStateException("No primary result set");
+        }
+        else {
+            throw new RuntimeException("Not implemented yet: getting result set from a parameter");
+        }
+    }
+
+
     @Override
     public void close() {
+        for (JdbcBaseCursor cursor : cursors) {
+            cursor.close();
+            if (rset == cursor.rset) rset = null;
+        }
+        cursors.clear();
+
         if (rset != null) {
             closeIt(rset);
             rset = null;
@@ -236,6 +282,7 @@ public class JdbcSeance implements InterSeance {
             closeIt(stmt);
             stmt = null;
         }
+        
         closed = true;
         session.seanceJustClosed(this);
         paramsDefs = null;
@@ -245,5 +292,16 @@ public class JdbcSeance implements InterSeance {
     public boolean isClosed() {
         return closed;
     }
-    
+
+    protected void checkNotClosed() {
+        if (closed) throw new IllegalStateException("Seance is closed");
+    }
+
+    protected void checkPrepared() {
+        if (stmt == null) {
+            String msg = closed ? "Seance is closed" : "Seance is not prepared";
+            throw new IllegalStateException(msg);
+        }
+    }
+
 }

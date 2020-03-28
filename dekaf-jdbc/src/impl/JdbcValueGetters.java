@@ -33,7 +33,7 @@ public final class JdbcValueGetters {
     final int jdbcType;
     final @NotNull Class<?> desiredClass;
 
-    SpecificKey(final int jdbcType, @NotNull final Class<?> desiredClass) {
+    SpecificKey(final int jdbcType, final @NotNull Class<?> desiredClass) {
       this.jdbcType = jdbcType;
       this.desiredClass = desiredClass;
     }
@@ -58,14 +58,14 @@ public final class JdbcValueGetters {
   //// INSTANCE PLENTY \\\\
 
   @NotNull
-  private static final Map<Class<?>, JdbcValueGetter<?>> NORMAL_GETTERS;
+  private static final Map<@NotNull Class<?>, @NotNull JdbcValueGetter<?>> NORMAL_GETTERS;
 
   @NotNull
-  private static final Map<SpecificKey, JdbcValueGetter<?>> SPECIFIC_GETTERS;
+  private static final Map<@NotNull SpecificKey, @NotNull JdbcValueGetter<?>> SPECIFIC_GETTERS;
 
 
   static {
-    NORMAL_GETTERS = new HashMap<Class<?>, JdbcValueGetter<?>>(30);
+    NORMAL_GETTERS = new HashMap<>(32);
     NORMAL_GETTERS.put(boolean.class, IntBoolGetter.INSTANCE);
     NORMAL_GETTERS.put(Boolean.class, IntBoolGetter.INSTANCE);
     NORMAL_GETTERS.put(byte.class, ByteGetter.INSTANCE);
@@ -98,7 +98,7 @@ public final class JdbcValueGetters {
     NORMAL_GETTERS.put(Number[].class, ArrayOfNumberGetter.INSTANCE);
     NORMAL_GETTERS.put(String[].class, ArrayOfStringGetter.INSTANCE);
 
-    SPECIFIC_GETTERS = new HashMap<SpecificKey, JdbcValueGetter<?>>(30);
+    SPECIFIC_GETTERS = new HashMap<>(48);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, boolean.class), BoolBoolGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, Boolean.class), BoolBoolGetter.INSTANCE);
     SPECIFIC_GETTERS.put(new SpecificKey(Types.BOOLEAN, Object.class), BoolBoolGetter.INSTANCE);
