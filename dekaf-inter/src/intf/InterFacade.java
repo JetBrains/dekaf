@@ -1,5 +1,6 @@
 package org.jetbrains.dekaf.inter.intf;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.inter.settings.Settings;
@@ -46,7 +47,7 @@ public interface InterFacade {
      * @see #openSession()
      * @see InterSession#close()
      */
-    @NotNull
+    @NotNull @ApiStatus.Internal
     InterSession openSession(@Nullable String connectionString,
                              @Nullable Settings connectionParameters);
 

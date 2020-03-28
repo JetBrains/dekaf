@@ -3,6 +3,7 @@ package org.jetbrains.dekaf.jdbcTest.impl
 import org.jetbrains.dekaf.inter.settings.Settings
 import org.jetbrains.dekaf.jdbc.impl.JdbcFacade
 import org.jetbrains.dekaf.jdbc.impl.JdbcSession
+import org.jetbrains.dekaf.jdbc.impl.JdbcStuff.closeIt
 import org.jetbrains.dekaf.test.utils.UnitTest
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -24,6 +25,7 @@ abstract class H2ConnectedTest : UnitTest {
     protected lateinit var facade:  JdbcFacade
     protected lateinit var session: JdbcSession
 
+
     @BeforeAll
     fun openH2() {
         facade = JdbcFacade()
@@ -37,6 +39,16 @@ abstract class H2ConnectedTest : UnitTest {
     }
 
 
+    protected fun perform(text: String) {
+        val conn = session.connection
+        val stmt = conn.createStatement()
+        try {
+            stmt.execute(text)
+        }
+        finally {
+            closeIt(stmt)
+        }
+    }
 
 
 }

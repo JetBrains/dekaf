@@ -1,5 +1,6 @@
 package org.jetbrains.dekaf.jdbc.impl;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.dekaf.inter.exceptions.DBDriverException;
@@ -12,6 +13,8 @@ import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
+
+import static org.jetbrains.dekaf.jdbc.impl.JdbcStuff.closeIt;
 
 
 
@@ -120,10 +123,21 @@ public class JdbcFacade implements InterFacade {
     }
 
     @Override @NotNull
-    public JdbcSession openSession(@Nullable final String connectionString,
-                                   @Nullable final Settings connectionParameters) {
+    public JdbcSession openSession(final @Nullable String connectionString,
+                                   final @Nullable Settings connectionParameters) {
         if (driver == null) throw new IllegalStateException("Facade is not initialized");
 
+        Connection  connection = obtainConnection(connectionString, connectionParameters);
+        JdbcSession session    = new JdbcSession(this, connection);
+        synchronized (sessions) {
+            sessions.add(session);
+        }
+        return session;
+    }
+
+    @ApiStatus.Internal
+    public Connection obtainConnection(final @Nullable String connectionString,
+                                       final @Nullable Settings connectionParameters) {
         String cs = connectionString != null ? connectionString : this.jdbcConnectionString;
         Settings ps = connectionParameters != null ? connectionParameters : this.jdbcParameters;
 
@@ -142,11 +156,12 @@ public class JdbcFacade implements InterFacade {
         catch (Exception e) {
             throw new DBDriverException("Failed to connect: " + e.getMessage(), e);
         }
-        JdbcSession session = new JdbcSession(this, connection);
-        synchronized (sessions) {
-            sessions.add(session);
-        }
-        return session;
+        return connection;
+    }
+
+    @ApiStatus.Internal
+    public void releaseConnection(final @NotNull Connection connection) {
+        closeIt(connection);
     }
 
     @Override

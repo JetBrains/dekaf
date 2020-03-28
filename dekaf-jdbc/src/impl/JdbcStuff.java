@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 public final class JdbcStuff {
 
-    static void closeIt(@NotNull AutoCloseable closeable) {
+    public static void closeIt(@NotNull AutoCloseable closeable) {
         try {
             closeable.close();
         }

@@ -42,7 +42,7 @@ public class JdbcSeance implements InterSeance {
     protected boolean hasOutParams = false;
     protected int     paramCount   = 0;
 
-    protected int updatedRows = 0;
+    protected int affectedRows = 0;
 
     @Nullable
     protected ResultSet rset;
@@ -115,7 +115,7 @@ public class JdbcSeance implements InterSeance {
         if (closed) throw new IllegalStateException("Seance is closed");
         if (stmt == null) throw new IllegalStateException("Seance is not prepared");
 
-        updatedRows = 0;
+        affectedRows = 0;
         rset = null;
 
         if (paramValues != null) assignParams(paramValues);
@@ -213,7 +213,7 @@ public class JdbcSeance implements InterSeance {
     protected void executeUpdate()
             throws SQLException
     {
-        updatedRows = stmt.executeUpdate();
+        affectedRows = stmt.executeUpdate();
     }
 
     protected void executeQuery()
@@ -222,8 +222,8 @@ public class JdbcSeance implements InterSeance {
         rset = stmt.executeQuery();
     }
 
-    public int getUpdatedRows() {
-        return updatedRows;
+    public int getAffectedRows() {
+        return affectedRows;
     }
 
     @Override

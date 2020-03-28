@@ -1,5 +1,6 @@
 package org.jetbrains.dekaf.jdbc.impl;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.dekaf.inter.exceptions.DBConnectionException;
 import org.jetbrains.dekaf.inter.intf.InterSession;
@@ -7,8 +8,6 @@ import org.jetbrains.dekaf.inter.intf.InterSession;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import static org.jetbrains.dekaf.jdbc.impl.JdbcStuff.closeIt;
 
 
 
@@ -54,8 +53,8 @@ public class JdbcSession implements InterSession {
         return seance;
     }
 
-    @NotNull
-    Connection getConnection() {
+    @NotNull @ApiStatus.Internal
+    public Connection getConnection() {
         if (closed) throw new IllegalStateException("Session is closed");
         return connection;
     }
@@ -64,7 +63,7 @@ public class JdbcSession implements InterSession {
     public void close() {
         if (closed) return;
         closeAllSeances();
-        closeIt(connection);
+        facade.releaseConnection(connection);
         closed = true;
         facade.sessionJustClosed(this);
     }
