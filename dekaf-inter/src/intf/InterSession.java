@@ -24,6 +24,26 @@ public interface InterSession extends AutoCloseable {
     InterSeance openSeance();
 
     /**
+     * Begins a transaction.
+     */
+    void beginTransaction();
+
+    /**
+     * Commits the current transaction.
+     */
+    void commit();
+
+    /**
+     * Rolls the current transaction back.
+     */
+    void rollback();
+
+    /**
+     * Checks whether the session is in a transaction.
+     */
+    boolean isInTransaction();
+
+    /**
      * Closes the session.
      */
     void close();

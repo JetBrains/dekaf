@@ -7,10 +7,10 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Leonid Bushuev from JetBrains
  */
-public class DBTransactionIsAlreadyStartedException extends DBException {
+public class DBTransactionIsAlreadyStartedException extends DBTransactionException {
 
   public DBTransactionIsAlreadyStartedException() {
-    super("Transaction is already started.", null);
+    super("The session is already inside a transaction", null);
   }
 
   public DBTransactionIsAlreadyStartedException(@NotNull final String message) {
