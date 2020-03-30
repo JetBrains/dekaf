@@ -37,6 +37,22 @@ public interface InterSeance extends AutoCloseable {
     <C> InterColumnCursor<C> makeColumnCursor(int parameter, Class<C> cellClass);
 
     /**
+     * Makes and returns a column cursor of primitive int.
+     * @param parameter parameter number, or 0 for the primary cursor.
+     * @return the created cursor.
+     */
+    @NotNull
+    InterIntsCursor makeIntsCursor(int parameter);
+
+    /**
+     * Makes and returns a column cursor of primitive long int.
+     * @param parameter parameter number, or 0 for the primary cursor.
+     * @return the created cursor.
+     */
+    @NotNull
+    InterLongsCursor makeLongsCursor(int parameter);
+
+    /**
      * Closes the seance.
      */
     void close();

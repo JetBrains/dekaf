@@ -253,6 +253,22 @@ public class JdbcSeance implements InterSeance {
         return cursor;
     }
 
+    @Override @NotNull
+    public JdbcIntsCursor makeIntsCursor(final int parameter) {
+        ResultSet rset   = getResultSet(parameter);
+        JdbcIntsCursor cursor = new JdbcIntsCursor(this, rset);
+        cursors.add(cursor);
+        return cursor;
+    }
+
+    @Override @NotNull
+    public JdbcLongsCursor makeLongsCursor(final int parameter) {
+        ResultSet rset   = getResultSet(parameter);
+        JdbcLongsCursor cursor = new JdbcLongsCursor(this, rset);
+        cursors.add(cursor);
+        return cursor;
+    }
+
     @NotNull
     protected ResultSet getResultSet(final int parameter) {
         checkPrepared();
