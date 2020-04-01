@@ -48,6 +48,10 @@ public final class Settings implements Iterable<Setting>, Serializable {
     }
 
 
+    @NotNull
+    public static final Settings empty = new Settings();
+
+
     public Settings(final @NotNull Setting... entries) {
         this.entries = entries;
         int n = entries.length;
