@@ -20,7 +20,6 @@ import static org.jetbrains.dekaf.inter.common.StatementCategory.stmtQuery;
 import static org.jetbrains.dekaf.inter.common.StatementCategory.stmtSimple;
 import static org.jetbrains.dekaf.jdbc.impl.JdbcParametersHandler.assignNull;
 import static org.jetbrains.dekaf.jdbc.impl.JdbcParametersHandler.assignValueByItsType;
-import static org.jetbrains.dekaf.jdbc.impl.JdbcStuff.closeIt;
 
 
 
@@ -56,7 +55,7 @@ public class JdbcSeance implements InterSeance {
     private final Collection<JdbcBaseCursor> cursors = new ArrayList<>();
 
 
-    public JdbcSeance(final @NotNull JdbcSession session) {
+    protected JdbcSeance(final @NotNull JdbcSession session) {
         this.session = session;
     }
 
@@ -240,7 +239,8 @@ public class JdbcSeance implements InterSeance {
     @Override @NotNull
     public <B> JdbcMatrixCursor<B> makeMatrixCursor(final int parameter, @NotNull Class<B> baseClass) {
         ResultSet rset = getResultSet(parameter);
-        JdbcMatrixCursor<B> cursor = new JdbcMatrixCursor<>(this, rset, baseClass);
+        JdbcMatrixCursor<B> cursor =
+                session.facade.factory.createMatrixCursor(this, rset, baseClass);
         cursors.add(cursor);
         return cursor;
     }
@@ -248,7 +248,8 @@ public class JdbcSeance implements InterSeance {
     @Override @NotNull
     public <C> JdbcColumnCursor<C> makeColumnCursor(final int parameter, @NotNull Class<C> cellClass) {
         ResultSet rset   = getResultSet(parameter);
-        JdbcColumnCursor<C> cursor = new JdbcColumnCursor<>(this, rset, cellClass);
+        JdbcColumnCursor<C> cursor =
+                session.facade.factory.createColumnCursor(this, rset, cellClass);
         cursors.add(cursor);
         return cursor;
     }
@@ -256,7 +257,8 @@ public class JdbcSeance implements InterSeance {
     @Override @NotNull
     public JdbcIntsCursor makeIntsCursor(final int parameter) {
         ResultSet rset   = getResultSet(parameter);
-        JdbcIntsCursor cursor = new JdbcIntsCursor(this, rset);
+        JdbcIntsCursor cursor =
+                session.facade.factory.createIntsCursor(this, rset);
         cursors.add(cursor);
         return cursor;
     }
@@ -264,7 +266,8 @@ public class JdbcSeance implements InterSeance {
     @Override @NotNull
     public JdbcLongsCursor makeLongsCursor(final int parameter) {
         ResultSet rset   = getResultSet(parameter);
-        JdbcLongsCursor cursor = new JdbcLongsCursor(this, rset);
+        JdbcLongsCursor cursor =
+                session.facade.factory.createLongsCursor(this, rset);
         cursors.add(cursor);
         return cursor;
     }
@@ -291,11 +294,11 @@ public class JdbcSeance implements InterSeance {
         cursors.clear();
 
         if (rset != null) {
-            closeIt(rset);
+            JdbcUtil.close(rset);
             rset = null;
         }
         if (stmt != null) {
-            closeIt(stmt);
+            JdbcUtil.close(stmt);
             stmt = null;
         }
         

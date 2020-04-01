@@ -2,6 +2,7 @@ package org.jetbrains.dekaf.jdbcTest.impl
 
 import org.jetbrains.dekaf.inter.settings.Settings
 import org.jetbrains.dekaf.jdbc.impl.JdbcFacade
+import org.jetbrains.dekaf.jdbc.impl.JdbcServiceFactory
 import org.jetbrains.dekaf.jdbc.impl.JdbcSession
 import org.jetbrains.dekaf.jdbc.impl.JdbcStuff.closeIt
 import org.jetbrains.dekaf.test.utils.UnitTest
@@ -20,6 +21,7 @@ abstract class H2ConnectedTest : UnitTest {
                         "driver", Settings.of("class", "org.h2.Driver"),
                         "jdbc", Settings.of("connection-string", "jdbc:h2:mem:test")
                 )
+        val factory = JdbcServiceFactory()
     }
 
     protected lateinit var facade:  JdbcFacade
@@ -28,7 +30,7 @@ abstract class H2ConnectedTest : UnitTest {
 
     @BeforeAll
     fun openH2() {
-        facade = JdbcFacade()
+        facade = factory.createFacade()
         facade.init(memH2Settings)
         session = facade.openSession()
     }

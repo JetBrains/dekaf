@@ -5,7 +5,7 @@ import lb.yaka.expectations.iz
 import lb.yaka.expectations.zero
 import lb.yaka.gears.expect
 import org.jetbrains.dekaf.inter.settings.Settings
-import org.jetbrains.dekaf.jdbc.impl.JdbcFacade
+import org.jetbrains.dekaf.jdbc.impl.JdbcServiceFactory
 import org.jetbrains.dekaf.test.utils.UnitTest
 import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Order
@@ -22,11 +22,12 @@ class JdbcFacadeTest : UnitTest {
                         "driver", Settings.of("class", "org.h2.Driver"),
                         "jdbc", Settings.of("connection-string", "jdbc:h2:mem:test")
                 )
+        val factory = JdbcServiceFactory()
     }
 
     @Test @Order(1)
     fun init_basic() {
-        val facade = JdbcFacade()
+        val facade = factory.createFacade()
         facade.init(memH2Settings)
         expect that facade.sessionsCount iz zero
     }
@@ -34,7 +35,7 @@ class JdbcFacadeTest : UnitTest {
 
     @Test @Order(2)
     fun connectAndDisconnect() {
-        val facade = JdbcFacade()
+        val facade = factory.createFacade()
         facade.init(memH2Settings)
         val session = facade.openSession()
         expect that facade.sessionsCount equalsTo 1

@@ -21,7 +21,7 @@ import static java.lang.String.format;
  *
  * @author Leonid Bushuev from JetBrains
  */
-abstract class JdbcParametersHandler {
+class JdbcParametersHandler {
 
   static void assignValueByItsType(@NotNull final PreparedStatement stmt,
                                    final int index,

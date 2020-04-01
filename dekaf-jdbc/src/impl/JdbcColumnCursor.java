@@ -22,9 +22,9 @@ public class JdbcColumnCursor<C> extends JdbcBaseCursor implements InterColumnCu
     @Nullable
     private JdbcValueGetter<C> getter = null;
 
-    JdbcColumnCursor(final @NotNull JdbcSeance seance,
-                     final @NotNull ResultSet rset,
-                     final @NotNull Class<C> cellClass) {
+    protected JdbcColumnCursor(final @NotNull JdbcSeance seance,
+                               final @NotNull ResultSet rset,
+                               final @NotNull Class<C> cellClass) {
         super(seance, rset);
         this.cellClass = cellClass;
     }

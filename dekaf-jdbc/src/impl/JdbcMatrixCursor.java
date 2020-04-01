@@ -23,9 +23,9 @@ public class JdbcMatrixCursor<B> extends JdbcBaseCursor implements InterMatrixCu
     @Nullable
     private JdbcValueGetter<? extends B>[] getters = null;
 
-    JdbcMatrixCursor(final @NotNull JdbcSeance seance,
-                     final @NotNull ResultSet rset,
-                     final @NotNull Class<B> baseClass) {
+    protected JdbcMatrixCursor(final @NotNull JdbcSeance seance,
+                               final @NotNull ResultSet rset,
+                               final @NotNull Class<B> baseClass) {
         super(seance, rset);
         this.baseClass = baseClass;
     }

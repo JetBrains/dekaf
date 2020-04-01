@@ -14,11 +14,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import static org.jetbrains.dekaf.jdbc.impl.JdbcStuff.closeIt;
-
 
 
 public class JdbcFacade implements InterFacade {
+
+    @NotNull
+    protected final JdbcServiceFactory factory;
 
     /// SETTINGS \\\
 
@@ -54,8 +55,14 @@ public class JdbcFacade implements InterFacade {
 
     /// INITIALIZATION \\\
 
+
+
+    protected JdbcFacade(final @NotNull JdbcServiceFactory factory) {
+        this.factory = factory;
+    }
+
     @Override
-    public void init(@NotNull final Settings settings)
+    public void init(final @NotNull Settings settings)
             throws DBInitializationException
     {
         Settings ds = settings.getNest("driver");
@@ -127,11 +134,15 @@ public class JdbcFacade implements InterFacade {
                                    final @Nullable Settings connectionParameters) {
         if (driver == null) throw new IllegalStateException("Facade is not initialized");
 
-        Connection  connection = obtainConnection(connectionString, connectionParameters);
-        JdbcSession session    = new JdbcSession(this, connection);
+        Connection connection = obtainConnection(connectionString, connectionParameters);
+
+        JdbcSession session = factory.createSession(this);
+        session.init(connection);
+
         synchronized (sessions) {
             sessions.add(session);
         }
+
         return session;
     }
 
@@ -161,7 +172,7 @@ public class JdbcFacade implements InterFacade {
 
     @ApiStatus.Internal
     public void releaseConnection(final @NotNull Connection connection) {
-        closeIt(connection);
+        JdbcUtil.close(connection);
     }
 
     @Override
