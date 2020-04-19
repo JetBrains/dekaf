@@ -6,6 +6,12 @@
       <option name="REPORT_INDEXED_LOOP" value="true" />
       <option name="ignoreUntypedCollections" value="false" />
     </inspection_tool>
+    <inspection_tool class="FunctionName" enabled="true" level="INFORMATION" enabled_by_default="true">
+      <option name="namePattern" value="[A-Za-z\d_]+" />
+    </inspection_tool>
+    <inspection_tool class="LiftReturnOrAssignment" enabled="true" level="INFORMATION" enabled_by_default="true" />
+    <inspection_tool class="ReplacePutWithAssignment" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="SameParameterValue" enabled="true" level="INFORMATION" enabled_by_default="true" />
+    <inspection_tool class="SortModifiers" enabled="true" level="INFORMATION" enabled_by_default="true" />
   </profile>
 </component>
