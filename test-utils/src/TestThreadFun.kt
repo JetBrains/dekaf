@@ -1,11 +1,12 @@
 package org.jetbrains.dekaf.test.utils
 
 import lb.yaka.Yaka
+import java.lang.Thread.sleep
 
 
 fun delay(threadCount: Int = 1, time: Long, block: (threadNr: Int) -> Unit): Array<Thread> =
         startMass(threadCount) { threadNr, _ ->
-            Thread.sleep(time)
+            sleep(time)
             block(threadNr)
         }
 
@@ -30,6 +31,17 @@ fun startMass(threadCount: Int = 1,
 
     return threads
 }
+
+
+fun performMass(threadCount: Int = 1,
+                iterationsPerThread: Int = 1,
+                timeout: Long = 1_000L,
+                block: (threadNr: Int, iterationNr: Int) -> Unit) {
+    val threads = startMass(threadCount, iterationsPerThread, block)
+    sleep(1L)
+    threads.join(timeout)
+}
+
 
 
 fun Array<Thread>.start() {

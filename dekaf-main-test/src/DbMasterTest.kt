@@ -23,8 +23,8 @@ class DbMasterTest : UnitTest {
         expect that facade.isConnected() equalsTo false
     }
 
-    @Test @Order(1)
-    fun connect_ping() {
+    @Test @Order(2)
+    fun connect_disconnect() {
         val facade = DbMaster.open(H2memSettings)
 
         facade.connect()
@@ -35,6 +35,19 @@ class DbMasterTest : UnitTest {
         facade.disconnect()
 
         expect that facade.isConnected() equalsTo false
+    }
+
+    @Test @Order(3)
+    fun session_ping() {
+        val facade = DbMaster.open(H2memSettings)
+
+        facade.connect()
+
+        facade.openSession().use { session ->
+            session.ping()
+        }
+
+        facade.disconnect()
     }
 
 }
