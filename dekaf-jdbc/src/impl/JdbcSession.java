@@ -3,13 +3,13 @@ package org.jetbrains.dekaf.jdbc.impl;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.dekaf.inter.exceptions.DBConnectionException;
-import org.jetbrains.dekaf.inter.exceptions.DBTransactionException;
-import org.jetbrains.dekaf.inter.exceptions.DBTransactionIsAlreadyStartedException;
+import org.jetbrains.dekaf.inter.exceptions.*;
 import org.jetbrains.dekaf.inter.intf.InterSession;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 
@@ -81,6 +81,34 @@ public class JdbcSession implements InterSession {
         }
     }
 
+    @Override
+    public void perform(@NotNull final String statementText) {
+        Statement statement = createSimpleStatement();
+        try {
+            boolean gotResultSet =
+                    statement.execute(statementText);
+            if (gotResultSet) {
+                ResultSet rset = statement.getResultSet();
+                if (rset != null) JdbcUtil.close(rset);
+            }
+        }
+        catch (SQLException e) {
+            throw new DBPerformingException(e, statementText);
+        }
+        finally {
+            JdbcUtil.close(statement);
+        }
+    }
+
+    @NotNull
+    protected Statement createSimpleStatement() {
+        try {
+            return connection.createStatement();
+        }
+        catch (SQLException e) {
+            throw new DBPreparingException("Cannot obtain a simple statement", e);
+        }
+    }
 
     @Override
     public void beginTransaction() {

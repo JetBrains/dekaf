@@ -16,6 +16,7 @@ interface DbFacade {
 }
 
 
+
 fun<X> DbFacade.inSession(block: (DbSession) -> X): X {
     val session = openSession()
     try {
@@ -25,4 +26,10 @@ fun<X> DbFacade.inSession(block: (DbSession) -> X): X {
         session.close()
     }
 }
+
+
+fun<X> DbFacade.inTransaction(block: (DbTransaction) -> X): X =
+        this.inSession {
+            session -> session.inTransaction(block)
+        }
 

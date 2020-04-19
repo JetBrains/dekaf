@@ -2,7 +2,6 @@ package org.jetbrains.dekaf.inter.intf;
 
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.dekaf.inter.exceptions.DBConnectionException;
 
 
 
@@ -14,8 +13,13 @@ public interface InterSession extends AutoCloseable {
     /**
      * Check whether the service is alive and accessible.
      */
-    void ping()
-            throws DBConnectionException;
+    void ping();
+
+    /**
+     * Performs a simple statement one time without parameters or returned cursor.
+     * @param statementText the statement to perform.
+     */
+    void perform(@NotNull String statementText);
 
     /**
      * Opens a new seance.
