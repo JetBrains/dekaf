@@ -98,6 +98,7 @@ abstract class ServicePool<S: Any> {
     }
 
 
+    @Throws(ExhaustedException::class, ShuttingDownException::class)
     fun borrow(): S {
         val t1 = now()
         val tLimit = t1 + waitingTime

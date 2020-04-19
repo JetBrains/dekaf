@@ -7,9 +7,22 @@ interface DbFacade {
 
     fun disconnect()
 
+    fun openSession(): DbSession
 
     fun isConnected(ping: Boolean = false): Boolean
 
     fun countActiveSessions(): Int
 
 }
+
+
+fun<X> DbFacade.inSession(block: (DbSession) -> X): X {
+    val session = openSession()
+    try {
+        return block(session)
+    }
+    finally {
+        session.close()
+    }
+}
+

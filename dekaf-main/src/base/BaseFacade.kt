@@ -4,6 +4,7 @@ import org.jetbrains.dekaf.inter.intf.InterFacade
 import org.jetbrains.dekaf.inter.intf.InterSession
 import org.jetbrains.dekaf.inter.settings.Settings
 import org.jetbrains.dekaf.main.db.DbFacade
+import org.jetbrains.dekaf.main.pool.ServicePool
 
 
 class BaseFacade : DbFacade {
@@ -13,6 +14,17 @@ class BaseFacade : DbFacade {
     private var settings: Settings = Settings.empty
 
     private var connected: Boolean = false
+
+    private val pool = Pool()
+
+
+
+    private inner class Pool : ServicePool<InterSession>() {
+        override fun openService(): InterSession = openInterSession()
+        override fun closeService(service: InterSession, wasBroken: Boolean) = closeInterSession(service, wasBroken)
+    }
+
+
 
 
     fun setup(interFacade: InterFacade, settings: Settings) {
@@ -30,6 +42,22 @@ class BaseFacade : DbFacade {
     override fun disconnect() {
         connected = false
     }
+
+
+    override fun openSession(): BaseSession {
+        val interSession = pool.borrow()
+        val session = BaseSession(this, interSession)
+        return session
+    }
+
+    internal fun releaseInterSessionBack(interSession: InterSession) {
+        pool.release(interSession)
+    }
+
+    internal fun releaseInterSessionBroken(interSession: InterSession) {
+        pool.releaseBroken(interSession)
+    }
+
 
     override fun isConnected(ping: Boolean): Boolean {
         if (!connected) return false
@@ -52,7 +80,12 @@ class BaseFacade : DbFacade {
         return f.openSession()
     }
 
+    private fun closeInterSession(session: InterSession, wasBroken: Boolean) {
+        session.rollback()
+        session.close()
+    }
+
     override fun countActiveSessions(): Int {
-        return 0
+        return pool.activeCount
     }
 }
