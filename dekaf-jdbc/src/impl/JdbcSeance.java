@@ -121,6 +121,11 @@ public class JdbcSeance implements InterSeance {
 
 
     @Override
+    public boolean isPrepared() {
+        return stmt != null;
+    }
+
+    @Override
     public void execute(@Nullable final Iterable<?> paramValues) {
         checkPrepared();
 

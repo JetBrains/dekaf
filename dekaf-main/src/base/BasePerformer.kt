@@ -2,7 +2,10 @@ package org.jetbrains.dekaf.main.base
 
 import org.jetbrains.dekaf.inter.intf.InterSession
 import org.jetbrains.dekaf.main.db.DbInsideTransaction
+import org.jetbrains.dekaf.main.db.DbQueryRunner
 import org.jetbrains.dekaf.main.db.DbTransaction
+import org.jetbrains.dekaf.main.queries.Query
+import org.jetbrains.dekaf.main.queries.QueryLayout
 
 
 sealed class BasePerformer : DbInsideTransaction {
@@ -19,6 +22,16 @@ sealed class BasePerformer : DbInsideTransaction {
 
     override fun perform(statementText: String) {
         interSession.perform(statementText)
+    }
+
+
+    override fun <T> query(queryText: String, layout: QueryLayout<T>): BaseQueryRunner<T> {
+        val seance = interSession.openSeance()
+        return BaseQueryRunner(baseSession, seance, queryText, layout)
+    }
+    
+    override fun <T> query(query: Query<T>): DbQueryRunner<T> {
+        return query(query.text, query.layout)
     }
 
 }

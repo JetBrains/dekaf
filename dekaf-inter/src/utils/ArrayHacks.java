@@ -9,6 +9,11 @@ import java.lang.reflect.Array;
 public final class ArrayHacks {
 
     @SuppressWarnings("unchecked")
+    public static <E> E[] createEmptyArray(final @NotNull Class<E> componentType) {
+        return (E[]) Array.newInstance(componentType, 0);
+    }
+
+    @SuppressWarnings("unchecked")
     public static <E> E[] createArray(final @NotNull Class<E> componentType, final int size) {
         return (E[]) Array.newInstance(componentType, size);
     }

@@ -20,14 +20,42 @@ public class JdbcMatrixCursor<B> extends JdbcBaseCursor implements InterMatrixCu
     @NotNull
     private final Class<B> baseClass;
 
+    private int columnCount = 0;
+
     @Nullable
     private JdbcValueGetter<? extends B>[] getters = null;
+
+    private B defaultValue;
 
     protected JdbcMatrixCursor(final @NotNull JdbcSeance seance,
                                final @NotNull ResultSet rset,
                                final @NotNull Class<B> baseClass) {
         super(seance, rset);
         this.baseClass = baseClass;
+    }
+
+    @Override
+    public void prepare() {
+        if (getters != null) throw new DBFetchingException("Cursor has been already prepared", seance.statementText);
+        else if (isClosed()) throw new DBFetchingException("Cursor is closed", seance.statementText);
+
+        try {
+            ResultSetMetaData md = rset.getMetaData();
+            int n = md.getColumnCount();
+
+            //noinspection unchecked
+            getters = createArray(JdbcValueGetter.class, n);
+            for (int i = 0; i < n; i++) {
+                int jdbcType = md.getColumnType(i+1);
+                JdbcValueGetter<B> getter = JdbcValueGetters.of(jdbcType, baseClass);
+                getters[i] = getter;
+            }
+
+            columnCount = n;
+        }
+        catch (SQLException e) {
+            throw new DBFetchingException("Failed to prepare cursor: "+e.getMessage(), e, seance.statementText);
+        }
     }
 
     @Override
@@ -55,10 +83,18 @@ public class JdbcMatrixCursor<B> extends JdbcBaseCursor implements InterMatrixCu
         catch (SQLException e) {
             throw new DBFetchingException("Failed to prepare cursor: "+e.getMessage(), e, seance.statementText);
         }
+
+        columnCount = n;
     }
 
 
-    @Override @Nullable
+    @Override
+    public void setDefaultValue(final B defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
+
+    @Override
     public B[][] fetchPortion() {
         if (end) return null;
         checkPrepared();
@@ -98,7 +134,6 @@ public class JdbcMatrixCursor<B> extends JdbcBaseCursor implements InterMatrixCu
         }
     }
 
-    @Nullable
     @Override
     public B[] fetchRow() {
         if (end) return null;
@@ -131,7 +166,7 @@ public class JdbcMatrixCursor<B> extends JdbcBaseCursor implements InterMatrixCu
             JdbcValueGetter<? extends B> getter = getters[i];
             //noinspection ConstantConditions
             B value = getter.getValue(rset, i+1);
-            row[i] = value;
+            row[i] = value != null ? value : defaultValue;
         }
         return row;
     }

@@ -20,6 +20,8 @@ public interface InterSeance extends AutoCloseable {
 
     void execute(@Nullable Iterable<?> paramValues);
 
+    boolean isPrepared();
+
     /**
      * Makes and returns a matrix cursor.
      * @param parameter parameter number, or 0 for the primary cursor.

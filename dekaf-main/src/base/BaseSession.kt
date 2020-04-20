@@ -1,8 +1,11 @@
 package org.jetbrains.dekaf.main.base
 
 import org.jetbrains.dekaf.inter.intf.InterSession
+import org.jetbrains.dekaf.main.db.DbQueryRunner
 import org.jetbrains.dekaf.main.db.DbSession
 import org.jetbrains.dekaf.main.db.DbTransaction
+import org.jetbrains.dekaf.main.queries.Query
+import org.jetbrains.dekaf.main.queries.QueryLayout
 import org.jetbrains.dekaf.main.util.choose
 
 
@@ -23,16 +26,25 @@ class BaseSession (private val facade: BaseFacade) : DbSession {
     }
 
 
-    override fun perform(statementText: String) {
+    override fun perform(statementText: String) =
         inside { p ->
             p.perform(statementText)
         }
-    }
+
+    override fun <T> query(queryText: String, layout: QueryLayout<T>): DbQueryRunner<T> =
+        inside { p -> 
+            p.query(queryText, layout)
+        }
+
+    override fun <T> query(query: Query<T>): DbQueryRunner<T> =
+        inside { p ->
+            p.query(query)
+        }
 
 
-    private fun inside(block: (performer: BasePerformer) -> Unit) {
-        val t: BasePerformer = activeTransactionPerformer ?: ensureBeyondTransaction()
-        block(t)
+    private fun<T> inside(block: (performer: BasePerformer) -> T): T {
+        val p: BasePerformer = activeTransactionPerformer ?: ensureBeyondTransaction()
+        return block(p)
     }
 
 
