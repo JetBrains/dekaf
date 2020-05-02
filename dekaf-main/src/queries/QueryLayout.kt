@@ -1,6 +1,7 @@
 package org.jetbrains.dekaf.main.queries
 
 import org.jetbrains.dekaf.main.queries.impl.*
+import java.util.stream.Stream
 
 
 sealed class QueryLayout<T> {
@@ -8,7 +9,8 @@ sealed class QueryLayout<T> {
 }
 
 
-class QueryTableLayout<T, R:Any, B> (val table: TableLayout<T,R,B>, val row: RowLayout<R,B>) : QueryLayout<T>() {
+class QueryTableLayout<T, R:Any, B> (private val table: TableLayout<T,R,B>,
+                                     private val row: RowLayout<R,B>) : QueryLayout<T>() {
     override fun makeResultCollector(): ResultCollector<T> =
             table.makeResultCollector(row)
 }
@@ -29,6 +31,16 @@ class ListTableLayout<R:Any, B> : TableLayout<List<R>, R, B>() {
 class ArrayTableLayout<R:Any, B> : TableLayout<Array<R>, R, B>() {
     override fun makeResultCollector(row: RowLayout<R, B>): TableResultCollector<Array<R>, R, B> =
             TableArrayResultCollector(row.makeRowHandler())
+}
+
+class StreamTableLayout<R:Any, B> : TableLayout<Stream<R>, R, B>() {
+    override fun makeResultCollector(row: RowLayout<R, B>): TableResultCollector<Stream<R>, R, B> =
+            TableStreamResultCollector(row.makeRowHandler())
+}
+
+class IterateTableLayout<R:Any, B> : TableLayout<Iterator<R>, R, B>() {
+    override fun makeResultCollector(row: RowLayout<R, B>): TableResultCollector<Iterator<R>, R, B> =
+            TableIteratorResultCollector(row.makeRowHandler())
 }
 
 

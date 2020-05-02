@@ -6,14 +6,13 @@ import lb.yaka.expectations.iz
 import lb.yaka.gears.empty
 import lb.yaka.gears.expect
 import org.jetbrains.dekaf.main.db.inSession
-import org.jetbrains.dekaf.main.queries.Query
-import org.jetbrains.dekaf.main.queries.layRowArrayOf
-import org.jetbrains.dekaf.main.queries.layTableArrayOf
-import org.jetbrains.dekaf.main.queries.layTableListOf
+import org.jetbrains.dekaf.main.queries.*
 import org.jetbrains.dekaf.mainTest.base.UnitTestWithH2
 import org.jetbrains.dekaf.mainTest.util.*
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
+import java.util.stream.Collectors
+import java.util.stream.Stream
 
 
 class QueryLayoutTest : UnitTestWithH2 {
@@ -85,6 +84,62 @@ class QueryLayoutTest : UnitTestWithH2 {
                     session.query(query).run()
                 }
         expect that list iz empty
+    }
+
+
+    @Test @Order(4)
+    fun queryIteratorOfArrayOfMandatoryNumber() {
+        val query: Query<Iterator<Array<out Number>>> =
+                Query(query4x4, layTableIteratorOf(layRowArrayOf<Number>(4, `0`)))
+        val iterator: Iterator<Array<out Number>> =
+                dbf.inSession { session ->
+                    session.query(query).run()
+                }
+
+        val list = ArrayList<Array<out Number>>()
+        for (element in iterator) {
+            list.add(element)
+        }
+
+        expect that list[0] hasSize 4
+        expect that list[1] hasSize 4
+        expect that list[2] hasSize 4
+        expect that list[3] hasSize 4
+
+        expect that list[0][0] equalsTo 1
+        expect that list[0][1] equalsTo 2
+        expect that list[0][2] equalsTo 3
+        expect that list[0][3] equalsTo 4
+        expect that list[1][0] equalsTo 5
+        expect that list[1][1] equalsTo 6
+        expect that list[1][2] equalsTo 7
+        expect that list[1][3] equalsTo 8
+    }
+
+    @Test @Order(5)
+    fun queryStreamOfArrayOfMandatoryNumber() {
+        val query: Query<Stream<Array<out Number>>> =
+                Query(query4x4, layTableStreamOf(layRowArrayOf<Number>(4, `0`)))
+        val stream: Stream<Array<out Number>> =
+                dbf.inSession { session ->
+                    session.query(query).run()
+                }
+
+        val list: List<Array<out Number>> = stream.collect(Collectors.toList())
+
+        expect that list[0] hasSize 4
+        expect that list[1] hasSize 4
+        expect that list[2] hasSize 4
+        expect that list[3] hasSize 4
+
+        expect that list[0][0] equalsTo 1
+        expect that list[0][1] equalsTo 2
+        expect that list[0][2] equalsTo 3
+        expect that list[0][3] equalsTo 4
+        expect that list[1][0] equalsTo 5
+        expect that list[1][1] equalsTo 6
+        expect that list[1][2] equalsTo 7
+        expect that list[1][3] equalsTo 8
     }
 
 }
