@@ -45,8 +45,31 @@ class IterateTableLayout<R:Any, B> : TableLayout<Iterator<R>, R, B>() {
 
 
 
-sealed class RowLayout<R:Any, B> {
+sealed class RowLayout<R, B> {
     abstract fun makeRowHandler(): RowHandler<R, B>
+}
+
+
+class Fun2RowLayout<R, C1:Any, C2:Any> (private val rowClass: Class<R>,
+                                        private val class1: Class<C1>,
+                                        private val class2: Class<C2>,
+                                        private val function: (C1?,C2?) -> R)
+    : RowLayout<R, Any?>() {
+
+    override fun makeRowHandler(): RowHandler<R, Any?> =
+            RowFun2Handler(rowClass, class1, class2, function)
+}
+
+
+class Fun3RowLayout<R, C1:Any, C2:Any, C3:Any> (private val rowClass: Class<R>,
+                                                private val class1: Class<C1>,
+                                                private val class2: Class<C2>,
+                                                private val class3: Class<C3>,
+                                                private val function: (C1?,C2?,C3?) -> R)
+    : RowLayout<R, Any?>() {
+
+    override fun makeRowHandler(): RowHandler<R, Any?> =
+            RowFun3Handler(rowClass, class1, class2, class3, function)
 }
 
 

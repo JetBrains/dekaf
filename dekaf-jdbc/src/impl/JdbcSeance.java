@@ -242,7 +242,7 @@ public class JdbcSeance implements InterSeance {
 
 
     @Override @NotNull
-    public <B> JdbcMatrixCursor<B> makeMatrixCursor(final int parameter, @NotNull Class<B> baseClass) {
+    public <B> JdbcMatrixCursor<B> makeMatrixCursor(final int parameter, Class<? extends B> baseClass) {
         ResultSet rset = getResultSet(parameter);
         JdbcMatrixCursor<B> cursor =
                 session.facade.factory.createMatrixCursor(this, rset, baseClass);

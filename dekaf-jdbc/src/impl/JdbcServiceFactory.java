@@ -28,7 +28,7 @@ public class JdbcServiceFactory implements InterServiceFactory {
     @NotNull
     public <B> JdbcMatrixCursor<B> createMatrixCursor(final @NotNull JdbcSeance seance,
                                                       final @NotNull ResultSet rset,
-                                                      final @NotNull Class<B> baseClass) {
+                                                      final @NotNull Class<? extends B> baseClass) {
         return new JdbcMatrixCursor<>(seance, rset, baseClass);
     }
 

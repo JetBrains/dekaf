@@ -152,7 +152,7 @@ public final class JdbcValueGetters {
 
   @NotNull
   @SuppressWarnings("unchecked")
-  static <W> JdbcValueGetter<W> of(final int jdbcType, @NotNull final Class<W> clazz) {
+  static <W> JdbcValueGetter<W> of(final int jdbcType, @NotNull final Class<? extends W> clazz) {
     JdbcValueGetter<W> getter = find(jdbcType, clazz);
     if (getter != null) {
       return getter;
@@ -167,7 +167,7 @@ public final class JdbcValueGetters {
 
   @Nullable
   @SuppressWarnings("unchecked")
-  static <W> JdbcValueGetter<W> find(final int jdbcType, @NotNull final Class<W> clazz) {
+  static <W> JdbcValueGetter<W> find(final int jdbcType, @NotNull final Class<? extends W> clazz) {
     JdbcValueGetter<?> getter = null;
     if (jdbcType != Types.OTHER) getter = SPECIFIC_GETTERS.get(new SpecificKey(jdbcType, clazz));
     if (getter == null) getter = NORMAL_GETTERS.get(clazz);

@@ -8,7 +8,7 @@ public interface InterMatrixCursor<B> extends InterCursor {
 
     void prepare();
 
-    void prepare(final @NotNull Class<? extends B> @NotNull [] cellClasses);
+    void prepare(final @NotNull Class<?> @NotNull [] cellClasses);
 
     void setDefaultValue(B value);
 

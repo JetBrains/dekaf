@@ -18,7 +18,7 @@ import static org.jetbrains.dekaf.inter.utils.ArrayHacks.createArray;
 public class JdbcMatrixCursor<B> extends JdbcBaseCursor implements InterMatrixCursor<B> {
 
     @NotNull
-    private final Class<B> baseClass;
+    private final Class<? extends B> baseClass;
 
     private int columnCount = 0;
 
@@ -29,7 +29,7 @@ public class JdbcMatrixCursor<B> extends JdbcBaseCursor implements InterMatrixCu
 
     protected JdbcMatrixCursor(final @NotNull JdbcSeance seance,
                                final @NotNull ResultSet rset,
-                               final @NotNull Class<B> baseClass) {
+                               final @NotNull Class<? extends B> baseClass) {
         super(seance, rset);
         this.baseClass = baseClass;
     }
@@ -58,8 +58,8 @@ public class JdbcMatrixCursor<B> extends JdbcBaseCursor implements InterMatrixCu
         }
     }
 
-    @Override
-    public void prepare(final @NotNull Class<? extends B> @NotNull [] cellClasses) {
+    @Override @SuppressWarnings("unchecked")
+    public void prepare(final @NotNull Class<?> @NotNull [] cellClasses) {
         if (getters != null) throw new DBFetchingException("Cursor has been already prepared", seance.statementText);
         else if (isClosed()) throw new DBFetchingException("Cursor is closed", seance.statementText);
 
@@ -75,8 +75,9 @@ public class JdbcMatrixCursor<B> extends JdbcBaseCursor implements InterMatrixCu
             //noinspection unchecked
             getters = createArray(JdbcValueGetter.class, n);
             for (int i = 0; i < n; i++) {
-                int jdbcType = md.getColumnType(i+1);
-                JdbcValueGetter<? extends B> getter = JdbcValueGetters.of(jdbcType, cellClasses[i]);
+                int jdbcType = md.getColumnType(i + 1);
+                Class<? extends B> cellClass = (Class<? extends B>) cellClasses[i];
+                JdbcValueGetter<? extends B> getter = JdbcValueGetters.of(jdbcType, cellClass);
                 getters[i] = getter;
             }
         }

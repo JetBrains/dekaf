@@ -119,4 +119,54 @@ class QueryLayoutTest : UnitTestWithH2 {
         expect that list[1][3] equalsTo 8
     }
 
+
+    data class ShortLong (val s: Short?, val l: Long?)
+
+    data class ShortIntLong (val s: Short?, val i: Int?, val l: Long?)
+
+    @Test @Order(12)
+    fun queryPair() {
+        val query = Query(query4x4, layTableArrayOf(layRow(::ShortLong)))
+        val list = dbf.inSession { session ->
+            session.query(query).run()
+        }
+
+        expect that list hasSize 4
+
+        expect that list[0].s equalsTo 1.toShort()
+        expect that list[1].s equalsTo 5.toShort()
+        expect that list[2].s equalsTo 9.toShort()
+        expect that list[3].s equalsTo 13.toShort()
+
+        expect that list[0].l equalsTo 2L
+        expect that list[1].l equalsTo 6L
+        expect that list[2].l equalsTo 10L
+        expect that list[3].l equalsTo 14L
+    }
+
+    @Test @Order(13)
+    fun queryTrio() {
+        val query = Query(query4x4, layTableArrayOf(layRow(::ShortIntLong)))
+        val list = dbf.inSession { session ->
+            session.query(query).run()
+        }
+
+        expect that list hasSize 4
+
+        expect that list[0].s equalsTo 1.toShort()
+        expect that list[1].s equalsTo 5.toShort()
+        expect that list[2].s equalsTo 9.toShort()
+        expect that list[3].s equalsTo 13.toShort()
+
+        expect that list[0].i equalsTo 2
+        expect that list[1].i equalsTo 6
+        expect that list[2].i equalsTo 10
+        expect that list[3].i equalsTo 14
+
+        expect that list[0].l equalsTo 3L
+        expect that list[1].l equalsTo 7L
+        expect that list[2].l equalsTo 11L
+        expect that list[3].l equalsTo 15L
+    }
+
 }

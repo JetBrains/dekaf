@@ -25,10 +25,11 @@ public interface InterSeance extends AutoCloseable {
     /**
      * Makes and returns a matrix cursor.
      * @param parameter parameter number, or 0 for the primary cursor.
+     * @param baseClass
      * @return the created non-initiated cursor.
      */
     @NotNull
-    <B> InterMatrixCursor<B> makeMatrixCursor(int parameter, Class<B> baseClass);
+    <B> InterMatrixCursor<B> makeMatrixCursor(int parameter, Class<? extends B> baseClass);
 
     /**
      * Makes and returns a column cursor.
