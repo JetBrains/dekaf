@@ -17,6 +17,15 @@
       <option name="ALIGN_MULTILINE_TEXT_BLOCKS" value="true" />
     </JavaCodeStyleSettings>
     <JetCodeStyleSettings>
+      <option name="PACKAGES_TO_USE_STAR_IMPORTS">
+        <value>
+          <package name="java.util" alias="false" withSubpackages="false" />
+          <package name="lb.yaka.gears" alias="false" withSubpackages="false" />
+          <package name="lb.yaka.expectations" alias="false" withSubpackages="false" />
+          <package name="kotlinx.android.synthetic" alias="false" withSubpackages="true" />
+          <package name="io.ktor" alias="false" withSubpackages="true" />
+        </value>
+      </option>
       <option name="ALIGN_IN_COLUMNS_CASE_BRANCH" value="true" />
       <option name="CONTINUATION_INDENT_FOR_CHAINED_CALLS" value="false" />
     </JetCodeStyleSettings>

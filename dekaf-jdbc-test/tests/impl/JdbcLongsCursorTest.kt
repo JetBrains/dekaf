@@ -3,7 +3,7 @@
 package org.jetbrains.dekaf.jdbcTest.impl
 
 import lb.yaka.expectations.*
-import lb.yaka.gears.expect
+import lb.yaka.gears.*
 import org.jetbrains.dekaf.inter.common.StatementCategory.stmtQuery
 import org.jetbrains.dekaf.jdbc.impl.JdbcColumnCursor
 import org.junit.jupiter.api.MethodOrderer
