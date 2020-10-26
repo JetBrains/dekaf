@@ -136,6 +136,14 @@ public final class Settings implements Iterable<Setting>, Serializable {
         return properties;
     }
 
+    public boolean isNotEmpty() {
+        return entries.length > 0;
+    }
+
+    public boolean isEmpty() {
+        return entries.length == 0;
+    }
+
 
     @NotNull
     @Override
