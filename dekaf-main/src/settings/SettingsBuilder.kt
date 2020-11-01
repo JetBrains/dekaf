@@ -65,6 +65,53 @@ class SettingsBuilder : Iterable<Setting>, Serializable {
     }
 
 
+    operator fun get(path: Array<String>): Serializable? {
+        val n = path.size
+        if (n == 0) return null
+
+        val name1 = path[0]
+        val value1 = get(name1) ?: return null
+        if (n == 1) return value1
+
+        var obj: Serializable? = value1
+        for (i in 1 until n) {
+            val name = path[i]
+            when (obj) {
+                is SettingsBuilder -> obj = obj[name]
+                is Settings -> obj = obj.getEntry(name)
+                else -> return null
+            }
+            if (obj == null) return null
+        }
+
+        return if (obj is Setting) obj.value else obj
+    }
+
+    operator fun set(path: Array<String>, value: Serializable?) {
+        val n = path.size
+        require(n > 0) { "The path must not be empty" }
+        val name1 = path[0]
+        if (n == 1) {
+            set(name1, value)
+            return
+        }
+
+        var obj = get(name1)
+        if (obj == null) {
+            val inner = SettingsBuilder()
+            set(name1, inner)
+            inner[path.sliceArray(1 until n)] = value
+        }
+        else if (obj is SettingsBuilder) {
+            obj[path.sliceArray(1 until n)] = value
+        }
+        else {
+            val pathStr = path.joinToString(separator = ".")
+            throw IllegalStateException("""Failed to set value by path "$pathStr" because of path name collision.""")
+        }
+    }
+
+
     /**
      * Adds a new setting.
      * If such setting exists — throws [SuchSettingAlreadyExistsException].

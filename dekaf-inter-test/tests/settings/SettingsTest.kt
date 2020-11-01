@@ -1,8 +1,7 @@
-package com.jetbrains.dekaf.interTest.settings
+package org.jetbrains.dekaf.interTest.settings
 
-import lb.yaka.expectations.equalsTo
-import lb.yaka.expectations.sameAs
-import lb.yaka.gears.expect
+import lb.yaka.expectations.*
+import lb.yaka.gears.*
 import org.jetbrains.dekaf.inter.settings.Setting
 import org.jetbrains.dekaf.inter.settings.Settings
 import org.jetbrains.dekaf.test.utils.UnitTest
@@ -16,9 +15,9 @@ class SettingsTest : UnitTest {
         val settings = Settings(Setting("name1", "value A"),
                                 Setting("name2", "value B"),
                                 Setting("name3", "value C"))
-        expect that settings[0] equalsTo Setting("name1", "value A")
-        expect that settings[1] equalsTo Setting("name2", "value B")
-        expect that settings[2] equalsTo Setting("name3", "value C")
+        expect that settings.getEntry(0) equalsTo Setting("name1", "value A")
+        expect that settings.getEntry(1) equalsTo Setting("name2", "value B")
+        expect that settings.getEntry(2) equalsTo Setting("name3", "value C")
         expect that settings.size equalsTo 3
     }
 
@@ -27,9 +26,9 @@ class SettingsTest : UnitTest {
         val settings = Settings(Setting("name1", "value A"),
                                 Setting("name2", "value B"),
                                 Setting("name3", "value C"))
-        expect that settings["name1"] equalsTo Setting("name1", "value A")
-        expect that settings["name2"] equalsTo Setting("name2", "value B")
-        expect that settings["name3"] equalsTo Setting("name3", "value C")
+        expect that settings.getEntry("name1") equalsTo Setting("name1", "value A")
+        expect that settings.getEntry("name2") equalsTo Setting("name2", "value B")
+        expect that settings.getEntry("name3") equalsTo Setting("name3", "value C")
     }
 
     @Test
@@ -46,7 +45,7 @@ class SettingsTest : UnitTest {
         val entries = Array(n) { i -> Setting("name$i", "value $i") }
         val settings = Settings(*entries)
         for (i in 0 until n) {
-            expect that settings["name$i"] sameAs entries[i]
+            expect that settings.getEntry("name$i") sameAs entries[i]
         }
     }
 

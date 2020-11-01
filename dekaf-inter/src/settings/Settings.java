@@ -73,14 +73,14 @@ public final class Settings implements Iterable<Setting>, Serializable {
     }
 
     @NotNull
-    public Setting get(int index)
+    public Setting getEntry(int index)
             throws IndexOutOfBoundsException
     {
         return entries[index];
     }
 
     @Nullable
-    public Setting get(@NotNull String name) {
+    public Setting getEntry(@NotNull String name) {
         if (map != null) {
             return map.get(name);
         }
@@ -93,32 +93,32 @@ public final class Settings implements Iterable<Setting>, Serializable {
     }
 
     @Nullable
-    public Serializable getValue(@NotNull String name) {
-        Setting entry = get(name);
+    public Serializable get(@NotNull String name) {
+        Setting entry = getEntry(name);
         return entry != null ? entry.value : null;
     }
 
     @Nullable
     public String getString(@NotNull String name) {
-        Setting entry = get(name);
+        Setting entry = getEntry(name);
         return entry != null ? entry.getAsString() : null;
     }
 
     @Nullable
     public String[] getStrings(@NotNull String name) {
-        Setting entry = get(name);
+        Setting entry = getEntry(name);
         return entry != null ? entry.getAsStrings() : null;
     }
 
     @Nullable
     public List<String> getStringList(@NotNull String name) {
-        Setting entry = get(name);
+        Setting entry = getEntry(name);
         return entry != null ? entry.getAsStringList() : null;
     }
 
     @Nullable
     public Settings getNest(@NotNull String name) {
-        Setting entry = get(name);
+        Setting entry = getEntry(name);
         return entry != null ? entry.nest() : null;
     }
 
