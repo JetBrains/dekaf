@@ -1,5 +1,16 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10"
+    }
+}
+
 plugins {
     id "java-library"
+    id "org.jetbrains.kotlin.jvm" version "1.4.10"
 }
 
 java {
@@ -17,13 +28,21 @@ build.doFirst {
 
 
 def annotationsVersion   = '20.0.0'
+def kotlinVersion        = '1.4.10'
+
 
 def libAnnotations              = "org.jetbrains:annotations:$annotationsVersion"
+def libKotlinStd                = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+def libKotlinReflect            = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 
 
 def outDir  = "$rootDir/out"
 def jarsDir = "$rootDir/jars"
 
+
+def groupKotlin = [
+    project(':dekaf-main')
+]
 
 
 /// MODULES CONFIGURATION \\\
@@ -49,6 +68,39 @@ subprojects { project ->
     }
 
 }
+
+configure (groupKotlin) {
+
+    apply plugin: 'kotlin'
+
+    sourceSets {
+        main {
+            java.srcDirs = []
+            kotlin.srcDirs = ['src']
+            resources.srcDirs = []
+        }
+        test {
+            java.srcDirs = []
+            kotlin.srcDirs = []
+            resources.srcDirs = []
+        }
+    }
+    
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "11"
+            languageVersion = "1.4"
+            apiVersion = "1.4"
+            javaParameters = true
+            suppressWarnings = true
+            freeCompilerArgs += ['-Xinline-classes']
+            freeCompilerArgs += ['-Xuse-experimental=kotlin.contracts.ExperimentalContracts']
+            freeCompilerArgs += ['-Xuse-experimental=kotlin.ExperimentalUnsignedTypes']
+        }
+    }
+    
+}
+
 
 
 /// MODULES \\\
@@ -91,6 +143,17 @@ project(':dekaf-jdbc') {
     dependencies {
         implementation project(':dekaf-inter')
         implementation libAnnotations
+    }
+
+}
+
+
+project(':dekaf-main') {
+
+    dependencies {
+        implementation project(':dekaf-inter')
+        implementation libKotlinStd
+        implementation libKotlinReflect
     }
 
 }
