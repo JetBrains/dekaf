@@ -1,10 +1,19 @@
 <component name="InspectionProjectProfileManager">
   <profile version="1.0">
     <option name="myName" value="Project Default" />
+    <inspection_tool class="ConvertSecondaryConstructorToPrimary" enabled="false" level="INFORMATION" enabled_by_default="false" />
+    <inspection_tool class="ConvertTryFinallyToUseCall" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="ForCanBeForeach" enabled="false" level="WARNING" enabled_by_default="false">
       <option name="REPORT_INDEXED_LOOP" value="true" />
       <option name="ignoreUntypedCollections" value="false" />
     </inspection_tool>
+    <inspection_tool class="FunctionName" enabled="true" level="INFORMATION" enabled_by_default="true">
+      <option name="namePattern" value="[A-Za-z\d_]+" />
+    </inspection_tool>
+    <inspection_tool class="LiftReturnOrAssignment" enabled="true" level="INFORMATION" enabled_by_default="true" />
+    <inspection_tool class="ReplaceJavaStaticMethodWithKotlinAnalog" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="ReplacePutWithAssignment" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="SameParameterValue" enabled="true" level="INFORMATION" enabled_by_default="true" />
+    <inspection_tool class="SortModifiers" enabled="true" level="INFORMATION" enabled_by_default="true" />
   </profile>
 </component>

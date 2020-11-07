@@ -1,9 +1,32 @@
 [![official project](http://jb.gg/badges/official.svg)](https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub)
 
-Dekaf
-=====
-
-Java/Kotlin Database Access Layer Framework
+    ════════════════════════════════════════════════════════════════════════════════════════════════      
+                                                                                                              
+    Java/Kotlin Database Access Layer Framework                                                                                                          
+                                                                                                              
+    ────────────────────────────────────────────────────────────────────────────────────────────────      
+                                                                                                            
+                                                                                                            
+    DDDDDDDDDDDDD                           kkkkkkkk                              ffffffffffffffff          
+    D::::::::::::DDD                        k::::::k                             f::::::::::::::::f         
+    D:::::::::::::::DD                      k::::::k                            f::::::::::::::::::f        
+    DDD:::::DDDDD:::::D                     k::::::k                            f::::::fffffff:::::f        
+      D:::::D    D:::::D     eeeeeeeeeeee    k:::::k    kkkkkkkaaaaaaaaaaaaa    f:::::f       ffffff        
+      D:::::D     D:::::D  ee::::::::::::ee  k:::::k   k:::::k a::::::::::::a   f:::::f                     
+      D:::::D     D:::::D e::::::eeeee:::::eek:::::k  k:::::k  aaaaaaaaa:::::a f:::::::ffffff               
+      D:::::D     D:::::De::::::e     e:::::ek:::::k k:::::k            a::::a f::::::::::::f               
+      D:::::D     D:::::De:::::::eeeee::::::ek::::::k:::::k      aaaaaaa:::::a f::::::::::::f               
+      D:::::D     D:::::De:::::::::::::::::e k:::::::::::k     aa::::::::::::a f:::::::ffffff               
+      D:::::D     D:::::De::::::eeeeeeeeeee  k:::::::::::k    a::::aaaa::::::a  f:::::f                     
+      D:::::D    D:::::D e:::::::e           k::::::k:::::k  a::::a    a:::::a  f:::::f                     
+    DDD:::::DDDDD:::::D  e::::::::e         k::::::k k:::::k a::::a    a:::::a f:::::::f                    
+    D:::::::::::::::DD    e::::::::eeeeeeee k::::::k  k:::::ka:::::aaaa::::::a f:::::::f                    
+    D::::::::::::DDD       ee:::::::::::::e k::::::k   k:::::ka::::::::::aa:::af:::::::f                    
+    DDDDDDDDDDDDD            eeeeeeeeeeeeee kkkkkkkk    kkkkkkkaaaaaaaaaa  aaaafffffffff                    
+                                                                                                            
+    ════════════════════════════════════════════════════════════════════════════════════════════════      
+      
+   
 
 Dekaf is Java framework for working with databases, primarily via JDBC. Dekaf is NOT an ORM.
 

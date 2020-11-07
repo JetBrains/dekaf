@@ -8,7 +8,6 @@
     <file url="file://$PROJECT_DIR$/dekaf-clickhouse" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dekaf-clickhouse-test-db" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dekaf-clickhouse-tests" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/dekaf-core" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dekaf-core-test-db" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dekaf-exasol" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dekaf-exasol-test-db" charset="UTF-8" />
@@ -16,6 +15,7 @@
     <file url="file://$PROJECT_DIR$/dekaf-h2db" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dekaf-h2db-test-db" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dekaf-h2db-tests" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dekaf-main" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dekaf-mssql" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dekaf-mssql-test-db" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dekaf-mssql-tests" charset="UTF-8" />
