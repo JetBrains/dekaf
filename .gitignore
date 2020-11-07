@@ -4,7 +4,6 @@
 *.ear
 *.zip
 
-lib
 out
 dist
 coverage
@@ -17,6 +16,8 @@ coverage
 .idea/shelf
 .idea/ant.xml
 .idea/dataSources.local.xml
+
+lib/remotecontent
 
 test-db.config
 test-db.properties

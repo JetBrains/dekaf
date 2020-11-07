@@ -1,0 +1,56 @@
+<project name="Dekaf" default="build" basedir=".">
+
+    <description>
+    Dekaf version 3.
+    </description>
+
+    <property name="lib" location="lib"/>
+    <property name="out" location="out"/>
+    <property name="outClasses" location="${out}/classes"/>
+    <property name="outJars" location="${out}/jars"/>
+
+
+    <property name='lib-annotations-name' value="annotations-20.0.0"/>
+    <property name='lib-annotations-pack' value="org/jetbrains/annotations/20.0.0"/>
+
+    <property name='maven-repo' value="https://search.maven.org/remotecontent?filepath"/>
+
+    <target name="download-libs" description="Download libraries">
+        <mkdir dir="${lib}"/>
+        <get src="${maven-repo}=${lib-annotations-pack}/${lib-annotations-name}.jar" dest="${lib}/${lib-annotations-name}.jar"  skipexisting='true'/>
+        <get src="${maven-repo}=${lib-annotations-pack}/${lib-annotations-name}-sources.jar" dest="${lib}/${lib-annotations-name}-sources.jar"  skipexisting='true'/>
+        <get src="${maven-repo}=${lib-annotations-pack}/${lib-annotations-name}-javadoc.jar" dest="${lib}/${lib-annotations-name}-javadoc.jar"  skipexisting='true'/>
+    </target>
+
+
+    <target name="build" description="Build all"
+    	    depends="build-inter, build-jdbc">
+        <mkdir dir="${outClasses}"/>
+        <mkdir dir="${outJars}"/>
+    </target>
+
+    <target name="build-inter">
+    	<mkdir dir="${outClasses}/dekaf-inter"/>
+    	<javac srcdir="dekaf-inter/src" destdir="${outClasses}/dekaf-inter"
+               excludes="package-info.java"
+               classpath="${lib}/${lib-annotations-name}.jar"
+               source="11" target="11" includeantruntime='false'/>
+        <jar destfile="${outJars}/dekaf-inter.jar" basedir="${outClasses}/dekaf-inter"/>
+    </target>
+
+    <target name="build-jdbc" depends="build-inter">
+    	<mkdir dir="${outClasses}/dekaf-jdbc"/>
+    	<javac srcdir="dekaf-jdbc/src" destdir="${outClasses}/dekaf-jdbc"
+               excludes="package-info.java"
+               classpath="${lib}/${lib-annotations-name}.jar:${outJars}/dekaf-inter.jar"
+               source="11" target="11" includeantruntime='false'/>
+        <jar destfile="${outJars}/dekaf-jdbc.jar" basedir="${outClasses}/dekaf-jdbc"/>
+    </target>
+
+
+    <target name="clean" description="Remove temporary files and compilation results">
+        <delete dir="${out}"/>
+    </target>
+
+
+</project>

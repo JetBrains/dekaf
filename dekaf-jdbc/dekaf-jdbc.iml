@@ -8,6 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="dekaf-inter" />
-    <orderEntry type="library" name="annotations" level="project" />
+    <orderEntry type="library" name="annotations-20.0.0-javadoc" level="project" />
   </component>
 </module>
