@@ -1,6 +1,6 @@
 package org.jetbrains.dekaf.inter;
 
-import org.jetbrains.dekaf.util.Version;
+import org.jetbrains.dekaf.inter.utils.Version;
 
 
 

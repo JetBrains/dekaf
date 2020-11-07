@@ -1,4 +1,4 @@
-package org.jetbrains.dekaf.util;
+package org.jetbrains.dekaf.inter.utils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -26,6 +26,7 @@ import java.util.*;
  *
  * @author Leonid Bushuev
  */
+@SuppressWarnings("serial")
 public final class Version implements Comparable<Version>, Serializable {
 
   private static final Map<String, Integer> SPECIAL_VALUES = new HashMap<String, Integer>();
@@ -57,7 +58,7 @@ public final class Version implements Comparable<Version>, Serializable {
       if (special != null) b.add(special);
       else {
         try {
-          Integer v = new Integer(ss2);
+          Integer v = Integer.valueOf(ss2);
           b.add(v);
         } catch (NumberFormatException e) {
           break;
