@@ -1,0 +1,4 @@
+rootProject.name = 'dekaf'
+
+include 'dekaf-inter'
+include 'dekaf-jdbc'

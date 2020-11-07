@@ -1,0 +1,97 @@
+plugins {
+    id "java-library"
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+
+build.doFirst {
+    def currentVersion = JavaVersion.current()
+    if (currentVersion != java.sourceCompatibility) {
+        throw new GradleException("Expected java version ${java.sourceCompatibility} but got version ${currentVersion}")
+    }
+}
+
+
+def annotationsVersion   = '20.0.0'
+
+def libAnnotations              = "org.jetbrains:annotations:$annotationsVersion"
+
+
+def outDir  = "$rootDir/out"
+def jarsDir = "$rootDir/jars"
+
+
+
+/// MODULES CONFIGURATION \\\
+
+allprojects { project ->
+
+    apply plugin: 'java-library'
+
+    repositories {
+        mavenCentral()
+    }
+
+    project.buildDir = new File(rootProject.projectDir, ".gradleTemp/" + project.name)
+    //project.apply(plugin: 'idea')
+    compileJava.options.encoding = 'UTF-8'
+    
+}
+
+subprojects { project ->
+
+    tasks.withType(Jar) {
+        destinationDirectory = file(jarsDir)
+    }
+
+}
+
+
+/// MODULES \\\
+
+project(':dekaf-inter') {
+
+    sourceSets {
+        main {
+            java.srcDirs = ['src']
+            resources.srcDirs = []
+        }
+        test {
+            java.srcDirs = []
+            resources.srcDirs = []
+        }
+    }
+
+    dependencies {
+        implementation libAnnotations
+    }
+
+}
+
+
+project(':dekaf-jdbc') {
+
+    apply plugin: 'java-library'
+
+    sourceSets {
+        main {
+            java.srcDirs = ['src']
+            resources.srcDirs = []
+        }
+        test {
+            java.srcDirs = []
+            resources.srcDirs = []
+        }
+    }
+
+    dependencies {
+        implementation project(':dekaf-inter')
+        implementation libAnnotations
+    }
+
+}
+
