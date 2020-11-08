@@ -1,6 +1,15 @@
 rootProject.name = 'dekaf'
 
 include 'dekaf-inter'
+include 'dekaf-inter-test'
+
 include 'dekaf-jdbc'
+include 'dekaf-jdbc-test'
 
 include 'dekaf-main'
+include 'dekaf-main-test'
+
+include 'test-utils'
+
+include 'tests-basic'
+

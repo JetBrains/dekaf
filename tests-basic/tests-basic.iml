@@ -3,14 +3,14 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="org.jetbrains.dekaf.test.utils" />
+      <sourceFolder url="file://$MODULE_DIR$/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="org.jetbrains.dekaf.tests.basic" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="dekaf-main-test" />
+    <orderEntry type="module" module-name="test-utils" />
     <orderEntry type="library" name="kotlin-stdlib-jdk8" level="project" />
-    <orderEntry type="library" name="kotlin-reflect" level="project" />
-    <orderEntry type="library" name="yaka" level="project" />
-    <orderEntry type="library" name="junit-jupiter" level="project" />
     <orderEntry type="library" name="junit-platform-launcher" level="project" />
   </component>
 </module>

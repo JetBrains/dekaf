@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/dekaf-main/dekaf-main.iml" filepath="$PROJECT_DIR$/dekaf-main/dekaf-main.iml" />
       <module fileurl="file://$PROJECT_DIR$/dekaf-main-test/dekaf-main-test.iml" filepath="$PROJECT_DIR$/dekaf-main-test/dekaf-main-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/test-utils/test-utils.iml" filepath="$PROJECT_DIR$/test-utils/test-utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tests-basic/tests-basic.iml" filepath="$PROJECT_DIR$/tests-basic/tests-basic.iml" />
     </modules>
   </component>
 </project>
