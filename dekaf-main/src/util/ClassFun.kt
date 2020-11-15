@@ -1,3 +1,4 @@
+@file:JvmName("ClassFun")
 @file:Suppress("nothing_to_inline")
 
 package org.jetbrains.dekaf.main.util

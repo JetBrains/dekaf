@@ -1,3 +1,4 @@
+@file:JvmName("TextFun")
 package org.jetbrains.dekaf.main.util
 
 
