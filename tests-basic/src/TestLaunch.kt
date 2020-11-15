@@ -18,7 +18,6 @@ import org.junit.platform.launcher.listeners.SummaryGeneratingListener
 import org.junit.platform.launcher.listeners.TestExecutionSummary
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.streams.toList
 
 
 object TestLaunch {
@@ -49,17 +48,6 @@ object TestLaunch {
 
 
     private fun launchTests(tagExpressions: String) {
-        say("Looking for the jars...")
-        val jarsPath = Path.of(jarsDir)
-        if (!jarsPath.exists) halt("Jars directory not found", 0x21)
-        val allFiles = Files.list(jarsPath).toList()
-        if (allFiles.isEmpty()) halt("Jars directory is empty", 0x22)
-        val jarFiles = allFiles.filter { it.fileName.toString().endsWith(".jar", ignoreCase = true) }
-        if (jarFiles.isEmpty()) halt("Jars directory contains ${allFiles.size} files but not jars", 0x23)
-        val testJarFiles = jarFiles.filter { it.fileName.toString().endsWith(jarsNameSuffix, ignoreCase = true) }
-        if (testJarFiles.isEmpty()) halt("Jars directory contains ${allFiles.size} final including ${jarFiles.size} jars but not jars with tests", 0x24)
-        say("Found ${testJarFiles.size} jar files:\n" + testJarFiles.joinToString("") { "\t${it.fileName}\n" })
-
         say("Tag expression: $tagExpressions")
         val request: LauncherDiscoveryRequest = LauncherDiscoveryRequestBuilder.request()
             .selectors(selectPackage("org.jetbrains.dekaf"))
