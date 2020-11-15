@@ -5,11 +5,17 @@ import lb.yaka.gears.*
 import org.jetbrains.dekaf.inter.settings.Setting
 import org.jetbrains.dekaf.inter.settings.Settings
 import org.jetbrains.dekaf.main.settings.SettingsLoader
+import org.jetbrains.dekaf.test.utils.SystemTestWithTempDir
+import org.jetbrains.dekaf.test.utils.SystemTestWithTempDir.Companion.getTempDir
 import org.jetbrains.dekaf.test.utils.UnitTest
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import java.nio.charset.StandardCharsets.UTF_8
+import java.nio.file.Files
+import java.nio.file.Path
 
 
-class SettingsLoaderTest : UnitTest {
+abstract class SettingsLoaderTest {
 
     @Test
     fun basic1() {
@@ -256,9 +262,41 @@ class SettingsLoaderTest : UnitTest {
 
 
 
-    private fun makeSettings(text: CharSequence): Settings {
+    abstract protected fun makeSettings(text: CharSequence): Settings
+
+}
+
+
+
+class SettingsTextLoaderTest : SettingsLoaderTest(), UnitTest {
+
+    override fun makeSettings(text: CharSequence): Settings {
         val loader = SettingsLoader()
         return loader.load(text)
+    }
+
+}
+
+
+
+class SettingsFileLoaderTest : SettingsLoaderTest(), SystemTestWithTempDir {
+
+    private lateinit var dir: Path
+
+    private var counter = 0
+
+
+    @BeforeAll
+    fun prepareSubDir() {
+        dir = getTempDir()
+    }
+
+    override fun makeSettings(text: CharSequence): Settings {
+        val fileName = "File" + (++counter) + ".txt"
+        val file = dir.resolve(fileName)
+        Files.writeString(file, text, UTF_8)
+        val loader = SettingsLoader()
+        return loader.load(file)
     }
 
 }

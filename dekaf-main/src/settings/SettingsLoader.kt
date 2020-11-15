@@ -1,10 +1,13 @@
 package org.jetbrains.dekaf.main.settings
 
 import org.jetbrains.dekaf.inter.settings.Settings
+import org.jetbrains.dekaf.main.simplext.SimplextFileReader
 import org.jetbrains.dekaf.main.simplext.SimplextLine
+import org.jetbrains.dekaf.main.simplext.SimplextReader
 import org.jetbrains.dekaf.main.simplext.SimplextTextReader
 import org.jetbrains.dekaf.main.util.splitToPair
 import java.io.Serializable
+import java.nio.file.Path
 
 /**
  *
@@ -25,12 +28,24 @@ class SettingsLoader {
     fun load(text: CharSequence): Settings {
         val builder = SettingsBuilder()
         val simReader = SimplextTextReader<SettingsBuilder?>(builder, ::handleLine)
-        simReader.tabWidth = tabWidth
-        simReader.lineCommentMark = "//"
+        prepareSimplextReader(simReader)
         simReader.processText(text)
         return builder.build()
     }
-    
+
+    fun load(file: Path): Settings {
+        val builder = SettingsBuilder()
+        val simReader = SimplextFileReader<SettingsBuilder?>(builder, ::handleLine)
+        prepareSimplextReader(simReader)
+        simReader.processFile(file)
+        return builder.build()
+    }
+
+    private fun prepareSimplextReader(simReader: SimplextReader<SettingsBuilder?>) {
+        simReader.tabWidth = tabWidth
+        simReader.lineCommentMark = "//"
+    }
+
 
     private fun handleLine(sl: SimplextLine<SettingsBuilder?>): SettingsBuilder? {
         val parentBuilder = sl.parentNode
