@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 import static org.jetbrains.dekaf.inter.utils.SimpleStringConvert.importStringList;
 
@@ -66,9 +67,12 @@ public final class Setting implements Serializable {
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Setting that = (Setting) o;
-        return this.name.equals(that.name) && this.value.equals(that.value);
+        if (o instanceof Setting) return equals((Setting)o);
+        return false;
+    }
+
+    public boolean equals(final @NotNull Setting that) {
+        return this.name.equals(that.name) && Objects.equals(this.value, that.value);
     }
 
     @Override
