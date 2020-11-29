@@ -69,7 +69,7 @@ Version 3
 This version is started from scratch, to get the perfect internal architecture
 and get rid of legacy code.
 
-In version 3 most of code will be written on Kotlin and just, except two modules:
+In version 3 the most of the code will be written on Kotlin and just, except two modules:
    * intermediate interface
    * JDBC-specific stuff
 
