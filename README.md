@@ -30,6 +30,10 @@
 
 Dekaf is Java framework for working with databases, primarily via JDBC. Dekaf is NOT an ORM.
 
+Currently, the stable version of Dekaf is version 2 in the branch [dekaf-2](https://github.com/JetBrains/dekaf/tree/dekaf-2).
+Branch master points to the version 3 that is under development (almost from scratch).
+
+
 Major Dekaf versions:
 
 | Version                  | Status                            |
@@ -75,7 +79,7 @@ In version 3 the most of the code will be written on Kotlin and just, except two
 
 Requirements:
    * Java 11+
-   * Kotlin 1.3.60+
+   * Kotlin 1.4+
 
 
 
