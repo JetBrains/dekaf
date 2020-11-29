@@ -7,7 +7,7 @@
     <option name="PARAMETERS" value="" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     <option name="TEST_SEARCH_SCOPE">
-      <value defaultName="wholeProject" />
+      <value defaultName="moduleWithDependencies" />
     </option>
     <tag value="UnitTest" />
     <method v="2">

@@ -8,8 +8,6 @@
     <option name="PASS_PARENT_ENVS" value="true" />
     <option name="MAIN_CLASS_NAME" value="org.jetbrains.dekaf.tests.basic.TestLaunch" />
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-    <method v="2">
-      <option name="Make" enabled="true" />
-    </method>
+    <method v="2" />
   </configuration>
 </component>
