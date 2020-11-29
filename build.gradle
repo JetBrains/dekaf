@@ -1,0 +1,282 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10"
+    }
+}
+
+plugins {
+    id "java-library"
+    id "org.jetbrains.kotlin.jvm" version "1.4.10"
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+
+build.doFirst {
+    def currentVersion = JavaVersion.current()
+    if (currentVersion != java.sourceCompatibility) {
+        throw new GradleException("Expected java version ${java.sourceCompatibility} but got version ${currentVersion}")
+    }
+}
+
+
+def yakaVersion          = '0.2.17'
+def annotationsVersion   = '20.0.0'
+def kotlinVersion        = '1.4.10'
+def jUnitPlatformVersion = '1.6.2'
+def jUnitJupiterVersion  = '5.6.2'
+def h2Version            = '1.4.200'
+
+def libYaka                     = "lb.yaka:yaka:$yakaVersion"
+def libAnnotations              = "org.jetbrains:annotations:$annotationsVersion"
+def libKotlinStd                = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+def libKotlinReflect            = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+def libJUnit                    = "org.junit.jupiter:junit-jupiter:$jUnitJupiterVersion"
+def libJUnitEngine              = "org.junit.jupiter:junit-jupiter-engine:$jUnitJupiterVersion"
+def libJUnitLauncher            = "org.junit.platform:junit-platform-launcher:jUnitPlatformVersion"
+def libH2                       = "com.h2database:h2:$h2Version"
+
+def outDir  = "$rootDir/out"
+def jarsDir = "$rootDir/jars"
+
+
+def groupKotlin = [
+    project(':dekaf-main'),
+    project(':dekaf-main-test'),
+    project(':dekaf-inter-test'),
+    project(':dekaf-jdbc-test'),
+    project(':test-utils'),
+    project(':tests-basic')
+]
+
+
+test {
+    useJUnitPlatform()
+}
+
+
+/// MODULES CONFIGURATION \\\
+
+allprojects { project ->
+
+    apply plugin: 'java-library'
+
+    repositories {
+        mavenCentral()
+    }
+
+    project.buildDir = new File(rootProject.projectDir, ".gradleTemp/" + project.name)
+    //project.apply(plugin: 'idea')
+    compileJava.options.encoding = 'UTF-8'
+    
+}
+
+subprojects { project ->
+
+    tasks.withType(Jar) {
+        destinationDirectory = file(jarsDir)
+    }
+
+}
+
+configure (groupKotlin) {
+
+    apply plugin: 'kotlin'
+
+    sourceSets {
+        main {
+            java.srcDirs = []
+            kotlin.srcDirs = ['src']
+            resources.srcDirs = []
+        }
+        test {
+            java.srcDirs = []
+            kotlin.srcDirs = []
+            resources.srcDirs = []
+        }
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url "https://dl.bintray.com/leo-from-spb/Yaka" }
+    }
+
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "11"
+            languageVersion = "1.4"
+            apiVersion = "1.4"
+            javaParameters = true
+            suppressWarnings = true
+            freeCompilerArgs += ['-Xinline-classes']
+            freeCompilerArgs += ['-Xuse-experimental=kotlin.contracts.ExperimentalContracts']
+            freeCompilerArgs += ['-Xuse-experimental=kotlin.ExperimentalUnsignedTypes']
+        }
+    }
+    
+}
+
+
+
+/// MODULES \\\
+
+project(':dekaf-inter') {
+
+    sourceSets {
+        main {
+            java.srcDirs = ['src']
+            resources.srcDirs = []
+        }
+        test {
+            java.srcDirs = []
+            resources.srcDirs = []
+        }
+    }
+
+    dependencies {
+        implementation libAnnotations
+    }
+
+}
+
+
+project(':dekaf-inter-test') {
+
+    sourceSets.main.kotlin.srcDirs = ['tests']
+
+    dependencies {
+        api            project(':dekaf-inter')
+        implementation project(':test-utils')
+        implementation libKotlinStd
+        implementation libKotlinReflect
+    }
+
+}
+
+
+project(':dekaf-jdbc') {
+
+    apply plugin: 'java-library'
+
+    sourceSets {
+        main {
+            java.srcDirs = ['src']
+            resources.srcDirs = ['manifest']
+        }
+        test {
+            java.srcDirs = []
+            resources.srcDirs = []
+        }
+    }
+
+    dependencies {
+        api            project(':dekaf-inter')
+        implementation libAnnotations
+    }
+
+}
+
+
+project(':dekaf-jdbc-test') {
+
+    sourceSets.main.kotlin.srcDirs = ['tests']
+
+    dependencies {
+        api            project(':dekaf-jdbc')
+        implementation project(':test-utils')
+        implementation libKotlinStd
+        implementation libKotlinReflect
+    }
+
+}
+
+
+project(':dekaf-main') {
+
+    dependencies {
+        api            project(':dekaf-inter')
+        implementation libKotlinStd
+        implementation libKotlinReflect
+    }
+
+}
+
+
+project(':dekaf-main-test') {
+
+    dependencies {
+        implementation project(':dekaf-main')
+        implementation project(':test-utils')
+        implementation libKotlinStd
+        implementation libKotlinReflect
+    }
+
+}
+
+
+project(':test-utils') {
+
+    dependencies {
+        api            libYaka
+        api            libJUnit
+        implementation libKotlinStd
+        implementation libKotlinReflect
+        implementation libJUnitLauncher
+    }
+
+}
+
+
+project(':tests-basic') {
+
+    dependencies {
+        implementation project(':dekaf-inter-test')
+        implementation project(':dekaf-jdbc-test')
+        implementation project(':dekaf-main-test')
+        implementation project(':test-utils')
+        implementation libKotlinStd
+        implementation libKotlinReflect
+        implementation libJUnitLauncher
+        runtimeOnly    libJUnitEngine
+        runtimeOnly    libH2
+    }
+
+    jar {
+      manifest {
+        attributes(
+            'Main-Class': "org.jetbrains.dekaf.tests.basic.TestLaunch",
+            'Class-Path': configurations.runtimeClasspath.files.collect { it.getName() }.join(' ')
+            )
+      }
+    }
+
+    test {
+        useJUnitPlatform {
+            includeTags 'UnitTest'
+        }
+        testLogging {
+            events "passed", "skipped", "failed"
+            showStandardStreams = true
+        }
+    }
+
+}
+
+
+/// AUXILIARY \\\
+
+task copyJars(type: Copy) {
+    duplicatesStrategy 'exclude'
+    from project(":tests-basic").configurations.runtimeClasspath
+    exclude {it.file.length() <= 261 || it.file.name.startsWith('dekaf-') || it.file.name.startsWith('test')}
+    into "$jarsDir"
+}
+
+

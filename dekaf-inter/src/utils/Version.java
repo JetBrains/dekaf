@@ -1,4 +1,4 @@
-package org.jetbrains.dekaf.jdbc.utils;
+package org.jetbrains.dekaf.inter.utils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -26,6 +26,7 @@ import java.util.*;
  *
  * @author Leonid Bushuev
  */
+@SuppressWarnings("serial")
 public final class Version implements Comparable<Version>, Serializable {
 
   private static final Map<String, Integer> SPECIAL_VALUES = new HashMap<String, Integer>();

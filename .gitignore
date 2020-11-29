@@ -11,6 +11,7 @@ dist
 coverage
 */target
 .gradle
+.gradleTemp
 
 .idea/workspace.xml
 .idea/uiDesigner.xml
