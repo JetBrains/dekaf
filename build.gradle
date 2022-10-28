@@ -27,7 +27,7 @@ build.doFirst {
 }
 
 
-def yakaVersion          = '0.2.17'
+def yakaVersion          = '0.2.0'
 def annotationsVersion   = '20.0.0'
 def kotlinVersion        = '1.4.10'
 def jUnitPlatformVersion = '1.6.2'
@@ -70,6 +70,9 @@ allprojects { project ->
 
     repositories {
         mavenCentral()
+        maven {
+            url "https://packages.jetbrains.team/maven/p/dm/maven"
+        }
     }
 
     project.buildDir = new File(rootProject.projectDir, ".gradleTemp/" + project.name)

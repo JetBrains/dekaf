@@ -7,9 +7,9 @@
       <option name="url" value="https://repo1.maven.org/maven2" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="841c6605-6cfe-496b-ac10-599ab7383531" />
-      <option name="name" value="841c6605-6cfe-496b-ac10-599ab7383531" />
-      <option name="url" value="https://dl.bintray.com/leo-from-spb/Yaka" />
+      <option name="id" value="0705bde5-a066-4915-a4d5-cd1ba4d5b5c7" />
+      <option name="name" value="0705bde5-a066-4915-a4d5-cd1ba4d5b5c7" />
+      <option name="url" value="https://packages.jetbrains.team/maven/p/dm/maven" />
     </remote-repository>
   </component>
 </project>
