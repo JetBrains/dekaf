@@ -1,0 +1,88 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="CanBeVal" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="ConvertSecondaryConstructorToPrimary" enabled="true" level="INFORMATION" enabled_by_default="true" />
+    <inspection_tool class="ForCanBeForeach" enabled="false" level="WARNING" enabled_by_default="false">
+      <option name="REPORT_INDEXED_LOOP" value="true" />
+      <option name="ignoreUntypedCollections" value="false" />
+    </inspection_tool>
+    <inspection_tool class="FunctionName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="namePattern" value="[a-z][A-Za-z\d_]*" />
+    </inspection_tool>
+    <inspection_tool class="JavaDoc" enabled="false" level="WARNING" enabled_by_default="false">
+      <option name="TOP_LEVEL_CLASS_OPTIONS">
+        <value>
+          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
+          <option name="REQUIRED_TAGS" value="" />
+        </value>
+      </option>
+      <option name="INNER_CLASS_OPTIONS">
+        <value>
+          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
+          <option name="REQUIRED_TAGS" value="" />
+        </value>
+      </option>
+      <option name="METHOD_OPTIONS">
+        <value>
+          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
+          <option name="REQUIRED_TAGS" value="@return@param@throws or @exception" />
+        </value>
+      </option>
+      <option name="FIELD_OPTIONS">
+        <value>
+          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
+          <option name="REQUIRED_TAGS" value="" />
+        </value>
+      </option>
+      <option name="IGNORE_DEPRECATED" value="false" />
+      <option name="IGNORE_JAVADOC_PERIOD" value="true" />
+      <option name="IGNORE_DUPLICATED_THROWS" value="false" />
+      <option name="IGNORE_POINT_TO_ITSELF" value="false" />
+      <option name="myAdditionalJavadocTags" value="" />
+    </inspection_tool>
+    <inspection_tool class="JoinDeclarationAndAssignment" enabled="true" level="INFORMATION" enabled_by_default="true" />
+    <inspection_tool class="LocalVariableName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="namePattern" value="[a-z][A-Za-zß\d]*" />
+    </inspection_tool>
+    <inspection_tool class="NonAsciiCharacters" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="PrivatePropertyName" enabled="true" level="TYPO" enabled_by_default="true">
+      <option name="namePattern" value="[a-z][A-Za-zß\d]*_?" />
+    </inspection_tool>
+    <inspection_tool class="PropertyName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="namePattern" value="[a-z][A-Za-zß\d]*" />
+    </inspection_tool>
+    <inspection_tool class="RemoveExplicitTypeArguments" enabled="true" level="TYPO" enabled_by_default="true" />
+    <inspection_tool class="RemoveRedundantBackticks" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ReplaceRangeToWithUntil" enabled="true" level="INFORMATION" enabled_by_default="true" />
+    <inspection_tool class="TestFunctionName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <scope name="Tests" level="WEAK WARNING" enabled="true">
+        <option name="namePattern" value="[a-zA-Zа-яЁА-ЯЁ_\d]*" />
+      </scope>
+    </inspection_tool>
+    <inspection_tool class="UnnecessaryLocalVariable" enabled="true" level="INFORMATION" enabled_by_default="true">
+      <option name="m_ignoreImmediatelyReturnedVariables" value="false" />
+      <option name="m_ignoreAnnotatedVariables" value="false" />
+    </inspection_tool>
+    <inspection_tool class="UnnecessaryUnboxing" enabled="true" level="TYPO" enabled_by_default="true" />
+    <inspection_tool class="UnnecessaryVariable" enabled="true" level="INFORMATION" enabled_by_default="true" />
+    <inspection_tool class="UnusedSymbol" enabled="true" level="INFORMATION" enabled_by_default="true" />
+    <inspection_tool class="WeakerAccess" enabled="true" level="INFORMATION" enabled_by_default="true">
+      <option name="SUGGEST_PACKAGE_LOCAL_FOR_MEMBERS" value="true" />
+      <option name="SUGGEST_PACKAGE_LOCAL_FOR_TOP_CLASSES" value="true" />
+      <option name="SUGGEST_PRIVATE_FOR_INNERS" value="false" />
+    </inspection_tool>
+    <inspection_tool class="unused" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="LOCAL_VARIABLE" value="true" />
+      <option name="FIELD" value="true" />
+      <option name="METHOD" value="true" />
+      <option name="CLASS" value="true" />
+      <option name="PARAMETER" value="true" />
+      <option name="REPORT_PARAMETER_FOR_PUBLIC_METHODS" value="true" />
+      <option name="ADD_MAINS_TO_ENTRIES" value="true" />
+      <option name="ADD_APPLET_TO_ENTRIES" value="true" />
+      <option name="ADD_SERVLET_TO_ENTRIES" value="true" />
+      <option name="ADD_NONJAVA_TO_ENTRIES" value="true" />
+    </inspection_tool>
+  </profile>
+</component>
