@@ -3,8 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/base/base.iml" filepath="$PROJECT_DIR$/base/base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/base-test/base-test.iml" filepath="$PROJECT_DIR$/base-test/base-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/inter/inter.iml" filepath="$PROJECT_DIR$/inter/inter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/inter-test/inter-test.iml" filepath="$PROJECT_DIR$/inter-test/inter-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/jdbc/jdbc.iml" filepath="$PROJECT_DIR$/jdbc/jdbc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jdbc-test/jdbc-test.iml" filepath="$PROJECT_DIR$/jdbc-test/jdbc-test.iml" />
     </modules>
   </component>
 </project>
