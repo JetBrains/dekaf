@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="h2database" type="repository">
+    <properties maven-id="com.h2database:h2:2.2.224" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/jdbc-drivers/h2/h2-2.2.224.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/jdbc-drivers/h2/h2-2.2.224-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/jdbc-drivers/h2/h2-2.2.224-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
