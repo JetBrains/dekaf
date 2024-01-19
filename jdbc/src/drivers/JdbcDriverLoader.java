@@ -8,6 +8,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
+import java.sql.Driver;
+import java.util.Optional;
+import java.util.ServiceLoader;
 
 
 
@@ -18,23 +21,34 @@ public class JdbcDriverLoader {
                                                  @Nullable String driverClassName) {
         URLClassLoader driverClassLoader = loadDriverJars(basePath, jarNames);
         try {
-            Class loadedClass;
+            final Driver driver;
             if (driverClassName != null) {
+                Class loadedClass;
                 try {
                     loadedClass = driverClassLoader.loadClass(driverClassName);
                 }
                 catch (ClassNotFoundException cnf) {
                     throw new IllegalArgumentException("Class \""+driverClassName+"\" doesn't exist in the loaded jars", cnf);
                 }
+                if (!(java.sql.Driver.class.isAssignableFrom(loadedClass))) {
+                    String loadedClassName = loadedClass.getName();
+                    throw new IllegalStateException("The loaded class \""+loadedClassName+"\" is not a valid JDBC driver class");
+                }
+                try {
+                    var constructor = loadedClass.getConstructor();
+                    driver = (Driver) constructor.newInstance();
+                }
+                catch (Exception e) {
+                    throw new RuntimeException("Cannot instantiate a JDBC driver form the driver class " + loadedClass.getName(), e);
+                }
             }
             else {
-                throw new RuntimeException("NIY");
+                ServiceLoader<Driver> serviceLoader = ServiceLoader.load(Driver.class, driverClassLoader);
+                Optional<Driver> firstDriver = serviceLoader.findFirst();
+                if (firstDriver.isPresent()) driver = firstDriver.get();
+                else throw new RuntimeException("No declared JDBC driver in the jar");
             }
-            if (!(java.sql.Driver.class.isAssignableFrom(loadedClass))) {
-                String loadedClassName = loadedClass.getName();
-                throw new IllegalStateException("The loaded class \""+loadedClassName+"\" is not a valid JDBC driver class");
-            }
-            return new JdbcDriver(loadedClass, driverClassLoader);
+            return new JdbcDriver(driver, driverClassLoader);
         }
         catch (RuntimeException e) {
             closeClassLoader(driverClassLoader);

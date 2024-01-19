@@ -11,14 +11,14 @@ import java.sql.Driver;
 
 public final class JdbcDriver implements Closeable {
 
-    public final @NotNull Class<Driver> driverClass;
+    public final @NotNull Driver driver;
 
     public final @NotNull URLClassLoader driverClassLoader;
 
-    public JdbcDriver(@NotNull final Class<Driver> driverClass,
+    public JdbcDriver(@NotNull final Driver driver,
                       @NotNull final URLClassLoader driverClassLoader)
     {
-        this.driverClass = driverClass;
+        this.driver = driver;
         this.driverClassLoader = driverClassLoader;
     }
 
@@ -36,6 +36,6 @@ public final class JdbcDriver implements Closeable {
 
     @Override
     public String toString() {
-        return driverClass.toString();
+        return driver.toString();
     }
 }

@@ -8,4 +8,6 @@ object DriverFiles {
     const val driverClassNameForH2       = "org.h2.Driver"
     const val driverClassNameForPostgres = "org.postgresql.Driver"
 
+    const val testConnectionForH2 = "jdbc:h2:mem:Test"
+    
 }
