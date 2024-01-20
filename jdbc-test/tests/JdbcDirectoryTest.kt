@@ -2,7 +2,7 @@ package org.jetbrains.dekaf.jdbc.test
 
 import lb.yaka.base.expectations.iz
 import lb.yaka.base.gears.expect
-import org.jetbrains.dekaf.inter.test.utils.UnitTest
+import org.jetbrains.dekaf.inter.test.utils.SystemTest
 import org.jetbrains.dekaf.jdbc.drivers.JdbcDriverLoader
 import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Order
@@ -14,7 +14,7 @@ import kotlin.io.path.isRegularFile
 
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-class JdbcDirectoryTest : UnitTest {
+class JdbcDirectoryTest : SystemTest {
 
     @Test @Order(1)
     fun checkCurrentDirectory() {

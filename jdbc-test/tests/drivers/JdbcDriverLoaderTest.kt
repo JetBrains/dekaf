@@ -5,20 +5,17 @@ import lb.yaka.base.expectations.iz
 import lb.yaka.base.expectations.sameAs
 import lb.yaka.base.gears.aka
 import lb.yaka.base.gears.expect
-import org.jetbrains.dekaf.inter.test.utils.UnitTest
+import org.jetbrains.dekaf.inter.test.utils.SystemTest
 import org.jetbrains.dekaf.jdbc.drivers.JdbcDriver
 import org.jetbrains.dekaf.jdbc.drivers.JdbcDriverLoader
 import org.jetbrains.dekaf.jdbc.test.DriverFiles
-import org.junit.jupiter.api.MethodOrderer
-import org.junit.jupiter.api.Order
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestMethodOrder
+import org.junit.jupiter.api.*
 import java.nio.file.Path
 import java.util.*
 
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-class JdbcDriverLoaderTest : UnitTest {
+class JdbcDriverLoaderTest : SystemTest {
 
     private val noProperties = Properties()
 
@@ -73,6 +70,12 @@ class JdbcDriverLoaderTest : UnitTest {
             }
             connection.isClosed aka "Connection is closed" iz true
         }
+    }
+
+
+    @AfterAll
+    fun freeMemory() {
+        System.gc()
     }
 
 }

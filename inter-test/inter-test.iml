@@ -12,5 +12,6 @@
     <orderEntry type="module" module-name="inter" />
     <orderEntry type="library" name="yaka" level="project" />
     <orderEntry type="library" name="junit-jupiter" level="project" />
+    <orderEntry type="library" name="junit-suite" level="project" />
   </component>
 </module>

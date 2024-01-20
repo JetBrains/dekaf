@@ -8,3 +8,8 @@ import org.junit.jupiter.api.TestInstance
 @Tag("UnitTest")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 interface UnitTest
+
+
+@Tag("SystemTest")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+interface SystemTest
