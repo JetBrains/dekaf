@@ -1,9 +1,10 @@
-package org.jetbrains.dekaf.jdbc.test
+package org.jetbrains.dekaf.jdbc.test.testFixtures
 
 import lb.yaka.base.expectations.iz
 import lb.yaka.base.gears.expect
 import org.jetbrains.dekaf.inter.test.utils.SystemTest
 import org.jetbrains.dekaf.jdbc.drivers.JdbcDriverLoader
+import org.jetbrains.dekaf.jdbc.test.DriverFiles
 import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
